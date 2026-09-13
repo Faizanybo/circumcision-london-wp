@@ -1,0 +1,215 @@
+/* =========================================================================
+   Gutenberg / WordPress compatibility for the hybrid theme.
+   Chrome (header, footer) stays PHP. Block content uses prototype tokens.
+   ========================================================================= */
+
+.screen-reader-text,
+.wp-skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.entry-content {
+  --cil-content: 780px;
+  --cil-wide: var(--maxw);
+  padding-bottom: 0;
+}
+.entry-content p + p { margin-top: 1.1em; }
+.entry-content .wp-block-heading + p { margin-top: 18px; }
+.entry-content p + .wp-block-heading,
+.entry-content .wp-block-heading + .wp-block-heading { margin-top: 1.4em; }
+.entry-content > * {
+  max-width: var(--cil-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: var(--gap);
+}
+.entry-content > .alignwide,
+.entry-content > .wp-block-group.alignwide {
+  max-width: var(--cil-wide);
+}
+.entry-content > .alignfull,
+.entry-content > .wp-block-group.alignfull,
+.entry-content > .wp-block-cover.alignfull,
+.entry-content > .cil-breakout {
+  max-width: none;
+  width: 100%;
+  padding-inline: 0;
+}
+
+/* Reusable sections inserted via shortcode or custom blocks must span the viewport. */
+.entry-content .cil-breakout .hero,
+.entry-content .cil-breakout .section,
+.entry-content .cil-breakout .section-sm,
+.entry-content .cil-breakout .cta-band,
+.entry-content .cil-breakout .groups,
+.entry-content > .page-head,
+.entry-content > .section,
+.entry-content > .section-sm,
+.entry-content > .cta-band,
+.entry-content > .wp-block-cil-page-head,
+.entry-content > .wp-block-cil-section,
+.entry-content > .wp-block-cil-cta-band,
+.entry-content > .wp-block-cil-faq,
+.entry-content > .wp-block-cil-trust-strip,
+.entry-content > .wp-block-cil-group-cards,
+.entry-content > .wp-block-cil-quotes-grid,
+.entry-content > .wp-block-cil-text-section,
+.entry-content > .wp-block-cil-split,
+.entry-content > .wp-block-cil-figure,
+.entry-content > .wp-block-cil-callback-card,
+.entry-content > .wp-block-cil-spec-panel,
+.entry-content > .wp-block-cil-info-cards {
+  max-width: none;
+  width: 100%;
+  padding-inline: 0;
+}
+
+.wp-block-cil-split > .wp-block-group {
+  padding: 0;
+  margin: 0;
+  background: none;
+  max-width: none;
+}
+.wp-block-cil-section .wp-block-heading {
+  margin: 0;
+}
+.wp-block-cil-section p.caps {
+  margin-top: 0;
+}
+.wp-block-cil-section .body-text p + p,
+.entry-content .body-text p + p {
+  margin-top: 1.1em;
+}
+
+.wp-block-group.is-style-cil-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: clamp(24px, 2.4vw, 36px);
+}
+.wp-block-group.is-style-cil-callout {
+  background: var(--blue-soft);
+  border-radius: 6px;
+  border-left: 3px solid var(--blue);
+  padding: clamp(22px, 2.4vw, 32px);
+}
+.wp-block-group.is-style-cil-callout-urgent {
+  background: #fdf1e8;
+  border-radius: 6px;
+  border-left: 3px solid var(--clay);
+  padding: clamp(22px, 2.4vw, 32px);
+}
+.wp-block-group.is-style-cil-wrap > :where(:not(.alignfull)) {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gap);
+}
+.wp-block-group.is-style-cil-wrap-narrow > :where(:not(.alignfull)) {
+  max-width: 780px;
+  margin-inline: auto;
+  padding-inline: var(--gap);
+}
+.wp-block-columns.is-style-cil-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(30px, 4.5vw, 76px);
+  align-items: center;
+}
+.wp-block-quote.is-style-cil-quote,
+.wp-block-group.is-style-cil-quote {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  border-radius: 6px;
+  padding: clamp(24px, 2.4vw, 34px);
+}
+.wp-block-image.is-style-cil-figure-4-3 img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.wp-block-image.is-style-cil-figure-5-4 img { aspect-ratio: 5 / 4; object-fit: cover; width: 100%; }
+.wp-block-image.is-style-cil-figure-3-4 img { aspect-ratio: 3 / 4; object-fit: cover; width: 100%; }
+
+@media (max-width: 900px) {
+  .wp-block-columns.is-style-cil-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+  }
+}
+.entry-content > .alignleft {
+  float: left;
+  margin-right: 1.5em;
+  max-width: 50%;
+}
+.entry-content > .alignright {
+  float: right;
+  margin-left: 1.5em;
+  max-width: 50%;
+}
+
+.wp-block-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 52px;
+  padding: 14px 26px;
+  border-radius: var(--r);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-decoration: none;
+  background-color: var(--blue);
+  color: #fff;
+  border: 1px solid var(--blue);
+}
+.wp-block-button__link:hover {
+  background-color: var(--blue-deep);
+  border-color: var(--blue-deep);
+  color: #fff;
+}
+.is-style-outline .wp-block-button__link,
+.wp-block-button.is-style-outline .wp-block-button__link {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+.is-style-outline .wp-block-button__link:hover,
+.wp-block-button.is-style-outline .wp-block-button__link:hover {
+  background: var(--card);
+  color: var(--blue-deep);
+  border-color: var(--blue);
+}
+
+.posts-list {
+  list-style: none;
+  display: grid;
+  gap: 18px;
+}
+.posts-list a {
+  text-decoration: none;
+  color: inherit;
+}
+.posts-list a:hover .display {
+  color: var(--blue-deep);
+}
+
+.editor-styles-wrapper {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+}
+.editor-styles-wrapper .cil-editor-preview { pointer-events: none; }
+.editor-styles-wrapper .page-head { padding-block: clamp(46px, 5.5vw, 92px) clamp(30px, 3.5vw, 56px); }
