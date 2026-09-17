@@ -998,3 +998,4 @@ require get_template_directory() . '/inc/pages/visit-pages.php';
 require get_template_directory() . '/inc/pages/legal-pages.php';
 require get_template_directory() . '/inc/pages/home-page.php';
 require get_template_directory() . '/inc/setup-pages.php';
+require get_template_directory() . '/inc/content-sync.php';

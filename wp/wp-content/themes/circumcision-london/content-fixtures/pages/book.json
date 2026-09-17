@@ -1,0 +1,11 @@
+{
+    "schema": 1,
+    "slug": "book",
+    "path": "/book/",
+    "local_id": 44,
+    "source_modified_gmt": "2026-09-17 20:04:28",
+    "source_sha256": "bdbd390dd88d7f40175679d3c6d44e0ca188f38df6e07295fb4d9b16139e1f0a",
+    "replace_from": "http://circumcision-london-wp.local",
+    "replace_to": "https://circumcision-london-wp.vercel.app",
+    "content": "<!-- wp:cil/page-head {\"eyebrow\":\"Next available: usually within 7 days\",\"title\":\"Book a consultation\",\"lede\":\"Choose a time in the diary below. Call or WhatsApp the clinic if you would rather speak to someone first.\",\"crumbs\":[{\"label\":\"Book a consultation\",\"href\":\"\"}]} /-->\n\n<!-- wp:cil/section {\"size\":\"section-sm\",\"band\":\"\",\"wrap\":\"wrap\"} --><section class=\"wp-block-cil-section section-sm\"><div class=\"wrap\"><!-- wp:cil/cliniko-bookings /--><!-- wp:html --><div class=\"callout\" data-reveal>\n      <h2 class=\"display d-3\">Would you rather call?</h2>\n      <p style=\"margin-top:8px\">The clinic answers during opening hours on\n      <a href=\"tel:+442089513794\" data-track=\"call-book\" style=\"color:var(--blue-deep);font-weight:600\">020 8951 3794</a>,\n      and you can <a href=\"https://wa.me/447886779958\" rel=\"noopener\" target=\"_blank\" data-track=\"whatsapp-book\" style=\"color:var(--blue-deep);font-weight:600\">message on WhatsApp</a>\n      if you would rather write than speak.</p>\n    </div><!-- /wp:html --></div></section><!-- /wp:cil/section -->\n\n<!-- wp:cil/section {\"size\":\"section\",\"band\":\"bg-warm\",\"wrap\":\"wrap\"} --><section class=\"wp-block-cil-section section bg-warm\"><div class=\"wrap\"><!-- wp:cil/section-head {\"eyebrow\":\"Consultations for\",\"heading\":\"Any age\",\"lede\":\"\",\"display\":\"d-2\"} /--><!-- wp:cil/group-cards {\"level\":3,\"exclude\":\"\",\"banded\":false} /--></div></section><!-- /wp:cil/section -->"
+}

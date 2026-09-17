@@ -1,0 +1,8 @@
+{
+    "schema": 1,
+    "replace_from": "http://circumcision-london-wp.local",
+    "replace_to": "https://circumcision-london-wp.vercel.app",
+    "pages": [
+        "book"
+    ]
+}
