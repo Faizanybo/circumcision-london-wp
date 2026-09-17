@@ -42,7 +42,7 @@ function cil_visit_pages() {
 			'description' => 'Book a circumcision consultation in Edgware, usually available within seven days. Nothing is booked and no deposit is taken until you decide to go ahead.',
 			'eyebrow'     => 'Next available: ' . strtolower( $clinic['next_available'] ),
 			'h1'          => 'Book a consultation',
-			'lede'        => 'One booking route, not several. Fill in the form and we will call you back within two working hours to agree a time. Call the clinic directly if you would rather speak to somebody now.',
+			'lede'        => 'Choose a time in the diary below. Call or WhatsApp the clinic if you would rather speak to someone first.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Book a consultation',
@@ -255,50 +255,20 @@ function cil_contact_page_blocks() {
 }
 
 /**
- * “What happens next” column on /book.
+ * Call/WhatsApp alternative under the London Cliniko diary.
  *
  * @return string
  */
-function cil_book_next_html() {
+function cil_book_call_html() {
 	$clinic = cil_clinic();
 
-	$steps = cil_render_part(
-		'steps',
-		array(
-			'items' => array(
-				array(
-					'h' => 'We call you back',
-					'p' => 'Within two working hours, to answer questions and agree a consultation time. Plenty of people stop here, and that is a perfectly good outcome.',
-				),
-				array(
-					'h' => 'Consultation and examination',
-					'p' => 'You meet the practitioner who would carry out the procedure. They examine, explain, go through the risks, and tell you honestly if you should not go ahead.',
-				),
-				array(
-					'h' => 'A written price',
-					'p' => 'All-inclusive, before you commit. Nothing is booked and no deposit is taken on the day unless you ask for it.',
-				),
-				array(
-					'h' => 'The procedure, if you want it',
-					'p' => 'Home the same day. We call the next morning and follow-up appointments are included until healing is complete.',
-				),
-			),
-		)
-	);
-
-	return '<div data-reveal data-reveal-delay="120">
-        <span class="caps eyebrow">What happens next</span>
-        <h2 class="display d-2" style="margin-bottom:22px">Four steps, no surprises</h2>
-        ' . $steps . '
-        <div class="callout" style="margin-top:26px">
-          <h3 class="display d-3">Would you rather just call?</h3>
-          <p style="margin-top:8px">Most people would. The clinic answers during opening hours on
-          <a href="' . esc_url( $clinic['phone']['href'] ) . '" data-track="call-book" style="color:var(--blue-deep);font-weight:600">' . esc_html( $clinic['phone']['display'] ) . '</a>,
-          and you can <a href="' . esc_url( $clinic['whatsapp']['href'] ) . '" rel="noopener" target="_blank" data-track="whatsapp-book" style="color:var(--blue-deep);font-weight:600">message on WhatsApp</a>
-          if you would rather write than speak.</p>
-        </div>
-        <div style="margin-top:18px">' . cil_render_part( 'urgent-note' ) . '</div>
-      </div>';
+	return '<div class="callout" data-reveal>
+      <h2 class="display d-3">Would you rather call?</h2>
+      <p style="margin-top:8px">The clinic answers during opening hours on
+      <a href="' . esc_url( $clinic['phone']['href'] ) . '" data-track="call-book" style="color:var(--blue-deep);font-weight:600">' . esc_html( $clinic['phone']['display'] ) . '</a>,
+      and you can <a href="' . esc_url( $clinic['whatsapp']['href'] ) . '" rel="noopener" target="_blank" data-track="whatsapp-book" style="color:var(--blue-deep);font-weight:600">message on WhatsApp</a>
+      if you would rather write than speak.</p>
+    </div>';
 }
 
 /**
@@ -327,21 +297,8 @@ function cil_book_page_blocks() {
 			'wrap' => 'wrap',
 		),
 		array(
-			cil_split_block(
-				array(
-					cil_dyn_block(
-						'cil/callback-card',
-						array(
-							'eyebrow' => 'Booking request',
-							'title'   => 'Tell us who it is for',
-							'formId'  => 'book',
-							'subject' => 'consultation booking',
-							'urgent'  => false,
-						)
-					),
-					cil_html_block( cil_book_next_html() ),
-				)
-			),
+			cil_dyn_block( 'cil/cliniko-bookings' ),
+			cil_html_block( cil_book_call_html() ),
 		)
 	);
 

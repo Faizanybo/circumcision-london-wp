@@ -193,6 +193,38 @@ function cil_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'cil_enqueue_assets' );
 
 /**
+ * Cliniko postMessage handler only when the London bookings block is present.
+ */
+function cil_enqueue_cliniko_bookings() {
+	if ( is_admin() || ! is_singular() || ! has_block( 'cil/cliniko-bookings' ) ) {
+		return;
+	}
+
+	$cfg = cil_cliniko_bookings_config();
+	$uri = get_template_directory_uri();
+
+	wp_enqueue_script(
+		'cil-cliniko-bookings',
+		$uri . '/assets/js/cliniko-bookings.js',
+		array(),
+		cil_asset_version( 'assets/js/cliniko-bookings.js' ),
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
+	);
+	wp_localize_script(
+		'cil-cliniko-bookings',
+		'cilClinikoBookings',
+		array(
+			'iframeId' => $cfg['iframe_id'],
+			'origin'   => $cfg['origin'],
+		)
+	);
+}
+add_action( 'wp_enqueue_scripts', 'cil_enqueue_cliniko_bookings' );
+
+/**
  * Preload the two latin variable fonts the first paint needs.
  */
 function cil_preload_fonts() {
@@ -258,6 +290,19 @@ function cil_icon( $name ) {
 function cil_book_url() {
 	$clinic = cil_clinic();
 	return home_url( $clinic['book_path'] );
+}
+
+/**
+ * London Cliniko booking embed. Do not reuse for Luton, Southampton or Birmingham.
+ *
+ * @return array{iframe_id: string, src: string, origin: string}
+ */
+function cil_cliniko_bookings_config() {
+	return array(
+		'iframe_id' => 'cliniko-64894483',
+		'src'       => 'https://beverley-clinic.au1.cliniko.com/bookings?embedded=true',
+		'origin'    => 'https://beverley-clinic.au1.cliniko.com',
+	);
 }
 
 /**

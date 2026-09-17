@@ -76,7 +76,8 @@ body.cil-home .entry-content {
 .entry-content > .wp-block-cil-video-grid,
 .entry-content > .wp-block-cil-callback-card,
 .entry-content > .wp-block-cil-spec-panel,
-.entry-content > .wp-block-cil-info-cards {
+.entry-content > .wp-block-cil-info-cards,
+.entry-content > .wp-block-cil-cliniko-bookings {
   max-width: none;
   width: 100%;
   padding-inline: 0;

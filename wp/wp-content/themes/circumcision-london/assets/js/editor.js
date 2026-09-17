@@ -314,6 +314,30 @@
   });
 
   /* ----------------------------------------------------- dynamic clinic */
+  registerBlockType('cil/cliniko-bookings', {
+    apiVersion: 3,
+    title: 'Cliniko bookings',
+    category: 'circumcision-london',
+    icon: 'calendar-alt',
+    description: 'London Cliniko booking diary. Do not use for Luton, Southampton or Birmingham.',
+    supports: { html: false, align: ['wide', 'full'] },
+    edit: function () {
+      return el(
+        'div',
+        useBlockProps({ className: 'cil-cliniko-bookings-editor' }),
+        el('p', { className: 'caps', style: { marginTop: 0 } }, 'London Cliniko diary'),
+        el(
+          'p',
+          { style: { marginBottom: 0 } },
+          'The live calendar is shown on the published page. Do not add this block to Luton, Southampton or Birmingham pages.'
+        )
+      );
+    },
+    save: function () {
+      return null;
+    },
+  });
+
   dynamicBlock('cil/trust-strip', 'Trust strip', { icon: 'shield' });
 
   dynamicBlock('cil/urgent-note', 'Urgent A&E note', { icon: 'warning' });

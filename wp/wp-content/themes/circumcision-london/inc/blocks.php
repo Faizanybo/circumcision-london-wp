@@ -483,6 +483,20 @@ function cil_register_dynamic_blocks() {
 	);
 
 	register_block_type(
+		'cil/cliniko-bookings',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Cliniko bookings', 'circumcision-london' ),
+				'description'     => __( 'London Cliniko booking diary. Do not use for other clinic locations.', 'circumcision-london' ),
+				'render_callback' => function () {
+					return '<div class="cil-breakout">' . cil_render_part( 'cliniko-bookings' ) . '</div>';
+				},
+			)
+		)
+	);
+
+	register_block_type(
 		'cil/cta-band',
 		array_merge(
 			$common,

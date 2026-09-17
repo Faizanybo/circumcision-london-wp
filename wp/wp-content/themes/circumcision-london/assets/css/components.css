@@ -167,6 +167,31 @@
 .reviewed-by { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--muted-2); }
 .reviewed-by a { color: var(--muted); }
 
+.cil-cliniko-bookings {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 22px;
+}
+.cil-cliniko-bookings iframe {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 640px;
+  height: 1000px;
+  border: 0;
+  background: var(--paper-2);
+  pointer-events: auto;
+}
+.cil-cliniko-bookings-editor {
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  background: var(--paper-2);
+  padding: 22px 24px;
+}
+.cil-cliniko-bookings-editor .caps {
+  color: var(--blue);
+}
+
 .card-link { text-decoration: none; color: inherit; display: block; transition: border-color .25s var(--ease), transform .25s var(--ease); }
 .card-link:hover { border-color: var(--blue); transform: translateY(-2px); }
 
@@ -183,6 +208,7 @@
   .hero-facts { gap: 10px 26px; }
   .price-row { grid-template-columns: minmax(0, 1fr) auto; }
   .price-row .btn { grid-column: 1 / -1; justify-self: start; }
+  .cil-cliniko-bookings iframe { min-height: 720px; }
 }
 
 @media print {
