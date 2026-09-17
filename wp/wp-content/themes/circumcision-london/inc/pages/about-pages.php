@@ -25,9 +25,9 @@ function cil_about_pages() {
 			'name'        => 'Our team',
 			'title'       => 'Our Practitioners | Circumcision Clinic in London',
 			'description' => 'Dr Haidar Al-Ali, who carries out most circumcisions here and trains other doctors, and Mr Samir Al-Ali, plastic surgeon. Qualifications and registrations in full.',
-			'eyebrow'     => 'Two practitioners · Both named · Both here every week',
-			'h1'          => 'Who will carry out your procedure',
-			'lede'        => 'You meet the person doing the procedure at your consultation, not on the day. There are two of us, we are both named here with our qualifications, and neither of us is a visiting contractor.',
+			'eyebrow'     => 'CQC registered · More than 40 years combined experience',
+			'h1'          => 'Meet our circumcision practitioners',
+			'lede'        => 'Our two practitioners have more than 40 years of combined experience in the UK and abroad and have carried out thousands of circumcisions across different age groups.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Our team',
@@ -104,41 +104,16 @@ function cil_about_pages() {
 			'name'        => 'For doctors',
 			'title'       => 'Circumcision Training Course for Doctors | London',
 			'description' => 'A five-day, one-to-one circumcision training course for doctors in London. Plastibell, forceps guided and free hand methods, live surgery and practice setup.',
-			'eyebrow'     => 'Five days · One to one · Live surgery',
-			'h1'          => 'Circumcision training course for doctors',
-			'lede'        => 'Everything you need to start offering circumcision to your own patients: the Plastibell, forceps guided and free hand methods, across every age from infants to adults, taught one to one alongside live surgery.',
+			'eyebrow'     => 'One-to-one programme',
+			'h1'          => 'Circumcision training for doctors',
+			'lede'        => 'We provide training for doctors who want to develop their knowledge and skills in male circumcision. The course combines theory with observation of clinical practice and is designed to cover circumcision across different age groups.',
 			'crumbs'      => array(
 				array(
 					'label' => 'For doctors',
 					'href'  => '',
 				),
 			),
-			'faqs'        => array(
-				array(
-					'q' => 'How long is the course?',
-					'a' => '<p>Five days, covering theory and observation of live surgery. It is run one to one, so you can ask as many questions as you need and have the doctor\'s full attention throughout.</p>',
-				),
-				array(
-					'q' => 'Will I get to do any of it myself?',
-					'a' => '<p>You observe live surgeries directly and get the chance to assist in them. The point of running it one to one is that you are not watching from the back of a room.</p>',
-				),
-				array(
-					'q' => 'What methods are covered?',
-					'a' => '<p>The Plastibell ring method, the forceps guided traditional method, and the free hand method used for re-circumcisions. All ages, from infants to adults.</p>',
-				),
-				array(
-					'q' => 'Does it cover the business side?',
-					'a' => '<p>Yes, and that is often the part delegates value most: how to set up your practice, a list of suppliers, and the essential documents including consent forms.</p>',
-				),
-				array(
-					'q' => 'What happens after the course?',
-					'a' => '<p>You keep direct WhatsApp access to the doctor for ongoing support, and there are live Zoom calls. Most questions come up after somebody has started doing their own lists, which is exactly when you need to be able to ask.</p>',
-				),
-				array(
-					'q' => 'How do I book?',
-					'a' => '<p>Call ' . esc_html( $clinic['phone']['display'] ) . ' and ask about the course. Dates are arranged around the clinic\'s list, because you will be observing real surgery.</p>',
-				),
-			),
+			'faqs'        => array(),
 		),
 	);
 }
@@ -288,6 +263,56 @@ function cil_team_page_blocks() {
 			'title'   => $page['h1'],
 			'lede'    => $page['lede'],
 			'crumbs'  => $page['crumbs'],
+		)
+	);
+
+	$blocks[] = cil_section_block(
+		array(
+			'size' => 'section-sm',
+			'band' => '',
+			'wrap' => 'wrap-narrow',
+		),
+		array(
+			cil_html_block(
+				'<div class="body-text" data-reveal>' .
+				cil_proto_html(
+					'<p>The clinic\'s work includes baby and infant circumcision, circumcision for children and teenagers, adult circumcision, medical foreskin problems, re-circumcision and practitioner training.</p>
+        <p>Procedures are carried out in a dedicated clinical environment with attention to infection control, consent, anaesthesia, aftercare and follow-up.</p>'
+				) .
+				'</div>'
+			),
+		)
+	);
+
+	$blocks[] = cil_section_block(
+		array(
+			'size' => 'section-sm',
+			'band' => 'bg-card edge',
+			'wrap' => 'wrap',
+		),
+		array(
+			cil_dyn_block(
+				'cil/section-head',
+				array(
+					'eyebrow' => 'Why patients choose the clinic',
+					'heading' => 'What we provide',
+					'lede'    => '',
+					'display' => 'd-2',
+				)
+			),
+			cil_dyn_block(
+				'cil/info-cards',
+				array(
+					'items' => array(
+						array( 'title' => 'CQC registered', 'body' => 'A dedicated circumcision service in a registered clinical environment.' ),
+						array( 'title' => 'Experienced practitioners', 'body' => 'More than 40 years of combined experience in the UK and abroad.' ),
+						array( 'title' => 'Age-appropriate methods', 'body' => 'Methods chosen according to age, anatomy and clinical circumstances.' ),
+						array( 'title' => 'Aftercare and follow-up', 'body' => 'Comprehensive written aftercare and follow-up support during healing.' ),
+						array( 'title' => 'Letters', 'body' => 'GP, school and work letters where appropriate.' ),
+						array( 'title' => 'Location', 'body' => 'North-West London location with public transport links.' ),
+					),
+				)
+			),
 		)
 	);
 
@@ -522,38 +547,28 @@ function cil_courses_page_blocks() {
 
 	$intro = cil_proto_html(
 		'<div class="body-text" data-reveal>
-        <p>We train doctors who want to start providing circumcision to their patients. You will learn the Plastibell
-        and forceps guided methods for all ages, from infants to adults, and the free hand method used for
-        re-circumcisions.</p>
-        <p>The course runs over <strong>five days</strong> and combines theory with observing live surgery. The
-        doctors explain every step as they go, including why each thing is done the way it is, which is the part that
-        is missing from watching a video.</p>
-        <p>It is run <strong>one to one</strong>. That is deliberate: you can ask as many questions as you need and
-        you have the doctor\'s full attention rather than a share of it. The aim is that you leave able to perform
-        circumcision safely and competently, not just having seen it done.</p>
+        <p>One-to-one programme. Training topics include relevant anatomy, indications and contraindications, the Plastibell / ring method, the forceps-guided method, instruments and equipment, suturing and wound closure, aftercare and complications, therapeutic circumcision and phimosis, frenulum procedures, re-circumcision, buried penis considerations, and practice setup, documents and suppliers.</p>
+        <p>The existing course information also lists a certificate of completion, handouts, observation of live procedures, opportunities to assist where appropriate, and ongoing communication/support.</p>
       </div>'
 	);
 
 	$included = cil_proto_html(
 		'<div data-reveal>
         <span class="caps eyebrow">Included</span>
-        <h2 class="display d-1">What comes with it</h2>
+        <h2 class="display d-1">What the course covers</h2>
         <div class="body-text" style="margin-top:20px"><ul>
           <li>Certificate of completion</li>
-          <li>Direct observation of live surgeries, and the chance to assist</li>
-          <li>Lecture handouts</li>
-          <li>A list of all suppliers</li>
-          <li>All the essential documents, including consent forms</li>
-          <li>Live Zoom calls</li>
-          <li>Direct WhatsApp contact with the doctor afterwards, for ongoing support</li>
-          <li>Daily lunch, and a private dinner with the doctor</li>
-          <li>Plenty of one-to-one time for questions</li>
+          <li>Handouts</li>
+          <li>Observation of live procedures</li>
+          <li>Opportunities to assist where appropriate</li>
+          <li>Ongoing communication and support</li>
         </ul></div>
         <div class="btn-row" style="margin-top:28px">
           <a class="btn" href="' . esc_url( $clinic['phone']['href'] ) . '" data-track="call-courses">Call ' . esc_html( $clinic['phone']['display'] ) . '</a>
         </div>
       </div>'
 	);
+
 
 	$blocks   = array();
 	$blocks[] = cil_dyn_block(
@@ -581,14 +596,13 @@ function cil_courses_page_blocks() {
 						array(
 							'eyebrow' => 'The course',
 							'rows'    => array(
-								array( 'k' => 'Length', 'v' => 'Five days' ),
 								array( 'k' => 'Format', 'v' => 'One to one' ),
-								array( 'k' => 'Theory', 'v' => 'Yes, with handouts' ),
-								array( 'k' => 'Live surgery', 'v' => 'Observe and assist' ),
-								array( 'k' => 'Methods', 'v' => 'Plastibell, forceps guided, free hand' ),
-								array( 'k' => 'Ages covered', 'v' => 'Infants through to adults' ),
-								array( 'k' => 'Certificate', 'v' => 'On completion' ),
-								array( 'k' => 'After the course', 'v' => 'Direct WhatsApp support' ),
+								array( 'k' => 'Theory', 'v' => 'Combined with observation of clinical practice' ),
+								array( 'k' => 'Live procedures', 'v' => 'Observation, with opportunities to assist where appropriate' ),
+								array( 'k' => 'Methods', 'v' => 'Plastibell / ring and forceps-guided' ),
+								array( 'k' => 'Ages covered', 'v' => 'Different age groups' ),
+								array( 'k' => 'Certificate', 'v' => 'Certificate of completion' ),
+								array( 'k' => 'After the course', 'v' => 'Ongoing communication and support' ),
 							),
 							'note'    => '',
 						)
@@ -609,8 +623,8 @@ function cil_courses_page_blocks() {
 				'cil/section-head',
 				array(
 					'eyebrow' => 'Syllabus',
-					'heading' => 'What the five days cover',
-					'lede'    => 'Enough to open your own circumcision clinic and be confident providing a safe and caring service.',
+					'heading' => 'Training topics',
+					'lede'    => 'The course is designed to cover circumcision across different age groups.',
 					'display' => 'd-1',
 				)
 			),
@@ -673,13 +687,15 @@ function cil_courses_page_blocks() {
 		)
 	);
 
-	$blocks[] = cil_dyn_block(
-		'cil/faq',
-		array(
-			'heading' => 'Course questions',
-			'items'   => $page['faqs'],
-		)
-	);
+	if ( ! empty( $page['faqs'] ) ) {
+		$blocks[] = cil_dyn_block(
+			'cil/faq',
+			array(
+				'heading' => 'Course questions',
+				'items'   => $page['faqs'],
+			)
+		);
+	}
 
 	return cil_serialize_blocks( $blocks );
 }

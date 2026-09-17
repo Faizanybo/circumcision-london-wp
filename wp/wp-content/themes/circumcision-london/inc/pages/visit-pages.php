@@ -24,9 +24,9 @@ function cil_visit_pages() {
 			'name'        => 'Visit us',
 			'title'       => 'Visit the Clinic | Edgware, North-West London',
 			'description' => 'The clinic is at 78 Beverley Drive, Edgware HA8 5NE. Open Monday to Saturday. Free street parking, and directions by tube, bus, car and plane.',
-			'eyebrow'     => 'Edgware · Free parking · Outside ULEZ',
-			'h1'          => 'Visiting the clinic',
-			'lede'        => 'One site in a quiet residential street in Edgware, on the same road as Queensbury station and about eight minutes on foot from it. Free street parking all around the clinic, at all times.',
+			'eyebrow'     => 'Edgware · Free parking',
+			'h1'          => 'Visit the clinic',
+			'lede'        => 'Beverley Clinic, 78 Beverley Drive, Edgware, HA8 5NE, North-West London. Contact the clinic by telephone, mobile, email or online enquiry.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Visit us',
@@ -131,7 +131,7 @@ function cil_contact_nap_cards_html() {
 			. esc_html( $clinic['address']['postcode'] ) .
 		'</address>
         <a class="btn btn-ghost" style="margin-top:20px" href="' . esc_url( $maps ) . '" rel="noopener" target="_blank" data-track="map-open">Open in Google Maps</a>
-        <p class="muted" style="margin-top:14px;font-size:15px">Free street parking all around the clinic, at all times. Outside the Congestion Charge zone and the ULEZ.</p>
+        <p class="muted" style="margin-top:14px;font-size:15px">Plenty of free on-street parking. Outside the Congestion Charge zone.</p>
       </div>
     </div>';
 }
@@ -150,18 +150,9 @@ function cil_contact_directions_html() {
         <span class="caps eyebrow">Getting here</span>
         <h2 class="display d-1">Directions</h2>
         <div class="body-text" style="margin-top:20px">
-          <p><strong>By tube.</strong> Queensbury on the Jubilee line is on the same road as the clinic, about eight
-          minutes\' walk. Come out of the station and walk straight until you reach us. Burnt Oak on the Northern line
-          is about fifteen minutes on foot.</p>
-          <p><strong>By bus.</strong> Routes 79, 114 and 302 all stop within walking distance.</p>
-          <p><strong>By car.</strong> Fifteen minutes from Junction 4 of the M1 and the A1, fifteen from Wembley
-          Stadium, fifteen from the North Circular and about thirty from central London. There is free street parking
-          all around the clinic at all times, and we sit outside both the Congestion Charge zone and the ULEZ, so the
-          journey costs nothing either.</p>
-          <p><strong>By plane.</strong> We see a lot of patients from outside the UK. Luton is about thirty-five
-          minutes from the clinic and Heathrow about forty-five.</p>
-          <p><strong>With a baby.</strong> There is room for a pram and there are changing facilities. Come a few
-          minutes early if you would rather feed here than in the car.</p>
+          <p><strong>By Underground.</strong> Queensbury station on the Jubilee line is on the same road as the clinic (8 mins walk). Burnt Oak station on the Northern line is also within walking distance (20 mins walk).</p>
+          <p><strong>By car.</strong> Plenty of free on-street parking. The clinic is outside the Congestion Charge zone.</p>
+          <p><strong>By bus and from airports.</strong> Buses 79, 114 and 302 stop within walking distance. Approximate driving times are 40 minutes from London Luton Airport and 50 minutes from Heathrow, depending on traffic.</p>
         </div>
         <div class="btn-row" style="margin-top:26px">
           <a class="btn" href="' . esc_url( $maps ) . '" rel="noopener" target="_blank" data-track="map-directions">Get directions</a>

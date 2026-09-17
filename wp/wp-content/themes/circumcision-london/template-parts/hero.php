@@ -81,7 +81,7 @@ $use_custom_video = ( $custom_mp4 || $custom_webm );
 			<li><?php echo cil_icon( 'star' ); ?><span><b><?php echo esc_html( $clinic['reviews']['rating'] ); ?></b> <?php echo esc_html( sprintf( /* translators: %s: review count */ __( 'from %s Google reviews', 'circumcision-london' ), $clinic['reviews']['count_display'] ) ); ?></span></li>
 			<li><?php echo cil_icon( 'shield' ); ?><span><?php echo esc_html( sprintf( /* translators: %s: CQC rating */ __( 'CQC registered, rated %s', 'circumcision-london' ), $clinic['cqc_rating'] ) ); ?></span></li>
 			<li><?php echo cil_icon( 'clock' ); ?><span><?php esc_html_e( 'Open', 'circumcision-london' ); ?> <b><?php esc_html_e( 'Monday to Saturday', 'circumcision-london' ); ?></b></span></li>
-			<li><?php echo cil_icon( 'pin' ); ?><span><?php esc_html_e( 'Free street parking, outside ULEZ', 'circumcision-london' ); ?></span></li>
+			<li><?php echo cil_icon( 'pin' ); ?><span><?php esc_html_e( 'Free street parking. Outside the Congestion Charge zone', 'circumcision-london' ); ?></span></li>
 		</ul>
 	</div>
 </section>

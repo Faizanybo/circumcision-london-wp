@@ -24,35 +24,14 @@ function cil_misc_pages() {
 			'description' => 'Circumcision prices by age band, from £200 for babies to £1,080 for adults with a foreskin problem. Aftercare, the next-day call and free follow-ups included.',
 			'eyebrow'     => 'By age band · Everything included',
 			'h1'          => 'Circumcision prices',
-			'lede'        => 'Priced by age, because the method and the time in the room change with it. Every figure below covers the anaesthetic, the procedure, preparation videos, printed aftercare, a call the day after and free follow-up appointments until healing is complete.',
+			'lede'        => 'The price includes the procedure, local anaesthetic, preparation/aftercare information, a next-day follow-up call, written aftercare, free follow-up appointments during healing and a GP letter, nursery/ school/ work letter where required.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Prices',
 					'href'  => '',
 				),
 			),
-			'faqs'        => array(
-				array(
-					'q' => 'Why is it priced by age?',
-					'a' => '<p>Because the method and the time involved change with age. Babies and toddlers have the ring method, which is quick. Older boys and adults have the forceps guided method, which takes longer and usually needs closing with stitches or glue. The bands reflect that.</p>',
-				),
-				array(
-					'q' => 'Why does sedation cost £800?',
-					'a' => '<p>Because IV sedation is a separate clinical service, not a box to tick. It has to be pre-booked and paid for in advance, and you will need somebody to take you home afterwards.</p><p>Two honest things: the great majority of adults do not have it and describe the procedure afterwards as far less of an ordeal than they had built up. And if you have real anxiety or a needle phobia, it is a proper clinical option and having it beats putting the whole thing off for another five years.</p>',
-				),
-				array(
-					'q' => 'What if there is a medical or foreskin problem?',
-					'a' => '<p>For adults it is £1,080, with or without removal of the frenulum. For children it is quoted after examination rather than from the age-band list, because what is involved varies a great deal.</p>',
-				),
-				array(
-					'q' => 'Is anything added afterwards?',
-					'a' => '<p>No. The price covers the local anaesthetic, the procedure, the preparation videos, printed aftercare, the phone call the day after, free follow-up appointments until healing is complete, and a GP letter. Optional IV sedation is the only extra, and it is priced above.</p>',
-				),
-				array(
-					'q' => 'Do you offer a GP or school letter?',
-					'a' => '<p>Yes, both, and they are included. The GP letter updates your medical records. School and work letters are given where they are needed.</p>',
-				),
-			),
+			'faqs'        => array(),
 		),
 		'aftercare' => array(
 			'slug'        => 'aftercare',
@@ -60,37 +39,16 @@ function cil_misc_pages() {
 			'name'        => 'Aftercare',
 			'title'       => 'Circumcision Aftercare | Healing Day by Day | Edgware Clinic',
 			'description' => 'Circumcision aftercare for babies, boys and adults: what normal healing looks like day by day, what to do at nappy changes, and exactly when to call the clinic.',
-			'eyebrow'     => 'Written to be read at 2am',
+			'eyebrow'     => 'Written instructions · Videos · Follow-up',
 			'h1'          => 'Circumcision aftercare',
-			'lede'        => 'What normal healing looks like, day by day, and the specific things that mean you should pick up the phone. Everyone we treat leaves with this in writing and a number that reaches the clinic out of hours.',
+			'lede'        => 'Good aftercare is an important part of the service. Before you leave the clinic, we explain what to expect, show you what you need to do and give you written instructions. Preparation and aftercare videos are also available for the relevant age group and method.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Aftercare',
 					'href'  => '',
 				),
 			),
-			'faqs'        => array(
-				array(
-					'q' => 'The tip looks yellow. Is it infected?',
-					'a' => '<p>Almost certainly not. A yellowish film over the healing edge is granulation tissue and it is the commonest thing parents call us about. Infection looks different: spreading redness up the shaft, heat, swelling that is getting worse rather than better after day three, a bad smell, or a fever. Call us if you see those.</p>',
-				),
-				array(
-					'q' => 'How much bleeding is normal?',
-					'a' => '<p>Spotting on the nappy or the dressing for the first day or two is normal. Bleeding that soaks through, or that does not stop after ten minutes of firm, steady pressure with a clean cloth, is not. Apply pressure, keep applying it, and call us. If you cannot reach us quickly, go to A&E.</p>',
-				),
-				array(
-					'q' => 'When can he go swimming?',
-					'a' => '<p>Two weeks for boys, and not until fully healed for adults. Baths are fine from the day after; it is pools, the sea and anything with chlorine that wait.</p>',
-				),
-				array(
-					'q' => 'The ring has not come off yet.',
-					'a' => '<p>Seven to ten days is usual and up to fourteen still happens. If it is still attached at day fourteen, call us and bring your baby in. Removing it here takes two minutes. Do not pull it at home, however loose it looks.</p>',
-				),
-				array(
-					'q' => 'When do I actually need to call?',
-					'a' => '<p>Bleeding that will not stop with ten minutes of pressure. No urine passed in twelve hours. A fever. Spreading redness. Swelling worsening after day three. The ring still on at day fourteen. Or anything that simply worries you, which is a good enough reason on its own.</p>',
-				),
-			),
+			'faqs'        => array(),
 		),
 	);
 }
@@ -123,12 +81,12 @@ function cil_price_table_rows( $group ) {
 	$out     = array();
 
 	foreach ( $rows as $row ) {
-		$name          = isset( $row['name'] ) ? $row['name'] : '';
-		$row['url']    = cil_book_for_url( $name );
-		$row['cta']    = isset( $row['cta'] ) && $row['cta'] ? $row['cta'] : 'Book this';
-		$row['desc']   = isset( $row['desc'] ) ? $row['desc'] : '';
-		$row['href']   = isset( $row['href'] ) ? $row['href'] : '';
-		$out[]         = $row;
+		$name       = isset( $row['name'] ) ? $row['name'] : '';
+		$row['url'] = ! empty( $row['url'] ) ? $row['url'] : cil_book_for_url( $name );
+		$row['cta'] = isset( $row['cta'] ) && $row['cta'] ? $row['cta'] : 'Book this';
+		$row['desc'] = isset( $row['desc'] ) ? $row['desc'] : '';
+		$row['href'] = isset( $row['href'] ) ? $row['href'] : '';
+		$out[]      = $row;
 	}
 
 	return $out;
@@ -176,34 +134,10 @@ function cil_prices_page_blocks() {
 
 	$ages_note = cil_proto_html(
 		'<p class="muted" style="margin-top:22px;font-size:15px">
-      Children with a medical or foreskin problem are quoted after examination. See
+      Children with medical/foreskin problems: contact the clinic for a quote. See
       <a href="/babies" style="color:var(--blue-deep)">babies and toddlers</a> or
       <a href="/children" style="color:var(--blue-deep)">children and teenagers</a>.
     </p>'
-	);
-
-	$compare = cil_proto_html(
-		'<div class="card" data-reveal>
-      <h2 class="display d-2">Comparing us with somewhere cheaper</h2>
-      <div class="body-text" style="margin-top:16px">
-        <p>A lower headline figure is not automatically a worse deal, and a higher one is not automatically better
-        care. Five questions settle it, and they work on any clinic including this one.</p>
-        <p>Does the price include the local anaesthetic? Does it include follow-up until healing is complete? Who
-        exactly will carry out the procedure, and are they named on the website? Is the clinic registered with the
-        Care Quality Commission, which is a legal requirement? And will they test the anaesthetic and show you it has
-        worked before they begin?</p>
-        <p>We have answered all five on this site so you can ask the same of anybody else.</p>
-      </div>
-    </div>
-    <div class="card" data-reveal style="margin-top:20px">
-      <h2 class="display d-2">The NHS alternative</h2>
-      <div class="body-text" style="margin-top:16px">
-        <p>Where there is a medical need the NHS provides circumcision at no cost, and if you can wait that is a
-        perfectly reasonable choice. From what our patients tell us, the wait runs beyond a year. Religious and
-        cultural circumcision is not funded.</p>
-        <p>Start with your GP if you are unsure which applies to you. We will tell you the same thing if you ask us.</p>
-      </div>
-    </div>'
 	);
 
 	$blocks   = array();
@@ -238,7 +172,7 @@ function cil_prices_page_blocks() {
 			cil_html_block(
 				cil_price_section_head_html(
 					'Babies, children and teenagers',
-					'The ring method for babies and toddlers, the forceps guided method for older boys. We decide which after examining him.'
+					'The ring method is commonly used for babies and toddlers. The forceps-guided method is commonly used for older boys. The method is decided after examination.'
 				)
 			),
 			cil_dyn_block(
@@ -261,7 +195,7 @@ function cil_prices_page_blocks() {
 			cil_html_block(
 				cil_price_section_head_html(
 					'Adults',
-					'Forceps guided, closed with stitches and glue. Which band applies depends on whether there is a foreskin problem to treat, which we establish by examining.'
+					'Adult circumcision with no medical/foreskin problem, with frenulum removal, or with a medical/foreskin problem +/- frenulum removal.'
 				)
 			),
 			cil_dyn_block(
@@ -290,32 +224,23 @@ function cil_prices_page_blocks() {
 		)
 	);
 
-	$blocks[] = cil_section_block(
-		array(
-			'size' => 'section',
-			'band' => '',
-			'wrap' => 'wrap-narrow',
-		),
-		array(
-			cil_html_block( $compare ),
-		)
-	);
-
 	$blocks[] = cil_dyn_block(
 		'cil/cta-band',
 		array(
 			'title' => 'Not sure which band applies?',
-			'text'  => 'Call and tell us his age, or describe the problem, and we will tell you the figure before you come anywhere near the clinic.',
+			'text'  => 'Call and tell us the age, or describe the problem, and we will tell you the figure.',
 		)
 	);
 
-	$blocks[] = cil_dyn_block(
-		'cil/faq',
-		array(
-			'heading' => 'Questions about cost',
-			'items'   => $page['faqs'],
-		)
-	);
+	if ( ! empty( $page['faqs'] ) ) {
+		$blocks[] = cil_dyn_block(
+			'cil/faq',
+			array(
+				'heading' => 'Questions about cost',
+				'items'   => $page['faqs'],
+			)
+		);
+	}
 
 	return cil_serialize_blocks( $blocks );
 }
@@ -331,17 +256,10 @@ function cil_aftercare_page_blocks() {
 
 	$difference = cil_proto_html(
 		'<div data-reveal>
-        <span class="caps eyebrow">Normal, and not normal</span>
-        <h2 class="display d-1">Telling the difference</h2>
+        <span class="caps eyebrow">When to seek urgent help</span>
+        <h2 class="display d-1">Emergency contact</h2>
         <div class="body-text" style="margin-top:22px">
-          <p><strong>Normal.</strong> Redness around the edge. A yellowish film on the healing tip. Swelling that
-          peaks around day two or three then eases. Spotting on the dressing or nappy for a day or two. Stitches
-          working loose. Itching as it heals.</p>
-          <p><strong>Call us.</strong> Bleeding that does not stop with ten minutes of firm pressure. No urine passed
-          in twelve hours. A temperature. Redness spreading up the shaft. Swelling getting worse after day three. A
-          bad smell. The Plastibell ring still attached at day fourteen. Pain that painkillers are not touching.</p>
-          <p>And anything that simply worries you. That is a good enough reason, we would far rather look and find
-          nothing, and nobody here will make you feel you have wasted their time.</p>
+          <p>Use the emergency contact instructions supplied by the clinic if you are concerned after a procedure. If there is a medical emergency and the clinic cannot be reached, use the appropriate NHS emergency service and take the aftercare information with you.</p>
         </div>
       </div>'
 	);
@@ -416,73 +334,51 @@ function cil_aftercare_page_blocks() {
 			cil_dyn_block(
 				'cil/section-head',
 				array(
-					'eyebrow' => 'Babies',
-					'heading' => 'The first ten days after a Plastibell',
-					'lede'    => '',
+					'eyebrow' => 'Overview',
+					'heading' => 'Aftercare topics covered by the clinic',
+					'lede'    => 'This page is an overview. Do not treat it as a substitute for the clinic\'s current aftercare sheets and videos.',
 					'display' => 'd-2',
 				)
 			),
 			cil_dyn_block(
-				'cil/steps',
+				'cil/info-cards',
 				array(
 					'items' => array(
 						array(
-							'h' => 'Days 1 to 2',
-							'p' => 'Change nappies often. A generous smear of petroleum jelly at every change stops the nappy sticking, which is the single most useful thing you can do. Expect some spotting. Normal feeding, normal sleeping.',
+							'title' => 'Baby/toddler ring-method aftercare',
+							'body'  => 'Written instructions and videos are provided for the Plastibell or Circumplast ring method. See also the <a href="' . esc_url( cil_path_url( '/babies' ) ) . '">babies and toddlers</a> page.',
 						),
 						array(
-							'h' => 'Days 3 to 6',
-							'p' => 'The area looks red and the tip develops a yellowish film. That film is healing tissue, not infection. Bathing is fine. The ring starts to look loose and darker.',
+							'title' => 'Children\'s forceps-guided aftercare',
+							'body'  => 'Aftercare for older children is explained before you leave. See the <a href="' . esc_url( cil_path_url( '/children' ) ) . '">children and teenagers</a> page.',
 						),
 						array(
-							'h' => 'Days 7 to 10',
-							'p' => 'The ring separates and comes away on its own, usually into the nappy. Do not pull it. Underneath will look pink and slightly raw for a few more days.',
+							'title' => 'Adult forceps-guided aftercare',
+							'body'  => 'Adult aftercare is given in writing before you leave. See the <a href="' . esc_url( cil_path_url( '/adults' ) ) . '">adult circumcision</a> page.',
 						),
 						array(
-							'h' => 'Weeks 2 to 6',
-							'p' => 'Appearance settles steadily. Keep using petroleum jelly until the skin looks like ordinary skin. We see you for follow-up until we are both happy.',
-						),
-					),
-				)
-			),
-		)
-	);
-
-	$blocks[] = cil_section_block(
-		array(
-			'size' => 'section-sm',
-			'band' => '',
-			'wrap' => 'wrap',
-		),
-		array(
-			cil_dyn_block(
-				'cil/section-head',
-				array(
-					'eyebrow' => 'Boys and adults',
-					'heading' => 'After a surgical circumcision',
-					'lede'    => '',
-					'display' => 'd-2',
-				)
-			),
-			cil_dyn_block(
-				'cil/steps',
-				array(
-					'items' => array(
-						array(
-							'h' => 'Days 1 to 3',
-							'p' => 'Swelling and a dull ache, worst on day two. Paracetamol and ibuprofen together, at the doses on the packet. Keep it dry for twenty-four hours, then shower normally and pat dry. Loose clothing and supportive underwear.',
+							'title' => 'Nappies or underwear',
+							'body'  => 'Guidance on nappies or underwear is included in the written instructions for the method used.',
 						),
 						array(
-							'h' => 'Week 1',
-							'p' => 'Swelling peaks then eases. The glans feels raw against clothing, which passes. Desk work or school from day two or three. No cycling, no lifting, no sport.',
+							'title' => 'Cleaning and keeping the area dry',
+							'body'  => 'The clinic shows you what you need to do and gives you written instructions before you leave.',
 						),
 						array(
-							'h' => 'Weeks 2 to 4',
-							'p' => 'Stitches begin dissolving and may come away on underwear. Gym and sport from two weeks. Night-time erections wake adults in the first fortnight and are the most uncomfortable part of the whole thing.',
+							'title' => 'What normal healing can look like',
+							'body'  => 'Preparation and aftercare videos are available for the relevant age group and method.',
 						),
 						array(
-							'h' => 'Weeks 4 to 6',
-							'p' => 'Adults: sexual activity from four weeks at the earliest, six if healing has been slower. This is the instruction people are most tempted to shorten and the one that most often causes a problem.',
+							'title' => 'What to do if there is bleeding',
+							'body'  => 'Follow the written aftercare sheet given to you. Contact the clinic if you are concerned.',
+						),
+						array(
+							'title' => 'Special advice for a buried penis',
+							'body'  => 'See the <a href="' . esc_url( cil_path_url( '/buried-penis' ) ) . '">buried penis</a> page and follow the method-specific instructions given at the clinic.',
+						),
+						array(
+							'title' => 'When to contact the clinic',
+							'body'  => 'We contact patients or parents the day after the circumcision to check progress and understanding of the aftercare. Follow-up appointments during the healing period are included where needed.',
 						),
 					),
 				)
@@ -509,18 +405,20 @@ function cil_aftercare_page_blocks() {
 	$blocks[] = cil_dyn_block(
 		'cil/cta-band',
 		array(
-			'title' => 'Already had it done and something is worrying you?',
-			'text'  => 'Call. Follow-up appointments are included until healing is complete, and that includes the visit where we look and tell you it is fine.',
+			'title' => 'Already had the procedure and something is worrying you?',
+			'text'  => 'Call the clinic. Follow-up appointments during the healing period are included where needed.',
 		)
 	);
 
-	$blocks[] = cil_dyn_block(
-		'cil/faq',
-		array(
-			'heading' => 'Aftercare questions',
-			'items'   => $page['faqs'],
-		)
-	);
+	if ( ! empty( $page['faqs'] ) ) {
+		$blocks[] = cil_dyn_block(
+			'cil/faq',
+			array(
+				'heading' => 'Aftercare questions',
+				'items'   => $page['faqs'],
+			)
+		);
+	}
 
 	return cil_serialize_blocks( $blocks );
 }

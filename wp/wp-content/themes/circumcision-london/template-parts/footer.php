@@ -40,7 +40,7 @@ $clinic = cil_clinic();
 					<?php endforeach; ?>
 				</ul>
 				<p class="footer-aside"><?php echo esc_html( $clinic['hours_note'] ); ?></p>
-				<p class="footer-aside"><?php esc_html_e( 'Free parking on site. Outside the Congestion Charge and ULEZ zones.', 'circumcision-london' ); ?></p>
+				<p class="footer-aside"><?php esc_html_e( 'Free parking on site. Outside the Congestion Charge zone.', 'circumcision-london' ); ?></p>
 			</div>
 		</div>
 	</div>

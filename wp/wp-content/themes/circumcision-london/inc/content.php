@@ -177,10 +177,10 @@ function cil_price_catalog() {
 			),
 			array(
 				'name'  => 'IV sedation for nervous patients',
-				'desc'  => 'Optional, and must be pre-booked and paid for in advance. You will need somebody to take you home.',
+				'desc'  => 'Call the clinic. The clinic liaises with the anaesthetist and arranges the appointment separately. This is not an online booking add-on.',
 				'price' => 'Extra £800',
-				'href'  => cil_path_url( '/adults' ),
-				'cta'   => 'Enquire',
+				'cta'   => 'Call the clinic',
+				'url'   => cil_clinic()['phone']['href'],
 			),
 		),
 	);
@@ -193,13 +193,14 @@ function cil_price_catalog() {
  */
 function cil_included_items() {
 	return array(
-		'The local anaesthetic',
-		'Videos sent to you beforehand on how to prepare and what to expect',
-		'Printed aftercare instructions, explained to you before you leave',
-		'A phone call the day after to check everything is fine',
-		'Free follow-up appointments until healing is complete',
-		'A GP letter so your medical records are updated',
-		'School and work letters where they are needed',
+		'The procedure',
+		'Local anaesthetic',
+		'Preparation and aftercare information',
+		'A next-day follow-up call',
+		'Written aftercare',
+		'Free follow-up appointments during healing',
+		'A GP letter',
+		'Nursery, school or work letter where required',
 	);
 }
 

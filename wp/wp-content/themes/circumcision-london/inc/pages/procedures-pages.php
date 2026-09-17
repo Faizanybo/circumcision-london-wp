@@ -27,70 +27,15 @@ function cil_procedure_pages() {
 				'title'       => 'Frenuloplasty London | Tight Frenulum Surgery | Beverley Clinic',
 				'description' => 'Frenuloplasty releases a short frenulum that tethers or tears during sex. A small procedure under local anaesthetic that keeps the foreskin. Edgware, London.',
 				'eyebrow'     => 'Procedure · Keeps the foreskin',
-				'h1'          => 'Frenuloplasty for a tight or short frenulum',
-				'lede'        => 'The frenulum is the small band of tissue on the underside of the penis, joining the foreskin to the glans. When it is too short it tethers, tears and bleeds. A frenuloplasty releases it, and unlike a circumcision it keeps the foreskin.',
+				'h1'          => 'Frenuloplasty for a tight frenulum',
+				'lede'        => 'A short or tight frenulum can cause pulling, discomfort or tearing, particularly during erection or sexual activity. If the foreskin itself is otherwise healthy, full circumcision may not be necessary.',
 				'reasons'     => $reasons,
 				'intro'       => cil_proto_html(
-					'<p>A short frenulum, known as frenulum breve, is one of the most commonly missed causes of pain during sex in men. The
-      band pulls the glans downward on erection, produces a bowing or curve, and under tension it splits. The split
-      heals as scar, the scar is shorter and less elastic than what it replaced, and the next tear comes more easily.
-      Many men have been through that cycle several times before anyone examines them properly.</p>
-      <p>It is frequently mistaken for phimosis, and it matters, because the treatment is different and considerably
-      smaller. If the foreskin retracts perfectly well but something on the underside pulls and hurts, this page is
-      probably the relevant one.</p>'
+					'<p>Frenuloplasty is a smaller procedure designed to release the tight frenulum while preserving the foreskin. We assess the cause of the symptoms and discuss whether frenuloplasty, circumcision or another option is the better fit for the individual patient.</p>
+      <p>See also <a href="/adults">adult circumcision</a>, <a href="/conditions/phimosis">phimosis</a> and <a href="/aftercare">aftercare</a>.</p>'
 				),
-				'sections'    => array(
-					array(
-						'eyebrow' => 'The procedure',
-						'heading' => 'What frenuloplasty involves',
-						'html'    => cil_proto_html(
-							'<p>It is a small operation, done under local anaesthetic, taking roughly twenty to thirty minutes
-          including preparation. The tight band is divided transversely and then closed longitudinally. That sounds
-          like a technicality but it is the entire point: it converts a short band into a longer one, lengthening the
-          tissue instead of simply cutting it.</p>
-          <p>Dissolvable sutures are used, so nothing needs removing. You go home the same day.</p>
-          <p>Recovery is quicker than a circumcision. Expect discomfort for a few days, ordinary activity within two or
-          three, and no sexual activity for four weeks to let the repair mature properly. That last instruction is the
-          one people are tempted to shorten, and it is the one that matters most.</p>
-          <p>Where the frenulum is tight <em>and</em> the foreskin is too narrow as well, the two are dealt with
-          together at a <a href="/adults">circumcision</a>; that combination is priced at £880.</p>'
-						),
-					),
-					array(
-						'eyebrow' => 'Deciding',
-						'heading' => 'Frenuloplasty or circumcision?',
-						'html'    => cil_proto_html(
-							'<p>If the only problem is the frenulum, a frenuloplasty is the smaller, quicker and more conservative
-          operation and it keeps the foreskin. That is usually the right answer.</p>
-          <p>Circumcision becomes the better option where there is <em>also</em> a properly tight foreskin, where
-          there is scarring from repeated tearing that has now involved the foreskin as well, or where
-          <a href="/conditions/bxo">BXO</a> is present, in which case preserving tissue that will continue to scar
-          serves nobody.</p>
-          <p>There is a small chance, perhaps one in twenty, that a frenuloplasty tightens as it heals and needs
-          revising or converting to a circumcision. You should know that in advance instead of discovering it
-          afterwards.</p>
-          <p>Which applies to you is a two-minute examination.</p>'
-						),
-					),
-				),
-				'faqs'        => array(
-					array(
-						'q' => 'How do I know it is the frenulum and not the foreskin?',
-						'a' => '<p>A useful distinction: if the foreskin retracts fully and comfortably but something on the underside pulls, tethers or tears, it is the frenulum. If the foreskin will not come back over the glans at all, it is phimosis. Both can be present together, which is why it is worth being examined rather than self-diagnosing.</p>',
-					),
-					array(
-						'q' => 'It has torn before and healed. Do I still need surgery?',
-						'a' => '<p>Not necessarily, but a torn frenulum heals shorter and less elastic than it was, so tears tend to recur and each one makes the next more likely. If it has happened more than once, releasing it properly usually ends the cycle.</p>',
-					),
-					array(
-						'q' => 'Will it affect sensation?',
-						'a' => '<p>The frenulum is a sensitive area and men reasonably worry about this. A frenuloplasty lengthens the tissue rather than removing it, and most men report that sex is better afterwards simply because it no longer hurts. It is a much more conservative operation than circumcision in this respect.</p>',
-					),
-					array(
-						'q' => 'How long before I can have sex?',
-						'a' => '<p>Four weeks. It is a small operation with a short recovery, but the repair needs time to gain strength, and going back too early is the commonest reason a frenuloplasty needs redoing.</p>',
-					),
-				),
+				'sections'    => array(),
+				'faqs'        => array(),
 				'schema'      => array(
 					'@type'         => 'MedicalProcedure',
 					'procedureType' => 'https://schema.org/SurgicalProcedure',
