@@ -31,6 +31,12 @@ if ( ! $items ) {
 		?>
 		<div class="grid g-3">
 			<?php foreach ( $items as $i => $item ) : ?>
+				<?php
+				$item = cil_resolve_video_item( $item );
+				if ( empty( $item['mp4'] ) && empty( $item['webm'] ) ) {
+					continue;
+				}
+				?>
 				<figure class="quote" style="padding:0;overflow:hidden" data-reveal data-reveal-delay="<?php echo esc_attr( (string) ( ( $i % 3 ) * 90 ) ); ?>">
 					<video controls preload="none" playsinline poster="<?php echo esc_url( isset( $item['poster'] ) ? $item['poster'] : '' ); ?>" width="1280" height="720" style="width:100%;height:auto;display:block;border-radius:6px 6px 0 0">
 						<?php if ( ! empty( $item['webm'] ) ) : ?>

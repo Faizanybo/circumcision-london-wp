@@ -31,6 +31,7 @@ add_filter( 'block_categories_all', 'cil_block_categories' );
  * Editor script: block registrations, styles and Inspector controls.
  */
 function cil_enqueue_editor_assets() {
+	wp_enqueue_media();
 	wp_enqueue_script(
 		'cil-editor',
 		get_template_directory_uri() . '/assets/js/editor.js',
@@ -40,6 +41,7 @@ function cil_enqueue_editor_assets() {
 			'wp-block-editor',
 			'wp-components',
 			'wp-i18n',
+			'wp-data',
 			'wp-server-side-render',
 		),
 		cil_asset_version( 'assets/js/editor.js' ),
@@ -157,26 +159,41 @@ function cil_register_dynamic_blocks() {
 				'title'           => __( 'Homepage hero', 'circumcision-london' ),
 				'description'     => __( 'Full-bleed clinic hero with video poster, CTAs and facts.', 'circumcision-london' ),
 				'attributes'      => array(
-					'eyebrow' => array(
+					'eyebrow'     => array(
 						'type'    => 'string',
 						'default' => 'CQC registered · Edgware, North-West London',
 					),
-					'title'   => array(
+					'title'       => array(
 						'type'    => 'string',
 						'default' => 'A dedicated circumcision clinic in North-West London',
 					),
-					'sub'     => array(
+					'sub'         => array(
 						'type'    => 'string',
 						'default' => 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
+					),
+					'posterId'    => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+					'videoMp4Id'  => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+					'videoWebmId' => array(
+						'type'    => 'number',
+						'default' => 0,
 					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'hero',
 						array(
-							'eyebrow' => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'title'   => isset( $attrs['title'] ) ? $attrs['title'] : '',
-							'sub'     => isset( $attrs['sub'] ) ? $attrs['sub'] : '',
+							'eyebrow'       => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'title'         => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'sub'           => isset( $attrs['sub'] ) ? $attrs['sub'] : '',
+							'poster_id'     => isset( $attrs['posterId'] ) ? $attrs['posterId'] : 0,
+							'video_mp4_id'  => isset( $attrs['videoMp4Id'] ) ? $attrs['videoMp4Id'] : 0,
+							'video_webm_id' => isset( $attrs['videoWebmId'] ) ? $attrs['videoWebmId'] : 0,
 						)
 					) . '</div>';
 				},
@@ -229,14 +246,19 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'imageId' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'intro',
 						array(
-							'eyebrow' => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'heading' => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
-							'html'    => isset( $attrs['html'] ) ? $attrs['html'] : '',
+							'eyebrow'  => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'heading'  => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+							'html'     => isset( $attrs['html'] ) ? $attrs['html'] : '',
+							'image_id' => isset( $attrs['imageId'] ) ? $attrs['imageId'] : 0,
 						)
 					) . '</div>';
 				},
@@ -864,10 +886,18 @@ function cil_register_dynamic_blocks() {
 					),
 				),
 				'render_callback' => function ( $attrs ) {
+					$items = array();
+					foreach ( cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ) as $item ) {
+						$item = cil_resolve_video_item( $item );
+						if ( empty( $item['mp4'] ) && empty( $item['webm'] ) ) {
+							continue;
+						}
+						$items[] = $item;
+					}
 					return cil_render_part(
 						'video-grid',
 						array(
-							'items' => cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ),
+							'items' => $items,
 						)
 					);
 				},
@@ -1000,19 +1030,35 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'number',
 						'default' => 1080,
 					),
+					'imageId'          => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+					'useFeaturedImage' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
 				),
-				'render_callback' => function ( $attrs ) {
+				'uses_context'    => array( 'postId' ),
+				'render_callback' => function ( $attrs, $content, $block ) {
+					$post_id = 0;
+					if ( isset( $block->context['postId'] ) ) {
+						$post_id = (int) $block->context['postId'];
+					} elseif ( get_the_ID() ) {
+						$post_id = (int) get_the_ID();
+					}
 					return cil_render_part(
 						'figure',
 						array(
-							'name'    => isset( $attrs['name'] ) ? $attrs['name'] : '',
-							'src'     => isset( $attrs['src'] ) ? $attrs['src'] : '',
-							'webp'    => isset( $attrs['webp'] ) ? $attrs['webp'] : '',
-							'alt'     => isset( $attrs['alt'] ) ? $attrs['alt'] : '',
-							'caption' => isset( $attrs['caption'] ) ? $attrs['caption'] : '',
-							'ratio'   => isset( $attrs['ratio'] ) ? $attrs['ratio'] : '4-3',
-							'width'   => isset( $attrs['width'] ) ? (int) $attrs['width'] : 1920,
-							'height'  => isset( $attrs['height'] ) ? (int) $attrs['height'] : 1080,
+							'name'     => isset( $attrs['name'] ) ? $attrs['name'] : '',
+							'src'      => isset( $attrs['src'] ) ? $attrs['src'] : '',
+							'webp'     => isset( $attrs['webp'] ) ? $attrs['webp'] : '',
+							'alt'      => isset( $attrs['alt'] ) ? $attrs['alt'] : '',
+							'caption'  => isset( $attrs['caption'] ) ? $attrs['caption'] : '',
+							'ratio'    => isset( $attrs['ratio'] ) ? $attrs['ratio'] : '4-3',
+							'width'    => isset( $attrs['width'] ) ? (int) $attrs['width'] : 1920,
+							'height'   => isset( $attrs['height'] ) ? (int) $attrs['height'] : 1080,
+							'image_id' => cil_figure_attachment_id( $attrs, $post_id ),
 						)
 					);
 				},
@@ -1074,6 +1120,41 @@ function cil_register_dynamic_blocks() {
 					'default' => '',
 				),
 			),
+		)
+	);
+
+	register_block_type(
+		'cil/file-link',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Document link', 'circumcision-london' ),
+				'description'     => __( 'Link to a Media Library PDF, with an optional external URL fallback.', 'circumcision-london' ),
+				'attributes'      => array(
+					'fileId' => array(
+						'type'    => 'number',
+						'default' => 0,
+					),
+					'text'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'url'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return cil_render_part(
+						'file-link',
+						array(
+							'file_id' => isset( $attrs['fileId'] ) ? $attrs['fileId'] : 0,
+							'text'    => isset( $attrs['text'] ) ? $attrs['text'] : '',
+							'url'     => isset( $attrs['url'] ) ? $attrs['url'] : '',
+						)
+					);
+				},
+			)
 		)
 	);
 

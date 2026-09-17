@@ -116,6 +116,10 @@ function cil_setup() {
 		)
 	);
 
+	add_image_size( 'cil-hero', 1800, 0, false );
+	add_image_size( 'cil-figure', 1100, 0, false );
+	add_image_size( 'cil-card', 700, 0, false );
+
 	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'align-wide' );
 	add_theme_support( 'responsive-embeds' );
@@ -781,16 +785,29 @@ function cil_front_page_head() {
 	$description = 'A dedicated circumcision clinic in Edgware, North-West London. Babies, children, teenagers and adult men, under local anaesthetic. From £200. CQC registered.';
 	echo '<meta name="description" content="' . esc_attr( $description ) . '">' . "\n";
 
-	$img = cil_asset( 'images/' );
-	printf(
-		'<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s" imagesizes="100vw" fetchpriority="high">' . "\n",
-		esc_url( $img . 'hero-poster-1200.webp' ),
-		esc_attr(
-			$img . 'hero-poster-800.webp 800w, ' .
-			$img . 'hero-poster-1200.webp 1200w, ' .
-			$img . 'hero-poster-1800.webp 1800w'
-		)
-	);
+	$poster_id = function_exists( 'cil_front_hero_poster_id' ) ? cil_front_hero_poster_id() : 0;
+	if ( $poster_id && cil_attachment_is_image( $poster_id ) ) {
+		$src = wp_get_attachment_image_src( $poster_id, 'cil-hero' );
+		if ( $src ) {
+			$srcset = wp_get_attachment_image_srcset( $poster_id, 'cil-hero' );
+			printf(
+				'<link rel="preload" as="image" href="%1$s"%2$s imagesizes="100vw" fetchpriority="high">' . "\n",
+				esc_url( $src[0] ),
+				$srcset ? ' imagesrcset="' . esc_attr( $srcset ) . '"' : ''
+			);
+		}
+	} else {
+		$img = cil_asset( 'images/' );
+		printf(
+			'<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s" imagesizes="100vw" fetchpriority="high">' . "\n",
+			esc_url( $img . 'hero-poster-1200.webp' ),
+			esc_attr(
+				$img . 'hero-poster-800.webp 800w, ' .
+				$img . 'hero-poster-1200.webp 1200w, ' .
+				$img . 'hero-poster-1800.webp 1800w'
+			)
+		);
+	}
 }
 add_action( 'wp_head', 'cil_front_page_head', 3 );
 
@@ -923,6 +940,7 @@ function cil_inner_page_head() {
 add_action( 'wp_head', 'cil_inner_page_head', 3 );
 
 require get_template_directory() . '/inc/content.php';
+require get_template_directory() . '/inc/media.php';
 require get_template_directory() . '/inc/sections.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/pages/age-groups.php';

@@ -15,24 +15,55 @@ $vid     = cil_asset( 'video/' );
 $eyebrow = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'CQC registered · Edgware, North-West London', 'circumcision-london' );
 $title   = ( isset( $args['title'] ) && '' !== $args['title'] ) ? $args['title'] : __( 'A dedicated circumcision clinic in North-West London', 'circumcision-london' );
 $sub     = ( isset( $args['sub'] ) && '' !== $args['sub'] ) ? $args['sub'] : __( 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.', 'circumcision-london' );
+
+$poster_id     = isset( $args['poster_id'] ) ? cil_attachment_id( $args['poster_id'] ) : 0;
+$video_mp4_id  = isset( $args['video_mp4_id'] ) ? cil_attachment_id( $args['video_mp4_id'] ) : 0;
+$video_webm_id = isset( $args['video_webm_id'] ) ? cil_attachment_id( $args['video_webm_id'] ) : 0;
+$poster_html   = $poster_id ? cil_attachment_image_html(
+	$poster_id,
+	'cil-hero',
+	array(
+		'sizes'         => '100vw',
+		'fetchpriority' => 'high',
+		'decoding'      => 'async',
+		'alt'           => cil_attachment_alt( $poster_id, __( 'The clinic frontage in Edgware, with the practice name and telephone numbers etched into the treatment-room window.', 'circumcision-london' ) ),
+	)
+) : '';
+$poster_url    = $poster_id ? cil_attachment_url( $poster_id, 'image' ) : ( $img . 'hero-poster-800.jpg' );
+$custom_mp4    = $video_mp4_id ? cil_attachment_url( $video_mp4_id, 'video' ) : '';
+$custom_webm   = $video_webm_id ? cil_attachment_url( $video_webm_id, 'video' ) : '';
+$use_custom_video = ( $custom_mp4 || $custom_webm );
 ?>
 <section class="hero">
 	<div class="hero-media">
 		<picture class="hero-poster">
+			<?php if ( $poster_html ) : ?>
+				<?php echo $poster_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image(). ?>
+			<?php else : ?>
 			<source type="image/webp" srcset="<?php echo esc_url( $img . 'hero-poster-800.webp' ); ?> 800w, <?php echo esc_url( $img . 'hero-poster-1200.webp' ); ?> 1200w, <?php echo esc_url( $img . 'hero-poster-1800.webp' ); ?> 1800w" sizes="100vw">
 			<img src="<?php echo esc_url( $img . 'hero-poster-800.jpg' ); ?>"
 				srcset="<?php echo esc_url( $img . 'hero-poster-800.jpg' ); ?> 800w, <?php echo esc_url( $img . 'hero-poster-1200.jpg' ); ?> 1200w" sizes="100vw"
 				width="1920" height="1080"
 				alt="<?php esc_attr_e( 'The clinic frontage in Edgware, with the practice name and telephone numbers etched into the treatment-room window.', 'circumcision-london' ); ?>"
 				fetchpriority="high" decoding="async">
+			<?php endif; ?>
 		</picture>
 		<video class="hero-video" id="heroVideo"
 			width="1920" height="1080"
 			autoplay muted loop playsinline preload="none"
-			poster="<?php echo esc_url( $img . 'hero-poster-800.jpg' ); ?>"
+			poster="<?php echo esc_url( $poster_url ); ?>"
 			aria-hidden="true" tabindex="-1">
+			<?php if ( $use_custom_video ) : ?>
+				<?php if ( $custom_webm ) : ?>
+					<source src="<?php echo esc_url( $custom_webm ); ?>" type="video/webm">
+				<?php endif; ?>
+				<?php if ( $custom_mp4 ) : ?>
+					<source src="<?php echo esc_url( $custom_mp4 ); ?>" type="video/mp4">
+				<?php endif; ?>
+			<?php else : ?>
 			<source src="<?php echo esc_url( $vid . 'hero.webm' ); ?>" type="video/webm">
 			<source src="<?php echo esc_url( $vid . 'hero.mp4' ); ?>" type="video/mp4">
+			<?php endif; ?>
 		</video>
 	</div>
 

@@ -9,10 +9,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$img     = cil_asset( 'images/' );
-$eyebrow = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'Welcome to the clinic', 'circumcision-london' );
-$heading = ( isset( $args['heading'] ) && '' !== $args['heading'] ) ? $args['heading'] : __( 'Choosing circumcision is an important decision. We will talk you through all of it.', 'circumcision-london' );
-$html    = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : '';
+$img      = cil_asset( 'images/' );
+$eyebrow  = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'Welcome to the clinic', 'circumcision-london' );
+$heading  = ( isset( $args['heading'] ) && '' !== $args['heading'] ) ? $args['heading'] : __( 'Choosing circumcision is an important decision. We will talk you through all of it.', 'circumcision-london' );
+$html     = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : '';
+$image_id = isset( $args['image_id'] ) ? cil_attachment_id( $args['image_id'] ) : 0;
+$image_html = $image_id ? cil_attachment_image_html(
+	$image_id,
+	'cil-figure',
+	array(
+		'loading'  => 'lazy',
+		'decoding' => 'async',
+		'sizes'    => '(max-width: 900px) 92vw, 46vw',
+	)
+) : '';
 ?>
 <section class="section">
 	<div class="wrap">
@@ -36,11 +46,15 @@ $html    = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : 
 			</div>
 
 			<figure class="figure ratio-5-4" data-reveal data-reveal-delay="120">
+				<?php if ( $image_html ) : ?>
+					<?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image(). ?>
+				<?php else : ?>
 				<picture>
 					<source type="image/webp" srcset="<?php echo esc_url( $img . 'dr-haidar-700.webp' ); ?> 700w, <?php echo esc_url( $img . 'dr-haidar-1100.webp' ); ?> 1100w" sizes="(max-width: 900px) 92vw, 46vw">
 					<img src="<?php echo esc_url( $img . 'dr-haidar-700.jpg' ); ?>" width="1920" height="1080" loading="lazy" decoding="async"
 						alt="<?php esc_attr_e( 'Dr Haidar Al-Ali in clinic scrubs in the treatment room at the Edgware practice.', 'circumcision-london' ); ?>">
 				</picture>
+				<?php endif; ?>
 				<figcaption><?php esc_html_e( 'Dr Haidar Al-Ali carries out most of the circumcisions at this clinic.', 'circumcision-london' ); ?></figcaption>
 			</figure>
 		</div>

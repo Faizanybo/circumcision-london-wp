@@ -10,6 +10,10 @@
   var useBlockProps = wp.blockEditor.useBlockProps;
   var InnerBlocks = wp.blockEditor.InnerBlocks;
   var InspectorControls = wp.blockEditor.InspectorControls;
+  var BlockControls = wp.blockEditor.BlockControls;
+  var MediaUpload = wp.blockEditor.MediaUpload;
+  var MediaUploadCheck = wp.blockEditor.MediaUploadCheck;
+  var MediaReplaceFlow = wp.blockEditor.MediaReplaceFlow;
   var PanelBody = wp.components.PanelBody;
   var TextControl = wp.components.TextControl;
   var TextareaControl = wp.components.TextareaControl;
@@ -17,12 +21,13 @@
   var SelectControl = wp.components.SelectControl;
   var Button = wp.components.Button;
   var ServerSideRender = wp.serverSideRender;
+  var withSelect = wp.data && wp.data.withSelect ? wp.data.withSelect : null;
 
   function ssr(name, attrs) {
     return el(
       'div',
-      { className: 'cil-editor-preview' },
-      el(ServerSideRender, { block: name, attributes: attrs })
+      { className: 'cil-editor-preview', key: name + ':' + JSON.stringify(attrs || {}) },
+      el(ServerSideRender, { block: name, attributes: attrs, httpMethod: 'POST' })
     );
   }
 
@@ -80,6 +85,61 @@
         );
       }),
       el(Button, { variant: 'secondary', onClick: add }, props.addLabel || 'Add row')
+    );
+  }
+
+  function AttachmentControl(props) {
+    var id = parseInt(props.value, 10) || 0;
+    var allowed = props.allowedTypes || ['image'];
+    var clearLabel = props.clearLabel || 'Use theme default';
+    return el(
+      'div',
+      { style: { marginBottom: '14px' } },
+      el('strong', { style: { display: 'block', marginBottom: '6px' } }, props.label || 'Media'),
+      props.help
+        ? el('p', { style: { fontSize: '12px', color: '#55637a', margin: '0 0 8px' } }, props.help)
+        : null,
+      el(
+        MediaUploadCheck,
+        {},
+        el(MediaUpload, {
+          onSelect: function (media) {
+            if (props.onSelect) {
+              props.onSelect(media || { id: 0 });
+            }
+          },
+          allowedTypes: allowed,
+          value: id,
+          render: function (obj) {
+            return el(
+              Fragment,
+              {},
+              el(
+                Button,
+                { variant: 'secondary', onClick: obj.open },
+                id ? 'Replace' : 'Select from Media Library'
+              ),
+              id
+                ? el(
+                    Button,
+                    {
+                      isLink: true,
+                      isDestructive: true,
+                      style: { marginLeft: '8px' },
+                      onClick: function () {
+                        if (props.onSelect) {
+                          props.onSelect({ id: 0, url: '' });
+                        }
+                      },
+                    },
+                    clearLabel
+                  )
+                : null,
+              id ? el('p', { style: { fontSize: '12px', margin: '6px 0 0' } }, 'Attachment ID ' + id) : null
+            );
+          },
+        })
+      )
     );
   }
 
@@ -309,32 +369,69 @@
         default:
           'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
       },
+      posterId: { type: 'number', default: 0 },
+      videoMp4Id: { type: 'number', default: 0 },
+      videoWebmId: { type: 'number', default: 0 },
     },
     inspect: function (props) {
       return el(
-        PanelBody,
-        { title: 'Hero copy' },
-        el(TextControl, {
-          label: 'Eyebrow',
-          value: props.attributes.eyebrow,
-          onChange: function (v) {
-            props.setAttributes({ eyebrow: v });
-          },
-        }),
-        el(TextareaControl, {
-          label: 'Heading',
-          value: props.attributes.title,
-          onChange: function (v) {
-            props.setAttributes({ title: v });
-          },
-        }),
-        el(TextareaControl, {
-          label: 'Subheading',
-          value: props.attributes.sub,
-          onChange: function (v) {
-            props.setAttributes({ sub: v });
-          },
-        })
+        Fragment,
+        {},
+        el(
+          PanelBody,
+          { title: 'Hero copy' },
+          el(TextControl, {
+            label: 'Eyebrow',
+            value: props.attributes.eyebrow,
+            onChange: function (v) {
+              props.setAttributes({ eyebrow: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Heading',
+            value: props.attributes.title,
+            onChange: function (v) {
+              props.setAttributes({ title: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Subheading',
+            value: props.attributes.sub,
+            onChange: function (v) {
+              props.setAttributes({ sub: v });
+            },
+          })
+        ),
+        el(
+          PanelBody,
+          { title: 'Media', initialOpen: false },
+          el(AttachmentControl, {
+            label: 'Poster image',
+            help: 'Leave empty to keep the current theme poster.',
+            allowedTypes: ['image'],
+            value: props.attributes.posterId,
+            onSelect: function (media) {
+              props.setAttributes({ posterId: media.id || 0 });
+            },
+          }),
+          el(AttachmentControl, {
+            label: 'Hero video (MP4)',
+            help: 'Optional Media Library MP4. Large clinic videos are better hosted outside WordPress.',
+            allowedTypes: ['video'],
+            value: props.attributes.videoMp4Id,
+            onSelect: function (media) {
+              props.setAttributes({ videoMp4Id: media.id || 0 });
+            },
+          }),
+          el(AttachmentControl, {
+            label: 'Hero video (WebM)',
+            allowedTypes: ['video'],
+            value: props.attributes.videoWebmId,
+            onSelect: function (media) {
+              props.setAttributes({ videoWebmId: media.id || 0 });
+            },
+          })
+        )
       );
     },
   });
@@ -372,33 +469,51 @@
         default: 'Choosing circumcision is an important decision. We will talk you through all of it.',
       },
       html: { type: 'string', default: '' },
+      imageId: { type: 'number', default: 0 },
     },
     inspect: function (props) {
       return el(
-        PanelBody,
-        { title: 'Introduction' },
-        el(TextControl, {
-          label: 'Eyebrow',
-          value: props.attributes.eyebrow,
-          onChange: function (v) {
-            props.setAttributes({ eyebrow: v });
-          },
-        }),
-        el(TextareaControl, {
-          label: 'Heading',
-          value: props.attributes.heading,
-          onChange: function (v) {
-            props.setAttributes({ heading: v });
-          },
-        }),
-        el(TextareaControl, {
-          label: 'Body HTML',
-          help: 'Leave blank to use the current default paragraphs.',
-          value: props.attributes.html,
-          onChange: function (v) {
-            props.setAttributes({ html: v });
-          },
-        })
+        Fragment,
+        {},
+        el(
+          PanelBody,
+          { title: 'Introduction' },
+          el(TextControl, {
+            label: 'Eyebrow',
+            value: props.attributes.eyebrow,
+            onChange: function (v) {
+              props.setAttributes({ eyebrow: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Heading',
+            value: props.attributes.heading,
+            onChange: function (v) {
+              props.setAttributes({ heading: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Body HTML',
+            help: 'Leave blank to use the current default paragraphs.',
+            value: props.attributes.html,
+            onChange: function (v) {
+              props.setAttributes({ html: v });
+            },
+          })
+        ),
+        el(
+          PanelBody,
+          { title: 'Photograph', initialOpen: false },
+          el(AttachmentControl, {
+            label: 'Practitioner photograph',
+            help: 'Leave empty to keep the current theme image of Dr Haidar.',
+            allowedTypes: ['image'],
+            value: props.attributes.imageId,
+            onSelect: function (media) {
+              props.setAttributes({ imageId: media.id || 0 });
+            },
+          })
+        )
       );
     },
   });
@@ -1086,28 +1201,112 @@
       items: { type: 'array', default: [] },
     },
     inspect: function (props) {
+      var items = props.attributes.items && props.attributes.items.length ? props.attributes.items.slice() : [];
+      function updateItem(i, patch) {
+        var next = items.slice();
+        next[i] = Object.assign({}, next[i] || {}, patch);
+        props.setAttributes({ items: next });
+      }
       return el(
         PanelBody,
         { title: 'Videos' },
         el(
           'p',
           { style: { fontSize: '13px', color: '#55637a' } },
-          'Renders nothing until at least one video is added.'
+          'Renders nothing until at least one video file or URL is added. Large videos should use an external URL, not a WordPress upload.'
         ),
-        el(Repeater, {
-          items: props.attributes.items,
-          blank: { title: '', poster: '', mp4: '', webm: '' },
-          fields: [
-            { key: 'title', label: 'Caption' },
-            { key: 'poster', label: 'Poster URL' },
-            { key: 'mp4', label: 'MP4 URL' },
-            { key: 'webm', label: 'WebM URL' },
-          ],
-          addLabel: 'Add video',
-          onChange: function (next) {
-            props.setAttributes({ items: next });
+        items.map(function (item, i) {
+          return el(
+            'div',
+            {
+              key: i,
+              style: { border: '1px solid #d9e3ee', borderRadius: '4px', padding: '10px', marginBottom: '10px' },
+            },
+            el(TextControl, {
+              label: 'Caption',
+              value: item.title || '',
+              onChange: function (v) {
+                updateItem(i, { title: v });
+              },
+            }),
+            el(AttachmentControl, {
+              label: 'Poster image',
+              allowedTypes: ['image'],
+              value: item.posterId,
+              clearLabel: 'Remove',
+              onSelect: function (media) {
+                updateItem(i, { posterId: media.id || 0 });
+              },
+            }),
+            el(AttachmentControl, {
+              label: 'MP4',
+              allowedTypes: ['video'],
+              value: item.mp4Id,
+              clearLabel: 'Remove',
+              onSelect: function (media) {
+                updateItem(i, { mp4Id: media.id || 0 });
+              },
+            }),
+            el(AttachmentControl, {
+              label: 'WebM',
+              allowedTypes: ['video'],
+              value: item.webmId,
+              clearLabel: 'Remove',
+              onSelect: function (media) {
+                updateItem(i, { webmId: media.id || 0 });
+              },
+            }),
+            el(TextControl, {
+              label: 'Poster URL (optional)',
+              value: item.poster || '',
+              onChange: function (v) {
+                updateItem(i, { poster: v });
+              },
+            }),
+            el(TextControl, {
+              label: 'MP4 URL (optional)',
+              help: 'Use for videos hosted outside WordPress.',
+              value: item.mp4 || '',
+              onChange: function (v) {
+                updateItem(i, { mp4: v });
+              },
+            }),
+            el(TextControl, {
+              label: 'WebM URL (optional)',
+              value: item.webm || '',
+              onChange: function (v) {
+                updateItem(i, { webm: v });
+              },
+            }),
+            el(
+              Button,
+              {
+                isLink: true,
+                isDestructive: true,
+                onClick: function () {
+                  var next = items.slice();
+                  next.splice(i, 1);
+                  props.setAttributes({ items: next });
+                },
+              },
+              'Remove video'
+            )
+          );
+        }),
+        el(
+          Button,
+          {
+            variant: 'secondary',
+            onClick: function () {
+              props.setAttributes({
+                items: items.concat([
+                  { title: '', poster: '', mp4: '', webm: '', posterId: 0, mp4Id: 0, webmId: 0 },
+                ]),
+              });
+            },
           },
-        })
+          'Add video'
+        )
       );
     },
   });
@@ -1206,8 +1405,137 @@
     },
   });
 
-  dynamicBlock('cil/figure', 'Clinic figure', {
+  function applyFigureMedia(props, media) {
+    var id = media && media.id ? parseInt(media.id, 10) : 0;
+    var next = {
+      imageId: id || 0,
+      src: media && media.url ? media.url : '',
+      name: '',
+    };
+    if (media && media.alt) {
+      next.alt = media.alt;
+    }
+    if (media && media.width) {
+      next.width = media.width;
+    }
+    if (media && media.height) {
+      next.height = media.height;
+    }
+    props.setAttributes(next);
+    if (
+      props.attributes.useFeaturedImage &&
+      wp.data &&
+      wp.data.dispatch &&
+      wp.data.dispatch('core/editor') &&
+      typeof wp.data.dispatch('core/editor').editPost === 'function'
+    ) {
+      wp.data.dispatch('core/editor').editPost({ featured_media: id || 0 });
+    }
+  }
+
+  function FigureEdit(props) {
+    var attrs = props.attributes;
+    var previewAttrs = Object.assign({}, attrs);
+    if (attrs.useFeaturedImage && props.featuredId) {
+      previewAttrs.imageId = parseInt(props.featuredId, 10) || 0;
+      previewAttrs.useFeaturedImage = false;
+    }
+    var mediaId = parseInt(previewAttrs.imageId, 10) || 0;
+    return el(
+      Fragment,
+      {},
+      el(
+        BlockControls,
+        {},
+        MediaReplaceFlow
+          ? el(MediaReplaceFlow, {
+              mediaId: mediaId,
+              mediaURL: attrs.src || '',
+              allowedTypes: ['image'],
+              accept: 'image/*',
+              onSelect: function (media) {
+                applyFigureMedia(props, media);
+              },
+            })
+          : null
+      ),
+      el(
+        InspectorControls,
+        {},
+        el(
+          PanelBody,
+          { title: 'Image' },
+          el(ToggleControl, {
+            label: 'Use featured image',
+            help: 'When on, replacing the Featured image in the document sidebar updates this photograph.',
+            checked: !!attrs.useFeaturedImage,
+            onChange: function (v) {
+              props.setAttributes({ useFeaturedImage: !!v });
+            },
+          }),
+          el(AttachmentControl, {
+            label: 'Media Library image',
+            help: 'Select the Clinic figure block, then Replace. This is the photograph on the page.',
+            allowedTypes: ['image'],
+            value: mediaId,
+            onSelect: function (media) {
+              applyFigureMedia(props, media);
+            },
+          }),
+          el(SelectControl, {
+            label: 'Named theme asset',
+            value: attrs.name,
+            options: [
+              { label: 'Custom / none', value: '' },
+              { label: 'Baby and parent', value: 'baby-parent' },
+              { label: 'Waiting room', value: 'waiting-room' },
+              { label: 'Certificates', value: 'certificates' },
+              { label: 'Dr Haidar', value: 'dr-haidar' },
+              { label: 'Dr Samir', value: 'dr-samir' },
+            ],
+            onChange: function (v) {
+              props.setAttributes({ name: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Alt',
+            value: attrs.alt,
+            onChange: function (v) {
+              props.setAttributes({ alt: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Caption',
+            value: attrs.caption,
+            onChange: function (v) {
+              props.setAttributes({ caption: v });
+            },
+          })
+        )
+      ),
+      el('div', useBlockProps({ className: 'cil-editor-canvas' }), ssr('cil/figure', previewAttrs))
+    );
+  }
+
+  var figureEdit = withSelect
+    ? withSelect(function (select) {
+        var featured = 0;
+        try {
+          featured = parseInt(select('core/editor').getEditedPostAttribute('featured_media'), 10) || 0;
+        } catch (e) {
+          featured = 0;
+        }
+        return { featuredId: featured };
+      })(FigureEdit)
+    : FigureEdit;
+
+  registerBlockType('cil/figure', {
+    apiVersion: 3,
+    title: 'Clinic figure',
+    category: 'circumcision-london',
     icon: 'format-image',
+    supports: { html: false, align: ['wide', 'full'] },
+    usesContext: ['postId'],
     attributes: {
       name: { type: 'string', default: '' },
       src: { type: 'string', default: '' },
@@ -1217,36 +1545,53 @@
       ratio: { type: 'string', default: '4-3' },
       width: { type: 'number', default: 1920 },
       height: { type: 'number', default: 1080 },
+      imageId: { type: 'number', default: 0 },
+      useFeaturedImage: { type: 'boolean', default: false },
+    },
+    edit: figureEdit,
+    save: function () {
+      return null;
+    },
+  });
+
+  dynamicBlock('cil/file-link', 'Document link', {
+    icon: 'media-document',
+    attributes: {
+      fileId: { type: 'number', default: 0 },
+      text: { type: 'string', default: '' },
+      url: { type: 'string', default: '' },
     },
     inspect: function (props) {
       return el(
         PanelBody,
-        { title: 'Image' },
-        el(SelectControl, {
-          label: 'Named asset',
-          value: props.attributes.name,
-          options: [
-            { label: 'Custom / none', value: '' },
-            { label: 'Baby and parent', value: 'baby-parent' },
-            { label: 'Waiting room', value: 'waiting-room' },
-            { label: 'Certificates', value: 'certificates' },
-          ],
-          onChange: function (v) {
-            props.setAttributes({ name: v });
+        { title: 'Document' },
+        el(AttachmentControl, {
+          label: 'PDF from Media Library',
+          help: 'Renders nothing until a PDF or URL is set. Do not upload executable files.',
+          allowedTypes: ['application/pdf'],
+          value: props.attributes.fileId,
+          clearLabel: 'Remove',
+          onSelect: function (media) {
+            var next = { fileId: media.id || 0 };
+            if (media.title && !props.attributes.text) {
+              next.text = media.title;
+            }
+            props.setAttributes(next);
           },
         }),
         el(TextControl, {
-          label: 'Alt',
-          value: props.attributes.alt,
+          label: 'Link text',
+          value: props.attributes.text,
           onChange: function (v) {
-            props.setAttributes({ alt: v });
+            props.setAttributes({ text: v });
           },
         }),
         el(TextControl, {
-          label: 'Caption',
-          value: props.attributes.caption,
+          label: 'External URL (optional)',
+          help: 'Used only when no Media Library PDF is selected.',
+          value: props.attributes.url,
           onChange: function (v) {
-            props.setAttributes({ caption: v });
+            props.setAttributes({ url: v });
           },
         })
       );
