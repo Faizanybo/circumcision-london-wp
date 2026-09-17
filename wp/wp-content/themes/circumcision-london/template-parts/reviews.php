@@ -10,7 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $clinic = cil_clinic();
-$quotes = cil_testimonials();
+$quotes = ( isset( $args['quotes'] ) && is_array( $args['quotes'] ) && $args['quotes'] ) ? $args['quotes'] : cil_testimonials();
+$body   = ( isset( $args['body'] ) && '' !== $args['body'] ) ? $args['body'] : __( 'Most of our patients arrive because somebody they trust sent them. The families who come back are the part we are proudest of: some return after many years whenever there is a new son, others bring a brother, then a nephew, then a cousin. We have families we have now seen across three children and the better part of a decade.', 'circumcision-london' );
 ?>
 <section class="section bg-warm">
 	<div class="wrap">
@@ -19,7 +20,7 @@ $quotes = cil_testimonials();
 				<span class="caps eyebrow"><?php esc_html_e( 'Reviews', 'circumcision-london' ); ?></span>
 				<h2 class="display d-1"><?php echo esc_html( sprintf( /* translators: 1: rating, 2: review count */ __( '%1$s from %2$s Google reviews', 'circumcision-london' ), $clinic['reviews']['rating'], $clinic['reviews']['count_display'] ) ); ?></h2>
 				<p class="lede" style="margin-top:18px"><?php echo esc_html( sprintf( /* translators: %s: verification date */ __( 'Checked on %s, and refreshed quarterly so the number here is the number on the profile.', 'circumcision-london' ), $clinic['reviews']['verified'] ) ); ?></p>
-				<p class="body-text" style="margin-top:18px"><?php esc_html_e( 'Most of our patients arrive because somebody they trust sent them. The families who come back are the part we are proudest of: some return after many years whenever there is a new son, others bring a brother, then a nephew, then a cousin. We have families we have now seen across three children and the better part of a decade.', 'circumcision-london' ); ?></p>
+				<p class="body-text" style="margin-top:18px"><?php echo esc_html( $body ); ?></p>
 				<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:26px">
 					<a class="rating-badge" href="<?php echo esc_url( $clinic['reviews']['read_url'] ); ?>" rel="noopener" target="_blank" data-track="reviews-read">
 						<span class="score"><?php echo esc_html( $clinic['reviews']['rating'] ); ?></span>

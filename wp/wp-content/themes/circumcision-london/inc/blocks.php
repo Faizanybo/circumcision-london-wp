@@ -150,6 +150,228 @@ function cil_register_dynamic_blocks() {
 	);
 
 	register_block_type(
+		'cil/hero',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Homepage hero', 'circumcision-london' ),
+				'description'     => __( 'Full-bleed clinic hero with video poster, CTAs and facts.', 'circumcision-london' ),
+				'attributes'      => array(
+					'eyebrow' => array(
+						'type'    => 'string',
+						'default' => 'CQC registered · Edgware, North-West London',
+					),
+					'title'   => array(
+						'type'    => 'string',
+						'default' => 'A dedicated circumcision clinic in North-West London',
+					),
+					'sub'     => array(
+						'type'    => 'string',
+						'default' => 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return '<div class="cil-breakout">' . cil_render_part(
+						'hero',
+						array(
+							'eyebrow' => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'title'   => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'sub'     => isset( $attrs['sub'] ) ? $attrs['sub'] : '',
+						)
+					) . '</div>';
+				},
+			)
+		)
+	);
+
+	register_block_type(
+		'cil/groups',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Homepage age groups', 'circumcision-london' ),
+				'description'     => __( 'Overlapping age-group cards used under the homepage hero.', 'circumcision-london' ),
+				'attributes'      => array(
+					'level' => array(
+						'type'    => 'number',
+						'default' => 2,
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return '<div class="cil-breakout">' . cil_render_part(
+						'groups',
+						array(
+							'level' => isset( $attrs['level'] ) ? (int) $attrs['level'] : 2,
+						)
+					) . '</div>';
+				},
+			)
+		)
+	);
+
+	register_block_type(
+		'cil/intro',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Homepage introduction', 'circumcision-london' ),
+				'description'     => __( 'Welcome copy and Dr Haidar photograph.', 'circumcision-london' ),
+				'attributes'      => array(
+					'eyebrow' => array(
+						'type'    => 'string',
+						'default' => 'Welcome to the clinic',
+					),
+					'heading' => array(
+						'type'    => 'string',
+						'default' => 'Choosing circumcision is an important decision. We will talk you through all of it.',
+					),
+					'html'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return '<div class="cil-breakout">' . cil_render_part(
+						'intro',
+						array(
+							'eyebrow' => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'heading' => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+							'html'    => isset( $attrs['html'] ) ? $attrs['html'] : '',
+						)
+					) . '</div>';
+				},
+			)
+		)
+	);
+
+	register_block_type(
+		'cil/process',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Homepage process', 'circumcision-london' ),
+				'description'     => __( 'Four-step process from enquiry to aftercare.', 'circumcision-london' ),
+				'attributes'      => array(
+					'eyebrow' => array(
+						'type'    => 'string',
+						'default' => 'What happens',
+					),
+					'heading' => array(
+						'type'    => 'string',
+						'default' => 'Four steps, and no surprises in any of them',
+					),
+					'lede'    => array(
+						'type'    => 'string',
+						'default' => 'This is the whole process. If anything on the day differs from what is written here, we will have told you why before it happens.',
+					),
+					'items'   => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					$items = cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() );
+					$args  = array(
+						'eyebrow' => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+						'heading' => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+						'lede'    => isset( $attrs['lede'] ) ? $attrs['lede'] : '',
+					);
+					if ( $items ) {
+						$args['items'] = $items;
+					}
+					return '<div class="cil-breakout">' . cil_render_part( 'process', $args ) . '</div>';
+				},
+			)
+		)
+	);
+
+	register_block_type(
+		'cil/home-callback',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Homepage callback', 'circumcision-london' ),
+				'description'     => __( 'Request a call back plus the “when we will tell you not to” note.', 'circumcision-london' ),
+				'attributes'      => array(
+					'formId'       => array(
+						'type'    => 'string',
+						'default' => 'home',
+					),
+					'subject'      => array(
+						'type'    => 'string',
+						'default' => 'homepage callback',
+					),
+					'cardEyebrow'  => array(
+						'type'    => 'string',
+						'default' => 'Request a call back',
+					),
+					'cardTitle'    => array(
+						'type'    => 'string',
+						'default' => 'Ask before you book',
+					),
+					'eyebrow'      => array(
+						'type'    => 'string',
+						'default' => 'Being straight with you',
+					),
+					'heading'      => array(
+						'type'    => 'string',
+						'default' => 'When we will tell you not to',
+					),
+					'html'         => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return '<div class="cil-breakout">' . cil_render_part(
+						'callback',
+						array(
+							'id'           => isset( $attrs['formId'] ) ? $attrs['formId'] : 'home',
+							'subject'      => isset( $attrs['subject'] ) ? $attrs['subject'] : 'homepage callback',
+							'card_eyebrow' => isset( $attrs['cardEyebrow'] ) ? $attrs['cardEyebrow'] : '',
+							'card_title'   => isset( $attrs['cardTitle'] ) ? $attrs['cardTitle'] : '',
+							'eyebrow'      => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'heading'      => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+							'html'         => isset( $attrs['html'] ) ? $attrs['html'] : '',
+						)
+					) . '</div>';
+				},
+			)
+		)
+	);
+
+	register_block_type(
+		'cil/reviews',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Homepage reviews', 'circumcision-london' ),
+				'description'     => __( 'Google rating, stats and three patient quotes.', 'circumcision-london' ),
+				'attributes'      => array(
+					'body'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'quotes' => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					$quotes = cil_block_list( isset( $attrs['quotes'] ) ? $attrs['quotes'] : array() );
+					$args   = array(
+						'body' => isset( $attrs['body'] ) ? $attrs['body'] : '',
+					);
+					if ( $quotes ) {
+						$args['quotes'] = $quotes;
+					}
+					return '<div class="cil-breakout">' . cil_render_part( 'reviews', $args ) . '</div>';
+				},
+			)
+		)
+	);
+
+	register_block_type(
 		'cil/urgent-note',
 		array_merge(
 			$common,

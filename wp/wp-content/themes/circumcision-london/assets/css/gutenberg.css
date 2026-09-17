@@ -21,6 +21,9 @@
   --cil-wide: var(--maxw);
   padding-bottom: 0;
 }
+body.cil-home .entry-content {
+  padding-top: 0;
+}
 .entry-content p + p { margin-top: 1.1em; }
 .entry-content .wp-block-heading + p { margin-top: 18px; }
 .entry-content p + .wp-block-heading,
@@ -59,6 +62,12 @@
 .entry-content > .wp-block-cil-cta-band,
 .entry-content > .wp-block-cil-faq,
 .entry-content > .wp-block-cil-trust-strip,
+.entry-content > .wp-block-cil-hero,
+.entry-content > .wp-block-cil-groups,
+.entry-content > .wp-block-cil-intro,
+.entry-content > .wp-block-cil-process,
+.entry-content > .wp-block-cil-home-callback,
+.entry-content > .wp-block-cil-reviews,
 .entry-content > .wp-block-cil-group-cards,
 .entry-content > .wp-block-cil-quotes-grid,
 .entry-content > .wp-block-cil-text-section,

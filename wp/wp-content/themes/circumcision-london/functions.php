@@ -933,4 +933,5 @@ require get_template_directory() . '/inc/pages/misc-pages.php';
 require get_template_directory() . '/inc/pages/about-pages.php';
 require get_template_directory() . '/inc/pages/visit-pages.php';
 require get_template_directory() . '/inc/pages/legal-pages.php';
+require get_template_directory() . '/inc/pages/home-page.php';
 require get_template_directory() . '/inc/setup-pages.php';

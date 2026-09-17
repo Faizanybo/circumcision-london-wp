@@ -9,9 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$clinic = cil_clinic();
-$img    = cil_asset( 'images/' );
-$vid    = cil_asset( 'video/' );
+$clinic  = cil_clinic();
+$img     = cil_asset( 'images/' );
+$vid     = cil_asset( 'video/' );
+$eyebrow = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'CQC registered · Edgware, North-West London', 'circumcision-london' );
+$title   = ( isset( $args['title'] ) && '' !== $args['title'] ) ? $args['title'] : __( 'A dedicated circumcision clinic in North-West London', 'circumcision-london' );
+$sub     = ( isset( $args['sub'] ) && '' !== $args['sub'] ) ? $args['sub'] : __( 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.', 'circumcision-london' );
 ?>
 <section class="hero">
 	<div class="hero-media">
@@ -34,11 +37,9 @@ $vid    = cil_asset( 'video/' );
 	</div>
 
 	<div class="hero-inner">
-		<span class="caps eyebrow"><?php esc_html_e( 'CQC registered · Edgware, North-West London', 'circumcision-london' ); ?></span>
-		<h1 class="display d-hero"><?php esc_html_e( 'A dedicated circumcision clinic in North-West London', 'circumcision-london' ); ?></h1>
-		<p class="hero-sub">
-			<?php esc_html_e( 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.', 'circumcision-london' ); ?>
-		</p>
+		<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
+		<h1 class="display d-hero"><?php echo esc_html( $title ); ?></h1>
+		<p class="hero-sub"><?php echo esc_html( $sub ); ?></p>
 
 		<div class="btn-row hero-actions">
 			<a class="btn" href="<?php echo esc_url( cil_book_url() ); ?>" data-track="book-hero"><?php esc_html_e( 'Book a consultation', 'circumcision-london' ); ?></a>

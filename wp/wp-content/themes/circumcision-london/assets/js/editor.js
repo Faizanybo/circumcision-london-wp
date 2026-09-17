@@ -299,6 +299,267 @@
     },
   });
 
+  dynamicBlock('cil/hero', 'Homepage hero', {
+    icon: 'cover-image',
+    attributes: {
+      eyebrow: { type: 'string', default: 'CQC registered · Edgware, North-West London' },
+      title: { type: 'string', default: 'A dedicated circumcision clinic in North-West London' },
+      sub: {
+        type: 'string',
+        default:
+          'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
+      },
+    },
+    inspect: function (props) {
+      return el(
+        PanelBody,
+        { title: 'Hero copy' },
+        el(TextControl, {
+          label: 'Eyebrow',
+          value: props.attributes.eyebrow,
+          onChange: function (v) {
+            props.setAttributes({ eyebrow: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Heading',
+          value: props.attributes.title,
+          onChange: function (v) {
+            props.setAttributes({ title: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Subheading',
+          value: props.attributes.sub,
+          onChange: function (v) {
+            props.setAttributes({ sub: v });
+          },
+        })
+      );
+    },
+  });
+
+  dynamicBlock('cil/groups', 'Homepage age groups', {
+    icon: 'groups',
+    attributes: {
+      level: { type: 'number', default: 2 },
+    },
+    inspect: function (props) {
+      return el(
+        PanelBody,
+        { title: 'Cards' },
+        el(SelectControl, {
+          label: 'Heading level',
+          value: String(props.attributes.level),
+          options: [
+            { label: 'H2', value: '2' },
+            { label: 'H3', value: '3' },
+          ],
+          onChange: function (v) {
+            props.setAttributes({ level: parseInt(v, 10) });
+          },
+        })
+      );
+    },
+  });
+
+  dynamicBlock('cil/intro', 'Homepage introduction', {
+    icon: 'id',
+    attributes: {
+      eyebrow: { type: 'string', default: 'Welcome to the clinic' },
+      heading: {
+        type: 'string',
+        default: 'Choosing circumcision is an important decision. We will talk you through all of it.',
+      },
+      html: { type: 'string', default: '' },
+    },
+    inspect: function (props) {
+      return el(
+        PanelBody,
+        { title: 'Introduction' },
+        el(TextControl, {
+          label: 'Eyebrow',
+          value: props.attributes.eyebrow,
+          onChange: function (v) {
+            props.setAttributes({ eyebrow: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Heading',
+          value: props.attributes.heading,
+          onChange: function (v) {
+            props.setAttributes({ heading: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Body HTML',
+          help: 'Leave blank to use the current default paragraphs.',
+          value: props.attributes.html,
+          onChange: function (v) {
+            props.setAttributes({ html: v });
+          },
+        })
+      );
+    },
+  });
+
+  dynamicBlock('cil/process', 'Homepage process', {
+    icon: 'editor-ol',
+    attributes: {
+      eyebrow: { type: 'string', default: 'What happens' },
+      heading: { type: 'string', default: 'Four steps, and no surprises in any of them' },
+      lede: {
+        type: 'string',
+        default:
+          'This is the whole process. If anything on the day differs from what is written here, we will have told you why before it happens.',
+      },
+      items: { type: 'array', default: [] },
+    },
+    inspect: function (props) {
+      return el(
+        PanelBody,
+        { title: 'Process' },
+        el(TextControl, {
+          label: 'Eyebrow',
+          value: props.attributes.eyebrow,
+          onChange: function (v) {
+            props.setAttributes({ eyebrow: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Heading',
+          value: props.attributes.heading,
+          onChange: function (v) {
+            props.setAttributes({ heading: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Lede',
+          value: props.attributes.lede,
+          onChange: function (v) {
+            props.setAttributes({ lede: v });
+          },
+        }),
+        el(Repeater, {
+          items: props.attributes.items,
+          blank: { h: '', p: '' },
+          fields: [
+            { key: 'h', label: 'Step heading' },
+            { key: 'p', label: 'Step text', rows: 3 },
+          ],
+          addLabel: 'Add step',
+          onChange: function (next) {
+            props.setAttributes({ items: next });
+          },
+        })
+      );
+    },
+  });
+
+  dynamicBlock('cil/home-callback', 'Homepage callback', {
+    icon: 'email-alt',
+    attributes: {
+      formId: { type: 'string', default: 'home' },
+      subject: { type: 'string', default: 'homepage callback' },
+      cardEyebrow: { type: 'string', default: 'Request a call back' },
+      cardTitle: { type: 'string', default: 'Ask before you book' },
+      eyebrow: { type: 'string', default: 'Being straight with you' },
+      heading: { type: 'string', default: 'When we will tell you not to' },
+      html: { type: 'string', default: '' },
+    },
+    inspect: function (props) {
+      return el(
+        PanelBody,
+        { title: 'Callback section' },
+        el(TextControl, {
+          label: 'Form eyebrow',
+          value: props.attributes.cardEyebrow,
+          onChange: function (v) {
+            props.setAttributes({ cardEyebrow: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Form heading',
+          value: props.attributes.cardTitle,
+          onChange: function (v) {
+            props.setAttributes({ cardTitle: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Copy eyebrow',
+          value: props.attributes.eyebrow,
+          onChange: function (v) {
+            props.setAttributes({ eyebrow: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Copy heading',
+          value: props.attributes.heading,
+          onChange: function (v) {
+            props.setAttributes({ heading: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Body HTML',
+          help: 'Leave blank to use the current default paragraphs.',
+          value: props.attributes.html,
+          onChange: function (v) {
+            props.setAttributes({ html: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Form ID',
+          value: props.attributes.formId,
+          onChange: function (v) {
+            props.setAttributes({ formId: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Subject',
+          value: props.attributes.subject,
+          onChange: function (v) {
+            props.setAttributes({ subject: v });
+          },
+        })
+      );
+    },
+  });
+
+  dynamicBlock('cil/reviews', 'Homepage reviews', {
+    icon: 'star-filled',
+    attributes: {
+      body: { type: 'string', default: '' },
+      quotes: { type: 'array', default: [] },
+    },
+    inspect: function (props) {
+      return el(
+        PanelBody,
+        { title: 'Reviews' },
+        el(TextareaControl, {
+          label: 'Body paragraph',
+          help: 'Leave blank to use the current default paragraph. Rating figures stay live from clinic data.',
+          value: props.attributes.body,
+          onChange: function (v) {
+            props.setAttributes({ body: v });
+          },
+        }),
+        el(Repeater, {
+          items: props.attributes.quotes,
+          blank: { name: '', context: '', quote: '' },
+          fields: [
+            { key: 'name', label: 'Name' },
+            { key: 'context', label: 'Context' },
+            { key: 'quote', label: 'Quote', rows: 4 },
+          ],
+          addLabel: 'Add quote',
+          onChange: function (next) {
+            props.setAttributes({ quotes: next });
+          },
+        })
+      );
+    },
+  });
+
   dynamicBlock('cil/callback-form', 'Callback form', {
     icon: 'email',
     attributes: {
