@@ -1,6 +1,9 @@
 <?php
 /**
- * Create or refresh the core service pages from prototype content.
+ * Create missing core service pages from prototype content.
+ *
+ * Existing pages are never overwritten. Gutenberg edits, slugs, IDs and
+ * seeded metadata persist across theme updates and version bumps.
  *
  * @package Circumcision_London
  */
@@ -10,7 +13,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Content version for managed service pages. Bump to re-seed Gutenberg markup.
+ * Seed snapshot written onto newly created service pages only.
+ *
+ * This identifies which catalog version created a page. It is not a rewrite
+ * trigger: bumping it must not replace existing Gutenberg content.
  */
 define( 'CIL_SERVICE_PAGES_VERSION', '0.12.0' );
 
@@ -145,7 +151,14 @@ function cil_ensure_parent_page( $slug, $title ) {
 }
 
 /**
- * Insert or update managed service pages.
+ * Insert missing managed service pages. Never rewrite an existing page.
+ *
+ * A) Missing path: create the page, mark it managed, write seed metadata.
+ * B) Existing path: leave ID, slug, content, Gutenberg blocks and meta alone,
+ *    even if CIL_SERVICE_PAGES_VERSION or cil_service_pages_version differ.
+ *
+ * Opt-in exception: filter `cil_reseed_existing_page` returning true for a
+ * given slug is the only way to replace an existing page from seed data.
  */
 function cil_ensure_service_pages() {
 	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
@@ -158,7 +171,6 @@ function cil_ensure_service_pages() {
 	cil_ensure_pretty_permalinks();
 
 	$seed_version = CIL_SERVICE_PAGES_VERSION;
-	$option_ok    = get_option( 'cil_service_pages_version' ) === $seed_version;
 	$parent_ids   = array();
 	$need_flush   = false;
 
@@ -181,19 +193,27 @@ function cil_ensure_service_pages() {
 	foreach ( cil_managed_pages() as $slug => $page ) {
 		$lookup   = cil_managed_page_path( $slug, $page );
 		$existing = get_page_by_path( $lookup, OBJECT, 'page' );
-		$managed  = $existing ? get_post_meta( $existing->ID, '_cil_managed', true ) : '';
-		$version  = $existing ? get_post_meta( $existing->ID, '_cil_source_version', true ) : '';
 		$parent   = 0;
 		if ( ! empty( $page['parent'] ) && ! empty( $parent_ids[ $page['parent'] ] ) ) {
 			$parent = (int) $parent_ids[ $page['parent'] ];
 		}
 
-		if ( $existing && '1' === $managed && $version === $seed_version && $option_ok ) {
-			continue;
-		}
-
-		if ( $existing && '1' !== $managed && trim( $existing->post_content ) !== '' ) {
-			continue;
+		if ( $existing ) {
+			/**
+			 * Whether to replace one existing service page from theme seed data.
+			 *
+			 * Default false. Returning true restores the old overwrite path for
+			 * that slug only (ID is preserved; content, title, excerpt and seed
+			 * meta are replaced). Do not key this off the theme version.
+			 *
+			 * @param bool    $reseed   Whether to reseed this page.
+			 * @param string  $slug     Catalog slug.
+			 * @param WP_Post $existing Existing page.
+			 */
+			$reseed = apply_filters( 'cil_reseed_existing_page', false, $slug, $existing );
+			if ( ! $reseed ) {
+				continue;
+			}
 		}
 
 		if ( ! empty( $page['parent'] ) && ! $parent ) {
