@@ -376,14 +376,26 @@ function cil_content_apply_slug( $slug ) {
 		);
 	}
 
+	/*
+	 * wp_update_post() expects slashed data and then wp_unslash()s it.
+	 * Gutenberg stores HTML in block JSON as \u003c / \u0022. Without wp_slash(),
+	 * stripslashes() turns those into literal "u003c" and the frontend prints garbage.
+	 * kses_remove_filters() does not remove convert_invalid_entities or balanceTags.
+	 */
 	kses_remove_filters();
+	remove_filter( 'content_save_pre', 'convert_invalid_entities' );
+	remove_filter( 'content_save_pre', 'balanceTags', 50 );
 	$result = wp_update_post(
-		array(
-			'ID'           => (int) $page->ID,
-			'post_content' => $fixture['content'],
+		wp_slash(
+			array(
+				'ID'           => (int) $page->ID,
+				'post_content' => $fixture['content'],
+			)
 		),
 		true
 	);
+	add_filter( 'content_save_pre', 'convert_invalid_entities' );
+	add_filter( 'content_save_pre', 'balanceTags', 50 );
 	kses_init_filters();
 
 	if ( is_wp_error( $result ) ) {
