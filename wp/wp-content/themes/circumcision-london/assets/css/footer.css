@@ -14,7 +14,7 @@
   padding-inline: var(--gap);
 }
 .footer-top { padding-block: clamp(52px, 6vw, 88px); }
-.footer-grid { display: grid; gap: clamp(30px, 4vw, 60px); grid-template-columns: 1.5fr 1fr 1fr 1.2fr; }
+.footer-grid { display: grid; gap: clamp(30px, 4vw, 60px); grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr; }
 .footer ul { margin: 0; padding: 0; }
 .footer .brand img { width: 180px; filter: brightness(0) invert(1); opacity: .95; }
 .footer .brand .mark { color: #fff; }

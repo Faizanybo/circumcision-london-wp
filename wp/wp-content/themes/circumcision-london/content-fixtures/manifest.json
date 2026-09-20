@@ -3,6 +3,10 @@
     "replace_from": "http://circumcision-london-wp.local",
     "replace_to": "https://circumcision-london-wp.vercel.app",
     "pages": [
-        "book"
+        "book",
+        "home",
+        "luton-circumcision-clinic",
+        "southampton-circumcision-clinic",
+        "birmingham-circumcision-clinic"
     ]
 }

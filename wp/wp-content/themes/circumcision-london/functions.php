@@ -135,10 +135,11 @@ function cil_setup() {
 
 	register_nav_menus(
 		array(
-			'primary'        => __( 'Primary', 'circumcision-london' ),
-			'footer-who'     => __( 'Footer: Who we see', 'circumcision-london' ),
-			'footer-reasons' => __( 'Footer: Reasons', 'circumcision-london' ),
-			'footer-legal'   => __( 'Footer: Legal', 'circumcision-london' ),
+			'primary'         => __( 'Primary', 'circumcision-london' ),
+			'footer-who'      => __( 'Footer: Who we see', 'circumcision-london' ),
+			'footer-reasons'  => __( 'Footer: Reasons', 'circumcision-london' ),
+			'footer-clinics'  => __( 'Footer: Our clinics', 'circumcision-london' ),
+			'footer-legal'    => __( 'Footer: Legal', 'circumcision-london' ),
 		)
 	);
 }
@@ -392,8 +393,30 @@ function cil_default_nav() {
 			'url'   => home_url( '/courses/' ),
 		),
 		array(
-			'label' => __( 'Visit us', 'circumcision-london' ),
-			'url'   => home_url( '/contact/' ),
+			'label'    => __( 'Visit us', 'circumcision-london' ),
+			'url'      => home_url( '/contact/' ),
+			'children' => array(
+				array(
+					'label'   => __( 'Our clinics', 'circumcision-london' ),
+					'heading' => true,
+				),
+				array(
+					'label' => __( 'London — Edgware', 'circumcision-london' ),
+					'url'   => home_url( '/contact/' ),
+				),
+				array(
+					'label' => __( 'Luton', 'circumcision-london' ),
+					'url'   => home_url( '/luton-circumcision-clinic/' ),
+				),
+				array(
+					'label' => __( 'Southampton', 'circumcision-london' ),
+					'url'   => home_url( '/southampton-circumcision-clinic/' ),
+				),
+				array(
+					'label' => __( 'Birmingham', 'circumcision-london' ),
+					'url'   => home_url( '/birmingham-circumcision-clinic/' ),
+				),
+			),
 		),
 	);
 }
@@ -428,6 +451,20 @@ function cil_default_footer_reasons() {
 		array( 'label' => __( 'Paraphimosis', 'circumcision-london' ), 'url' => home_url( '/conditions/paraphimosis/' ) ),
 		array( 'label' => __( 'Frenuloplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/frenuloplasty/' ) ),
 		array( 'label' => __( 'Preputioplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/preputioplasty/' ) ),
+	);
+}
+
+/**
+ * Default footer "Our clinics" links.
+ *
+ * @return array<int, array<string, string>>
+ */
+function cil_default_footer_clinics() {
+	return array(
+		array( 'label' => __( 'London — Edgware', 'circumcision-london' ), 'url' => home_url( '/contact/' ) ),
+		array( 'label' => __( 'Luton', 'circumcision-london' ), 'url' => home_url( '/luton-circumcision-clinic/' ) ),
+		array( 'label' => __( 'Southampton', 'circumcision-london' ), 'url' => home_url( '/southampton-circumcision-clinic/' ) ),
+		array( 'label' => __( 'Birmingham', 'circumcision-london' ), 'url' => home_url( '/birmingham-circumcision-clinic/' ) ),
 	);
 }
 
@@ -530,10 +567,15 @@ function cil_menu_tree( $location, $fallback ) {
 			return $branch;
 		}
 		foreach ( $by_parent[ $parent_id ] as $item ) {
-			$node = array(
+			$classes = array_filter( (array) $item->classes );
+			$node    = array(
 				'label' => $item->title,
 				'url'   => $item->url,
 			);
+			if ( in_array( 'nav-heading', $classes, true ) ) {
+				$node['heading'] = true;
+				$node['url']     = '';
+			}
 			if ( ! empty( $item->description ) ) {
 				$node['note'] = $item->description;
 			}
@@ -668,14 +710,25 @@ function cil_primary_nav() {
 	foreach ( $items as $item ) {
 		$has_children = ! empty( $item['children'] );
 		$li_class     = 'nav-item' . ( $has_children ? ' has-menu' : '' );
-		/* Prototype: dropdown parents link to the first child, with no aria-current. */
-		$url = $has_children ? $item['children'][0]['url'] : $item['url'];
+		$url          = ! empty( $item['url'] ) ? $item['url'] : '';
+		if ( $has_children && ! $url ) {
+			foreach ( $item['children'] as $child ) {
+				if ( empty( $child['heading'] ) && ! empty( $child['url'] ) ) {
+					$url = $child['url'];
+					break;
+				}
+			}
+		}
 		$cur = $has_children ? '' : cil_current_attr( $url );
 		echo '<li class="' . esc_attr( $li_class ) . '">';
 		echo '<a class="nav-link" href="' . esc_url( $url ) . '"' . $cur . '>' . esc_html( $item['label'] ) . '</a>';
 		if ( $has_children ) {
 			echo '<ul class="submenu">';
 			foreach ( $item['children'] as $child ) {
+				if ( ! empty( $child['heading'] ) ) {
+					echo '<li class="submenu-heading"><span class="submenu-label">' . esc_html( $child['label'] ) . '</span></li>';
+					continue;
+				}
 				$note = '';
 				if ( ! empty( $child['note'] ) ) {
 					$note = '<span class="note">' . esc_html( $child['note'] ) . '</span>';
@@ -702,6 +755,10 @@ function cil_mobile_nav() {
 		echo '<span class="caps group-label">' . esc_html( $item['label'] ) . '</span>';
 		echo '<ul class="sub">';
 		foreach ( $item['children'] as $child ) {
+			if ( ! empty( $child['heading'] ) ) {
+				echo '<li class="submenu-heading"><span class="submenu-label">' . esc_html( $child['label'] ) . '</span></li>';
+				continue;
+			}
 			$note = '';
 			if ( ! empty( $child['note'] ) ) {
 				$note = '<span class="note">' . esc_html( $child['note'] ) . '</span>';
@@ -722,6 +779,9 @@ function cil_link_list( $location, $fallback ) {
 	$items = cil_menu_tree( $location, $fallback );
 	echo '<ul>';
 	foreach ( $items as $item ) {
+		if ( ! empty( $item['heading'] ) ) {
+			continue;
+		}
 		echo '<li><a href="' . esc_url( $item['url'] ) . '"' . cil_link_extra_attrs( $item ) . '>' . esc_html( $item['label'] ) . '</a></li>';
 	}
 	echo '</ul>';
