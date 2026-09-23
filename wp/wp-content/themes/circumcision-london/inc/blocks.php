@@ -47,6 +47,42 @@ function cil_enqueue_editor_assets() {
 		cil_asset_version( 'assets/js/editor.js' ),
 		true
 	);
+
+	$clinic = cil_clinic();
+	wp_localize_script(
+		'cil-editor',
+		'cilEditorData',
+		array(
+			'groups'  => cil_groups(),
+			'clinic'  => array(
+				'phone'     => $clinic['phone'],
+				'whatsapp'  => $clinic['whatsapp'],
+				'bookUrl'   => cil_book_url(),
+				'reviews'   => $clinic['reviews'],
+				'cqcUrl'    => $clinic['cqc_url'],
+				'cqcRating' => $clinic['cqc_rating'],
+				'languages' => $clinic['languages'],
+			),
+			'trustDefaults' => array(
+				array(
+					'n' => $clinic['reviews']['rating'],
+					'l' => sprintf( 'From %1$s Google reviews, checked on %2$s.', $clinic['reviews']['count_display'], $clinic['reviews']['verified'] ),
+				),
+				array(
+					'n' => '40+',
+					'l' => 'Years of combined experience between our two practitioners, in the UK and abroad.',
+				),
+				array(
+					'n' => 'CQC',
+					'l' => sprintf( 'Registered with the Care Quality Commission and rated %s at previous inspections. Read the report.', $clinic['cqc_rating'] ),
+				),
+				array(
+					'n' => '6',
+					'l' => sprintf( 'Languages spoken here: %s.', $clinic['languages'] ),
+				),
+			),
+		)
+	);
 }
 add_action( 'enqueue_block_editor_assets', 'cil_enqueue_editor_assets' );
 
@@ -102,8 +138,20 @@ function cil_register_dynamic_blocks() {
 			array(
 				'title'           => __( 'Trust strip', 'circumcision-london' ),
 				'description'     => __( 'Reviews, experience, CQC and languages.', 'circumcision-london' ),
-				'render_callback' => function () {
-					return '<div class="cil-breakout">' . cil_render_part( 'trust-strip' ) . '</div>';
+				'attributes'      => array(
+					'items' => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					$items = cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() );
+					return '<div class="cil-breakout">' . cil_render_part(
+						'trust-strip',
+						array(
+							'items' => $items,
+						)
+					) . '</div>';
 				},
 			)
 		)
@@ -129,6 +177,10 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'boolean',
 						'default' => false,
 					),
+					'items'   => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					$exclude = isset( $attrs['exclude'] ) ? $attrs['exclude'] : '';
@@ -140,6 +192,7 @@ function cil_register_dynamic_blocks() {
 						array(
 							'level'   => isset( $attrs['level'] ) ? (int) $attrs['level'] : 3,
 							'exclude' => $exclude,
+							'items'   => cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ),
 						)
 					);
 					if ( ! empty( $attrs['banded'] ) ) {
@@ -183,6 +236,22 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'number',
 						'default' => 0,
 					),
+					'ctaLabel'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'ctaUrl'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'phoneLabel'  => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'phoneUrl'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
@@ -194,6 +263,10 @@ function cil_register_dynamic_blocks() {
 							'poster_id'     => isset( $attrs['posterId'] ) ? $attrs['posterId'] : 0,
 							'video_mp4_id'  => isset( $attrs['videoMp4Id'] ) ? $attrs['videoMp4Id'] : 0,
 							'video_webm_id' => isset( $attrs['videoWebmId'] ) ? $attrs['videoWebmId'] : 0,
+							'cta_label'     => isset( $attrs['ctaLabel'] ) ? $attrs['ctaLabel'] : '',
+							'cta_url'       => isset( $attrs['ctaUrl'] ) ? $attrs['ctaUrl'] : '',
+							'phone_label'   => isset( $attrs['phoneLabel'] ) ? $attrs['phoneLabel'] : '',
+							'phone_url'     => isset( $attrs['phoneUrl'] ) ? $attrs['phoneUrl'] : '',
 						)
 					) . '</div>';
 				},
@@ -213,12 +286,17 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'number',
 						'default' => 2,
 					),
+					'items' => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'groups',
 						array(
 							'level' => isset( $attrs['level'] ) ? (int) $attrs['level'] : 2,
+							'items' => cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ),
 						)
 					) . '</div>';
 				},
@@ -250,15 +328,40 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'number',
 						'default' => 0,
 					),
+					'caption' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'btn1Label' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'btn1Url'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'btn2Label' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'btn2Url'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'intro',
 						array(
-							'eyebrow'  => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'heading'  => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
-							'html'     => isset( $attrs['html'] ) ? $attrs['html'] : '',
-							'image_id' => isset( $attrs['imageId'] ) ? $attrs['imageId'] : 0,
+							'eyebrow'    => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'heading'    => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+							'html'       => isset( $attrs['html'] ) ? $attrs['html'] : '',
+							'image_id'   => isset( $attrs['imageId'] ) ? $attrs['imageId'] : 0,
+							'caption'    => isset( $attrs['caption'] ) ? $attrs['caption'] : '',
+							'btn1_label' => isset( $attrs['btn1Label'] ) ? $attrs['btn1Label'] : '',
+							'btn1_url'   => isset( $attrs['btn1Url'] ) ? $attrs['btn1Url'] : '',
+							'btn2_label' => isset( $attrs['btn2Label'] ) ? $attrs['btn2Label'] : '',
+							'btn2_url'   => isset( $attrs['btn2Url'] ) ? $attrs['btn2Url'] : '',
 						)
 					) . '</div>';
 				},
@@ -512,13 +615,48 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => 'Most people call with a question rather than to book. That is what the phone is for, and nothing is booked until you say so.',
 					),
+					'eyebrow'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'ctaLabel'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'ctaUrl'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'phoneLabel' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'phoneUrl'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'cardTitle'  => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'cardHtml'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'cta-band',
 						array(
-							'title' => isset( $attrs['title'] ) ? $attrs['title'] : '',
-							'text'  => isset( $attrs['text'] ) ? $attrs['text'] : '',
+							'title'       => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'text'        => isset( $attrs['text'] ) ? $attrs['text'] : '',
+							'eyebrow'     => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'cta_label'   => isset( $attrs['ctaLabel'] ) ? $attrs['ctaLabel'] : '',
+							'cta_url'     => isset( $attrs['ctaUrl'] ) ? $attrs['ctaUrl'] : '',
+							'phone_label' => isset( $attrs['phoneLabel'] ) ? $attrs['phoneLabel'] : '',
+							'phone_url'   => isset( $attrs['phoneUrl'] ) ? $attrs['phoneUrl'] : '',
+							'card_title'  => isset( $attrs['cardTitle'] ) ? $attrs['cardTitle'] : '',
+							'card_html'   => isset( $attrs['cardHtml'] ) ? $attrs['cardHtml'] : '',
 						)
 					) . '</div>';
 				},
@@ -1092,12 +1230,22 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'array',
 						'default' => array(),
 					),
+					'columns' => array(
+						'type'    => 'string',
+						'default' => 'g-3',
+					),
+					'headingLevel' => array(
+						'type'    => 'number',
+						'default' => 3,
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return cil_render_part(
 						'info-cards',
 						array(
-							'items' => cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ),
+							'items'         => cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ),
+							'columns'       => isset( $attrs['columns'] ) ? $attrs['columns'] : 'g-3',
+							'heading_level' => isset( $attrs['headingLevel'] ) ? (int) $attrs['headingLevel'] : 3,
 						)
 					);
 				},
@@ -1188,6 +1336,30 @@ function cil_register_dynamic_blocks() {
 					'default' => false,
 				),
 			),
+		)
+	);
+
+	register_block_type(
+		'cil/rich-html',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Rich content', 'circumcision-london' ),
+				'description'     => __( 'Editable rich text that keeps the existing clinic markup and styling.', 'circumcision-london' ),
+				'attributes'      => array(
+					'html' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					$html = isset( $attrs['html'] ) ? $attrs['html'] : '';
+					if ( '' === trim( wp_strip_all_tags( $html ) ) && false === strpos( $html, '<img' ) ) {
+						return '';
+					}
+					return cil_rich_text( $html );
+				},
+			)
 		)
 	);
 }

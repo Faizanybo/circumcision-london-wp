@@ -39,9 +39,16 @@ $image_html = $image_id ? cil_attachment_image_html(
 					<p><?php esc_html_e( 'Whether you are here for religious, medical, cultural or personal reasons, the standard does not change: local anaesthetic every time, tested and shown to be working before we begin, and aftercare we explain to you and then give you in writing.', 'circumcision-london' ); ?></p>
 					<?php endif; ?>
 				</div>
+				<?php
+				$btn1_label = ( isset( $args['btn1_label'] ) && '' !== $args['btn1_label'] ) ? $args['btn1_label'] : __( 'Meet the two practitioners', 'circumcision-london' );
+				$btn1_url   = ( isset( $args['btn1_url'] ) && '' !== $args['btn1_url'] ) ? $args['btn1_url'] : home_url( '/team/' );
+				$btn2_label = ( isset( $args['btn2_label'] ) && '' !== $args['btn2_label'] ) ? $args['btn2_label'] : __( 'What aftercare involves', 'circumcision-london' );
+				$btn2_url   = ( isset( $args['btn2_url'] ) && '' !== $args['btn2_url'] ) ? $args['btn2_url'] : home_url( '/aftercare/' );
+				$caption    = ( isset( $args['caption'] ) && '' !== $args['caption'] ) ? $args['caption'] : __( 'Dr Haidar Al-Ali carries out most of the circumcisions at this clinic.', 'circumcision-london' );
+				?>
 				<div class="btn-row" style="margin-top:30px">
-					<a class="btn btn-ghost" href="<?php echo esc_url( home_url( '/team/' ) ); ?>"><?php esc_html_e( 'Meet the two practitioners', 'circumcision-london' ); ?></a>
-					<a class="btn btn-ghost" href="<?php echo esc_url( home_url( '/aftercare/' ) ); ?>"><?php esc_html_e( 'What aftercare involves', 'circumcision-london' ); ?></a>
+					<a class="btn btn-ghost" href="<?php echo esc_url( $btn1_url ); ?>"><?php echo esc_html( $btn1_label ); ?></a>
+					<a class="btn btn-ghost" href="<?php echo esc_url( $btn2_url ); ?>"><?php echo esc_html( $btn2_label ); ?></a>
 				</div>
 			</div>
 
@@ -55,7 +62,7 @@ $image_html = $image_id ? cil_attachment_image_html(
 						alt="<?php esc_attr_e( 'Dr Haidar Al-Ali in clinic scrubs in the treatment room at the Edgware practice.', 'circumcision-london' ); ?>">
 				</picture>
 				<?php endif; ?>
-				<figcaption><?php esc_html_e( 'Dr Haidar Al-Ali carries out most of the circumcisions at this clinic.', 'circumcision-london' ); ?></figcaption>
+				<figcaption><?php echo esc_html( $caption ); ?></figcaption>
 			</figure>
 		</div>
 	</div>

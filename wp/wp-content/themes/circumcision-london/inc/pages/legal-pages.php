@@ -91,9 +91,7 @@ function cil_legal_page_from_html( $page, $html ) {
 			'band' => '',
 			'wrap' => 'wrap-narrow',
 		),
-		array(
-			cil_html_block( '<div class="body-text" data-reveal>' . $html . '</div>' ),
-		)
+		cil_html_to_prose_blocks( $html )
 	);
 
 	return cil_serialize_blocks( $blocks );

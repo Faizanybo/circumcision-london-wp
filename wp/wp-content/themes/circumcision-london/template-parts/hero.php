@@ -72,9 +72,15 @@ $use_custom_video = ( $custom_mp4 || $custom_webm );
 		<h1 class="display d-hero"><?php echo esc_html( $title ); ?></h1>
 		<p class="hero-sub"><?php echo esc_html( $sub ); ?></p>
 
+		<?php
+		$cta_label   = ( isset( $args['cta_label'] ) && '' !== $args['cta_label'] ) ? $args['cta_label'] : __( 'Book a consultation', 'circumcision-london' );
+		$cta_url     = ( isset( $args['cta_url'] ) && '' !== $args['cta_url'] ) ? $args['cta_url'] : cil_book_url();
+		$phone_label = ( isset( $args['phone_label'] ) && '' !== $args['phone_label'] ) ? $args['phone_label'] : sprintf( /* translators: %s: phone number */ __( 'Call %s', 'circumcision-london' ), $clinic['phone']['display'] );
+		$phone_url   = ( isset( $args['phone_url'] ) && '' !== $args['phone_url'] ) ? $args['phone_url'] : $clinic['phone']['href'];
+		?>
 		<div class="btn-row hero-actions">
-			<a class="btn" href="<?php echo esc_url( cil_book_url() ); ?>" data-track="book-hero"><?php esc_html_e( 'Book a consultation', 'circumcision-london' ); ?></a>
-			<a class="btn btn-light" href="<?php echo esc_url( $clinic['phone']['href'] ); ?>" data-track="call-hero"><?php echo esc_html( sprintf( /* translators: %s: phone number */ __( 'Call %s', 'circumcision-london' ), $clinic['phone']['display'] ) ); ?></a>
+			<a class="btn" href="<?php echo esc_url( $cta_url ); ?>" data-track="book-hero"><?php echo esc_html( $cta_label ); ?></a>
+			<a class="btn btn-light" href="<?php echo esc_url( $phone_url ); ?>" data-track="call-hero"><?php echo esc_html( $phone_label ); ?></a>
 		</div>
 
 		<ul class="hero-facts">

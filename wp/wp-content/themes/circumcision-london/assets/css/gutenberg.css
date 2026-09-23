@@ -99,6 +99,15 @@ body.cil-home .entry-content {
 .entry-content .body-text p + p {
   margin-top: 1.1em;
 }
+.wp-block-cil-section .wp-block-list,
+.entry-content .wp-block-cil-section .wp-block-list {
+  margin: 16px 0 0 20px;
+  display: grid;
+  gap: 9px;
+}
+.wp-block-cil-section .wp-block-list li::marker {
+  color: var(--blue);
+}
 
 .wp-block-group.is-style-cil-card {
   background: var(--card);
@@ -224,3 +233,54 @@ body.cil-home .entry-content {
 }
 .editor-styles-wrapper .cil-editor-preview { pointer-events: none; }
 .editor-styles-wrapper .page-head { padding-block: clamp(46px, 5.5vw, 92px) clamp(30px, 3.5vw, 56px); }
+
+/*
+  Frontend scroll-reveal is driven by theme.js, which is not loaded in Gutenberg.
+  Without this, every [data-reveal] node is opacity:0 and the canvas looks blank.
+*/
+.editor-styles-wrapper [data-reveal],
+.block-editor-iframe__body [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+.editor-styles-wrapper .hero-video,
+.block-editor-iframe__body .hero-video {
+  opacity: 1 !important;
+}
+
+.editor-styles-wrapper .cil-editor-canvas {
+  min-height: 48px;
+}
+.editor-styles-wrapper .cil-ed-stack {
+  display: grid;
+  gap: 14px;
+}
+.editor-styles-wrapper .cil-ed-field {
+  min-width: 0;
+}
+.editor-styles-wrapper .cil-ed-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.editor-styles-wrapper .cil-ed-help {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.editor-styles-wrapper .cil-ed-media {
+  padding: 12px;
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  background: var(--card);
+}
+.editor-styles-wrapper .cil-editor-canvas .hero-inner .cil-ed-label {
+  color: rgba(255, 255, 255, 0.72);
+}
+.editor-styles-wrapper .block-editor-rich-text__editable {
+  min-height: 1.2em;
+}

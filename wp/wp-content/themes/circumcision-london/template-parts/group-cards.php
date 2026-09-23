@@ -12,11 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 $level   = isset( $args['level'] ) ? (int) $args['level'] : 3;
 $level   = in_array( $level, array( 2, 3 ), true ) ? $level : 3;
 $exclude = isset( $args['exclude'] ) ? $args['exclude'] : '';
+$groups  = ( isset( $args['items'] ) && is_array( $args['items'] ) && $args['items'] ) ? $args['items'] : cil_groups();
 $tag     = 'h' . $level;
 $i       = 0;
 ?>
 <div class="grid g-3">
-	<?php foreach ( cil_groups() as $group ) : ?>
+	<?php foreach ( $groups as $group ) : ?>
 		<?php
 		if ( $exclude && untrailingslashit( $group['href'] ) === untrailingslashit( $exclude ) ) {
 			continue;

@@ -29,22 +29,30 @@ function cil_rich_text( $html ) {
 	return wp_kses(
 		$html,
 		array(
-			'p'      => array( 'style' => true ),
-			'a'      => array(
+			'p'       => array( 'style' => true, 'class' => true ),
+			'a'       => array(
 				'href'       => true,
 				'rel'        => true,
 				'target'     => true,
 				'style'      => true,
+				'class'      => true,
 				'data-track' => true,
 			),
-			'strong' => array(),
-			'em'     => array(),
-			'br'     => array(),
-			'ul'     => array( 'style' => true, 'class' => true ),
-			'ol'     => array( 'style' => true, 'class' => true ),
-			'li'     => array( 'style' => true ),
-			'span'   => array( 'style' => true, 'class' => true, 'aria-hidden' => true ),
-			'div'    => array( 'style' => true, 'class' => true ),
+			'strong'  => array(),
+			'em'      => array(),
+			'br'      => array(),
+			'ul'      => array( 'style' => true, 'class' => true ),
+			'ol'      => array( 'style' => true, 'class' => true ),
+			'li'      => array( 'style' => true, 'class' => true ),
+			'span'    => array( 'style' => true, 'class' => true, 'aria-hidden' => true ),
+			'div'     => array( 'style' => true, 'class' => true ),
+			'address' => array( 'style' => true, 'class' => true ),
+			'h2'      => array( 'style' => true, 'class' => true ),
+			'h3'      => array( 'style' => true, 'class' => true ),
+			'h4'      => array( 'style' => true, 'class' => true ),
+			'dl'      => array( 'style' => true, 'class' => true ),
+			'dt'      => array( 'style' => true, 'class' => true ),
+			'dd'      => array( 'style' => true, 'class' => true ),
 		)
 	);
 }

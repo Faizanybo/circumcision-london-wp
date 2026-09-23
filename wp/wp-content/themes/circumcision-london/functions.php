@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CIL_VERSION', '0.12.0' );
+define( 'CIL_VERSION', '0.13.0' );
 
 /**
  * Clinic facts from the prototype. Do not invent replacements here.
@@ -1049,6 +1049,7 @@ require get_template_directory() . '/inc/media.php';
 require get_template_directory() . '/inc/sections.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/pages/age-groups.php';
+require get_template_directory() . '/inc/gutenberg-migrate.php';
 require get_template_directory() . '/inc/pages/extra-pages.php';
 require get_template_directory() . '/inc/pages/conditions-pages.php';
 require get_template_directory() . '/inc/pages/procedures-pages.php';

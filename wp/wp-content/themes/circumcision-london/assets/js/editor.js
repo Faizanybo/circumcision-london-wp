@@ -14,6 +14,7 @@
   var MediaUpload = wp.blockEditor.MediaUpload;
   var MediaUploadCheck = wp.blockEditor.MediaUploadCheck;
   var MediaReplaceFlow = wp.blockEditor.MediaReplaceFlow;
+  var RichText = wp.blockEditor.RichText;
   var PanelBody = wp.components.PanelBody;
   var TextControl = wp.components.TextControl;
   var TextareaControl = wp.components.TextareaControl;
@@ -33,6 +34,100 @@
 
   function fieldBox(label, children) {
     return el('div', { style: { marginBottom: '12px' } }, el('strong', { style: { display: 'block', marginBottom: '6px' } }, label), children);
+  }
+
+  function edLabel(text) {
+    return el('strong', { className: 'cil-ed-label' }, text);
+  }
+
+  function setAttr(props, key, value) {
+    var next = {};
+    next[key] = value;
+    props.setAttributes(next);
+  }
+
+  function stripTags(value) {
+    return String(value || '').replace(/<[^>]*>/g, '');
+  }
+
+  function canvasField(props, field) {
+    var value = props.attributes[field.key];
+    if (field.kind === 'repeater') {
+      var items = value && value.length ? value.slice() : field.fallback ? field.fallback() : [];
+      return el(
+        'div',
+        { className: 'cil-ed-field', key: field.key },
+        edLabel(field.label),
+        field.help ? el('p', { className: 'cil-ed-help' }, field.help) : null,
+        el(Repeater, {
+          items: items,
+          blank: field.blank || {},
+          fields: field.fields,
+          addLabel: field.addLabel,
+          onChange: function (next) {
+            setAttr(props, field.key, next);
+          },
+        })
+      );
+    }
+    if (field.kind === 'image' || field.kind === 'video' || field.kind === 'file') {
+      return el(
+        'div',
+        { className: 'cil-ed-field cil-ed-media', key: field.key },
+        el(AttachmentControl, {
+          label: field.label,
+          help: field.help,
+          allowedTypes: field.kind === 'video' ? ['video'] : field.kind === 'file' ? ['application/pdf'] : ['image'],
+          value: value,
+          onSelect: function (media) {
+            setAttr(props, field.key, media.id || 0);
+          },
+        })
+      );
+    }
+    if (field.kind === 'html') {
+      return el(
+        'div',
+        { className: 'cil-ed-field', key: field.key },
+        edLabel(field.label),
+        field.help ? el('p', { className: 'cil-ed-help' }, field.help) : null,
+        el(RichText, {
+          tagName: field.tagName || 'div',
+          className: field.className || 'body-text',
+          value: value || '',
+          allowedFormats: ['core/bold', 'core/italic', 'core/link'],
+          placeholder: field.placeholder || 'Write…',
+          onChange: function (v) {
+            setAttr(props, field.key, v);
+          },
+        })
+      );
+    }
+    return el(
+      'div',
+      { className: 'cil-ed-field', key: field.key },
+      edLabel(field.label),
+      el(RichText, {
+        tagName: field.tagName || 'p',
+        className: field.className || '',
+        value: value || '',
+        allowedFormats: [],
+        placeholder: field.placeholder || '',
+        onChange: function (v) {
+          setAttr(props, field.key, stripTags(v));
+        },
+      })
+    );
+  }
+
+  function canvasFields(props, fields) {
+    return el(
+      'div',
+      { className: 'cil-ed-stack' },
+      (fields || []).map(function (field) {
+        return canvasField(props, field);
+      })
+    );
   }
 
   function Repeater(props) {
@@ -153,11 +248,14 @@
       supports: { html: false, align: ['wide', 'full'] },
       attributes: extra.attributes || {},
       edit: function (props) {
+        var canvas = extra.fields
+          ? canvasFields(props, extra.fields)
+          : ssr(name, props.attributes);
         return el(
           Fragment,
           {},
           extra.inspect ? el(InspectorControls, {}, extra.inspect(props)) : null,
-          el('div', useBlockProps({ className: 'cil-editor-canvas' }), ssr(name, props.attributes))
+          el('div', useBlockProps({ className: 'cil-editor-canvas' }), canvas)
         );
       },
       save: function () {
@@ -338,7 +436,29 @@
     },
   });
 
-  dynamicBlock('cil/trust-strip', 'Trust strip', { icon: 'shield' });
+  dynamicBlock('cil/trust-strip', 'Trust strip', {
+    icon: 'shield',
+    attributes: {
+      items: { type: 'array', default: [] },
+    },
+    fields: [
+      {
+        key: 'items',
+        label: 'Trust facts',
+        kind: 'repeater',
+        help: 'Leave empty to keep the current clinic figures.',
+        blank: { n: '', l: '' },
+        fields: [
+          { key: 'n', label: 'Figure' },
+          { key: 'l', label: 'Text', rows: 3 },
+        ],
+        addLabel: 'Add fact',
+        fallback: function () {
+          return window.cilEditorData && cilEditorData.trustDefaults ? cilEditorData.trustDefaults.slice() : [];
+        },
+      },
+    ],
+  });
 
   dynamicBlock('cil/urgent-note', 'Urgent A&E note', { icon: 'warning' });
 
@@ -348,7 +468,29 @@
       level: { type: 'number', default: 3 },
       exclude: { type: 'string', default: '' },
       banded: { type: 'boolean', default: false },
+      items: { type: 'array', default: [] },
     },
+    fields: [
+      {
+        key: 'items',
+        label: 'Age-group cards',
+        kind: 'repeater',
+        help: 'Leave empty to keep the current theme cards.',
+        blank: { title: '', age: '', price: '', blurb: '', cta: '', href: '' },
+        fields: [
+          { key: 'title', label: 'Title' },
+          { key: 'age', label: 'Age line' },
+          { key: 'price', label: 'Price' },
+          { key: 'blurb', label: 'Description', rows: 3 },
+          { key: 'cta', label: 'Link label' },
+          { key: 'href', label: 'URL' },
+        ],
+        addLabel: 'Add card',
+        fallback: function () {
+          return window.cilEditorData && cilEditorData.groups ? cilEditorData.groups.slice() : [];
+        },
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -396,7 +538,23 @@
       posterId: { type: 'number', default: 0 },
       videoMp4Id: { type: 'number', default: 0 },
       videoWebmId: { type: 'number', default: 0 },
+      ctaLabel: { type: 'string', default: '' },
+      ctaUrl: { type: 'string', default: '' },
+      phoneLabel: { type: 'string', default: '' },
+      phoneUrl: { type: 'string', default: '' },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'title', label: 'Heading', tagName: 'h1', className: 'display d-hero' },
+      { key: 'sub', label: 'Subheading', kind: 'html', tagName: 'p', className: 'hero-sub' },
+      { key: 'ctaLabel', label: 'Button text', placeholder: 'Book a consultation' },
+      { key: 'ctaUrl', label: 'Button URL', placeholder: '/book/' },
+      { key: 'phoneLabel', label: 'Phone button text' },
+      { key: 'phoneUrl', label: 'Phone button URL' },
+      { key: 'posterId', label: 'Poster image', kind: 'image', help: 'Leave empty to keep the current theme poster.' },
+      { key: 'videoMp4Id', label: 'Hero video (MP4)', kind: 'video' },
+      { key: 'videoWebmId', label: 'Hero video (WebM)', kind: 'video' },
+    ],
     inspect: function (props) {
       return el(
         Fragment,
@@ -464,7 +622,29 @@
     icon: 'groups',
     attributes: {
       level: { type: 'number', default: 2 },
+      items: { type: 'array', default: [] },
     },
+    fields: [
+      {
+        key: 'items',
+        label: 'Age-group cards',
+        kind: 'repeater',
+        help: 'Leave empty to keep the current theme cards.',
+        blank: { title: '', age: '', price: '', blurb: '', cta: '', href: '' },
+        fields: [
+          { key: 'title', label: 'Title' },
+          { key: 'age', label: 'Age line' },
+          { key: 'price', label: 'Price' },
+          { key: 'blurb', label: 'Description', rows: 3 },
+          { key: 'cta', label: 'Link label' },
+          { key: 'href', label: 'URL' },
+        ],
+        addLabel: 'Add card',
+        fallback: function () {
+          return window.cilEditorData && cilEditorData.groups ? cilEditorData.groups.slice() : [];
+        },
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -494,7 +674,23 @@
       },
       html: { type: 'string', default: '' },
       imageId: { type: 'number', default: 0 },
+      caption: { type: 'string', default: '' },
+      btn1Label: { type: 'string', default: '' },
+      btn1Url: { type: 'string', default: '' },
+      btn2Label: { type: 'string', default: '' },
+      btn2Url: { type: 'string', default: '' },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-1' },
+      { key: 'html', label: 'Body', kind: 'html', help: 'Leave blank to keep the current default paragraphs.' },
+      { key: 'btn1Label', label: 'First button text' },
+      { key: 'btn1Url', label: 'First button URL' },
+      { key: 'btn2Label', label: 'Second button text' },
+      { key: 'btn2Url', label: 'Second button URL' },
+      { key: 'caption', label: 'Photograph caption' },
+      { key: 'imageId', label: 'Practitioner photograph', kind: 'image', help: 'Leave empty to keep the current theme image.' },
+    ],
     inspect: function (props) {
       return el(
         Fragment,
@@ -554,6 +750,22 @@
       },
       items: { type: 'array', default: [] },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-1' },
+      { key: 'lede', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
+      {
+        key: 'items',
+        label: 'Steps',
+        kind: 'repeater',
+        blank: { h: '', p: '' },
+        fields: [
+          { key: 'h', label: 'Step heading' },
+          { key: 'p', label: 'Step text', rows: 3 },
+        ],
+        addLabel: 'Add step',
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -606,6 +818,13 @@
       heading: { type: 'string', default: 'When we will tell you not to' },
       html: { type: 'string', default: '' },
     },
+    fields: [
+      { key: 'cardEyebrow', label: 'Form eyebrow' },
+      { key: 'cardTitle', label: 'Form heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'eyebrow', label: 'Copy eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'heading', label: 'Copy heading', tagName: 'h2', className: 'display d-1' },
+      { key: 'html', label: 'Body', kind: 'html', help: 'Leave blank to keep the current default paragraphs.' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -670,6 +889,21 @@
       body: { type: 'string', default: '' },
       quotes: { type: 'array', default: [] },
     },
+    fields: [
+      { key: 'body', label: 'Body paragraph', kind: 'html', tagName: 'p', className: 'body-text' },
+      {
+        key: 'quotes',
+        label: 'Testimonials',
+        kind: 'repeater',
+        blank: { name: '', context: '', quote: '' },
+        fields: [
+          { key: 'name', label: 'Name' },
+          { key: 'context', label: 'Context' },
+          { key: 'quote', label: 'Quote', rows: 4 },
+        ],
+        addLabel: 'Add quote',
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -736,6 +970,10 @@
       subject: { type: 'string', default: 'general enquiry' },
       urgent: { type: 'boolean', default: false },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'title', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -788,7 +1026,25 @@
         default:
           'Most people call with a question rather than to book. That is what the phone is for, and nothing is booked until you say so.',
       },
+      eyebrow: { type: 'string', default: '' },
+      ctaLabel: { type: 'string', default: '' },
+      ctaUrl: { type: 'string', default: '' },
+      phoneLabel: { type: 'string', default: '' },
+      phoneUrl: { type: 'string', default: '' },
+      cardTitle: { type: 'string', default: '' },
+      cardHtml: { type: 'string', default: '' },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow', placeholder: 'Talk to us' },
+      { key: 'title', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'text', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
+      { key: 'ctaLabel', label: 'Book button text' },
+      { key: 'ctaUrl', label: 'Book button URL' },
+      { key: 'phoneLabel', label: 'Phone button text' },
+      { key: 'phoneUrl', label: 'Phone button URL' },
+      { key: 'cardTitle', label: 'Card heading' },
+      { key: 'cardHtml', label: 'Card body', kind: 'html' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -820,6 +1076,23 @@
       reviewedBy: { type: 'string', default: '' },
       crumbs: { type: 'array', default: [] },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'title', label: 'Title', tagName: 'h1', className: 'display d-1' },
+      { key: 'lede', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
+      { key: 'reviewedBy', label: 'Reviewed by' },
+      {
+        key: 'crumbs',
+        label: 'Breadcrumbs (after Home)',
+        kind: 'repeater',
+        blank: { label: '', href: '' },
+        fields: [
+          { key: 'label', label: 'Label' },
+          { key: 'href', label: 'URL (blank on last crumb)' },
+        ],
+        addLabel: 'Add crumb',
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -880,6 +1153,11 @@
       lede: { type: 'string', default: '' },
       display: { type: 'string', default: 'd-2' },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'lede', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -932,6 +1210,18 @@
         ],
       },
     },
+    fields: [
+      {
+        key: 'rows',
+        label: 'Specification rows',
+        kind: 'repeater',
+        blank: { k: '', v: '' },
+        fields: [
+          { key: 'k', label: 'Label' },
+          { key: 'v', label: 'Value', rows: 2 },
+        ],
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -962,6 +1252,19 @@
         ],
       },
     },
+    fields: [
+      {
+        key: 'items',
+        label: 'Steps',
+        kind: 'repeater',
+        blank: { h: '', p: '' },
+        fields: [
+          { key: 'h', label: 'Heading' },
+          { key: 'p', label: 'Text', rows: 3 },
+        ],
+        addLabel: 'Add step',
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -990,6 +1293,10 @@
       urgent: { type: 'boolean', default: false },
       level: { type: 'number', default: 2 },
     },
+    fields: [
+      { key: 'title', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'body', label: 'Body', kind: 'html' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -1037,6 +1344,11 @@
       context: { type: 'string', default: '' },
       quote: { type: 'string', default: '' },
     },
+    fields: [
+      { key: 'quote', label: 'Quote', kind: 'html', tagName: 'blockquote' },
+      { key: 'name', label: 'Name' },
+      { key: 'context', label: 'Context' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -1134,6 +1446,21 @@
       heading: { type: 'string', default: 'Questions people ask us' },
       items: { type: 'array', default: [] },
     },
+    fields: [
+      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+      {
+        key: 'items',
+        label: 'Questions',
+        kind: 'repeater',
+        help: 'Leave empty to use the homepage FAQs.',
+        blank: { q: '', a: '' },
+        fields: [
+          { key: 'q', label: 'Question' },
+          { key: 'a', label: 'Answer', rows: 4 },
+        ],
+        addLabel: 'Add question',
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -1385,6 +1712,11 @@
       banded: { type: 'boolean', default: false },
       display: { type: 'string', default: 'd-2' },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
+      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'html', label: 'Body', kind: 'html' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
@@ -1626,11 +1958,55 @@
     icon: 'screenoptions',
     attributes: {
       items: { type: 'array', default: [] },
+      columns: { type: 'string', default: 'g-3' },
+      headingLevel: { type: 'number', default: 3 },
     },
+    fields: [
+      {
+        key: 'items',
+        label: 'Cards',
+        kind: 'repeater',
+        blank: {
+          eyebrow: '',
+          title: '',
+          body: '',
+          html: '',
+          ctaLabel: '',
+          ctaUrl: '',
+          ctaClass: 'btn',
+          cta2Label: '',
+          cta2Url: '',
+          cta2Class: 'btn btn-ghost',
+        },
+        fields: [
+          { key: 'eyebrow', label: 'Eyebrow' },
+          { key: 'title', label: 'Heading' },
+          { key: 'body', label: 'Paragraph text', rows: 3 },
+          { key: 'html', label: 'Rich body (lists or address)', rows: 4 },
+          { key: 'ctaLabel', label: 'Button text' },
+          { key: 'ctaUrl', label: 'Button URL' },
+          { key: 'cta2Label', label: 'Second button text' },
+          { key: 'cta2Url', label: 'Second button URL' },
+        ],
+        addLabel: 'Add card',
+      },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
         { title: 'Cards' },
+        el(SelectControl, {
+          label: 'Columns',
+          value: props.attributes.columns || 'g-3',
+          options: [
+            { label: 'Two', value: 'g-2' },
+            { label: 'Three', value: 'g-3' },
+            { label: 'Four', value: 'g-4' },
+          ],
+          onChange: function (v) {
+            props.setAttributes({ columns: v });
+          },
+        }),
         el(Repeater, {
           items: props.attributes.items,
           blank: { title: '', body: '', html: '' },
@@ -1646,5 +2022,20 @@
         })
       );
     },
+  });
+
+  dynamicBlock('cil/rich-html', 'Rich content', {
+    icon: 'editor-paragraph',
+    attributes: {
+      html: { type: 'string', default: '' },
+    },
+    fields: [
+      {
+        key: 'html',
+        label: 'Content',
+        kind: 'html',
+        help: 'Edit the text, links and lists. Layout and styling stay with the theme.',
+      },
+    ],
   });
 })(window.wp);

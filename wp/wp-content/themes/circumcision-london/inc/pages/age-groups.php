@@ -522,7 +522,7 @@ function cil_age_page_blocks( $slug ) {
 		array(
 			cil_split_block(
 				array(
-					cil_html_block( '<div class="body-text" data-reveal>' . $page['intro'] . '</div>' ),
+					cil_rich_html_block( '<div class="body-text">' . $page['intro'] . '</div>' ),
 					cil_dyn_block(
 						'cil/spec-panel',
 						array(
