@@ -25,6 +25,28 @@ function cil_asset( $relative ) {
  * @param string $html Raw HTML.
  * @return string
  */
+/**
+ * Close unclosed tags in a stored HTML fragment so sibling blocks stay siblings.
+ *
+ * @param string $html Fragment.
+ * @return string
+ */
+function cil_balance_html_fragment( $html ) {
+	$html = (string) $html;
+	if ( '' === trim( $html ) || ! function_exists( 'cil_dom_fragment' ) || ! function_exists( 'cil_dom_inner_html' ) ) {
+		return $html;
+	}
+	$dom = cil_dom_fragment( $html );
+	if ( ! $dom ) {
+		return $html;
+	}
+	$body = $dom->getElementsByTagName( 'body' )->item( 0 );
+	if ( ! $body ) {
+		return $html;
+	}
+	return cil_dom_inner_html( $body );
+}
+
 function cil_rich_text( $html ) {
 	return wp_kses(
 		$html,

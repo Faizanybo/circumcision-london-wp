@@ -80,6 +80,41 @@
 .rating-badge .score { font-family: var(--display); font-size: 34px; font-weight: 300; line-height: 1; color: var(--blue-deep); }
 .rating-badge .txt { font-size: 14px; color: var(--muted); line-height: 1.5; }
 
+.rating-badges,
+.wp-block-group.body-text:has(> a.rating-badge:nth-of-type(2)) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(20px, 2.6vw, 40px);
+  width: 100%;
+  align-items: center;
+}
+.rating-badges .rating-badge,
+.wp-block-group.body-text > a.rating-badge,
+.wp-block-group.body-text.is-layout-flow > a.rating-badge {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 76px;
+  min-width: 0;
+  margin-block: 0;
+  box-sizing: border-box;
+}
+.wp-block-group.body-text > a.rating-badge + a.rating-badge {
+  margin-block-start: 0;
+}
+.rating-badges .rating-badge .score,
+.wp-block-group.body-text > a.rating-badge .score {
+  font-size: 22px;
+  line-height: 1;
+}
+
+@media (max-width: 680px) {
+  .rating-badges,
+  .wp-block-group.body-text:has(> a.rating-badge:nth-of-type(2)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* ----------------------------------------------------------------- faq -- */
 .faq { border-top: 1px solid var(--line); }
 .faq details { border-bottom: 1px solid var(--line); }

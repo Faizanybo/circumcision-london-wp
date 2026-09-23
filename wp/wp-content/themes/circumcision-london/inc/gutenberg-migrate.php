@@ -268,6 +268,10 @@ function cil_html_to_callout( $html ) {
 	if ( false !== strpos( $html, '<form' ) ) {
 		return null;
 	}
+	// Leave split columns alone. They may contain a nested urgent callout.
+	if ( preg_match( '/class="[^"]*\bbtn-row\b/', $html ) ) {
+		return cil_rich_html_block( $html );
+	}
 	$dom = cil_dom_fragment( $html );
 	if ( ! $dom ) {
 		return null;

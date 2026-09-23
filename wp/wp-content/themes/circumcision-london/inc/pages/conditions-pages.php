@@ -284,7 +284,7 @@ function cil_clinical_page_blocks( $page ) {
 		array(
 			cil_split_block(
 				array(
-					cil_html_block( $being_seen ),
+					cil_rich_html_block( $being_seen ),
 					cil_dyn_block(
 						'cil/callback-card',
 						array(

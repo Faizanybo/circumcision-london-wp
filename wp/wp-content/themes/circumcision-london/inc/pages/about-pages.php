@@ -383,7 +383,7 @@ function cil_testimonials_page_blocks() {
 	$page   = cil_about_pages()['testimonials'];
 	$clinic = cil_clinic();
 
-	$badges = '<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center" data-reveal>' .
+	$badges = '<div class="rating-badges" data-reveal>' .
 		cil_render_part(
 			'rating-badge',
 			array(
@@ -451,7 +451,7 @@ function cil_testimonials_page_blocks() {
 			'wrap' => 'wrap',
 		),
 		array(
-			cil_html_block( $badges ),
+			cil_rich_html_block( $badges ),
 		)
 	);
 

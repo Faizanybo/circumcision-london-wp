@@ -131,6 +131,13 @@ ul, ol { margin: 0; padding: 0; }
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(30px, 4.5vw, 76px); align-items: center;
 }
+.split > .wp-block-cil-callout,
+.split > .wp-block-cil-callback-card,
+.split > .wp-block-cil-rich-html,
+.split > .wp-block-cil-figure,
+.split > .wp-block-group {
+  min-width: 0;
+}
 .section-head { max-width: 700px; margin-bottom: clamp(32px, 4vw, 62px); }
 .section-head .lede { margin-top: 18px; }
 
