@@ -35,7 +35,7 @@ $card_html   = ( isset( $args['card_html'] ) && '' !== $args['card_html'] ) ? $a
 			<div class="card" data-reveal data-reveal-delay="120">
 				<h3 class="display d-3"><?php echo esc_html( $card_title ); ?></h3>
 				<?php if ( $card_html ) : ?>
-					<div class="body-text" style="margin-top:10px"><?php echo cil_rich_text( $card_html ); ?></div>
+					<?php echo cil_rich_text( $card_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- allowlisted in cil_rich_text(). ?>
 				<?php else : ?>
 				<p style="margin-top:10px"><?php echo wp_kses_post( sprintf( /* translators: %s: WhatsApp URL */ __( 'A phone call asks you to be fluent and composed in the moment. <a href="%s" rel="noopener" target="_blank" data-track="whatsapp-cta" style="color:var(--blue-deep)">WhatsApp</a> does not. You can take your time, translate, and forward the answer to whoever else in the family needs to see it.', 'circumcision-london' ), esc_url( $clinic['whatsapp']['href'] ) ) ); ?></p>
 				<p style="margin-top:12px"><?php esc_html_e( 'We reply during opening hours, and we are used to the questions people feel awkward asking out loud.', 'circumcision-london' ); ?></p>

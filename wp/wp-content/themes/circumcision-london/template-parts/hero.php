@@ -14,7 +14,12 @@ $img     = cil_asset( 'images/' );
 $vid     = cil_asset( 'video/' );
 $eyebrow = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'CQC registered · Edgware, North-West London', 'circumcision-london' );
 $title   = ( isset( $args['title'] ) && '' !== $args['title'] ) ? $args['title'] : __( 'A dedicated circumcision clinic in North-West London', 'circumcision-london' );
-$sub     = ( isset( $args['sub'] ) && '' !== $args['sub'] ) ? $args['sub'] : __( 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.', 'circumcision-london' );
+$html    = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : '';
+$sub     = ( isset( $args['sub'] ) && '' !== $args['sub'] ) ? $args['sub'] : '';
+$facts   = ( isset( $args['facts'] ) && is_array( $args['facts'] ) ) ? $args['facts'] : array();
+if ( ! $html && ! $sub ) {
+	$sub = __( 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.', 'circumcision-london' );
+}
 
 $poster_id     = isset( $args['poster_id'] ) ? cil_attachment_id( $args['poster_id'] ) : 0;
 $video_mp4_id  = isset( $args['video_mp4_id'] ) ? cil_attachment_id( $args['video_mp4_id'] ) : 0;
@@ -70,7 +75,14 @@ $use_custom_video = ( $custom_mp4 || $custom_webm );
 	<div class="hero-inner">
 		<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
 		<h1 class="display d-hero"><?php echo esc_html( $title ); ?></h1>
-		<p class="hero-sub"><?php echo esc_html( $sub ); ?></p>
+		<?php
+		$hero_copy = $html ? $html : $sub;
+		if ( $hero_copy && false !== strpos( $hero_copy, '<' ) ) :
+			?>
+		<div class="hero-copy"><?php echo cil_rich_text( $hero_copy ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- allowlisted in cil_rich_text(). ?></div>
+		<?php elseif ( $hero_copy ) : ?>
+		<p class="hero-sub"><?php echo esc_html( $hero_copy ); ?></p>
+		<?php endif; ?>
 
 		<?php
 		$cta_label   = ( isset( $args['cta_label'] ) && '' !== $args['cta_label'] ) ? $args['cta_label'] : __( 'Book a consultation', 'circumcision-london' );
@@ -84,10 +96,33 @@ $use_custom_video = ( $custom_mp4 || $custom_webm );
 		</div>
 
 		<ul class="hero-facts">
+			<?php
+			$fact_icons = array( 'star', 'shield', 'clock', 'pin' );
+			$fact_lines = array();
+			foreach ( $facts as $fact ) {
+				if ( is_array( $fact ) ) {
+					$line = isset( $fact['text'] ) ? $fact['text'] : ( isset( $fact['label'] ) ? $fact['label'] : '' );
+				} else {
+					$line = (string) $fact;
+				}
+				$line = trim( wp_strip_all_tags( $line ) );
+				if ( '' !== $line ) {
+					$fact_lines[] = $line;
+				}
+			}
+			if ( $fact_lines ) :
+				foreach ( $fact_lines as $i => $line ) :
+					?>
+			<li><?php echo cil_icon( $fact_icons[ $i % count( $fact_icons ) ] ); ?><span><?php echo esc_html( $line ); ?></span></li>
+					<?php
+				endforeach;
+			else :
+				?>
 			<li><?php echo cil_icon( 'star' ); ?><span><b><?php echo esc_html( $clinic['reviews']['rating'] ); ?></b> <?php echo esc_html( sprintf( /* translators: %s: review count */ __( 'from %s Google reviews', 'circumcision-london' ), $clinic['reviews']['count_display'] ) ); ?></span></li>
 			<li><?php echo cil_icon( 'shield' ); ?><span><?php echo esc_html( sprintf( /* translators: %s: CQC rating */ __( 'CQC registered, rated %s', 'circumcision-london' ), $clinic['cqc_rating'] ) ); ?></span></li>
 			<li><?php echo cil_icon( 'clock' ); ?><span><?php esc_html_e( 'Open', 'circumcision-london' ); ?> <b><?php esc_html_e( 'Monday to Saturday', 'circumcision-london' ); ?></b></span></li>
 			<li><?php echo cil_icon( 'pin' ); ?><span><?php esc_html_e( 'Free street parking. Outside the Congestion Charge zone', 'circumcision-london' ); ?></span></li>
+			<?php endif; ?>
 		</ul>
 	</div>
 </section>

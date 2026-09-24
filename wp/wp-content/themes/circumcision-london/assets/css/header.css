@@ -15,6 +15,27 @@
 }
 .header.is-stuck { border-bottom-color: var(--line); }
 
+.header-trust {
+  border-bottom: 1px solid var(--line-2);
+  background: rgba(244, 247, 250, .96);
+}
+.header-trust-inner {
+  width: 100%;
+  max-width: var(--chrome-max);
+  margin-inline: auto;
+  padding: 7px var(--gap);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+.header-trust-item { white-space: nowrap; }
+.header-trust-sep { color: var(--line); font-weight: 400; }
+
 .header-inner {
   width: 100%;
   max-width: var(--chrome-max);
@@ -118,14 +139,15 @@
   min-height: 0;
 }
 
-.header-cta { display: flex; align-items: center; gap: 16px; flex: 0 0 auto; }
+.header-cta { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; }
 .header-tel {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-block: 10px;
   font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; white-space: nowrap;
 }
 .header-tel:hover { color: var(--blue-deep); }
 .header-tel svg { width: 16px; height: 16px; flex: 0 0 auto; color: var(--blue); }
-.header .btn { min-height: 44px; padding: 11px 20px; font-size: 14px; }
+.header .btn { min-height: 44px; padding: 11px 18px; font-size: 14px; }
+.header .header-callback { padding-inline: 14px; }
 
 .burger {
   display: none; width: 46px; height: 46px; margin-left: auto;
@@ -167,9 +189,13 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
 .mobile-nav .mob-actions { margin-top: 32px; display: grid; gap: 12px; }
 .mobile-nav .mob-actions .btn { width: 100%; }
 
-@media (max-width: 1400px) {
+@media (max-width: 1500px) {
   .header-tel { display: none; }
   .nav { gap: 22px; }
+}
+
+@media (max-width: 1320px) {
+  .header-callback { display: none; }
 }
 
 @media (max-width: 1260px) and (min-width: 1181px) {
@@ -188,8 +214,10 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
 
 @media (max-width: 680px) {
   .header-inner { height: 70px; gap: 16px; }
-  :root { --header-h: 70px; }
+  :root { --header-h: 98px; }
   .brand .sub { display: none; }
+  .header-trust-inner { padding-block: 6px; font-size: 11px; gap: 6px 10px; }
+  .header-trust-sep { display: none; }
 }
 
 .admin-bar .header {

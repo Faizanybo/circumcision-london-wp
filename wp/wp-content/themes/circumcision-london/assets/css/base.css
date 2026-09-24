@@ -32,7 +32,8 @@
   --maxw: 1220px;
   /* Header/footer shell. 1220px cannot fit 8 nav items + phone + Book. */
   --chrome-max: 1440px;
-  --header-h: 80px;
+  /* Main bar 80px + trust strip (~32px). */
+  --header-h: 112px;
   --r: 4px;
   --ease: cubic-bezier(.22, .61, .36, 1);
 }
@@ -196,7 +197,7 @@ ul, ol { margin: 0; padding: 0; }
 .card-group .age { color: var(--blue); margin-bottom: 12px; }
 .card-group h2, .card-group h3 { margin-bottom: 10px; }
 .card-group .price { font-family: var(--display); font-size: 24px; font-weight: 400; color: var(--ink-2); margin-bottom: 14px; }
-.card-group p { font-size: 15.5px; line-height: 1.68; color: var(--muted); }
+.card-group p { font-size: 15.5px; line-height: 1.68; color: var(--muted); overflow-wrap: anywhere; }
 .card-group .go { margin-top: auto; padding-top: 24px; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: var(--blue-deep); }
 .card-group .go::after { content: "→"; transition: transform .25s var(--ease); }
 .card-group:hover .go::after { transform: translateX(5px); }

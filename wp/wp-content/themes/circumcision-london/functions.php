@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CIL_VERSION', '0.13.4' );
+define( 'CIL_VERSION', '0.13.19' );
 
 /**
  * Clinic facts from the prototype. Do not invent replacements here.
@@ -58,7 +58,7 @@ function cil_clinic() {
 				'close' => '17:00',
 			),
 		),
-		'hours_note' => 'Sundays, public holidays and bank holidays: phone lines are closed, but some pre-booked appointments still go ahead.',
+		'hours_note' => 'Sundays/public holidays/bank holidays: phone lines closed; some pre-booked appointments may still take place.',
 		'cqc_url'    => 'https://www.cqc.org.uk/location/1-2192226003',
 		'cqc_rating' => 'Good',
 		'reviews'    => array(
@@ -428,13 +428,16 @@ function cil_default_nav() {
  */
 function cil_default_footer_who() {
 	return array(
-		array( 'label' => __( 'Babies and infants', 'circumcision-london' ), 'url' => home_url( '/babies/' ) ),
-		array( 'label' => __( 'Boys and teenagers', 'circumcision-london' ), 'url' => home_url( '/children/' ) ),
-		array( 'label' => __( 'Adult men', 'circumcision-london' ), 'url' => home_url( '/adults/' ) ),
-		array( 'label' => __( 'Religious and cultural', 'circumcision-london' ), 'url' => home_url( '/religious/' ) ),
+		array( 'label' => __( 'Babies & Toddlers', 'circumcision-london' ), 'url' => home_url( '/babies/' ) ),
+		array( 'label' => __( 'Children & Teenagers', 'circumcision-london' ), 'url' => home_url( '/children/' ) ),
+		array( 'label' => __( 'Adults', 'circumcision-london' ), 'url' => home_url( '/adults/' ) ),
+		array( 'label' => __( 'Religious & Cultural', 'circumcision-london' ), 'url' => home_url( '/religious/' ) ),
 		array( 'label' => __( 'Prices', 'circumcision-london' ), 'url' => home_url( '/prices/' ) ),
 		array( 'label' => __( 'Testimonials', 'circumcision-london' ), 'url' => home_url( '/testimonials/' ) ),
 		array( 'label' => __( 'Aftercare', 'circumcision-london' ), 'url' => home_url( '/aftercare/' ) ),
+		array( 'label' => __( 'Our Practitioners', 'circumcision-london' ), 'url' => home_url( '/team/' ) ),
+		array( 'label' => __( 'For Doctors', 'circumcision-london' ), 'url' => home_url( '/courses/' ) ),
+		array( 'label' => __( 'Visit / Contact', 'circumcision-london' ), 'url' => home_url( '/contact/' ) ),
 	);
 }
 
@@ -449,6 +452,7 @@ function cil_default_footer_reasons() {
 		array( 'label' => __( 'Balanitis', 'circumcision-london' ), 'url' => home_url( '/conditions/balanitis/' ) ),
 		array( 'label' => __( 'BXO', 'circumcision-london' ), 'url' => home_url( '/conditions/bxo/' ) ),
 		array( 'label' => __( 'Paraphimosis', 'circumcision-london' ), 'url' => home_url( '/conditions/paraphimosis/' ) ),
+		array( 'label' => __( 'Buried Penis', 'circumcision-london' ), 'url' => home_url( '/buried-penis/' ) ),
 		array( 'label' => __( 'Frenuloplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/frenuloplasty/' ) ),
 		array( 'label' => __( 'Preputioplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/preputioplasty/' ) ),
 	);
@@ -688,10 +692,20 @@ function cil_logo_html( $clinic ) {
 function cil_wordmark( $extra_class = '' ) {
 	$clinic = cil_clinic();
 	$class  = 'brand' . ( $extra_class ? ' ' . $extra_class : '' );
-	$label  = sprintf(
-		/* translators: %s: clinic legal name */
-		__( 'Circumcision in London at %s, home page', 'circumcision-london' ),
+	/*
+	 * Visual lockup stays logo + trading name. Full handover phrase is in aria-label
+	 * so we do not duplicate "at Beverley Clinic" against the logo lockup.
+	 */
+	$brand_line = sprintf(
+		/* translators: 1: trading name, 2: legal clinic name */
+		__( '%1$s at %2$s', 'circumcision-london' ),
+		$clinic['name'],
 		$clinic['legal_name']
+	);
+	$label = sprintf(
+		/* translators: %s: brand line */
+		__( '%s, home page', 'circumcision-london' ),
+		$brand_line
 	);
 	?>
 	<a class="<?php echo esc_attr( $class ); ?>" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( $label ); ?>">

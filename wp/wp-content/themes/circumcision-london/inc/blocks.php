@@ -224,6 +224,14 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
 					),
+					'html'        => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'facts'       => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
 					'posterId'    => array(
 						'type'    => 'number',
 						'default' => 0,
@@ -260,6 +268,8 @@ function cil_register_dynamic_blocks() {
 							'eyebrow'       => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
 							'title'         => isset( $attrs['title'] ) ? $attrs['title'] : '',
 							'sub'           => isset( $attrs['sub'] ) ? $attrs['sub'] : '',
+							'html'          => isset( $attrs['html'] ) ? $attrs['html'] : '',
+							'facts'         => cil_block_list( isset( $attrs['facts'] ) ? $attrs['facts'] : array() ),
 							'poster_id'     => isset( $attrs['posterId'] ) ? $attrs['posterId'] : 0,
 							'video_mp4_id'  => isset( $attrs['videoMp4Id'] ) ? $attrs['videoMp4Id'] : 0,
 							'video_webm_id' => isset( $attrs['videoWebmId'] ) ? $attrs['videoWebmId'] : 0,
@@ -446,6 +456,14 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'urgentTitle'  => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'urgentBody'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
@@ -458,6 +476,8 @@ function cil_register_dynamic_blocks() {
 							'eyebrow'      => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
 							'heading'      => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
 							'html'         => isset( $attrs['html'] ) ? $attrs['html'] : '',
+							'urgent_title' => isset( $attrs['urgentTitle'] ) ? $attrs['urgentTitle'] : '',
+							'urgent_body'  => isset( $attrs['urgentBody'] ) ? $attrs['urgentBody'] : '',
 						)
 					) . '</div>';
 				},
@@ -568,16 +588,26 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'boolean',
 						'default' => false,
 					),
+					'urgentTitle' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'urgentBody'  => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return cil_render_part(
 						'callback-card',
 						array(
-							'eyebrow' => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'title'   => isset( $attrs['title'] ) ? $attrs['title'] : '',
-							'id'      => isset( $attrs['formId'] ) ? $attrs['formId'] : 'callback',
-							'subject' => isset( $attrs['subject'] ) ? $attrs['subject'] : 'general enquiry',
-							'urgent'  => ! empty( $attrs['urgent'] ),
+							'eyebrow'      => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'title'        => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'id'           => isset( $attrs['formId'] ) ? $attrs['formId'] : 'callback',
+							'subject'      => isset( $attrs['subject'] ) ? $attrs['subject'] : 'general enquiry',
+							'urgent'       => ! empty( $attrs['urgent'] ),
+							'urgent_title' => isset( $attrs['urgentTitle'] ) ? $attrs['urgentTitle'] : '',
+							'urgent_body'  => isset( $attrs['urgentBody'] ) ? $attrs['urgentBody'] : '',
 						)
 					);
 				},

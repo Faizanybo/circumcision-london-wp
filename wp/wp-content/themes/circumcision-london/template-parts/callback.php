@@ -13,9 +13,11 @@ $form_id      = isset( $args['id'] ) ? $args['id'] : 'home';
 $form_subject = isset( $args['subject'] ) && $args['subject'] ? $args['subject'] : 'homepage callback';
 $card_eyebrow = ( isset( $args['card_eyebrow'] ) && '' !== $args['card_eyebrow'] ) ? $args['card_eyebrow'] : __( 'Request a call back', 'circumcision-london' );
 $card_title   = ( isset( $args['card_title'] ) && '' !== $args['card_title'] ) ? $args['card_title'] : __( 'Ask before you book', 'circumcision-london' );
-$eyebrow      = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'Being straight with you', 'circumcision-london' );
+$eyebrow      = array_key_exists( 'eyebrow', $args ) ? (string) $args['eyebrow'] : __( 'Being straight with you', 'circumcision-london' );
 $heading      = ( isset( $args['heading'] ) && '' !== $args['heading'] ) ? $args['heading'] : __( 'When we will tell you not to', 'circumcision-london' );
 $html         = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : '';
+$urgent_title = isset( $args['urgent_title'] ) ? (string) $args['urgent_title'] : '';
+$urgent_body  = isset( $args['urgent_body'] ) ? (string) $args['urgent_body'] : '';
 ?>
 <section class="section">
 	<div class="wrap">
@@ -38,7 +40,9 @@ $html         = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html
 			</div>
 
 			<div data-reveal>
+				<?php if ( $eyebrow ) : ?>
 				<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
+				<?php endif; ?>
 				<h2 class="display d-1"><?php echo esc_html( $heading ); ?></h2>
 				<div class="body-text" style="margin-top:24px">
 					<?php if ( $html ) : ?>
@@ -50,7 +54,22 @@ $html         = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html
 					<?php endif; ?>
 				</div>
 				<div style="margin-top:28px">
-					<?php get_template_part( 'template-parts/urgent-note' ); ?>
+					<?php
+					if ( $urgent_title || $urgent_body ) {
+						get_template_part(
+							'template-parts/callout',
+							null,
+							array(
+								'title'  => $urgent_title,
+								'body'   => $urgent_body,
+								'urgent' => true,
+								'level'  => 3,
+							)
+						);
+					} else {
+						get_template_part( 'template-parts/urgent-note' );
+					}
+					?>
 				</div>
 			</div>
 		</div>

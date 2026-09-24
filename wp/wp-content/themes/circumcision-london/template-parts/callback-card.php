@@ -9,10 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$eyebrow = isset( $args['eyebrow'] ) && $args['eyebrow'] ? $args['eyebrow'] : __( 'Request a call back', 'circumcision-london' );
-$title   = isset( $args['title'] ) && $args['title'] ? $args['title'] : __( 'Ask us first', 'circumcision-london' );
-$form_id = isset( $args['id'] ) && $args['id'] ? $args['id'] : 'callback';
-$subject = isset( $args['subject'] ) && $args['subject'] ? $args['subject'] : 'general enquiry';
+$eyebrow      = isset( $args['eyebrow'] ) && $args['eyebrow'] ? $args['eyebrow'] : __( 'Request a call back', 'circumcision-london' );
+$title        = isset( $args['title'] ) && $args['title'] ? $args['title'] : __( 'Ask us first', 'circumcision-london' );
+$form_id      = isset( $args['id'] ) && $args['id'] ? $args['id'] : 'callback';
+$subject      = isset( $args['subject'] ) && $args['subject'] ? $args['subject'] : 'general enquiry';
+$urgent_title = isset( $args['urgent_title'] ) ? (string) $args['urgent_title'] : '';
+$urgent_body  = isset( $args['urgent_body'] ) ? (string) $args['urgent_body'] : '';
 ?>
 <div class="card">
 	<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
@@ -28,7 +30,18 @@ $subject = isset( $args['subject'] ) && $args['subject'] ? $args['subject'] : 'g
 	);
 	?>
 </div>
-<?php if ( ! empty( $args['urgent'] ) ) : ?>
+<?php if ( $urgent_title || $urgent_body ) : ?>
+	<div style="margin-top:22px">
+		<div class="callout urgent" data-reveal>
+			<?php if ( $urgent_title ) : ?>
+				<h2 class="display d-3"><?php echo esc_html( $urgent_title ); ?></h2>
+			<?php endif; ?>
+			<?php if ( $urgent_body ) : ?>
+				<?php echo cil_rich_text( $urgent_body ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- allowlisted in cil_rich_text(). ?>
+			<?php endif; ?>
+		</div>
+	</div>
+<?php elseif ( ! empty( $args['urgent'] ) ) : ?>
 	<div style="margin-top:22px">
 		<?php get_template_part( 'template-parts/urgent-note' ); ?>
 	</div>

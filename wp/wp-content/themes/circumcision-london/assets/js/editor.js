@@ -535,6 +535,8 @@
         default:
           'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
       },
+      html: { type: 'string', default: '' },
+      facts: { type: 'array', default: [] },
       posterId: { type: 'number', default: 0 },
       videoMp4Id: { type: 'number', default: 0 },
       videoWebmId: { type: 'number', default: 0 },
@@ -546,7 +548,16 @@
     fields: [
       { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
       { key: 'title', label: 'Heading', tagName: 'h1', className: 'display d-hero' },
-      { key: 'sub', label: 'Subheading', kind: 'html', tagName: 'p', className: 'hero-sub' },
+      { key: 'html', label: 'Hero body', kind: 'html', tagName: 'div', className: 'hero-copy' },
+      {
+        key: 'facts',
+        label: 'Hero facts',
+        kind: 'repeater',
+        help: 'Leave empty to keep the current theme facts.',
+        blank: { text: '' },
+        fields: [{ key: 'text', label: 'Fact' }],
+        addLabel: 'Add fact',
+      },
       { key: 'ctaLabel', label: 'Button text', placeholder: 'Book a consultation' },
       { key: 'ctaUrl', label: 'Button URL', placeholder: '/book/' },
       { key: 'phoneLabel', label: 'Phone button text' },
@@ -577,10 +588,28 @@
             },
           }),
           el(TextareaControl, {
-            label: 'Subheading',
+            label: 'Hero body',
+            help: 'Use this for the homepage paragraphs. HTML paragraphs are allowed.',
+            value: props.attributes.html,
+            onChange: function (v) {
+              props.setAttributes({ html: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Short subheading',
+            help: 'Used only if Hero body is empty.',
             value: props.attributes.sub,
             onChange: function (v) {
               props.setAttributes({ sub: v });
+            },
+          }),
+          el(Repeater, {
+            items: props.attributes.facts,
+            blank: { text: '' },
+            fields: [{ key: 'text', label: 'Fact' }],
+            addLabel: 'Add fact',
+            onChange: function (next) {
+              props.setAttributes({ facts: next });
             },
           })
         ),
@@ -817,6 +846,8 @@
       eyebrow: { type: 'string', default: 'Being straight with you' },
       heading: { type: 'string', default: 'When we will tell you not to' },
       html: { type: 'string', default: '' },
+      urgentTitle: { type: 'string', default: '' },
+      urgentBody: { type: 'string', default: '' },
     },
     fields: [
       { key: 'cardEyebrow', label: 'Form eyebrow' },
@@ -824,6 +855,8 @@
       { key: 'eyebrow', label: 'Copy eyebrow', tagName: 'span', className: 'caps eyebrow' },
       { key: 'heading', label: 'Copy heading', tagName: 'h2', className: 'display d-1' },
       { key: 'html', label: 'Body', kind: 'html', help: 'Leave blank to keep the current default paragraphs.' },
+      { key: 'urgentTitle', label: 'Urgent heading', tagName: 'h2', className: 'display d-3' },
+      { key: 'urgentBody', label: 'Urgent body', kind: 'html', help: 'Leave blank to keep the current theme urgent note.' },
     ],
     inspect: function (props) {
       return el(
@@ -863,6 +896,21 @@
           value: props.attributes.html,
           onChange: function (v) {
             props.setAttributes({ html: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Urgent heading',
+          value: props.attributes.urgentTitle,
+          onChange: function (v) {
+            props.setAttributes({ urgentTitle: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Urgent body',
+          help: 'Leave blank to keep the current theme urgent note.',
+          value: props.attributes.urgentBody,
+          onChange: function (v) {
+            props.setAttributes({ urgentBody: v });
           },
         }),
         el(TextControl, {
@@ -969,10 +1017,14 @@
       formId: { type: 'string', default: 'callback' },
       subject: { type: 'string', default: 'general enquiry' },
       urgent: { type: 'boolean', default: false },
+      urgentTitle: { type: 'string', default: '' },
+      urgentBody: { type: 'string', default: '' },
     },
     fields: [
       { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
       { key: 'title', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'urgentTitle', label: 'Urgent heading', tagName: 'h2', className: 'display d-3' },
+      { key: 'urgentBody', label: 'Urgent body', kind: 'html', help: 'Leave blank to keep the current theme urgent note.' },
     ],
     inspect: function (props) {
       return el(
@@ -1011,6 +1063,21 @@
           checked: !!props.attributes.urgent,
           onChange: function (v) {
             props.setAttributes({ urgent: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Urgent heading',
+          value: props.attributes.urgentTitle,
+          onChange: function (v) {
+            props.setAttributes({ urgentTitle: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Urgent body',
+          help: 'Leave blank to keep the current theme urgent note.',
+          value: props.attributes.urgentBody,
+          onChange: function (v) {
+            props.setAttributes({ urgentBody: v });
           },
         })
       );

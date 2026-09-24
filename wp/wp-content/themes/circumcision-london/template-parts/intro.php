@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $img      = cil_asset( 'images/' );
-$eyebrow  = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'Welcome to the clinic', 'circumcision-london' );
+$eyebrow  = array_key_exists( 'eyebrow', $args ) ? (string) $args['eyebrow'] : __( 'Welcome to the clinic', 'circumcision-london' );
 $heading  = ( isset( $args['heading'] ) && '' !== $args['heading'] ) ? $args['heading'] : __( 'Choosing circumcision is an important decision. We will talk you through all of it.', 'circumcision-london' );
 $html     = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : '';
 $image_id = isset( $args['image_id'] ) ? cil_attachment_id( $args['image_id'] ) : 0;
@@ -28,7 +28,9 @@ $image_html = $image_id ? cil_attachment_image_html(
 	<div class="wrap">
 		<div class="split">
 			<div data-reveal>
+				<?php if ( $eyebrow ) : ?>
 				<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
+				<?php endif; ?>
 				<h2 class="display d-1"><?php echo esc_html( $heading ); ?></h2>
 				<div class="body-text" style="margin-top:24px">
 					<?php if ( $html ) : ?>
