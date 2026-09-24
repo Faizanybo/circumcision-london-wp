@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CIL_VERSION', '0.13.19' );
+define( 'CIL_VERSION', '0.13.20' );
 
 /**
  * Clinic facts from the prototype. Do not invent replacements here.
