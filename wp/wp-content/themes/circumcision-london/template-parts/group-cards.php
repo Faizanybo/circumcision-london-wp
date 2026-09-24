@@ -14,14 +14,28 @@ $level   = in_array( $level, array( 2, 3 ), true ) ? $level : 3;
 $exclude = isset( $args['exclude'] ) ? $args['exclude'] : '';
 $groups  = ( isset( $args['items'] ) && is_array( $args['items'] ) && $args['items'] ) ? $args['items'] : cil_groups();
 $tag     = 'h' . $level;
-$i       = 0;
+
+$visible = array();
+foreach ( $groups as $group ) {
+	if ( $exclude && untrailingslashit( $group['href'] ) === untrailingslashit( $exclude ) ) {
+		continue;
+	}
+	$visible[] = $group;
+}
+
+$count      = count( $visible );
+$grid_class = 'grid g-3';
+if ( 2 === $count ) {
+	$grid_class = 'grid g-2 card-groups-2';
+} elseif ( 1 === $count ) {
+	$grid_class = 'grid g-1 card-groups-1';
+}
+
+$i = 0;
 ?>
-<div class="grid g-3">
-	<?php foreach ( $groups as $group ) : ?>
+<div class="<?php echo esc_attr( $grid_class ); ?>">
+	<?php foreach ( $visible as $group ) : ?>
 		<?php
-		if ( $exclude && untrailingslashit( $group['href'] ) === untrailingslashit( $exclude ) ) {
-			continue;
-		}
 		$delay = $i * 90;
 		$i++;
 		?>

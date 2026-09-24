@@ -15,6 +15,15 @@ $form_id      = isset( $args['id'] ) && $args['id'] ? $args['id'] : 'callback';
 $subject      = isset( $args['subject'] ) && $args['subject'] ? $args['subject'] : 'general enquiry';
 $urgent_title = isset( $args['urgent_title'] ) ? (string) $args['urgent_title'] : '';
 $urgent_body  = isset( $args['urgent_body'] ) ? (string) $args['urgent_body'] : '';
+$has_urgent   = ( '' !== $urgent_title || '' !== $urgent_body || ! empty( $args['urgent'] ) );
+
+/*
+ * Inside cil/split (CSS grid), card + urgent must be ONE column. Emitting them as
+ * siblings made the urgent note a third grid cell and left a blank column.
+ */
+if ( $has_urgent ) {
+	echo '<div class="split-aside">';
+}
 ?>
 <div class="card">
 	<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
@@ -46,3 +55,7 @@ $urgent_body  = isset( $args['urgent_body'] ) ? (string) $args['urgent_body'] : 
 		<?php get_template_part( 'template-parts/urgent-note' ); ?>
 	</div>
 <?php endif; ?>
+<?php
+if ( $has_urgent ) {
+	echo '</div>';
+}

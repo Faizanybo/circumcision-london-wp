@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CIL_VERSION', '0.13.20' );
+define( 'CIL_VERSION', '0.13.21' );
 
 /**
  * Clinic facts from the prototype. Do not invent replacements here.
@@ -257,6 +257,16 @@ function cil_body_classes( $classes ) {
 	}
 	if ( is_404() ) {
 		$classes[] = 'page-404';
+	}
+	/* Ensure page-{slug} exists (WP core sometimes omits it; CSS must not rely on page-id-N). */
+	if ( is_singular( 'page' ) ) {
+		$post = get_queried_object();
+		if ( $post instanceof WP_Post && $post->post_name ) {
+			$slug_class = sanitize_html_class( 'page-' . $post->post_name );
+			if ( $slug_class && ! in_array( $slug_class, $classes, true ) ) {
+				$classes[] = $slug_class;
+			}
+		}
 	}
 	return $classes;
 }

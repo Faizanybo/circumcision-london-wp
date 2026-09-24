@@ -252,58 +252,56 @@
   .cil-cliniko-bookings iframe { min-height: 720px; }
 }
 
-/* Age pages: a leftover split/grid item sat left with an empty column.
-   Use page-{slug} (not page-id-N) so LocalWP and Vercel IDs both work.
-   Do not override .split align-items — the figure stays vertically centered on the form. */
-body.page-babies .split > :has(> .callout.urgent),
-body.page-babies .split > .callout.urgent,
-body.page-children .split > :has(> .callout.urgent),
-body.page-children .split > .callout.urgent,
-body.page-adults .split > :has(> .callout.urgent),
-body.page-adults .split > .callout.urgent {
+/* Callback form + urgent note share one split column (see callback-card.php). */
+.split-aside {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Fallback if an urgent note is still emitted as its own split grid cell. */
+.split > :has(> .callout.urgent),
+.split > .callout.urgent {
   grid-column: 1 / -1;
   max-width: 780px;
   width: 100%;
   justify-self: center;
 }
-body.page-babies .grid.g-3:has(> .card-group:nth-child(2):last-child),
-body.page-children .grid.g-3:has(> .card-group:nth-child(2):last-child),
-body.page-adults .grid.g-3:has(> .card-group:nth-child(2):last-child) {
+
+/* Two age cards: use a centered 2-col band instead of a sparse 3-col grid. */
+.grid.card-groups-2 {
+  max-width: 820px;
+  width: 100%;
+  margin-inline: auto;
+}
+.grid.card-groups-1 {
+  max-width: 400px;
+  width: 100%;
+  margin-inline: auto;
+}
+/* Legacy markup still on g-3 with only two cards. */
+.grid.g-3:has(> .card-group:nth-child(2):last-child) {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   max-width: 820px;
   width: 100%;
   margin-inline: auto;
 }
 @media (max-width: 680px) {
-  body.page-babies .grid.g-3:has(> .card-group:nth-child(2):last-child),
-  body.page-children .grid.g-3:has(> .card-group:nth-child(2):last-child),
-  body.page-adults .grid.g-3:has(> .card-group:nth-child(2):last-child) {
+  .grid.g-3:has(> .card-group:nth-child(2):last-child) {
     grid-template-columns: minmax(0, 1fr);
     max-width: none;
   }
 }
 
 /* Book/Call buttons nested inside .body-text inherit the body-link colour; restore white label. */
-body.page-re-circumcision .body-text a.btn,
-body.page-re-circumcision .body-text a.btn:hover,
-body.page-buried-penis .body-text a.btn,
-body.page-buried-penis .body-text a.btn:hover,
-body.page-phimosis .body-text a.btn,
-body.page-phimosis .body-text a.btn:hover,
-body.page-balanitis .body-text a.btn,
-body.page-balanitis .body-text a.btn:hover,
-body.page-bxo .body-text a.btn,
-body.page-bxo .body-text a.btn:hover,
-body.page-paraphimosis .body-text a.btn,
-body.page-paraphimosis .body-text a.btn:hover,
-body.page-courses .body-text a.btn,
-body.page-courses .body-text a.btn:hover {
+.body-text a.btn,
+.body-text a.btn:hover {
   color: #fff;
 }
 
-/* Religious (/religious/) only: the third age card sat left on the tablet 2-col wrap. */
+/* Three age cards on tablet 2-col wrap: center the leftover third card. */
 @media (max-width: 900px) and (min-width: 681px) {
-  body.page-religious .grid.g-3:has(> .card-group:nth-child(3):last-child) > .card-group:last-child {
+  .grid.g-3:has(> .card-group:nth-child(3):last-child) > .card-group:last-child {
     grid-column: 1 / -1;
     max-width: 336px;
     width: 100%;
