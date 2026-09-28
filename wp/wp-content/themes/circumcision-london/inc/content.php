@@ -335,6 +335,30 @@ function cil_testimonials() {
 }
 
 /**
+ * Written testimonials page quotes: verified cards first, then clearly
+ * labelled replaceable samples so pagination can be demonstrated.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function cil_testimonials_page_quotes() {
+	$quotes = cil_testimonials();
+	$letters = range( 'A', 'V' );
+	foreach ( $letters as $letter ) {
+		$quotes[] = array(
+			'name'    => sprintf(
+				/* translators: %s: sample letter A–V */
+				__( 'Sample parent %s (replace in editor)', 'circumcision-london' ),
+				$letter
+			),
+			'context' => __( 'Placeholder sample — replace with a permissioned review', 'circumcision-london' ),
+			'quote'   => __( 'This is placeholder sample text for layout and pagination only. It is not a real patient review. Open this page in the block editor and replace or remove this card.', 'circumcision-london' ),
+			'sample'  => true,
+		);
+	}
+	return $quotes;
+}
+
+/**
  * Homepage process steps from the prototype.
  *
  * @return array<int, array<string, string>>

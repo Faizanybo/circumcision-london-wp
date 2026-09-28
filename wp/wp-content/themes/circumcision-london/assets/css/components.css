@@ -69,13 +69,172 @@
   background: var(--card); border: 1px solid var(--line); border-radius: 6px;
   padding: clamp(24px, 2.4vw, 34px);
   display: flex; flex-direction: column; gap: 16px; margin: 0;
+  min-width: 0;
 }
 .quote blockquote {
   margin: 0; font-family: var(--display); font-weight: 300; font-style: italic;
   font-size: clamp(19px, 1.6vw, 22px); line-height: 1.46; color: var(--ink-2);
+  overflow-wrap: anywhere; word-break: break-word;
 }
 .quote .meta { margin-top: auto; font-size: 14px; color: var(--muted-2); }
 .stars { color: var(--blue); font-size: 14px; letter-spacing: .18em; }
+.quote--sample { border-style: dashed; background: var(--paper); }
+.quote-sample-badge {
+  display: inline-block; align-self: flex-start;
+  font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--amber);
+  padding: 4px 10px; border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--card);
+}
+
+.testimonials-video-cta {
+  margin-top: clamp(28px, 3.2vw, 44px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+.testimonials-video-cta .btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-inline: auto;
+  min-width: min(100%, 220px);
+}
+.testimonials-video-cta .muted {
+  margin-inline: auto;
+  text-align: center;
+}
+.testimonials-cta-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+}
+.testimonials-cta-center .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
+  margin-inline: auto;
+  min-width: min(100%, 220px);
+}
+
+/* Written testimonials: centre incomplete last rows on desktop / tablet. */
+@media (min-width: 901px) {
+  /* One leftover in a 3-col row → middle column. */
+  .cil-quotes-grid.g-3 > .quote:last-child:nth-child(3n + 1) {
+    grid-column: 2;
+  }
+
+  /* Two leftovers → 6-col track so the pair sits centred with equal side space. */
+  .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) > .quote {
+    grid-column: span 2;
+  }
+  .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) > .quote:nth-last-child(2) {
+    grid-column: 2 / span 2;
+  }
+  .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) > .quote:last-child {
+    grid-column: 4 / span 2;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 681px) {
+  /* One leftover in a 2-col row → centred. */
+  .cil-quotes-grid.g-3 > .quote:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: calc((100% - clamp(20px, 2.6vw, 40px)) / 2);
+    width: 100%;
+    justify-self: center;
+  }
+}
+
+.cil-pagination {
+  margin-top: clamp(28px, 3.5vw, 44px);
+  padding-top: clamp(20px, 2.4vw, 28px);
+  border-top: 1px solid var(--line);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.cil-pagination__list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+}
+.cil-pagination__item {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; padding: 0 14px;
+  border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--card); color: var(--ink); text-decoration: none;
+  font-family: var(--sans); font-size: 15px; font-weight: 500;
+  transition: border-color .25s var(--ease), color .25s var(--ease), background .25s var(--ease);
+}
+a.cil-pagination__item:hover {
+  border-color: var(--blue); color: var(--blue-deep); background: var(--blue-soft);
+}
+.cil-pagination__item.is-current {
+  border-color: var(--blue-deep); background: var(--blue-deep); color: #fff;
+}
+.cil-pagination__meta { margin: 0; font-size: 14px; text-align: center; }
+
+.cil-video-empty {
+  margin-top: clamp(20px, 2.4vw, 28px);
+  padding: clamp(24px, 3vw, 36px);
+  background: var(--paper);
+  border: 1px dashed var(--line);
+  border-radius: 6px;
+  max-width: 62ch;
+}
+.cil-video-section--flush {
+  padding-block: clamp(12px, 1.8vw, 28px) clamp(36px, 4vw, 64px);
+}
+.cil-video-card {
+  min-width: 0;
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: none;
+}
+.cil-video-card__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #101820;
+  overflow: hidden;
+}
+.cil-video-card__player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #101820;
+  border: 0;
+}
+.cil-video-card__caption {
+  padding: 14px 18px 16px;
+  margin: 0;
+}
+
+/* Dedicated video testimonials page: tighten intro → grid spacing only. */
+.page-video-testimonials .page-head {
+  padding-block: clamp(28px, 3.2vw, 52px) clamp(12px, 1.6vw, 24px);
+}
+.page-video-testimonials .page-head .lede {
+  margin-top: 16px;
+  max-width: 42rem;
+}
 
 .rating-badge {
   display: inline-flex; align-items: center; gap: 16px;

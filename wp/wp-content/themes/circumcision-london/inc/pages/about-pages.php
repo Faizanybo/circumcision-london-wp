@@ -1,6 +1,6 @@
 <?php
 /**
- * Team, testimonials and courses pages from the prototype.
+ * Team, testimonials, video testimonials and courses pages from the prototype.
  *
  * @package Circumcision_London
  */
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Prototype data for /team, /testimonials and /courses.
+ * Prototype data for /team, /testimonials, /video-testimonials and /courses.
  *
  * @return array<string, array<string, mixed>>
  */
@@ -87,13 +87,33 @@ function cil_about_pages() {
 			'path'        => '/testimonials',
 			'name'        => 'Testimonials',
 			'title'       => 'Patient Testimonials | Circumcision Clinic in London',
-			'description' => 'What parents and patients say about circumcision at our Edgware clinic, plus 4.9 from 2,092 Google reviews. Most of our patients are sent by family and friends.',
+			'description' => 'Read patient and parent feedback about baby, child and adult circumcision at Beverley Clinic in Edgware.',
 			'eyebrow'     => $clinic['reviews']['rating'] . ' from ' . $clinic['reviews']['count_display'] . ' Google reviews',
-			'h1'          => 'What patients and parents say',
-			'lede'        => 'A mix of feedback given to us directly, immediately after the circumcision, and reviews left publicly on Google. The figure above was checked on ' . $clinic['reviews']['verified'] . ' and we refresh it quarterly.',
+			'h1'          => 'Patient testimonials',
+			'lede'        => 'Most of our patients come to us through recommendations from family and friends. We are grateful to the parents and patients who have shared feedback about their experience of the clinic. The Google rating above was checked on ' . $clinic['reviews']['verified'] . '.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Testimonials',
+					'href'  => '',
+				),
+			),
+		),
+		'video-testimonials' => array(
+			'slug'        => 'video-testimonials',
+			'path'        => '/video-testimonials',
+			'name'        => 'Video testimonials',
+			'title'       => 'Video Testimonials | Circumcision Clinic in London',
+			'description' => 'Video testimonials from parents and patients at Beverley Clinic in Edgware. Selected, permissioned videos only.',
+			'eyebrow'     => 'Video testimonials',
+			'h1'          => 'Video testimonials',
+			'lede'        => 'Hear directly from parents and patients about their experience.',
+			'crumbs'      => array(
+				array(
+					'label' => 'Testimonials',
+					'href'  => home_url( '/testimonials/' ),
+				),
+				array(
+					'label' => 'Video testimonials',
 					'href'  => '',
 				),
 			),
@@ -130,6 +150,9 @@ function cil_about_page_blocks( $slug ) {
 	}
 	if ( 'testimonials' === $slug ) {
 		return cil_testimonials_page_blocks();
+	}
+	if ( 'video-testimonials' === $slug ) {
+		return cil_video_testimonials_page_blocks();
 	}
 	if ( 'courses' === $slug ) {
 		return cil_courses_page_blocks();
@@ -407,6 +430,14 @@ function cil_testimonials_page_blocks() {
 		) .
 		'</div>';
 
+	$video_cta = '<div class="testimonials-video-cta" data-reveal>' .
+		'<a class="btn" href="' . esc_url( home_url( '/video-testimonials/' ) ) . '" data-track="video-testimonials-from-written">' .
+		esc_html__( 'Video testimonials', 'circumcision-london' ) .
+		'</a>' .
+		'<p class="muted" style="margin-top:12px;max-width:36ch">' .
+		esc_html__( 'Prefer to watch? See selected clinic video feedback on a separate page.', 'circumcision-london' ) .
+		'</p></div>';
+
 	$why = cil_proto_html(
 		'<div data-reveal>
         <span class="caps eyebrow">Why it matters to us</span>
@@ -452,13 +483,7 @@ function cil_testimonials_page_blocks() {
 		),
 		array(
 			cil_rich_html_block( $badges ),
-		)
-	);
-
-	$blocks[] = cil_dyn_block(
-		'cil/video-grid',
-		array(
-			'items' => array(),
+			cil_rich_html_block( $video_cta ),
 		)
 	);
 
@@ -473,15 +498,16 @@ function cil_testimonials_page_blocks() {
 				'cil/section-head',
 				array(
 					'eyebrow' => 'In their own words',
-					'heading' => 'Feedback given to us on the day',
-					'lede'    => 'These were left by name on our public reviews. We have not edited them beyond trimming for length.',
+					'heading' => 'Written testimonials',
+					'lede'    => 'Selected, permissioned feedback. Ten reviews per page — use the page numbers below to browse. Cards marked Sample are placeholders for layout only; replace them in the block editor.',
 					'display' => 'd-1',
 				)
 			),
 			cil_dyn_block(
 				'cil/quotes-grid',
 				array(
-					'quotes' => cil_testimonials(),
+					'quotes'  => cil_testimonials_page_quotes(),
+					'perPage' => 10,
 				)
 			),
 		)
@@ -526,6 +552,120 @@ function cil_testimonials_page_blocks() {
 					'body'   => $callout_body,
 					'urgent' => false,
 					'level'  => 2,
+				)
+			),
+		)
+	);
+
+	$blocks[] = cil_dyn_block( 'cil/cta-band', array() );
+
+	return cil_serialize_blocks( $blocks );
+}
+
+/**
+ * Gutenberg markup for /video-testimonials.
+ *
+ * @param array<int, array<string, mixed>>|null $video_items Optional seed items (attachment IDs / URLs).
+ * @return string
+ */
+function cil_video_testimonials_page_blocks( $video_items = null ) {
+	$page = cil_about_pages()['video-testimonials'];
+
+	if ( null === $video_items ) {
+		/**
+		 * Seed video-grid items when rebuilding the Video Testimonials page.
+		 *
+		 * @param array<int, array<string, mixed>> $items Video grid items.
+		 */
+		$video_items = apply_filters( 'cil_video_testimonials_seed_items', array() );
+	}
+	if ( ! is_array( $video_items ) ) {
+		$video_items = array();
+	}
+
+	$has_videos = false;
+	foreach ( $video_items as $item ) {
+		$resolved = cil_resolve_video_item( is_array( $item ) ? $item : array() );
+		if ( ! empty( $resolved['mp4'] ) || ! empty( $resolved['webm'] ) ) {
+			$has_videos = true;
+			break;
+		}
+	}
+
+	$written_cta = '<div class="testimonials-video-cta" data-reveal>' .
+		'<a class="btn" href="' . esc_url( home_url( '/testimonials/' ) ) . '" data-track="written-testimonials-from-video">' .
+		esc_html__( 'Written testimonials', 'circumcision-london' ) .
+		'</a></div>';
+
+	$lede = $has_videos
+		? $page['lede']
+		: 'Selected video feedback from parents and patients. Videos are added here only when approved for publication.';
+
+	$blocks   = array();
+	$blocks[] = cil_dyn_block(
+		'cil/page-head',
+		array(
+			'eyebrow' => $page['eyebrow'],
+			'title'   => $page['h1'],
+			'lede'    => $lede,
+			'crumbs'  => $page['crumbs'],
+		)
+	);
+
+	$blocks[] = cil_dyn_block(
+		'cil/video-grid',
+		array(
+			'items'     => array_values( $video_items ),
+			'showEmpty' => ! $has_videos,
+			'showHead'  => false,
+			'eyebrow'   => '',
+			'heading'   => '',
+			'lede'      => '',
+		)
+	);
+
+	$blocks[] = cil_section_block(
+		array(
+			'size' => 'section-sm',
+			'band' => '',
+			'wrap' => 'wrap',
+		),
+		array(
+			cil_rich_html_block( $written_cta ),
+		)
+	);
+
+	$blocks[] = cil_section_block(
+		array(
+			'size' => 'section',
+			'band' => '',
+			'wrap' => 'wrap',
+		),
+		array(
+			cil_split_block(
+				array(
+					cil_html_block(
+						cil_proto_html(
+							'<div data-reveal>
+        <span class="caps eyebrow">Written feedback</span>
+        <h2 class="display d-1">Prefer to read?</h2>
+        <div class="body-text" style="margin-top:22px">
+          <p>Most of our patients come to us through recommendations from family and friends. You can also browse written testimonials on a separate page.</p>
+        </div>
+        <p class="testimonials-cta-center"><a class="btn" href="' . esc_url( home_url( '/testimonials/' ) ) . '" data-track="written-from-video-mid">Written testimonials</a></p>
+      </div>'
+						)
+					),
+					cil_dyn_block(
+						'cil/callback-card',
+						array(
+							'eyebrow' => 'Request a call back',
+							'title'   => 'Ask us anything',
+							'formId'  => 'video-testimonials',
+							'subject' => 'video testimonials page enquiry',
+							'urgent'  => false,
+						)
+					),
 				)
 			),
 		)

@@ -219,14 +219,46 @@ function cil_resolve_video_item( $item ) {
 	if ( ! is_array( $item ) ) {
 		return array();
 	}
-	if ( empty( $item['poster'] ) && ! empty( $item['posterId'] ) ) {
-		$item['poster'] = cil_attachment_url( $item['posterId'], 'image' );
+	// Prefer Media Library attachment URLs over stored strings so editor
+	// replacements stay in sync (avoids stale .mov paths after re-upload).
+	if ( ! empty( $item['posterId'] ) ) {
+		$url = cil_attachment_url( $item['posterId'], 'image' );
+		if ( $url ) {
+			$item['poster'] = $url;
+		}
 	}
-	if ( empty( $item['mp4'] ) && ! empty( $item['mp4Id'] ) ) {
-		$item['mp4'] = cil_attachment_url( $item['mp4Id'], 'video' );
+	if ( ! empty( $item['mp4Id'] ) ) {
+		$url = cil_attachment_url( $item['mp4Id'], 'video' );
+		if ( $url ) {
+			$item['mp4'] = $url;
+		}
 	}
-	if ( empty( $item['webm'] ) && ! empty( $item['webmId'] ) ) {
-		$item['webm'] = cil_attachment_url( $item['webmId'], 'video' );
+	if ( ! empty( $item['webmId'] ) ) {
+		$url = cil_attachment_url( $item['webmId'], 'video' );
+		if ( $url ) {
+			$item['webm'] = $url;
+		}
 	}
 	return $item;
+}
+
+/**
+ * Guess an HTML5 video MIME type from a media URL.
+ *
+ * @param string $url Media URL.
+ * @return string
+ */
+function cil_video_mime_from_url( $url ) {
+	$path = wp_parse_url( $url, PHP_URL_PATH );
+	$ext  = $path ? strtolower( pathinfo( $path, PATHINFO_EXTENSION ) ) : '';
+	if ( 'webm' === $ext ) {
+		return 'video/webm';
+	}
+	if ( 'mov' === $ext || 'qt' === $ext ) {
+		return 'video/quicktime';
+	}
+	if ( 'm4v' === $ext ) {
+		return 'video/x-m4v';
+	}
+	return 'video/mp4';
 }

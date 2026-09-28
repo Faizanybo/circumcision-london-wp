@@ -700,11 +700,15 @@ function cil_register_dynamic_blocks() {
 			$common,
 			array(
 				'title'           => __( 'Testimonial grid', 'circumcision-london' ),
-				'description'     => __( 'Three prototype testimonials, or custom quotes.', 'circumcision-london' ),
+				'description'     => __( 'Editable testimonials with optional numbered pagination.', 'circumcision-london' ),
 				'attributes'      => array(
-					'quotes' => array(
+					'quotes'  => array(
 						'type'    => 'array',
 						'default' => array(),
+					),
+					'perPage' => array(
+						'type'    => 'number',
+						'default' => 0,
 					),
 				),
 				'render_callback' => function ( $attrs ) {
@@ -712,6 +716,10 @@ function cil_register_dynamic_blocks() {
 					$args   = array();
 					if ( $quotes ) {
 						$args['quotes'] = $quotes;
+					}
+					$per_page = isset( $attrs['perPage'] ) ? (int) $attrs['perPage'] : 0;
+					if ( $per_page > 0 ) {
+						$args['per_page'] = $per_page;
 					}
 					return cil_render_part( 'quotes-grid', $args );
 				},
@@ -1060,11 +1068,31 @@ function cil_register_dynamic_blocks() {
 			$common,
 			array(
 				'title'           => __( 'Video testimonials', 'circumcision-london' ),
-				'description'     => __( 'Renders nothing until videos are supplied. Matches the prototype empty state.', 'circumcision-london' ),
+				'description'     => __( 'Video grid. Empty on the homepage until items are added; dedicated pages can show an empty state.', 'circumcision-london' ),
 				'attributes'      => array(
-					'items' => array(
+					'items'     => array(
 						'type'    => 'array',
 						'default' => array(),
+					),
+					'eyebrow'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'heading'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'lede'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'showEmpty' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'showHead'  => array(
+						'type'    => 'boolean',
+						'default' => true,
 					),
 				),
 				'render_callback' => function ( $attrs ) {
@@ -1076,12 +1104,21 @@ function cil_register_dynamic_blocks() {
 						}
 						$items[] = $item;
 					}
-					return cil_render_part(
-						'video-grid',
-						array(
-							'items' => $items,
-						)
+					$args = array(
+						'items'      => $items,
+						'show_empty' => ! empty( $attrs['showEmpty'] ),
+						'show_head'  => ! isset( $attrs['showHead'] ) || ! empty( $attrs['showHead'] ),
 					);
+					if ( ! empty( $attrs['eyebrow'] ) ) {
+						$args['eyebrow'] = $attrs['eyebrow'];
+					}
+					if ( ! empty( $attrs['heading'] ) ) {
+						$args['heading'] = $attrs['heading'];
+					}
+					if ( ! empty( $attrs['lede'] ) ) {
+						$args['lede'] = $attrs['lede'];
+					}
+					return cil_render_part( 'video-grid', $args );
 				},
 			)
 		)

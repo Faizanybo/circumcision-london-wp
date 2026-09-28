@@ -136,7 +136,9 @@
 
     function update(i, key, value) {
       var next = items.slice();
-      next[i] = Object.assign({}, next[i] || {}, { [key]: value });
+      var patch = {};
+      patch[key] = value;
+      next[i] = Object.assign({}, next[i] || {}, patch);
       props.onChange(next);
     }
 
@@ -161,6 +163,16 @@
             style: { border: '1px solid #d9e3ee', borderRadius: '4px', padding: '10px', marginBottom: '10px' },
           },
           props.fields.map(function (field) {
+            if (field.kind === 'toggle') {
+              return el(ToggleControl, {
+                key: field.key,
+                label: field.label,
+                checked: !!item[field.key],
+                onChange: function (v) {
+                  update(i, field.key, v);
+                },
+              });
+            }
             var Control = field.rows ? TextareaControl : TextControl;
             return el(Control, {
               key: field.key,
@@ -1449,6 +1461,7 @@
     icon: 'testimonial',
     attributes: {
       quotes: { type: 'array', default: [] },
+      perPage: { type: 'number', default: 0 },
     },
     inspect: function (props) {
       return el(
@@ -1457,15 +1470,24 @@
         el(
           'p',
           { style: { fontSize: '13px', color: '#55637a' } },
-          'Leave empty to use the three homepage testimonials.'
+          'Leave empty to use the three homepage testimonials. Set “Per page” to 10 (or another number) to enable numbered pagination on the front end.'
         ),
+        el(TextControl, {
+          label: 'Per page (0 = show all)',
+          type: 'number',
+          value: props.attributes.perPage || 0,
+          onChange: function (v) {
+            props.setAttributes({ perPage: parseInt(v, 10) || 0 });
+          },
+        }),
         el(Repeater, {
           items: props.attributes.quotes,
-          blank: { name: '', context: '', quote: '' },
+          blank: { name: '', context: '', quote: '', sample: false },
           fields: [
             { key: 'quote', label: 'Quote', rows: 4 },
             { key: 'name', label: 'Name' },
             { key: 'context', label: 'Context' },
+            { key: 'sample', label: 'Sample / placeholder (not a real review)', kind: 'toggle' },
           ],
           addLabel: 'Add quote',
           onChange: function (next) {
@@ -1617,6 +1639,11 @@
     icon: 'video-alt3',
     attributes: {
       items: { type: 'array', default: [] },
+      eyebrow: { type: 'string', default: '' },
+      heading: { type: 'string', default: '' },
+      lede: { type: 'string', default: '' },
+      showEmpty: { type: 'boolean', default: false },
+      showHead: { type: 'boolean', default: true },
     },
     inspect: function (props) {
       var items = props.attributes.items && props.attributes.items.length ? props.attributes.items.slice() : [];
@@ -1631,8 +1658,44 @@
         el(
           'p',
           { style: { fontSize: '13px', color: '#55637a' } },
-          'Renders nothing until at least one video file or URL is added. Large videos should use an external URL, not a WordPress upload.'
+          'Attach browser-playable MP4 (H.264) or WebM files from the Media Library. HEVC/QuickTime .mov files often show 0:00 in Chrome/Edge — convert to H.264 MP4 for playback.'
         ),
+        el(TextControl, {
+          label: 'Eyebrow (optional)',
+          value: props.attributes.eyebrow || '',
+          onChange: function (v) {
+            props.setAttributes({ eyebrow: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Heading (optional)',
+          value: props.attributes.heading || '',
+          onChange: function (v) {
+            props.setAttributes({ heading: v });
+          },
+        }),
+        el(TextareaControl, {
+          label: 'Lede (optional)',
+          value: props.attributes.lede || '',
+          onChange: function (v) {
+            props.setAttributes({ lede: v });
+          },
+          rows: 3,
+        }),
+        el(ToggleControl, {
+          label: 'Show section heading above grid',
+          checked: props.attributes.showHead !== false,
+          onChange: function (v) {
+            props.setAttributes({ showHead: !!v });
+          },
+        }),
+        el(ToggleControl, {
+          label: 'Show empty state when no videos',
+          checked: !!props.attributes.showEmpty,
+          onChange: function (v) {
+            props.setAttributes({ showEmpty: v });
+          },
+        }),
         items.map(function (item, i) {
           return el(
             'div',
@@ -1653,7 +1716,7 @@
               value: item.posterId,
               clearLabel: 'Remove',
               onSelect: function (media) {
-                updateItem(i, { posterId: media.id || 0 });
+                updateItem(i, { posterId: media.id || 0, poster: media.url || '' });
               },
             }),
             el(AttachmentControl, {
@@ -1662,7 +1725,7 @@
               value: item.mp4Id,
               clearLabel: 'Remove',
               onSelect: function (media) {
-                updateItem(i, { mp4Id: media.id || 0 });
+                updateItem(i, { mp4Id: media.id || 0, mp4: media.url || '' });
               },
             }),
             el(AttachmentControl, {
@@ -1671,7 +1734,7 @@
               value: item.webmId,
               clearLabel: 'Remove',
               onSelect: function (media) {
-                updateItem(i, { webmId: media.id || 0 });
+                updateItem(i, { webmId: media.id || 0, webm: media.url || '' });
               },
             }),
             el(TextControl, {
@@ -1683,7 +1746,7 @@
             }),
             el(TextControl, {
               label: 'MP4 URL (optional)',
-              help: 'Use for videos hosted outside WordPress.',
+              help: 'Use for videos hosted outside WordPress. Prefer H.264 MP4 for Chrome/Edge.',
               value: item.mp4 || '',
               onChange: function (v) {
                 updateItem(i, { mp4: v });
