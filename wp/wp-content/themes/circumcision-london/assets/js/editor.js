@@ -541,11 +541,11 @@
     icon: 'cover-image',
     attributes: {
       eyebrow: { type: 'string', default: 'CQC registered · Edgware, North-West London' },
-      title: { type: 'string', default: 'A dedicated circumcision clinic in North-West London' },
+      title: { type: 'string', default: 'Dedicated Circumcision Clinic in London' },
       sub: {
         type: 'string',
         default:
-          'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
+          'Two experienced practitioners who have trained UK and International doctors. Local anaesthetic every time.',
       },
       html: { type: 'string', default: '' },
       facts: { type: 'array', default: [] },
@@ -556,11 +556,12 @@
       ctaUrl: { type: 'string', default: '' },
       phoneLabel: { type: 'string', default: '' },
       phoneUrl: { type: 'string', default: '' },
+      showFacts: { type: 'boolean', default: true },
     },
     fields: [
       { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
       { key: 'title', label: 'Heading', tagName: 'h1', className: 'display d-hero' },
-      { key: 'html', label: 'Hero body', kind: 'html', tagName: 'div', className: 'hero-copy' },
+      { key: 'html', label: 'Right-column body', kind: 'html', tagName: 'div', className: 'hero-aside hero-copy' },
       {
         key: 'facts',
         label: 'Hero facts',
@@ -570,7 +571,7 @@
         fields: [{ key: 'text', label: 'Fact' }],
         addLabel: 'Add fact',
       },
-      { key: 'ctaLabel', label: 'Button text', placeholder: 'Book a consultation' },
+      { key: 'ctaLabel', label: 'Button text', placeholder: 'Book online' },
       { key: 'ctaUrl', label: 'Button URL', placeholder: '/book/' },
       { key: 'phoneLabel', label: 'Phone button text' },
       { key: 'phoneUrl', label: 'Phone button URL' },
@@ -600,8 +601,8 @@
             },
           }),
           el(TextareaControl, {
-            label: 'Hero body',
-            help: 'Use this for the homepage paragraphs. HTML paragraphs are allowed.',
+            label: 'Right-column body HTML',
+            help: 'Clinic introduction paragraphs and bullet list shown beside the hero heading, over the video.',
             value: props.attributes.html,
             onChange: function (v) {
               props.setAttributes({ html: v });
@@ -609,7 +610,7 @@
           }),
           el(TextareaControl, {
             label: 'Short subheading',
-            help: 'Used only if Hero body is empty.',
+            help: 'Shown under the heading on the left.',
             value: props.attributes.sub,
             onChange: function (v) {
               props.setAttributes({ sub: v });
@@ -622,6 +623,14 @@
             addLabel: 'Add fact',
             onChange: function (next) {
               props.setAttributes({ facts: next });
+            },
+          }),
+          el(ToggleControl, {
+            label: 'Show facts strip in hero',
+            help: 'Trust facts at the bottom of the hero, above the age-group cards.',
+            checked: false !== props.attributes.showFacts,
+            onChange: function (v) {
+              props.setAttributes({ showFacts: v });
             },
           })
         ),
@@ -664,8 +673,18 @@
     attributes: {
       level: { type: 'number', default: 2 },
       items: { type: 'array', default: [] },
+      facts: { type: 'array', default: [] },
     },
     fields: [
+      {
+        key: 'facts',
+        label: 'Facts above cards',
+        kind: 'repeater',
+        help: 'Shown directly above the three treatment cards. Leave empty to hide.',
+        blank: { text: '' },
+        fields: [{ key: 'text', label: 'Fact' }],
+        addLabel: 'Add fact',
+      },
       {
         key: 'items',
         label: 'Age-group cards',
@@ -688,19 +707,36 @@
     ],
     inspect: function (props) {
       return el(
-        PanelBody,
-        { title: 'Cards' },
-        el(SelectControl, {
-          label: 'Heading level',
-          value: String(props.attributes.level),
-          options: [
-            { label: 'H2', value: '2' },
-            { label: 'H3', value: '3' },
-          ],
-          onChange: function (v) {
-            props.setAttributes({ level: parseInt(v, 10) });
-          },
-        })
+        Fragment,
+        {},
+        el(
+          PanelBody,
+          { title: 'Facts above cards' },
+          el(Repeater, {
+            items: props.attributes.facts,
+            blank: { text: '' },
+            fields: [{ key: 'text', label: 'Fact' }],
+            addLabel: 'Add fact',
+            onChange: function (next) {
+              props.setAttributes({ facts: next });
+            },
+          })
+        ),
+        el(
+          PanelBody,
+          { title: 'Cards' },
+          el(SelectControl, {
+            label: 'Heading level',
+            value: String(props.attributes.level),
+            options: [
+              { label: 'H2', value: '2' },
+              { label: 'H3', value: '3' },
+            ],
+            onChange: function (v) {
+              props.setAttributes({ level: parseInt(v, 10) });
+            },
+          })
+        )
       );
     },
   });
@@ -730,7 +766,7 @@
       { key: 'btn2Label', label: 'Second button text' },
       { key: 'btn2Url', label: 'Second button URL' },
       { key: 'caption', label: 'Photograph caption' },
-      { key: 'imageId', label: 'Practitioner photograph', kind: 'image', help: 'Leave empty to keep the current theme image.' },
+      { key: 'imageId', label: 'Photograph', kind: 'image', help: 'Leave empty for the theme image (waiting room when heading is Location).' },
     ],
     inspect: function (props) {
       return el(
@@ -766,8 +802,8 @@
           PanelBody,
           { title: 'Photograph', initialOpen: false },
           el(AttachmentControl, {
-            label: 'Practitioner photograph',
-            help: 'Leave empty to keep the current theme image of Dr Haidar.',
+            label: 'Photograph',
+            help: 'Leave empty for the theme image (Dr Haidar, or the waiting room when the heading is Location).',
             allowedTypes: ['image'],
             value: props.attributes.imageId,
             onSelect: function (media) {
@@ -855,8 +891,9 @@
       subject: { type: 'string', default: 'homepage callback' },
       cardEyebrow: { type: 'string', default: 'Request a call back' },
       cardTitle: { type: 'string', default: 'Ask before you book' },
-      eyebrow: { type: 'string', default: 'Being straight with you' },
-      heading: { type: 'string', default: 'When we will tell you not to' },
+      cardHtml: { type: 'string', default: '' },
+      eyebrow: { type: 'string', default: '' },
+      heading: { type: 'string', default: 'When we may postpone' },
       html: { type: 'string', default: '' },
       urgentTitle: { type: 'string', default: '' },
       urgentBody: { type: 'string', default: '' },
@@ -864,9 +901,10 @@
     fields: [
       { key: 'cardEyebrow', label: 'Form eyebrow' },
       { key: 'cardTitle', label: 'Form heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'cardHtml', label: 'Form intro box', kind: 'html', help: 'Boxed intro above the form fields.' },
       { key: 'eyebrow', label: 'Copy eyebrow', tagName: 'span', className: 'caps eyebrow' },
       { key: 'heading', label: 'Copy heading', tagName: 'h2', className: 'display d-1' },
-      { key: 'html', label: 'Body', kind: 'html', help: 'Leave blank to keep the current default paragraphs.' },
+      { key: 'html', label: 'Body', kind: 'html', help: 'Boxed “who is suitable” copy on the right.' },
       { key: 'urgentTitle', label: 'Urgent heading', tagName: 'h2', className: 'display d-3' },
       { key: 'urgentBody', label: 'Urgent body', kind: 'html', help: 'Leave blank to keep the current theme urgent note.' },
     ],
@@ -888,6 +926,14 @@
             props.setAttributes({ cardTitle: v });
           },
         }),
+        el(TextareaControl, {
+          label: 'Form intro box HTML',
+          help: 'Shown in a box above the form fields.',
+          value: props.attributes.cardHtml,
+          onChange: function (v) {
+            props.setAttributes({ cardHtml: v });
+          },
+        }),
         el(TextControl, {
           label: 'Copy eyebrow',
           value: props.attributes.eyebrow,
@@ -904,7 +950,7 @@
         }),
         el(TextareaControl, {
           label: 'Body HTML',
-          help: 'Leave blank to use the current default paragraphs.',
+          help: 'Boxed “who is suitable” copy on the right.',
           value: props.attributes.html,
           onChange: function (v) {
             props.setAttributes({ html: v });
@@ -2082,6 +2128,24 @@
         })
       );
     },
+  });
+
+  dynamicBlock('cil/blog-feed', 'Blog feed', {
+    icon: 'welcome-write-blog',
+    attributes: {
+      perPage: { type: 'number', default: 12 },
+      moreLabel: { type: 'string', default: 'Read more' },
+      category: { type: 'string', default: 'clinic-articles' },
+    },
+    fields: [
+      { key: 'perPage', label: 'Posts to show', kind: 'number' },
+      { key: 'moreLabel', label: 'Read more button label' },
+      {
+        key: 'category',
+        label: 'Category slug',
+        help: 'Leave as clinic-articles to show clinic blog posts. Edit titles, excerpts and images on each post.',
+      },
+    ],
   });
 
   dynamicBlock('cil/info-cards', 'Info cards', {

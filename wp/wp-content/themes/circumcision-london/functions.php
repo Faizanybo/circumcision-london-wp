@@ -391,8 +391,8 @@ function cil_default_nav() {
 			'url'   => home_url( '/testimonials/' ),
 		),
 		array(
-			'label' => __( 'Aftercare', 'circumcision-london' ),
-			'url'   => home_url( '/aftercare/' ),
+			'label' => __( 'Videos', 'circumcision-london' ),
+			'url'   => home_url( '/video-testimonials/' ),
 		),
 		array(
 			'label' => __( 'Prices', 'circumcision-london' ),
@@ -403,7 +403,7 @@ function cil_default_nav() {
 			'url'   => home_url( '/courses/' ),
 		),
 		array(
-			'label'    => __( 'Visit us', 'circumcision-london' ),
+			'label'    => __( 'Contact Us', 'circumcision-london' ),
 			'url'      => home_url( '/contact/' ),
 			'children' => array(
 				array(
@@ -425,6 +425,10 @@ function cil_default_nav() {
 				array(
 					'label' => __( 'Birmingham', 'circumcision-london' ),
 					'url'   => home_url( '/birmingham-circumcision-clinic/' ),
+				),
+				array(
+					'label' => __( 'Blog', 'circumcision-london' ),
+					'url'   => home_url( '/blog/' ),
 				),
 			),
 		),
@@ -527,14 +531,14 @@ function cil_groups() {
 			'age'   => __( 'Best under one month old', 'circumcision-london' ),
 			'price' => __( 'From £200', 'circumcision-london' ),
 			'cta'   => __( 'Baby circumcision, from £200', 'circumcision-london' ),
-			'blurb' => __( 'The ring method, Plastibell or Circumplast, under local anaesthetic. About ten minutes, no stitches, and you take him home straight afterwards.', 'circumcision-london' ),
+			'blurb' => __( 'The ring method, Plastibell or Circumplast, under local anaesthetic. About ten minutes, no stitches, and you take him home straight afterwards. Bath him straight away.', 'circumcision-london' ),
 		),
 		array(
 			'href'  => home_url( '/children/' ),
 			'title' => __( 'Children and teenagers', 'circumcision-london' ),
 			'age'   => __( 'One to seventeen years', 'circumcision-london' ),
-			'price' => __( 'From £280', 'circumcision-london' ),
-			'cta'   => __( 'Circumcision for boys, from £280', 'circumcision-london' ),
+			'price' => __( 'From £300', 'circumcision-london' ),
+			'cta'   => __( 'Circumcision for boys, from £300', 'circumcision-london' ),
 			'blurb' => __( 'The forceps guided method with thermal cautery, under local anaesthetic. School holiday appointments book up quickly.', 'circumcision-london' ),
 		),
 		array(
@@ -665,16 +669,16 @@ function cil_link_extra_attrs( $item ) {
 }
 
 /**
- * Logo markup: Customizer, then the prototype PNG in the theme, then text.
+ * Logo markup: Customizer, then the CIL theme PNG, then text.
  *
  * @param array<string, mixed> $clinic Clinic details.
  * @return string
  */
 function cil_logo_html( $clinic ) {
 	$attrs = array(
-		'alt'           => $clinic['legal_name'],
-		'width'         => 440,
-		'height'        => 128,
+		'alt'           => $clinic['name'],
+		'width'         => 550,
+		'height'        => 602,
 		'fetchpriority' => 'high',
 	);
 
@@ -682,16 +686,30 @@ function cil_logo_html( $clinic ) {
 		return wp_get_attachment_image( (int) get_theme_mod( 'custom_logo' ), 'full', false, $attrs );
 	}
 
-	$theme_logo = get_template_directory() . '/assets/images/logo.png';
-	if ( file_exists( $theme_logo ) ) {
+	$candidates = array(
+		'assets/images/circumcision-in-london-logo.png',
+		'assets/images/Circumcision in London Logo.png',
+		'assets/images/logo.png',
+	);
+
+	foreach ( $candidates as $relative ) {
+		$path = get_template_directory() . '/' . $relative;
+		if ( ! file_exists( $path ) ) {
+			continue;
+		}
+		$size = @getimagesize( $path );
+		$w    = ( $size && ! empty( $size[0] ) ) ? (int) $size[0] : (int) $attrs['width'];
+		$h    = ( $size && ! empty( $size[1] ) ) ? (int) $size[1] : (int) $attrs['height'];
 		return sprintf(
-			'<img src="%1$s" alt="%2$s" width="440" height="128" fetchpriority="high">',
-			esc_url( get_template_directory_uri() . '/assets/images/logo.png' ),
-			esc_attr( $clinic['legal_name'] )
+			'<img src="%1$s" alt="%2$s" width="%3$d" height="%4$d" fetchpriority="high">',
+			esc_url( get_template_directory_uri() . '/' . $relative ),
+			esc_attr( $clinic['name'] ),
+			$w,
+			$h
 		);
 	}
 
-	return '<span class="mark">' . esc_html( $clinic['legal_name'] ) . '</span>';
+	return '<span class="mark">' . esc_html( $clinic['name'] ) . '</span>';
 }
 
 /**

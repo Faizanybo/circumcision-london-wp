@@ -1,6 +1,6 @@
 <?php
 /**
- * Homepage hero: poster, optional video, CTAs and facts.
+ * Homepage hero: poster, optional video, CTAs, aside copy and facts.
  *
  * @package Circumcision_London
  */
@@ -13,12 +13,12 @@ $clinic  = cil_clinic();
 $img     = cil_asset( 'images/' );
 $vid     = cil_asset( 'video/' );
 $eyebrow = ( isset( $args['eyebrow'] ) && '' !== $args['eyebrow'] ) ? $args['eyebrow'] : __( 'CQC registered · Edgware, North-West London', 'circumcision-london' );
-$title   = ( isset( $args['title'] ) && '' !== $args['title'] ) ? $args['title'] : __( 'A dedicated circumcision clinic in North-West London', 'circumcision-london' );
+$title   = ( isset( $args['title'] ) && '' !== $args['title'] ) ? $args['title'] : __( 'Dedicated Circumcision Clinic in London', 'circumcision-london' );
 $html    = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : '';
 $sub     = ( isset( $args['sub'] ) && '' !== $args['sub'] ) ? $args['sub'] : '';
 $facts   = ( isset( $args['facts'] ) && is_array( $args['facts'] ) ) ? $args['facts'] : array();
-if ( ! $html && ! $sub ) {
-	$sub = __( 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.', 'circumcision-london' );
+if ( ! $sub ) {
+	$sub = __( 'Two experienced practitioners who have trained UK and International doctors. Local anaesthetic every time.', 'circumcision-london' );
 }
 
 $poster_id     = isset( $args['poster_id'] ) ? cil_attachment_id( $args['poster_id'] ) : 0;
@@ -34,12 +34,13 @@ $poster_html   = $poster_id ? cil_attachment_image_html(
 		'alt'           => cil_attachment_alt( $poster_id, __( 'The clinic frontage in Edgware, with the practice name and telephone numbers etched into the treatment-room window.', 'circumcision-london' ) ),
 	)
 ) : '';
-$poster_url    = $poster_id ? cil_attachment_url( $poster_id, 'image' ) : ( $img . 'hero-poster-800.jpg' );
-$custom_mp4    = $video_mp4_id ? cil_attachment_url( $video_mp4_id, 'video' ) : '';
-$custom_webm   = $video_webm_id ? cil_attachment_url( $video_webm_id, 'video' ) : '';
+$poster_url       = $poster_id ? cil_attachment_url( $poster_id, 'image' ) : ( $img . 'hero-poster-800.jpg' );
+$custom_mp4       = $video_mp4_id ? cil_attachment_url( $video_mp4_id, 'video' ) : '';
+$custom_webm      = $video_webm_id ? cil_attachment_url( $video_webm_id, 'video' ) : '';
 $use_custom_video = ( $custom_mp4 || $custom_webm );
+$has_aside        = ( '' !== trim( wp_strip_all_tags( $html ) ) );
 ?>
-<section class="hero">
+<section class="hero<?php echo $has_aside ? ' hero--split' : ''; ?>">
 	<div class="hero-media">
 		<picture class="hero-poster">
 			<?php if ( $poster_html ) : ?>
@@ -73,28 +74,37 @@ $use_custom_video = ( $custom_mp4 || $custom_webm );
 	</div>
 
 	<div class="hero-inner">
-		<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
-		<h1 class="display d-hero"><?php echo esc_html( $title ); ?></h1>
-		<?php
-		$hero_copy = $html ? $html : $sub;
-		if ( $hero_copy && false !== strpos( $hero_copy, '<' ) ) :
-			?>
-		<div class="hero-copy"><?php echo cil_rich_text( $hero_copy ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- allowlisted in cil_rich_text(). ?></div>
-		<?php elseif ( $hero_copy ) : ?>
-		<p class="hero-sub"><?php echo esc_html( $hero_copy ); ?></p>
-		<?php endif; ?>
+		<div class="hero-layout">
+			<div class="hero-main">
+				<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
+				<h1 class="display d-hero"><?php echo esc_html( $title ); ?></h1>
+				<?php if ( $sub ) : ?>
+				<p class="hero-sub"><?php echo esc_html( $sub ); ?></p>
+				<?php endif; ?>
 
-		<?php
-		$cta_label   = ( isset( $args['cta_label'] ) && '' !== $args['cta_label'] ) ? $args['cta_label'] : __( 'Book a consultation', 'circumcision-london' );
-		$cta_url     = ( isset( $args['cta_url'] ) && '' !== $args['cta_url'] ) ? $args['cta_url'] : cil_book_url();
-		$phone_label = ( isset( $args['phone_label'] ) && '' !== $args['phone_label'] ) ? $args['phone_label'] : sprintf( /* translators: %s: phone number */ __( 'Call %s', 'circumcision-london' ), $clinic['phone']['display'] );
-		$phone_url   = ( isset( $args['phone_url'] ) && '' !== $args['phone_url'] ) ? $args['phone_url'] : $clinic['phone']['href'];
-		?>
-		<div class="btn-row hero-actions">
-			<a class="btn" href="<?php echo esc_url( $cta_url ); ?>" data-track="book-hero"><?php echo esc_html( $cta_label ); ?></a>
-			<a class="btn btn-light" href="<?php echo esc_url( $phone_url ); ?>" data-track="call-hero"><?php echo esc_html( $phone_label ); ?></a>
+				<?php
+				$cta_label   = ( isset( $args['cta_label'] ) && '' !== $args['cta_label'] ) ? $args['cta_label'] : __( 'Book online', 'circumcision-london' );
+				$cta_url     = ( isset( $args['cta_url'] ) && '' !== $args['cta_url'] ) ? $args['cta_url'] : cil_book_url();
+				$phone_label = ( isset( $args['phone_label'] ) && '' !== $args['phone_label'] ) ? $args['phone_label'] : sprintf( /* translators: %s: phone number */ __( 'Call %s', 'circumcision-london' ), $clinic['phone']['display'] );
+				$phone_url   = ( isset( $args['phone_url'] ) && '' !== $args['phone_url'] ) ? $args['phone_url'] : $clinic['phone']['href'];
+				?>
+				<div class="btn-row hero-actions">
+					<a class="btn" href="<?php echo esc_url( $cta_url ); ?>" data-track="book-hero"><?php echo esc_html( $cta_label ); ?></a>
+					<a class="btn btn-light" href="<?php echo esc_url( $phone_url ); ?>" data-track="call-hero"><?php echo esc_html( $phone_label ); ?></a>
+				</div>
+			</div>
+
+			<?php if ( $has_aside ) : ?>
+			<div class="hero-aside hero-copy">
+				<?php echo cil_rich_text( $html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- allowlisted in cil_rich_text(). ?>
+			</div>
+			<?php endif; ?>
 		</div>
 
+		<?php
+		$show_facts = ! isset( $args['show_facts'] ) || ! empty( $args['show_facts'] );
+		if ( $show_facts ) :
+			?>
 		<ul class="hero-facts">
 			<?php
 			$fact_icons = array( 'star', 'shield', 'clock', 'pin' );
@@ -124,5 +134,6 @@ $use_custom_video = ( $custom_mp4 || $custom_webm );
 			<li><?php echo cil_icon( 'pin' ); ?><span><?php esc_html_e( 'Free street parking. Outside the Congestion Charge zone', 'circumcision-london' ); ?></span></li>
 			<?php endif; ?>
 		</ul>
+		<?php endif; ?>
 	</div>
 </section>

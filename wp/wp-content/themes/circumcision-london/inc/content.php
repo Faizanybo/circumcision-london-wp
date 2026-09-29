@@ -401,7 +401,7 @@ function cil_home_faqs() {
 		),
 		array(
 			'q' => __( 'Which method do you use?', 'circumcision-london' ),
-			'a' => '<p>It depends on age. For babies and toddlers we use the ring method, Plastibell or Circumplast, which needs no stitches and separates on its own within three to fourteen days. For older children and adults we use the forceps guided method with thermal cautery, which gives a clean line with minimal bleeding.</p><p>There is no fixed cut-off age. We decide after examining.</p>',
+			'a' => '<p>For babies and toddlers, we often use the ring method (e.g. Plastibell or Circumplast). The advantages are that it does not require any stitches, you can bath your son normally and often comes off by itself within 3-14 days similar to the umbilical cord. The disadvantages is that it sometimes does not come off automatically and will require us to remove it but this often takes less than 5 seconds.</p><p>Older children and adults are often circumcised with the forceps guided (traditional) method using thermal cautery which seals as it cuts, resulting in minimal bleeding if any. We close the wound using skin glue, stitches or a combination of both depending on the individual patient. Both of these come off naturally.</p>',
 		),
 		array(
 			'q' => __( 'What is the best age?', 'circumcision-london' ),
@@ -421,7 +421,7 @@ function cil_home_faqs() {
 		),
 		array(
 			'q' => __( 'Could the NHS do this instead?', 'circumcision-london' ),
-			'a' => '<p>Where there is a medical need, yes, and if you can wait that is a reasonable choice. From what our patients tell us, the wait runs beyond a year. Religious and cultural circumcision is not funded. Start with your GP if you are unsure which applies to you.</p>',
+			'a' => '<p>Where there is a medical need, yes, and if you can wait that is a reasonable choice. From what our patients tell us, the wait runs beyond a year. Religious and cultural circumcision is not funded. Give us a call if you would like to discuss further.</p>',
 		),
 	);
 }

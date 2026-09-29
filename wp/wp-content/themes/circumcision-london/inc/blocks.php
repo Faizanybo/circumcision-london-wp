@@ -70,7 +70,7 @@ function cil_enqueue_editor_assets() {
 				),
 				array(
 					'n' => '40+',
-					'l' => 'Years of combined experience between our two practitioners, in the UK and abroad.',
+					'l' => 'Years of combined experience between our two practitioners, in the UK and abroad. They both train doctors from UK and abroad.',
 				),
 				array(
 					'n' => 'CQC',
@@ -218,11 +218,11 @@ function cil_register_dynamic_blocks() {
 					),
 					'title'       => array(
 						'type'    => 'string',
-						'default' => 'A dedicated circumcision clinic in North-West London',
+						'default' => 'Dedicated Circumcision Clinic in London',
 					),
 					'sub'         => array(
 						'type'    => 'string',
-						'default' => 'Qualified practitioners, local anaesthetic every time, and we show you that no pain is felt before we begin.',
+						'default' => 'Two experienced practitioners who have trained UK and International doctors. Local anaesthetic every time.',
 					),
 					'html'        => array(
 						'type'    => 'string',
@@ -260,6 +260,10 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'showFacts'   => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
@@ -270,6 +274,7 @@ function cil_register_dynamic_blocks() {
 							'sub'           => isset( $attrs['sub'] ) ? $attrs['sub'] : '',
 							'html'          => isset( $attrs['html'] ) ? $attrs['html'] : '',
 							'facts'         => cil_block_list( isset( $attrs['facts'] ) ? $attrs['facts'] : array() ),
+							'show_facts'    => ! isset( $attrs['showFacts'] ) || ! empty( $attrs['showFacts'] ),
 							'poster_id'     => isset( $attrs['posterId'] ) ? $attrs['posterId'] : 0,
 							'video_mp4_id'  => isset( $attrs['videoMp4Id'] ) ? $attrs['videoMp4Id'] : 0,
 							'video_webm_id' => isset( $attrs['videoWebmId'] ) ? $attrs['videoWebmId'] : 0,
@@ -300,6 +305,10 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'array',
 						'default' => array(),
 					),
+					'facts' => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
@@ -307,6 +316,7 @@ function cil_register_dynamic_blocks() {
 						array(
 							'level' => isset( $attrs['level'] ) ? (int) $attrs['level'] : 2,
 							'items' => cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ),
+							'facts' => cil_block_list( isset( $attrs['facts'] ) ? $attrs['facts'] : array() ),
 						)
 					) . '</div>';
 				},
@@ -320,7 +330,7 @@ function cil_register_dynamic_blocks() {
 			$common,
 			array(
 				'title'           => __( 'Homepage introduction', 'circumcision-london' ),
-				'description'     => __( 'Welcome copy and Dr Haidar photograph.', 'circumcision-london' ),
+				'description'     => __( 'Welcome or location copy with a photograph. Location heading uses the clinic waiting-room image by default.', 'circumcision-london' ),
 				'attributes'      => array(
 					'eyebrow' => array(
 						'type'    => 'string',
@@ -444,13 +454,17 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => 'Ask before you book',
 					),
+					'cardHtml'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 					'eyebrow'      => array(
 						'type'    => 'string',
-						'default' => 'Being straight with you',
+						'default' => '',
 					),
 					'heading'      => array(
 						'type'    => 'string',
-						'default' => 'When we will tell you not to',
+						'default' => 'When we may postpone',
 					),
 					'html'         => array(
 						'type'    => 'string',
@@ -473,6 +487,7 @@ function cil_register_dynamic_blocks() {
 							'subject'      => isset( $attrs['subject'] ) ? $attrs['subject'] : 'homepage callback',
 							'card_eyebrow' => isset( $attrs['cardEyebrow'] ) ? $attrs['cardEyebrow'] : '',
 							'card_title'   => isset( $attrs['cardTitle'] ) ? $attrs['cardTitle'] : '',
+							'card_html'    => isset( $attrs['cardHtml'] ) ? $attrs['cardHtml'] : '',
 							'eyebrow'      => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
 							'heading'      => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
 							'html'         => isset( $attrs['html'] ) ? $attrs['html'] : '',
@@ -1315,6 +1330,41 @@ function cil_register_dynamic_blocks() {
 							'heading_level' => isset( $attrs['headingLevel'] ) ? (int) $attrs['headingLevel'] : 3,
 						)
 					);
+				},
+			)
+		)
+	);
+
+	register_block_type(
+		'cil/blog-feed',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Blog feed', 'circumcision-london' ),
+				'description'     => __( 'Alternating image and article rows for the Blog page.', 'circumcision-london' ),
+				'attributes'      => array(
+					'perPage'    => array(
+						'type'    => 'number',
+						'default' => 12,
+					),
+					'moreLabel'  => array(
+						'type'    => 'string',
+						'default' => 'Read more',
+					),
+					'category'   => array(
+						'type'    => 'string',
+						'default' => 'clinic-articles',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return '<div class="cil-breakout">' . cil_render_part(
+						'blog-feed',
+						array(
+							'per_page'   => isset( $attrs['perPage'] ) ? (int) $attrs['perPage'] : 12,
+							'more_label' => isset( $attrs['moreLabel'] ) ? $attrs['moreLabel'] : '',
+							'category'   => isset( $attrs['category'] ) ? $attrs['category'] : 'clinic-articles',
+						)
+					) . '</div>';
 				},
 			)
 		)

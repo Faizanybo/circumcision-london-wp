@@ -52,7 +52,6 @@ body.cil-home .entry-content {
 .entry-content .cil-breakout .section,
 .entry-content .cil-breakout .section-sm,
 .entry-content .cil-breakout .cta-band,
-.entry-content .cil-breakout .groups,
 .entry-content > .page-head,
 .entry-content > .section,
 .entry-content > .section-sm,
@@ -81,6 +80,16 @@ body.cil-home .entry-content {
   max-width: none;
   width: 100%;
   padding-inline: 0;
+}
+
+/* Age-group cards: match header content width (logo → Book online). */
+.entry-content .cil-breakout .groups,
+.entry-content > .wp-block-cil-groups .groups {
+  max-width: var(--chrome-max);
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--gap);
+  box-sizing: border-box;
 }
 
 .wp-block-cil-split > .wp-block-group {
@@ -196,6 +205,15 @@ body.cil-home .entry-content {
 .wp-block-button__link:hover {
   background-color: var(--blue-deep);
   border-color: var(--blue-deep);
+  color: #fff;
+}
+/* .body-text a sets ink-blue on all links; keep primary button labels white. */
+.body-text .wp-block-button:not(.is-style-outline) .wp-block-button__link,
+.body-text .wp-block-button:not(.is-style-outline) .wp-block-button__link:hover,
+.body-text .wp-block-button:not(.is-style-outline) .wp-block-button__link:focus,
+.entry-content .wp-block-button:not(.is-style-outline) .wp-block-button__link,
+.entry-content .wp-block-button:not(.is-style-outline) .wp-block-button__link:hover,
+.entry-content .wp-block-button:not(.is-style-outline) .wp-block-button__link:focus {
   color: #fff;
 }
 .is-style-outline .wp-block-button__link,

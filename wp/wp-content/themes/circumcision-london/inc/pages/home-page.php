@@ -16,16 +16,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function cil_homepage_blocks() {
 	$courses = esc_url( home_url( '/courses/' ) );
-	$fren    = esc_url( home_url( '/procedures/frenuloplasty/' ) );
-	$prep    = esc_url( home_url( '/procedures/preputioplasty/' ) );
 
 	$intro_html  = '<p>Our clinic is in North-West London, about fifteen minutes from Wembley Stadium, outside the congestion charge, with free street parking all around it. We circumcise babies, infants, children, teenagers and adult men, day in and day out. It is what this clinic does.</p>';
 	$intro_html .= '<p>Our two practitioners have more than forty years of combined experience between them, in the UK and abroad, and have carried out thousands of circumcisions across every age group. They also <a href="' . $courses . '">train doctors in the UK and internationally</a> in how to circumcise safely.</p>';
 	$intro_html .= '<p>Whether you are here for religious, medical, cultural or personal reasons, the standard does not change: local anaesthetic every time, tested and shown to be working before we begin, and aftercare we explain to you and then give you in writing.</p>';
 
-	$callback_html  = '<p>A foreskin that does not pull back in a young boy is normal, and usually sorts itself out well into the teens. If that is the only reason you have booked, we will say so and send you home.</p>';
-	$callback_html .= '<p>We will not proceed with a baby who is unwell or jaundiced, or who has a condition such as hypospadias where the foreskin may be needed for later reconstruction. If there is a tight frenulum and nothing else, a <a href="' . $fren . '">frenuloplasty</a> is the smaller and better operation. If you want to keep the foreskin, a <a href="' . $prep . '">preputioplasty</a> may do the job instead.</p>';
-	$callback_html .= '<p>Those conversations cost us bookings. They are also the reason people send us their brothers.</p>';
+	$callback_html  = '<p><strong>Who is suitable for circumcision?</strong></p>';
+	$callback_html .= '<p>We circumcise males of all ages and backgrounds, so whether it is for religious, cultural or medical reasons, we have you covered. Let us know when booking what your main reason for circumcising and we will accommodate you accordingly.</p>';
+	$callback_html .= '<p>Our 2 practitioners are Muslim and we treat a big portion of the Muslim community in London and from other parts of the UK. We also get patients from the Jewish community coming in for religious circumcisions.</p>';
+	$callback_html .= '<p>Some patients get circumcised to meet cultural requirements such as Filipinos, certain parts of Africa, Fiji and other countries where circumcision is an important part of their culture.</p>';
+	$callback_html .= '<p>We also get a big portion of patients who have a medical reason for getting circumcised, most common is a tight foreskin (phimosis and paraphimosis), inflammation of the head of the penis (balanitis) as well as short and scarred frenulum.</p>';
+
+	$callback_card_html  = '<p><strong>Want to ask before you book?</strong></p>';
+	$callback_card_html .= '<p>We often call you back within a few minutes, but always within the same day even during busy times. Monday – Saturday 09:00–17:00.</p>';
+	$callback_card_html .= '<p><strong>Name, phone number</strong></p>';
+	$callback_card_html .= '<p><strong>Patient DOB</strong></p>';
+	$callback_card_html .= '<p><strong>Anything you would like us to know (optional)</strong></p>';
 
 	$blocks   = array();
 	$blocks[] = cil_dyn_block(
@@ -67,8 +73,9 @@ function cil_homepage_blocks() {
 			'subject'     => 'homepage callback',
 			'cardEyebrow' => 'Request a call back',
 			'cardTitle'   => 'Ask before you book',
-			'eyebrow'     => 'Being straight with you',
-			'heading'     => 'When we will tell you not to',
+			'cardHtml'    => $callback_card_html,
+			'eyebrow'     => '',
+			'heading'     => 'When we may postpone',
 			'html'        => $callback_html,
 		)
 	);

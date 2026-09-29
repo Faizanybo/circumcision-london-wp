@@ -19,7 +19,7 @@ if ( ! $items ) {
 		),
 		array(
 			'n' => '40+',
-			'l' => __( 'Years of combined experience between our two practitioners, in the UK and abroad.', 'circumcision-london' ),
+			'l' => __( 'Years of combined experience between our two practitioners, in the UK and abroad. They both train doctors from UK and abroad.', 'circumcision-london' ),
 		),
 		array(
 			'n' => 'CQC',

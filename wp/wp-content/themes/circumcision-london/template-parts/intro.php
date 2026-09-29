@@ -1,6 +1,6 @@
 <?php
 /**
- * Clinic introduction and practitioner photograph.
+ * Clinic introduction / location split with photograph.
  *
  * @package Circumcision_London
  */
@@ -23,6 +23,23 @@ $image_html = $image_id ? cil_attachment_image_html(
 		'sizes'    => '(max-width: 900px) 92vw, 46vw',
 	)
 ) : '';
+
+$is_location = ( 0 === strcasecmp( trim( $heading ), 'Location' ) );
+
+$figure = array(
+	'file'    => 'dr-haidar',
+	'alt'     => __( 'Dr Haidar Al-Ali in clinic scrubs in the treatment room at the Edgware practice.', 'circumcision-london' ),
+	'caption' => __( 'Dr Haidar Al-Ali carries out most of the circumcisions at this clinic.', 'circumcision-london' ),
+);
+if ( $is_location ) {
+	$figure = array(
+		'file'    => 'waiting-room',
+		'alt'     => __( 'The clinic waiting area at Beverley Clinic in Edgware, with adult seating and a small child\'s chair.', 'circumcision-london' ),
+		'caption' => __( 'The waiting area at Beverley Clinic, Edgware.', 'circumcision-london' ),
+	);
+}
+
+$caption = ( isset( $args['caption'] ) && '' !== $args['caption'] ) ? $args['caption'] : $figure['caption'];
 ?>
 <section class="section">
 	<div class="wrap">
@@ -46,7 +63,6 @@ $image_html = $image_id ? cil_attachment_image_html(
 				$btn1_url   = ( isset( $args['btn1_url'] ) && '' !== $args['btn1_url'] ) ? $args['btn1_url'] : home_url( '/team/' );
 				$btn2_label = ( isset( $args['btn2_label'] ) && '' !== $args['btn2_label'] ) ? $args['btn2_label'] : __( 'What aftercare involves', 'circumcision-london' );
 				$btn2_url   = ( isset( $args['btn2_url'] ) && '' !== $args['btn2_url'] ) ? $args['btn2_url'] : home_url( '/aftercare/' );
-				$caption    = ( isset( $args['caption'] ) && '' !== $args['caption'] ) ? $args['caption'] : __( 'Dr Haidar Al-Ali carries out most of the circumcisions at this clinic.', 'circumcision-london' );
 				?>
 				<div class="btn-row" style="margin-top:30px">
 					<a class="btn btn-ghost" href="<?php echo esc_url( $btn1_url ); ?>"><?php echo esc_html( $btn1_label ); ?></a>
@@ -59,9 +75,9 @@ $image_html = $image_id ? cil_attachment_image_html(
 					<?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image(). ?>
 				<?php else : ?>
 				<picture>
-					<source type="image/webp" srcset="<?php echo esc_url( $img . 'dr-haidar-700.webp' ); ?> 700w, <?php echo esc_url( $img . 'dr-haidar-1100.webp' ); ?> 1100w" sizes="(max-width: 900px) 92vw, 46vw">
-					<img src="<?php echo esc_url( $img . 'dr-haidar-700.jpg' ); ?>" width="1920" height="1080" loading="lazy" decoding="async"
-						alt="<?php esc_attr_e( 'Dr Haidar Al-Ali in clinic scrubs in the treatment room at the Edgware practice.', 'circumcision-london' ); ?>">
+					<source type="image/webp" srcset="<?php echo esc_url( $img . $figure['file'] . '-700.webp' ); ?> 700w, <?php echo esc_url( $img . $figure['file'] . '-1100.webp' ); ?> 1100w" sizes="(max-width: 900px) 92vw, 46vw">
+					<img src="<?php echo esc_url( $img . $figure['file'] . '-700.jpg' ); ?>" width="1920" height="1080" loading="lazy" decoding="async"
+						alt="<?php echo esc_attr( $figure['alt'] ); ?>">
 				</picture>
 				<?php endif; ?>
 				<figcaption><?php echo esc_html( $caption ); ?></figcaption>

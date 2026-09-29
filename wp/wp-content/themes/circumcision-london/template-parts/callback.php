@@ -1,6 +1,6 @@
 <?php
 /**
- * Homepage callback form plus the “when we will tell you not to” copy.
+ * Homepage callback form plus the “when we may postpone” copy.
  *
  * @package Circumcision_London
  */
@@ -13,8 +13,9 @@ $form_id      = isset( $args['id'] ) ? $args['id'] : 'home';
 $form_subject = isset( $args['subject'] ) && $args['subject'] ? $args['subject'] : 'homepage callback';
 $card_eyebrow = ( isset( $args['card_eyebrow'] ) && '' !== $args['card_eyebrow'] ) ? $args['card_eyebrow'] : __( 'Request a call back', 'circumcision-london' );
 $card_title   = ( isset( $args['card_title'] ) && '' !== $args['card_title'] ) ? $args['card_title'] : __( 'Ask before you book', 'circumcision-london' );
-$eyebrow      = array_key_exists( 'eyebrow', $args ) ? (string) $args['eyebrow'] : __( 'Being straight with you', 'circumcision-london' );
-$heading      = ( isset( $args['heading'] ) && '' !== $args['heading'] ) ? $args['heading'] : __( 'When we will tell you not to', 'circumcision-london' );
+$card_html    = ( isset( $args['card_html'] ) && '' !== $args['card_html'] ) ? $args['card_html'] : '';
+$eyebrow      = array_key_exists( 'eyebrow', $args ) ? (string) $args['eyebrow'] : '';
+$heading      = ( isset( $args['heading'] ) && '' !== $args['heading'] ) ? $args['heading'] : __( 'When we may postpone', 'circumcision-london' );
 $html         = ( isset( $args['html'] ) && '' !== $args['html'] ) ? $args['html'] : '';
 $urgent_title = isset( $args['urgent_title'] ) ? (string) $args['urgent_title'] : '';
 $urgent_body  = isset( $args['urgent_body'] ) ? (string) $args['urgent_body'] : '';
@@ -26,13 +27,19 @@ $urgent_body  = isset( $args['urgent_body'] ) ? (string) $args['urgent_body'] : 
 				<div class="card">
 					<span class="caps eyebrow"><?php echo esc_html( $card_eyebrow ); ?></span>
 					<h2 class="display d-2" style="margin-bottom:20px"><?php echo esc_html( $card_title ); ?></h2>
+					<?php if ( $card_html ) : ?>
+					<div class="body-text callback-card-intro" style="margin-bottom:20px">
+						<?php echo cil_rich_text( $card_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- allowlisted in cil_rich_text(). ?>
+					</div>
+					<?php endif; ?>
 					<?php
 					get_template_part(
 						'template-parts/callback-form',
 						null,
 						array(
-							'id'      => $form_id,
-							'subject' => $form_subject,
+							'id'        => $form_id,
+							'subject'   => $form_subject,
+							'hide_note' => (bool) $card_html,
 						)
 					);
 					?>

@@ -16,9 +16,19 @@
 .footer-top { padding-block: clamp(52px, 6vw, 88px); }
 .footer-grid { display: grid; gap: clamp(30px, 4vw, 60px); grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr; }
 .footer ul { margin: 0; padding: 0; }
-.footer .brand img { width: 180px; filter: brightness(0) invert(1); opacity: .95; }
+/* Full-colour CIL badge — do not invert (that flattened it to a white square). */
+.footer .brand img {
+  width: auto;
+  height: auto;
+  max-width: 168px;
+  max-height: 168px;
+  filter: none;
+  opacity: 1;
+  border-radius: 12px;
+}
 .footer .brand .mark { color: #fff; }
-.footer .brand .sub { color: rgba(255, 255, 255, .55); }
+/* Logo lockup already includes the trading name. */
+.footer .brand .sub { display: none; }
 .footer .caps { display: block; margin-bottom: 18px; color: rgba(255, 255, 255, .52); }
 .footer ul { list-style: none; display: grid; gap: 3px; font-size: 15.5px; }
 .footer ul a, .footer address a { display: inline-flex; align-items: center; min-height: 27px; padding-block: 3px; }

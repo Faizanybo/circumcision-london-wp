@@ -12,11 +12,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 $id      = isset( $args['id'] ) && $args['id'] ? $args['id'] : 'callback';
 $subject = isset( $args['subject'] ) && $args['subject'] ? $args['subject'] : 'general enquiry';
 $id      = sanitize_html_class( $id );
+$hide_note = ! empty( $args['hide_note'] );
 ?>
 <form class="form-grid" data-form="<?php echo esc_attr( $subject ); ?>" id="<?php echo esc_attr( $id ); ?>" novalidate>
+	<?php if ( ! $hide_note ) : ?>
 	<p class="form-note" style="margin-bottom:4px">
 		<?php esc_html_e( 'We call back within two working hours, Monday to Friday 09:00 to 17:00 and Saturday 10:00 to 15:00. Nothing is booked until you say so.', 'circumcision-london' ); ?>
 	</p>
+	<?php endif; ?>
 	<div class="field">
 		<label for="<?php echo esc_attr( $id ); ?>-name"><?php esc_html_e( 'Your name', 'circumcision-london' ); ?></label>
 		<input id="<?php echo esc_attr( $id ); ?>-name" name="name" type="text" autocomplete="name" required>

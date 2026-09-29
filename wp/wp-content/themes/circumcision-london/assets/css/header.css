@@ -49,9 +49,16 @@
 
 .brand {
   display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: center;
   gap: 3px; text-decoration: none; flex: 0 0 auto;
 }
-.brand img { width: 168px; height: auto; }
+/* CIL badge is near-square; cap height so the 80px header bar stays intact. */
+.header .brand img {
+  width: auto;
+  height: auto;
+  max-height: 56px;
+  max-width: 168px;
+}
 .brand .mark {
   font-family: var(--display);
   font-weight: 400;
@@ -60,7 +67,9 @@
   letter-spacing: -.012em;
   color: var(--ink-2);
 }
-.brand .sub {
+/* CIL logo already includes the trading name; hide the duplicate sub-line in the header. */
+.header .brand .sub {
+  display: none;
   font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
   color: var(--blue); white-space: nowrap;
 }
