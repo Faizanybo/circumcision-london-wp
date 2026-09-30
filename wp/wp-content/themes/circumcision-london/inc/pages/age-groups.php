@@ -131,16 +131,16 @@ function cil_age_pages() {
 		'children' => array(
 			'slug'        => 'children',
 			'name'        => 'Children and teenagers',
-			'title'       => 'Circumcision for Boys London | From £280 | Edgware',
-			'description' => 'Circumcision for children and teenagers in Edgware, North-West London. The forceps guided method under local anaesthetic. School holidays book up fast. From £280.',
-			'eyebrow'     => 'One to seventeen years · From £280',
+			'title'       => 'Circumcision for Boys London | From £300 | Edgware',
+			'description' => 'Circumcision for children and teenagers in Edgware, North-West London. The forceps guided method under local anaesthetic. School holidays book up fast. From £300.',
+			'eyebrow'     => 'One to seventeen years · From £300',
 			'h1'          => 'Circumcision for children and teenagers',
 			'lede'        => 'Circumcision can make both a child and his parents anxious. When you book, we will send you simple and short videos to watch so that you know what to expect and how to prepare your son for circumcision in a way that is appropriate for the child\'s age.',
-			'price_note'  => 'From £280, depending on age.' . $prices_note,
+			'price_note'  => 'From £300, depending on age.' . $prices_note,
 			'form_id'     => 'children',
 			'subject'     => 'children and teenagers enquiry',
 			'schema_name' => 'Child circumcision',
-			'offer'       => '280',
+			'offer'       => '300',
 			'intro'       => cil_proto_html(
 				'<p>Parents can ask questions anytime before the appointment if they have anything they are unsure about.</p>
     <p>Local anaesthetic is given and the area is checked before the procedure. For older children and teenagers we commonly use the forceps-guided (traditional) method with thermal cautery to minimize bleeding. The foreskin is drawn forward and a specialist forceps guides the removal. Depending on the wound, closure may involve skin glue, dissolvable stitches, a combination of both, or occasionally neither.</p>
@@ -152,7 +152,7 @@ function cil_age_pages() {
 				array( 'k' => 'Anaesthetic', 'v' => 'Local anaesthetic' ),
 				array( 'k' => 'Closure', 'v' => 'Skin glue, dissolvable stitches, both, or occasionally neither' ),
 				array( 'k' => 'School letters', 'v' => 'Ask the clinic if needed' ),
-				array( 'k' => 'Price', 'v' => 'From £280, depending on age' ),
+				array( 'k' => 'Price', 'v' => 'From £300, depending on age' ),
 			),
 			'figure'      => 'waiting-room',
 			'sections'    => array(

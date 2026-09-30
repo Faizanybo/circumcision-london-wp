@@ -339,7 +339,7 @@ function cil_default_nav() {
 				array(
 					'label' => __( 'Children and teenagers', 'circumcision-london' ),
 					'url'   => home_url( '/children/' ),
-					'note'  => __( 'From £280', 'circumcision-london' ),
+					'note'  => __( 'From £300', 'circumcision-london' ),
 				),
 				array(
 					'label' => __( 'Adult men', 'circumcision-london' ),

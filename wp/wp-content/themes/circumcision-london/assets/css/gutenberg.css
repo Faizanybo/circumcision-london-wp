@@ -118,6 +118,21 @@ body.cil-home .entry-content {
   color: var(--blue);
 }
 
+/*
+ * Homepage medical + methods sections: .section-head defaults to 700px, while
+ * constrained body copy uses contentSize (780px). Match the heading column to
+ * the body and keep a clear empty row under the H2.
+ */
+#circumcision-for-medical-reasons .section-head,
+#circumcision-methods .section-head {
+  max-width: var(--wp--style--global--content-size, 780px);
+  margin-bottom: 0;
+}
+#circumcision-for-medical-reasons .clinic-section-head-constrain,
+#circumcision-methods .clinic-section-head-constrain {
+  margin-bottom: 1.75em;
+}
+
 .wp-block-group.is-style-cil-card {
   background: var(--card);
   border: 1px solid var(--line);
