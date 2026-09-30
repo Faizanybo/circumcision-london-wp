@@ -46,20 +46,24 @@ $q = new WP_Query( $query_args );
 					<article <?php post_class( $row_class ); ?> data-reveal>
 						<?php if ( ! $swap ) : ?>
 							<figure class="figure ratio-4-3 cil-blog-row__media">
-								<?php if ( $thumb_id ) : ?>
+								<?php
+								$img_html = function_exists( 'cil_blog_feed_image_html' ) ? cil_blog_feed_image_html( get_post() ) : '';
+								if ( ! $img_html && $thumb_id ) {
+									$img_html = wp_get_attachment_image(
+										$thumb_id,
+										'cil-figure',
+										false,
+										array(
+											'loading'  => 'lazy',
+											'decoding' => 'async',
+											'alt'      => the_title_attribute( array( 'echo' => false ) ),
+										)
+									);
+								}
+								?>
+								<?php if ( $img_html ) : ?>
 									<a href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-										<?php
-										echo wp_get_attachment_image(
-											$thumb_id,
-											'cil-figure',
-											false,
-											array(
-												'loading'  => 'lazy',
-												'decoding' => 'async',
-												'alt'      => the_title_attribute( array( 'echo' => false ) ),
-											)
-										);
-										?>
+										<?php echo $img_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built/escaped in helper or wp_get_attachment_image(). ?>
 									</a>
 								<?php else : ?>
 									<div class="cil-blog-row__placeholder" aria-hidden="true"></div>
@@ -82,20 +86,24 @@ $q = new WP_Query( $query_args );
 
 						<?php if ( $swap ) : ?>
 							<figure class="figure ratio-4-3 cil-blog-row__media">
-								<?php if ( $thumb_id ) : ?>
+								<?php
+								$img_html = function_exists( 'cil_blog_feed_image_html' ) ? cil_blog_feed_image_html( get_post() ) : '';
+								if ( ! $img_html && $thumb_id ) {
+									$img_html = wp_get_attachment_image(
+										$thumb_id,
+										'cil-figure',
+										false,
+										array(
+											'loading'  => 'lazy',
+											'decoding' => 'async',
+											'alt'      => the_title_attribute( array( 'echo' => false ) ),
+										)
+									);
+								}
+								?>
+								<?php if ( $img_html ) : ?>
 									<a href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-										<?php
-										echo wp_get_attachment_image(
-											$thumb_id,
-											'cil-figure',
-											false,
-											array(
-												'loading'  => 'lazy',
-												'decoding' => 'async',
-												'alt'      => the_title_attribute( array( 'echo' => false ) ),
-											)
-										);
-										?>
+										<?php echo $img_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built/escaped in helper or wp_get_attachment_image(). ?>
 									</a>
 								<?php else : ?>
 									<div class="cil-blog-row__placeholder" aria-hidden="true"></div>

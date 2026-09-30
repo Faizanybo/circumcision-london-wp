@@ -236,9 +236,11 @@ function cil_blog_upsert_post( $fixture ) {
 	if ( ! empty( $fixture['featured_media'] ) && is_array( $fixture['featured_media'] ) ) {
 		$thumb = cil_blog_sideload_media( $fixture['featured_media'] );
 		if ( is_wp_error( $thumb ) ) {
-			return $thumb;
+			// Theme-bundled media still serves the feed/article images; continue without Library thumb.
+			$thumb_id = 0;
+		} else {
+			$thumb_id = (int) $thumb;
 		}
-		$thumb_id = (int) $thumb;
 	}
 
 	$cat_ids = array();
@@ -249,12 +251,19 @@ function cil_blog_upsert_post( $fixture ) {
 		}
 	}
 
+	// Hash-check against fixture first, then rewrite upload URLs to theme media for ServerlessWP.
+	$content_for_hash = $fixture['content'];
+	if ( empty( $fixture['source_sha256'] ) || ! hash_equals( $fixture['source_sha256'], hash( 'sha256', $content_for_hash ) ) ) {
+		return new WP_Error( 'cil_blog_hash', 'Post fixture source_sha256 mismatch for ' . $slug );
+	}
+	$content_to_save = cil_blog_rewrite_content_media_urls( $content_for_hash, $slug );
+
 	$postarr = array(
 		'post_type'    => 'post',
 		'post_status'  => ! empty( $fixture['status'] ) ? $fixture['status'] : 'publish',
 		'post_title'   => $fixture['title'],
 		'post_name'    => $slug,
-		'post_content' => $fixture['content'],
+		'post_content' => $content_to_save,
 		'post_excerpt' => isset( $fixture['excerpt'] ) ? (string) $fixture['excerpt'] : '',
 	);
 	if ( ! empty( $fixture['date_gmt'] ) ) {
@@ -290,11 +299,7 @@ function cil_blog_upsert_post( $fixture ) {
 	}
 	update_post_meta( $post_id, '_cil_content_fixture_sha256', $fixture['source_sha256'] );
 	update_post_meta( $post_id, '_cil_content_fixture_applied_at', gmdate( 'c' ) );
-
-	$after = get_post( $post_id );
-	if ( ! $after || ! hash_equals( $fixture['source_sha256'], hash( 'sha256', $after->post_content ) ) ) {
-		return new WP_Error( 'cil_blog_verify', 'Post content hash mismatch after upsert: ' . $slug );
-	}
+	update_post_meta( $post_id, '_cil_blog_theme_media', 'blog/media/' . basename( (string) cil_blog_theme_media_path( $slug ) ) );
 
 	return array(
 		'slug'     => $slug,
@@ -596,4 +601,181 @@ function cil_blog_apply_pack() {
 
 	$results['inspect'] = cil_blog_inspect_pack();
 	return $results;
+}
+
+/**
+ * Absolute filesystem path to theme-bundled blog media for a post slug.
+ *
+ * @param string $slug Post slug.
+ * @return string Empty if missing.
+ */
+function cil_blog_theme_media_path( $slug ) {
+	$slug = sanitize_title( $slug );
+	if ( '' === $slug ) {
+		return '';
+	}
+	$dir = trailingslashit( cil_content_fixtures_dir() ) . 'blog/media/';
+	foreach ( array( 'jpg', 'jpeg', 'png', 'webp', 'gif' ) as $ext ) {
+		$path = $dir . $slug . '.' . $ext;
+		if ( is_file( $path ) ) {
+			return $path;
+		}
+	}
+	$matches = glob( $dir . $slug . '.*' );
+	if ( $matches && is_file( $matches[0] ) ) {
+		return $matches[0];
+	}
+	return '';
+}
+
+/**
+ * Public URL for theme-bundled blog media (works on ServerlessWP / Vercel).
+ *
+ * @param string $slug Post slug.
+ * @return string
+ */
+function cil_blog_theme_media_url( $slug ) {
+	$path = cil_blog_theme_media_path( $slug );
+	if ( '' === $path ) {
+		return '';
+	}
+	return get_template_directory_uri() . '/content-fixtures/blog/media/' . basename( $path );
+}
+
+/**
+ * Image HTML for a blog feed row — prefers theme fixtures (reliable on Vercel).
+ *
+ * @param int|WP_Post $post Post.
+ * @return string
+ */
+function cil_blog_feed_image_html( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return '';
+	}
+
+	$url = cil_blog_theme_media_url( $post->post_name );
+	$alt = the_title_attribute(
+		array(
+			'echo' => false,
+			'post' => $post,
+		)
+	);
+
+	if ( $url ) {
+		return sprintf(
+			'<img src="%1$s" alt="%2$s" width="1100" height="733" loading="lazy" decoding="async">',
+			esc_url( $url ),
+			esc_attr( $alt )
+		);
+	}
+
+	$thumb_id = get_post_thumbnail_id( $post );
+	if ( $thumb_id ) {
+		$html = wp_get_attachment_image(
+			$thumb_id,
+			'cil-figure',
+			false,
+			array(
+				'loading'  => 'lazy',
+				'decoding' => 'async',
+				'alt'      => $alt,
+			)
+		);
+		if ( $html ) {
+			return $html;
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Rewrite in-content article images to theme-bundled media URLs.
+ *
+ * Blog post fixtures keep Local attachment HTML (uploads/ + wp-image-ID). On
+ * ServerlessWP those upload files often 404; theme fixtures are deployed with git.
+ *
+ * @param string $content Post content.
+ * @param string $slug    Post slug.
+ * @return string
+ */
+function cil_blog_rewrite_content_media_urls( $content, $slug ) {
+	$url = cil_blog_theme_media_url( $slug );
+	if ( '' === $url || '' === $content ) {
+		return $content;
+	}
+
+	// Prefer the dedicated article figure used by Local blog posts.
+	$replaced = preg_replace(
+		'#(<figure[^>]*class="[^"]*cil-blog-article-figure[^"]*"[^>]*>\s*<img[^>]+src=")[^"]+#i',
+		'$1' . esc_url( $url ),
+		$content,
+		1,
+		$count
+	);
+	if ( is_string( $replaced ) && $count > 0 ) {
+		$content = $replaced;
+		$content = preg_replace(
+			'#(<figure[^>]*class="[^"]*cil-blog-article-figure[^"]*"[^>]*>\s*<img[^>]+)\s+srcset="[^"]*"#i',
+			'$1',
+			$content,
+			1
+		);
+		return $content;
+	}
+
+	// Fallback: first wp-block-image.
+	$replaced = preg_replace(
+		'#(<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>\s*<img[^>]+src=")[^"]+#i',
+		'$1' . esc_url( $url ),
+		$content,
+		1,
+		$count
+	);
+	if ( is_string( $replaced ) && $count > 0 ) {
+		$content = $replaced;
+		$content = preg_replace(
+			'#(<figure[^>]*class="[^"]*wp-block-image[^"]*"[^>]*>\s*<img[^>]+)\s+srcset="[^"]*"#i',
+			'$1',
+			$content,
+			1
+		);
+	}
+
+	return $content;
+}
+
+/**
+ * Front-end: fix blog article body images that point at missing uploads.
+ *
+ * @param string $content Content.
+ * @return string
+ */
+function cil_blog_filter_the_content_media( $content ) {
+	if ( is_admin() || ! is_singular( 'post' ) ) {
+		return $content;
+	}
+	$post = get_post();
+	if ( ! $post ) {
+		return $content;
+	}
+	return cil_blog_rewrite_content_media_urls( $content, $post->post_name );
+}
+add_filter( 'the_content', 'cil_blog_filter_the_content_media', 12 );
+
+/**
+ * When upserting, persist theme-media rewrites into post_content.
+ *
+ * @param array<string, mixed> $fixture Fixture.
+ * @return array<string, mixed>
+ */
+function cil_blog_prepare_post_content_for_upsert( $fixture ) {
+	if ( empty( $fixture['content'] ) || empty( $fixture['slug'] ) ) {
+		return $fixture;
+	}
+	$fixture['content'] = cil_blog_rewrite_content_media_urls( $fixture['content'], $fixture['slug'] );
+	// Keep hash verification against original fixture hash of unre-written content —
+	// so rewrite only on write after hash check. Caller must hash-check first.
+	return $fixture;
 }
