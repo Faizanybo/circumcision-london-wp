@@ -633,6 +633,55 @@ function cil_content_sync_render_admin() {
 	echo esc_html( untrailingslashit( home_url() ) );
 	echo '</p>';
 
+	// Blog pack first — easy to miss when buried under the long page list.
+	if ( function_exists( 'cil_blog_inspect_pack' ) && ! empty( $manifest['blog_pack'] ) ) {
+		$blog = cil_blog_inspect_pack();
+		echo '<div class="notice notice-info" style="padding:12px 16px;margin:16px 0">';
+		echo '<h2 style="margin:0 0 8px">' . esc_html__( 'Blog pack', 'circumcision-london' ) . '</h2>';
+		echo '<p style="margin:0 0 10px">' . esc_html__( 'The Blog page is not listed in the page checkboxes below. Use this section to create/update /blog/, category clinic-articles, all blog posts, featured images, and the Blog nav link — exact Local Gutenberg content.', 'circumcision-london' ) . '</p>';
+		echo '<table class="widefat striped" style="max-width:720px"><tbody>';
+		echo '<tr><th style="width:180px">Host</th><td>' . esc_html( ! empty( $blog['host_match'] ) ? __( 'match', 'circumcision-london' ) : __( 'mismatch', 'circumcision-london' ) ) . '</td></tr>';
+		echo '<tr><th>Status</th><td>' . esc_html( ! empty( $blog['error'] ) ? $blog['error'] : ( ! empty( $blog['can_apply'] ) ? __( 'Pending apply', 'circumcision-london' ) : __( 'Already applied / ready', 'circumcision-london' ) ) ) . '</td></tr>';
+		if ( ! empty( $blog['page'] ) ) {
+			echo '<tr><th>Blog page (/blog/)</th><td>' . esc_html(
+				sprintf(
+					'exists=%s · content hash_match=%s · create_if_missing=%s',
+					! empty( $blog['page']['exists'] ) ? 'yes' : 'no',
+					! empty( $blog['page']['hash_match'] ) ? 'yes' : 'no',
+					! empty( $blog['page']['create_allowed'] ) ? 'yes' : 'no'
+				)
+			) . '</td></tr>';
+		}
+		$pending_posts = 0;
+		foreach ( isset( $blog['posts'] ) ? $blog['posts'] : array() as $prow ) {
+			if ( empty( $prow['exists'] ) || empty( $prow['hash_match'] ) ) {
+				++$pending_posts;
+			}
+		}
+		echo '<tr><th>Posts in pack</th><td>' . esc_html(
+			sprintf(
+				'%d total · %d need create/update',
+				count( isset( $blog['posts'] ) ? $blog['posts'] : array() ),
+				$pending_posts
+			)
+		) . '</td></tr>';
+		echo '</tbody></table>';
+
+		echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '" style="margin-top:12px">';
+		wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
+		echo '<input type="hidden" name="cil_content_sync_action" value="apply_blog_pack">';
+		echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off" placeholder="APPLY"></label></p>';
+		$btn_atts = empty( $blog['can_apply'] ) ? array( 'disabled' => 'disabled' ) : array();
+		submit_button( __( 'Apply Blog pack', 'circumcision-london' ), 'primary', 'submit', false, $btn_atts );
+		if ( empty( $blog['can_apply'] ) && ! empty( $blog['error'] ) ) {
+			echo '<p class="description" style="margin-top:8px">' . esc_html( $blog['error'] ) . '</p>';
+		}
+		echo '</form>';
+		echo '</div>';
+	} elseif ( ! empty( $manifest['blog_pack'] ) && ! function_exists( 'cil_blog_inspect_pack' ) ) {
+		echo '<div class="notice notice-error"><p>' . esc_html__( 'manifest.json enables blog_pack but inc/content-sync-blog.php is not loaded.', 'circumcision-london' ) . '</p></div>';
+	}
+
 	$reports = array();
 	foreach ( $manifest['pages'] as $slug ) {
 		if ( 'blog' === $slug ) {
@@ -641,7 +690,7 @@ function cil_content_sync_render_admin() {
 		$reports[ $slug ] = cil_content_inspect_slug( $slug );
 	}
 
-	echo '<h2>' . esc_html__( 'Dry-run', 'circumcision-london' ) . '</h2>';
+	echo '<h2>' . esc_html__( 'Dry-run (pages)', 'circumcision-london' ) . '</h2>';
 	echo '<table class="widefat striped"><thead><tr>';
 	echo '<th>' . esc_html__( 'Slug', 'circumcision-london' ) . '</th>';
 	echo '<th>' . esc_html__( 'Local ID (hint)', 'circumcision-london' ) . '</th>';
@@ -650,6 +699,15 @@ function cil_content_sync_render_admin() {
 	echo '<th>' . esc_html__( 'Host', 'circumcision-london' ) . '</th>';
 	echo '<th>' . esc_html__( 'Status', 'circumcision-london' ) . '</th>';
 	echo '</tr></thead><tbody>';
+
+	// Always show blog row so it is not "invisible".
+	if ( ! empty( $manifest['blog_pack'] ) ) {
+		echo '<tr style="background:#f0f6fc">';
+		echo '<td><code>blog</code></td>';
+		echo '<td>—</td><td>—</td><td>—</td><td>—</td>';
+		echo '<td><strong>' . esc_html__( 'Use Blog pack section above (creates /blog/ + posts + images)', 'circumcision-london' ) . '</strong></td>';
+		echo '</tr>';
+	}
 
 	foreach ( $reports as $slug => $report ) {
 		$hash = $report['hash_match'] ? __( 'match', 'circumcision-london' ) : __( 'different', 'circumcision-london' );
@@ -672,14 +730,13 @@ function cil_content_sync_render_admin() {
 	echo '</tbody></table>';
 
 	echo '<h2>' . esc_html__( 'Apply pages', 'circumcision-london' ) . '</h2>';
-	echo '<p>' . esc_html__( 'This overwrites Gutenberg post_content for the selected published pages. Title, slug, status, author, featured image, template and SEO meta are left unchanged. Type APPLY to confirm.', 'circumcision-london' ) . '</p>';
+	echo '<p>' . esc_html__( 'This overwrites Gutenberg post_content for the selected published pages. Blog is not listed here — use Blog pack above. Type APPLY to confirm.', 'circumcision-london' ) . '</p>';
 
 	echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '">';
 	wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
 	echo '<input type="hidden" name="cil_content_sync_action" value="apply">';
 	foreach ( $manifest['pages'] as $slug ) {
 		if ( 'blog' === $slug ) {
-			// Blog page is applied via the Blog pack (creates page/posts/media).
 			continue;
 		}
 		$report   = $reports[ $slug ];
@@ -691,33 +748,6 @@ function cil_content_sync_render_admin() {
 	echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off"></label></p>';
 	submit_button( __( 'Apply selected fixtures', 'circumcision-london' ) );
 	echo '</form>';
-
-	if ( function_exists( 'cil_blog_inspect_pack' ) && ! empty( $manifest['blog_pack'] ) ) {
-		$blog = cil_blog_inspect_pack();
-		echo '<h2>' . esc_html__( 'Blog pack', 'circumcision-london' ) . '</h2>';
-		echo '<p>' . esc_html__( 'Creates/updates /blog/, category clinic-articles, all blog posts, featured images from theme fixtures, and ensures a Blog nav link. Uses the exact Local Gutenberg content — it does not redesign the page.', 'circumcision-london' ) . '</p>';
-		echo '<table class="widefat striped"><tbody>';
-		echo '<tr><th>Host</th><td>' . esc_html( ! empty( $blog['host_match'] ) ? __( 'match', 'circumcision-london' ) : __( 'mismatch', 'circumcision-london' ) ) . '</td></tr>';
-		echo '<tr><th>Status</th><td>' . esc_html( ! empty( $blog['error'] ) ? $blog['error'] : ( ! empty( $blog['can_apply'] ) ? __( 'Pending apply', 'circumcision-london' ) : __( 'Ready', 'circumcision-london' ) ) ) . '</td></tr>';
-		if ( ! empty( $blog['page'] ) ) {
-			echo '<tr><th>Blog page</th><td>' . esc_html(
-				sprintf(
-					'exists=%s hash_match=%s',
-					! empty( $blog['page']['exists'] ) ? 'yes' : 'no',
-					! empty( $blog['page']['hash_match'] ) ? 'yes' : 'no'
-				)
-			) . '</td></tr>';
-		}
-		echo '<tr><th>Posts in pack</th><td>' . esc_html( (string) count( isset( $blog['posts'] ) ? $blog['posts'] : array() ) ) . '</td></tr>';
-		echo '</tbody></table>';
-
-		echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '" style="margin-top:16px">';
-		wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
-		echo '<input type="hidden" name="cil_content_sync_action" value="apply_blog_pack">';
-		echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off"></label></p>';
-		submit_button( __( 'Apply Blog pack', 'circumcision-london' ), 'primary', 'submit', true, empty( $blog['can_apply'] ) ? array( 'disabled' => 'disabled' ) : array() );
-		echo '</form>';
-	}
 
 	echo '</div>';
 }
