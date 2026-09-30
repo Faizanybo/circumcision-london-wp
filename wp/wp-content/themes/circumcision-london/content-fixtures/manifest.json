@@ -5,6 +5,7 @@
     "pages": [
         "book",
         "home",
+        "blog",
         "luton-circumcision-clinic",
         "southampton-circumcision-clinic",
         "birmingham-circumcision-clinic",
@@ -29,5 +30,6 @@
         "frenuloplasty",
         "preputioplasty",
         "video-testimonials"
-    ]
+    ],
+    "blog_pack": true
 }

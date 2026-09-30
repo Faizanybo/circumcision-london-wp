@@ -1,0 +1,26 @@
+{
+    "schema": 1,
+    "post_type": "post",
+    "slug": "what-is-the-best-age-for-circumcision",
+    "title": "What is the best age for circumcision?",
+    "status": "publish",
+    "date_gmt": "2026-09-29 18:12:44",
+    "source_modified_gmt": "2026-09-29 18:57:09",
+    "source_sha256": "8d67c7fc2160b69ee4a97ec06cc83bee43cc20f1efa2689bb493f9acd5a20dd5",
+    "excerpt": "We usually recommend circumcision within the first few weeks of life. Healing is often quicker at that age, and we routinely use the Plastibell ring method for babies.",
+    "categories": [
+        "clinic-articles"
+    ],
+    "featured_media": {
+        "file": "blog/media/what-is-the-best-age-for-circumcision.jpg",
+        "mime": "image/jpeg",
+        "alt": "",
+        "title": "What is the best age for circumcision?",
+        "sha256": "1d195b696143ba2063ac912095443b66de1bd35604003ca6c52024380a558d36",
+        "original_basename": "b63dad9a633545a38fe3baef42508245.jpg"
+    },
+    "replace_from": "http://circumcision-london-wp.local",
+    "replace_to": "https://circumcision-london-wp.vercel.app",
+    "content": "<!-- wp:cil/page-head {\"eyebrow\":\"Clinic articles\",\"title\":\"What is the best age for circumcision?\",\"lede\":\"We usually recommend circumcision within the first few weeks of life. Healing is often quicker at that age, and we routinely use the Plastibell ring method for babies.\",\"crumbs\":[{\"label\":\"Blog\",\"href\":\"https://circumcision-london-wp.vercel.app/blog/\"},{\"label\":\"What is the best age for circumcision?\",\"href\":\"\"}]} /-->\n\n<!-- wp:cil/section {\"size\":\"section-sm\",\"band\":\"\",\"wrap\":\"wrap-narrow\"} -->\n<section class=\"wp-block-cil-section section-sm\"><div class=\"wrap-narrow\">\n<!-- wp:group {\"className\":\"body-text\",\"layout\":{\"type\":\"constrained\"}} -->\n<div class=\"wp-block-group body-text\">\n<!-- wp:image {\"id\":219,\"sizeSlug\":\"large\",\"linkDestination\":\"none\",\"className\":\"cil-blog-article-figure\"} -->\n<figure class=\"wp-block-image size-large cil-blog-article-figure\"><img src=\"https://circumcision-london-wp.vercel.app/wp-content/uploads/2026/09/b63dad9a633545a38fe3baef42508245-1100x692.jpg\" alt=\"What is the best age for circumcision?\" class=\"wp-image-219\" /></figure>\n<!-- /wp:image -->\n\n<!-- wp:heading {\"level\":2,\"className\":\"display d-2\"} -->\n<h2 class=\"wp-block-heading display d-2\">The best age - baby circumcision</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>We usually recommend circumcision within the first few weeks of life. It is traditional to perform circumcision on the 7th day in the Muslim community. We also recommend this young age as often the healing process will be quicker. We routinely use the Plastibell ring method for babies and then skin is softer within the first few weeks of life and hence the foreskin which is tied dies and heals quicker.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:heading {\"level\":2,\"className\":\"display d-2\"} -->\n<h2 class=\"wp-block-heading display d-2\">Older babies and toddlers</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>We perform circumcisions for all ages but after the baby is older than 6 months and until the age of around 3 years, it becomes a more challenging age as the baby is more active physically and begins to understand something is happening without being able to comprehend or understand that this is for his benefit.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:heading {\"level\":2,\"className\":\"display d-2\"} -->\n<h2 class=\"wp-block-heading display d-2\">Children and teenagers</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>As the child grows up and becomes able to communicate properly, we can explain what is happening in a very simple way that will not scare the patient. Most of the children are very cooperative when we start the circumcision as they see that there is no pain and the circumcision is easier than they expected.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:heading {\"level\":2,\"className\":\"display d-2\"} -->\n<h2 class=\"wp-block-heading display d-2\">Adults</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>We consider adult circumcisions to start from 14 years old as the patient would have usually gone through puberty and the procedure is the same as a fully grown man. Patients of this age are cooperative as we can explain the procedure to them and they understand this is for their benefit.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>If you would like to book a consultation or ask a question, you can book online or contact the clinic.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:buttons -->\n<div class=\"wp-block-buttons\"><!-- wp:button -->\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://circumcision-london-wp.vercel.app/book/\">Book online</a></div>\n<!-- /wp:button -->\n\n<!-- wp:button {\"className\":\"is-style-outline\"} -->\n<div class=\"wp-block-button is-style-outline\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://circumcision-london-wp.vercel.app/contact/\">Contact the clinic</a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons -->\n</div>\n<!-- /wp:group -->\n</div></section>\n<!-- /wp:cil/section -->\n\n<!-- wp:cil/cta-band /-->",
+    "local_id": 207
+}

@@ -1,0 +1,13 @@
+{
+    "schema": 1,
+    "slug": "blog",
+    "path": "/blog/",
+    "title": "Blog",
+    "create_if_missing": true,
+    "local_id": 211,
+    "source_modified_gmt": "2026-09-29 18:37:09",
+    "source_sha256": "f119a9f98aa52c7d6539ad9c763074ab66c7ff9563037d878b3d7bab7376f0b1",
+    "replace_from": "http://circumcision-london-wp.local",
+    "replace_to": "https://circumcision-london-wp.vercel.app",
+    "content": "<!-- wp:cil/page-head {\"eyebrow\":\"Clinic articles\",\"title\":\"Blog\",\"lede\":\"Practical answers about circumcision methods, aftercare, age and common foreskin problems — written for families and adult patients considering Circumcision in London.\",\"crumbs\":[{\"label\":\"Blog\",\"href\":\"\"}]} /-->\n\n<!-- wp:cil/section {\"size\":\"section-sm\",\"band\":\"\",\"wrap\":\"wrap\"} -->\n<section class=\"wp-block-cil-section section-sm\"><div class=\"wrap\"><!-- wp:group {\"className\":\"body-text wrap-narrow\",\"layout\":{\"type\":\"constrained\"}} -->\n<div class=\"wp-block-group body-text wrap-narrow\"><!-- wp:paragraph -->\n<p>Browse our clinic articles below. Each piece is stored in WordPress so you can edit the title, image, excerpt and full article in the editor. Prefer to talk it through? <a href=\"https://circumcision-london-wp.vercel.app/contact/\">Contact the clinic</a>.</p>\n<!-- /wp:paragraph --></div>\n<!-- /wp:group --></div></section>\n<!-- /wp:cil/section -->\n\n<!-- wp:cil/blog-feed {\"perPage\":12,\"moreLabel\":\"Read more\",\"category\":\"clinic-articles\"} /-->\n\n<!-- wp:cil/cta-band /-->"
+}

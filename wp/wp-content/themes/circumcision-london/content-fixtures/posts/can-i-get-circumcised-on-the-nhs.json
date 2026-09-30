@@ -1,0 +1,26 @@
+{
+    "schema": 1,
+    "post_type": "post",
+    "slug": "can-i-get-circumcised-on-the-nhs",
+    "title": "Can I get circumcised for free on the NHS?",
+    "status": "publish",
+    "date_gmt": "2026-09-29 18:57:06",
+    "source_modified_gmt": "2026-09-29 18:57:09",
+    "source_sha256": "105772ed056c78baaf837538e8a24022309864fc8623f3e6e32509f734fbf3d3",
+    "excerpt": "The NHS only funds therapeutic circumcisions where there is a medical need. Religious or cultural circumcision is not funded.",
+    "categories": [
+        "clinic-articles"
+    ],
+    "featured_media": {
+        "file": "blog/media/can-i-get-circumcised-on-the-nhs.png",
+        "mime": "image/png",
+        "alt": "",
+        "title": "Can I get circumcised for free on the NHS?",
+        "sha256": "3ef351b620ed0c81ffbcd06ac2f816d9814790abf4ef8ed0f31ca245a8b9ecde",
+        "original_basename": "091408_00728b37a1be4396845f9f6c74338389mv2.png"
+    },
+    "replace_from": "http://circumcision-london-wp.local",
+    "replace_to": "https://circumcision-london-wp.vercel.app",
+    "content": "<!-- wp:cil/page-head {\"eyebrow\":\"Clinic articles\",\"title\":\"Can I get circumcised for free on the NHS?\",\"lede\":\"The NHS only funds therapeutic circumcisions where there is a medical need. Religious or cultural circumcision is not funded.\",\"crumbs\":[{\"label\":\"Blog\",\"href\":\"https://circumcision-london-wp.vercel.app/blog/\"},{\"label\":\"Can I get circumcised for free on the NHS?\",\"href\":\"\"}]} /-->\n\n<!-- wp:cil/section {\"size\":\"section-sm\",\"band\":\"\",\"wrap\":\"wrap-narrow\"} -->\n<section class=\"wp-block-cil-section section-sm\"><div class=\"wrap-narrow\">\n<!-- wp:group {\"className\":\"body-text\",\"layout\":{\"type\":\"constrained\"}} -->\n<div class=\"wp-block-group body-text\">\n<!-- wp:image {\"id\":230,\"sizeSlug\":\"large\",\"linkDestination\":\"none\",\"className\":\"cil-blog-article-figure\"} -->\n<figure class=\"wp-block-image size-large cil-blog-article-figure\"><img src=\"https://circumcision-london-wp.vercel.app/wp-content/uploads/2026/09/091408_00728b37a1be4396845f9f6c74338389mv2-1100x578.png\" alt=\"Can I get circumcised for free on the NHS?\" class=\"wp-image-230\" /></figure>\n<!-- /wp:image -->\n\n<!-- wp:paragraph -->\n<p>The NHS only funds therapeutic circumcisions. This means there must be a medical need to qualify such as foreskin problems. The NHS does not fund non-therapeutic circumcisions which are carried out for religious or cultural reasons.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:heading {\"level\":2,\"className\":\"display d-2\"} -->\n<h2 class=\"wp-block-heading display d-2\">Which conditions qualify for NHS circumcision?</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>You must have a chronic foreskin problem such as the following:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:list -->\n<ul class=\"wp-block-list\"><!-- wp:list-item -->\n<li>Phimosis – inability to retract the foreskin</li>\n<!-- /wp:list-item --><!-- wp:list-item -->\n<li>Paraphimosis – inability to return foreskin to normal position after retraction</li>\n<!-- /wp:list-item --><!-- wp:list-item -->\n<li>Balanitis – inflammation of the head of the penis (glans)</li>\n<!-- /wp:list-item --><!-- wp:list-item -->\n<li>Balanoposthitis – inflammation of the glans and foreskin</li>\n<!-- /wp:list-item --></ul>\n<!-- /wp:list -->\n\n<!-- wp:heading {\"level\":2,\"className\":\"display d-2\"} -->\n<h2 class=\"wp-block-heading display d-2\">How to get an NHS circumcision?</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>You will need to visit your GP in the first instance to be assessed. If your GP thinks you may need a circumcision, they will refer you to the urology department in the hospital for assessment and circumcision if needed.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:heading {\"level\":2,\"className\":\"display d-2\"} -->\n<h2 class=\"wp-block-heading display d-2\">Is there a long waiting list?</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>Usually there is a long waiting list of several months and from our experience, most patients notice their condition getting worse whilst on the waiting list and opt for a quicker private circumcision.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>If you would like to book a consultation or ask a question, you can book online or contact the clinic.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:buttons -->\n<div class=\"wp-block-buttons\"><!-- wp:button -->\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://circumcision-london-wp.vercel.app/book/\">Book online</a></div>\n<!-- /wp:button -->\n\n<!-- wp:button {\"className\":\"is-style-outline\"} -->\n<div class=\"wp-block-button is-style-outline\"><a class=\"wp-block-button__link wp-element-button\" href=\"https://circumcision-london-wp.vercel.app/contact/\">Contact the clinic</a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons -->\n</div>\n<!-- /wp:group -->\n</div></section>\n<!-- /wp:cil/section -->\n\n<!-- wp:cil/cta-band /-->",
+    "local_id": 229
+}

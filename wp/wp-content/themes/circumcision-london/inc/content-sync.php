@@ -4,7 +4,8 @@
  *
  * Git ships fixtures. An explicit admin apply writes post_content only.
  * Destination pages are resolved by slug/path, never by ID.
- * This does not run on deploy and does not create pages.
+ * This does not run on deploy and does not create pages (except the Blog pack
+ * in content-sync-blog.php, which may create /blog/, posts, media and nav).
  *
  * @package Circumcision_London
  */
@@ -533,10 +534,46 @@ function cil_content_sync_handle_post() {
 	if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	if ( empty( $_POST['cil_content_sync_action'] ) || 'apply' !== $_POST['cil_content_sync_action'] ) {
+	if ( empty( $_GET['page'] ) || 'cil-content-sync' !== $_GET['page'] ) {
 		return;
 	}
-	if ( empty( $_GET['page'] ) || 'cil-content-sync' !== $_GET['page'] ) {
+	if ( empty( $_POST['cil_content_sync_action'] ) ) {
+		return;
+	}
+
+	$action = sanitize_key( wp_unslash( $_POST['cil_content_sync_action'] ) );
+
+	if ( 'apply_blog_pack' === $action ) {
+		check_admin_referer( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
+		$confirm = isset( $_POST['cil_content_sync_confirm'] ) ? sanitize_text_field( wp_unslash( $_POST['cil_content_sync_confirm'] ) ) : '';
+		if ( 'APPLY' !== $confirm ) {
+			add_settings_error( 'cil_content_sync', 'confirm', __( 'Blog pack apply aborted: type APPLY in the confirmation field.', 'circumcision-london' ), 'error' );
+			return;
+		}
+		if ( ! function_exists( 'cil_blog_apply_pack' ) ) {
+			add_settings_error( 'cil_content_sync', 'blog-missing', __( 'Blog pack sync is not loaded.', 'circumcision-london' ), 'error' );
+			return;
+		}
+		$result = cil_blog_apply_pack();
+		if ( is_wp_error( $result ) ) {
+			add_settings_error( 'cil_content_sync', 'blog-apply', $result->get_error_message(), 'error' );
+			return;
+		}
+		$page_msg = ! empty( $result['page']['created'] )
+			? sprintf( 'Created Blog page ID %d.', (int) $result['page']['id'] )
+			: sprintf( 'Updated Blog page ID %d.', (int) $result['page']['id'] );
+		$post_n   = isset( $result['posts'] ) ? count( $result['posts'] ) : 0;
+		$nav_msg  = isset( $result['nav']['message'] ) ? $result['nav']['message'] : '';
+		add_settings_error(
+			'cil_content_sync',
+			'blog-ok',
+			sprintf( 'Blog pack applied. %s Upserted %d posts. %s', $page_msg, $post_n, $nav_msg ),
+			'success'
+		);
+		return;
+	}
+
+	if ( 'apply' !== $action ) {
 		return;
 	}
 
@@ -582,7 +619,7 @@ function cil_content_sync_render_admin() {
 	$manifest = cil_content_load_manifest();
 	echo '<div class="wrap">';
 	echo '<h1>' . esc_html__( 'Content sync', 'circumcision-london' ) . '</h1>';
-	echo '<p>' . esc_html__( 'Dry-run is the default. Git deploy never applies these fixtures. Apply writes post_content only, resolves the destination by slug, and never creates a page.', 'circumcision-london' ) . '</p>';
+	echo '<p>' . esc_html__( 'Dry-run is the default. Git deploy never applies these fixtures. Page apply writes post_content only for existing pages. The Blog pack (below) can create /blog/, posts and media.', 'circumcision-london' ) . '</p>';
 
 	if ( is_wp_error( $manifest ) ) {
 		echo '<div class="notice notice-error"><p>' . esc_html( $manifest->get_error_message() ) . '</p></div>';
@@ -598,6 +635,9 @@ function cil_content_sync_render_admin() {
 
 	$reports = array();
 	foreach ( $manifest['pages'] as $slug ) {
+		if ( 'blog' === $slug ) {
+			continue;
+		}
 		$reports[ $slug ] = cil_content_inspect_slug( $slug );
 	}
 
@@ -631,13 +671,17 @@ function cil_content_sync_render_admin() {
 	}
 	echo '</tbody></table>';
 
-	echo '<h2>' . esc_html__( 'Apply', 'circumcision-london' ) . '</h2>';
+	echo '<h2>' . esc_html__( 'Apply pages', 'circumcision-london' ) . '</h2>';
 	echo '<p>' . esc_html__( 'This overwrites Gutenberg post_content for the selected published pages. Title, slug, status, author, featured image, template and SEO meta are left unchanged. Type APPLY to confirm.', 'circumcision-london' ) . '</p>';
 
 	echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '">';
 	wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
 	echo '<input type="hidden" name="cil_content_sync_action" value="apply">';
 	foreach ( $manifest['pages'] as $slug ) {
+		if ( 'blog' === $slug ) {
+			// Blog page is applied via the Blog pack (creates page/posts/media).
+			continue;
+		}
 		$report   = $reports[ $slug ];
 		$disabled = empty( $report['can_apply'] ) ? ' disabled' : '';
 		echo '<p><label><input type="checkbox" name="cil_content_sync_slugs[]" value="' . esc_attr( $slug ) . '"' . $disabled . '> ';
@@ -647,5 +691,33 @@ function cil_content_sync_render_admin() {
 	echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off"></label></p>';
 	submit_button( __( 'Apply selected fixtures', 'circumcision-london' ) );
 	echo '</form>';
+
+	if ( function_exists( 'cil_blog_inspect_pack' ) && ! empty( $manifest['blog_pack'] ) ) {
+		$blog = cil_blog_inspect_pack();
+		echo '<h2>' . esc_html__( 'Blog pack', 'circumcision-london' ) . '</h2>';
+		echo '<p>' . esc_html__( 'Creates/updates /blog/, category clinic-articles, all blog posts, featured images from theme fixtures, and ensures a Blog nav link. Uses the exact Local Gutenberg content — it does not redesign the page.', 'circumcision-london' ) . '</p>';
+		echo '<table class="widefat striped"><tbody>';
+		echo '<tr><th>Host</th><td>' . esc_html( ! empty( $blog['host_match'] ) ? __( 'match', 'circumcision-london' ) : __( 'mismatch', 'circumcision-london' ) ) . '</td></tr>';
+		echo '<tr><th>Status</th><td>' . esc_html( ! empty( $blog['error'] ) ? $blog['error'] : ( ! empty( $blog['can_apply'] ) ? __( 'Pending apply', 'circumcision-london' ) : __( 'Ready', 'circumcision-london' ) ) ) . '</td></tr>';
+		if ( ! empty( $blog['page'] ) ) {
+			echo '<tr><th>Blog page</th><td>' . esc_html(
+				sprintf(
+					'exists=%s hash_match=%s',
+					! empty( $blog['page']['exists'] ) ? 'yes' : 'no',
+					! empty( $blog['page']['hash_match'] ) ? 'yes' : 'no'
+				)
+			) . '</td></tr>';
+		}
+		echo '<tr><th>Posts in pack</th><td>' . esc_html( (string) count( isset( $blog['posts'] ) ? $blog['posts'] : array() ) ) . '</td></tr>';
+		echo '</tbody></table>';
+
+		echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '" style="margin-top:16px">';
+		wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
+		echo '<input type="hidden" name="cil_content_sync_action" value="apply_blog_pack">';
+		echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off"></label></p>';
+		submit_button( __( 'Apply Blog pack', 'circumcision-london' ), 'primary', 'submit', true, empty( $blog['can_apply'] ) ? array( 'disabled' => 'disabled' ) : array() );
+		echo '</form>';
+	}
+
 	echo '</div>';
 }

@@ -1,0 +1,26 @@
+{
+    "schema": 1,
+    "replace_from": "http://circumcision-london-wp.local",
+    "replace_to": "https://circumcision-london-wp.vercel.app",
+    "categories": [
+        {
+            "name": "Clinic articles",
+            "slug": "clinic-articles",
+            "description": ""
+        }
+    ],
+    "page": "blog",
+    "posts": [
+        "can-i-get-circumcised-on-the-nhs",
+        "the-best-way-to-treat-tight-foreskin",
+        "can-circumcision-cause-a-buried-hidden-penis",
+        "what-is-the-best-circumcision-method",
+        "what-is-the-best-age-for-circumcision",
+        "how-to-manage-post-operative-bleeding-after-plastibell-ring-circumcision",
+        "what-is-the-aftercare-for-plastibell-ring-circumcision",
+        "understanding-the-circumcision-process-what-to-expect-from-circumcision-in-london",
+        "the-benefits-and-myths-of-circumcision-what-every-parent-should-know",
+        "the-benefits-of-choosing-expert-circumcision-in-london"
+    ],
+    "ensure_nav_blog": true
+}
