@@ -187,6 +187,8 @@ ul, ol { margin: 0; padding: 0; }
   background: var(--card); border: 1px solid var(--line); border-radius: 6px;
   padding: clamp(24px, 2.4vw, 36px);
   text-decoration: none; color: inherit;
+  height: 100%;
+  box-sizing: border-box;
   box-shadow: 0 20px 44px -34px rgba(22, 32, 46, .34);
   transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
 }

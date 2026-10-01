@@ -21,7 +21,7 @@ $callback_url = home_url( '/#home' );
 		</div>
 	</div>
 	<div class="header-inner">
-		<?php get_template_part( 'template-parts/brand' ); ?>
+		<?php get_template_part( 'template-parts/brand', null, array( 'context' => 'header' ) ); ?>
 		<nav class="primary-nav" aria-label="<?php esc_attr_e( 'Primary', 'circumcision-london' ); ?>">
 			<?php cil_primary_nav(); ?>
 		</nav>

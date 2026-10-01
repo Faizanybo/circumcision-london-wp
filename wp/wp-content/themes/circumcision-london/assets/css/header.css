@@ -52,12 +52,14 @@
   justify-content: center;
   gap: 3px; text-decoration: none; flex: 0 0 auto;
 }
-/* CIL badge is near-square; cap height so the 80px header bar stays intact. */
+/* Wide header lockup: keep bar at 80px; allow enough width for emblem + wordmark. */
 .header .brand img {
   width: auto;
   height: auto;
-  max-height: 56px;
-  max-width: 168px;
+  max-height: 64px;
+  max-width: min(280px, 42vw);
+  display: block;
+  object-fit: contain;
 }
 .brand .mark {
   font-family: var(--display);
@@ -225,6 +227,10 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   .header-inner { height: 70px; gap: 16px; }
   :root { --header-h: 98px; }
   .brand .sub { display: none; }
+  .header .brand img {
+    max-height: 46px;
+    max-width: min(220px, 62vw);
+  }
   .header-trust-inner { padding-block: 6px; font-size: 11px; gap: 6px 10px; }
   .header-trust-sep { display: none; }
 }

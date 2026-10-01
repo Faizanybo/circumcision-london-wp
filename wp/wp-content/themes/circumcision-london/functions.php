@@ -669,28 +669,43 @@ function cil_link_extra_attrs( $item ) {
 }
 
 /**
- * Logo markup: Customizer, then the CIL theme PNG, then text.
+ * Logo markup: Customizer, then context-specific CIL theme PNG, then text.
  *
- * @param array<string, mixed> $clinic Clinic details.
+ * @param array<string, mixed> $clinic  Clinic details.
+ * @param string               $context 'header' or 'footer'.
  * @return string
  */
-function cil_logo_html( $clinic ) {
-	$attrs = array(
-		'alt'           => $clinic['name'],
-		'width'         => 550,
-		'height'        => 602,
-		'fetchpriority' => 'high',
+function cil_logo_html( $clinic, $context = 'header' ) {
+	$context = ( 'footer' === $context ) ? 'footer' : 'header';
+	$attrs   = array(
+		'alt'    => $clinic['name'],
+		'width'  => 550,
+		'height' => 602,
 	);
+
+	if ( 'header' === $context ) {
+		$attrs['fetchpriority'] = 'high';
+	}
 
 	if ( has_custom_logo() ) {
 		return wp_get_attachment_image( (int) get_theme_mod( 'custom_logo' ), 'full', false, $attrs );
 	}
 
-	$candidates = array(
-		'assets/images/circumcision-in-london-logo.png',
-		'assets/images/Circumcision in London Logo.png',
-		'assets/images/logo.png',
-	);
+	// Client-supplied header/footer files first; older theme PNGs remain as fallbacks.
+	// Header uses the transparent lockup (no white box) — same artwork family as the named header file.
+	$candidates = ( 'footer' === $context )
+		? array(
+			'assets/images/Circumcision in London - footer.png',
+			'assets/images/circumcision-in-london-logo.png',
+			'assets/images/logo.png',
+		)
+		: array(
+			'assets/images/Circumcision in London Logo - transparent background.png',
+			'assets/images/Circumcision in London Clinic Logo - header.png',
+			'assets/images/circumcision-in-london-logo.png',
+			'assets/images/Circumcision in London Logo.png',
+			'assets/images/logo.png',
+		);
 
 	foreach ( $candidates as $relative ) {
 		$path = get_template_directory() . '/' . $relative;
@@ -700,12 +715,14 @@ function cil_logo_html( $clinic ) {
 		$size = @getimagesize( $path );
 		$w    = ( $size && ! empty( $size[0] ) ) ? (int) $size[0] : (int) $attrs['width'];
 		$h    = ( $size && ! empty( $size[1] ) ) ? (int) $size[1] : (int) $attrs['height'];
+		$prio = ( 'header' === $context ) ? ' fetchpriority="high"' : '';
 		return sprintf(
-			'<img src="%1$s" alt="%2$s" width="%3$d" height="%4$d" fetchpriority="high">',
+			'<img src="%1$s" alt="%2$s" width="%3$d" height="%4$d"%5$s>',
 			esc_url( get_template_directory_uri() . '/' . $relative ),
 			esc_attr( $clinic['name'] ),
 			$w,
-			$h
+			$h,
+			$prio
 		);
 	}
 
@@ -716,10 +733,12 @@ function cil_logo_html( $clinic ) {
  * Site wordmark. Prototype stacked lockup: logo plus "Circumcision in London".
  *
  * @param string $extra_class Optional extra class on the anchor.
+ * @param string $context     'header' or 'footer' — selects the matching logo asset.
  */
-function cil_wordmark( $extra_class = '' ) {
-	$clinic = cil_clinic();
-	$class  = 'brand' . ( $extra_class ? ' ' . $extra_class : '' );
+function cil_wordmark( $extra_class = '', $context = 'header' ) {
+	$clinic  = cil_clinic();
+	$context = ( 'footer' === $context ) ? 'footer' : 'header';
+	$class   = 'brand' . ( $extra_class ? ' ' . $extra_class : '' );
 	/*
 	 * Visual lockup stays logo + trading name. Full handover phrase is in aria-label
 	 * so we do not duplicate "at Beverley Clinic" against the logo lockup.
@@ -737,7 +756,7 @@ function cil_wordmark( $extra_class = '' ) {
 	);
 	?>
 	<a class="<?php echo esc_attr( $class ); ?>" href="<?php echo esc_url( home_url( '/' ) ); ?>" aria-label="<?php echo esc_attr( $label ); ?>">
-		<?php echo cil_logo_html( $clinic ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts. ?>
+		<?php echo cil_logo_html( $clinic, $context ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts. ?>
 		<span class="sub"><?php echo esc_html( $clinic['name'] ); ?></span>
 	</a>
 	<?php
@@ -1100,6 +1119,7 @@ require get_template_directory() . '/inc/pages/about-pages.php';
 require get_template_directory() . '/inc/pages/visit-pages.php';
 require get_template_directory() . '/inc/pages/legal-pages.php';
 require get_template_directory() . '/inc/pages/home-page.php';
+require get_template_directory() . '/inc/home-reveal.php';
 require get_template_directory() . '/inc/setup-pages.php';
 require get_template_directory() . '/inc/content-sync.php';
 require get_template_directory() . '/inc/content-sync-blog.php';

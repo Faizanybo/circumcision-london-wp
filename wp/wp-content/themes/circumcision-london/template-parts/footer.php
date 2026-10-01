@@ -15,7 +15,7 @@ $clinic = cil_clinic();
 	<div class="wrap footer-top">
 		<div class="footer-grid">
 			<div>
-				<?php get_template_part( 'template-parts/brand' ); ?>
+				<?php get_template_part( 'template-parts/brand', null, array( 'context' => 'footer' ) ); ?>
 				<address>
 					<?php echo esc_html( $clinic['address']['street'] ); ?><br>
 					<?php echo esc_html( $clinic['address']['locality'] . ', ' . $clinic['address']['postcode'] ); ?><br>

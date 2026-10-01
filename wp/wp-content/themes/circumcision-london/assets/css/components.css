@@ -27,7 +27,11 @@
   color: #fff;
   min-width: 0;
 }
-.hero .eyebrow { color: rgba(255, 255, 255, .88); }
+.hero .eyebrow {
+  color: rgba(255, 255, 255, .88);
+  display: inline-block;
+  margin-bottom: 14px;
+}
 /* Wider measure so the title uses fewer lines beside the aside copy. */
 .hero h1 { color: #fff; max-width: 22ch; overflow-wrap: normal; }
 .hero-sub {
@@ -43,6 +47,29 @@
 }
 .hero--split .hero-layout {
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+}
+/* Single-column hero (no aside): clearer hierarchy and readable CTAs over video. */
+.hero:not(.hero--split) .hero-layout {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: min(40rem, 100%);
+}
+.hero:not(.hero--split) h1 {
+  max-width: min(18ch, 100%);
+  text-wrap: balance;
+}
+.hero:not(.hero--split) .hero-sub {
+  margin-top: 18px;
+  max-width: min(42ch, 100%);
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, .92);
+}
+.hero:not(.hero--split) .hero-actions {
+  margin-top: 32px;
+  gap: 14px;
+}
+.hero:not(.hero--split) .hero-facts {
+  margin-top: clamp(32px, 4vw, 48px);
 }
 .hero-main { min-width: 0; }
 .hero-aside.hero-copy {
@@ -81,6 +108,8 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .hero h1 { max-width: 18ch; }
+  .hero:not(.hero--split) .hero-layout { max-width: 100%; }
+  .hero:not(.hero--split) .hero-sub { max-width: 100%; }
 }
 
 /* --------------------------------------------------------- group cards -- */
@@ -602,3 +631,287 @@ a.cil-pagination__item:hover {
 @media print {
   .cta-band { display: none !important; }
 }
+
+/* ------------------------------------------------ homepage content scan -- */
+/* Short lede above card grids (medical reasons / methods). */
+.cil-section-lede {
+  max-width: 46rem;
+  margin-bottom: clamp(22px, 2.4vw, 32px);
+}
+.cil-section-lede p:last-child {
+  margin-bottom: 0;
+}
+
+/*
+ * Homepage medical + methods: center section heading + supporting paragraph,
+ * with one line-height gap between them. Scoped to wraps that include
+ * .cil-section-lede so Why Choose Us / other bands stay left-aligned.
+ */
+body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) {
+  max-width: 46rem;
+  margin-inline: auto;
+  text-align: center;
+}
+body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head {
+  max-width: none;
+  width: 100%;
+  margin-inline: auto;
+  margin-bottom: 0;
+  text-align: center;
+}
+body.cil-home .wp-block-cil-section.section > .wrap > .cil-section-lede {
+  text-align: center;
+  margin-inline: auto;
+  margin-top: 1.15em;
+}
+
+/* Info cards (cil/info-cards): equal-height flex cards; pin Learn more / CTAs to bottom. */
+.grid > .card.cil-info-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+}
+.cil-info-card > .cil-info-card__body.body-text,
+.cil-info-card > .body-text.cil-info-card__body {
+  color: var(--muted);
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+}
+.cil-info-card > p.cil-info-card__body {
+  flex: 1 1 auto;
+  margin: 0;
+}
+.cil-info-card .body-text p {
+  font-size: 15.5px;
+  line-height: 1.72;
+  color: var(--muted);
+  margin: 0;
+}
+.cil-info-card .body-text p + p {
+  margin-top: 0.85em;
+}
+.cil-info-card .body-text a {
+  font-weight: 600;
+  color: var(--blue-deep);
+  text-decoration: none;
+}
+.cil-info-card .body-text a:hover {
+  color: var(--blue);
+}
+/* Anchor "Learn more … →" paragraphs to the bottom of the card body. */
+.cil-info-card .body-text > p:not(:has(> a)) + p:has(> a) {
+  margin-top: auto;
+  padding-top: 1.1em;
+}
+.cil-info-card .body-text > p:has(> a) + p:has(> a) {
+  margin-top: 0.35em;
+  padding-top: 0;
+}
+/* Button CTAs (clinic cards etc.) also sit at the bottom when present. */
+.cil-info-card > .cil-info-card__action.btn-row {
+  margin-top: auto;
+  padding-top: 1.1em;
+}
+
+/* ------------------------------------------------ homepage reveal polish -- */
+/*
+ * Reuses the global [data-reveal] / .is-in system (theme.js + base.css).
+ * Scoped to body.cil-home so other pages stay unchanged.
+ * Transform/opacity only — does not affect card flex Learn-more alignment.
+ */
+body.cil-home [data-reveal] {
+  transform: translateY(24px);
+  transition-duration: 0.55s;
+}
+body.cil-home [data-reveal].is-in {
+  transform: none;
+}
+@media (max-width: 680px) {
+  body.cil-home [data-reveal] {
+    transform: translateY(14px);
+    transition-duration: 0.45s;
+  }
+  body.cil-home [data-reveal].is-in {
+    transform: none;
+  }
+}
+/* Keep reduced-motion / no-js behaviour from base.css (already !important). */
+
+/* ------------------------------------------------ interactive hovers -- */
+/*
+ * Must beat [data-reveal].is-in { transform: none } (same stylesheet / base.css).
+ * Lift only after .is-in so reveal animation is not fighting hover.
+ */
+.grid > .card.cil-info-card,
+.quote,
+.card-group {
+  transition:
+    border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+.grid > .card.cil-info-card[data-reveal].is-in,
+.quote[data-reveal].is-in,
+a.card-group[data-reveal].is-in,
+.card-group[data-reveal].is-in {
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+.figure img {
+  transition: transform 0.35s var(--ease);
+}
+.cil-info-card .body-text > p:has(> a) > a {
+  display: inline-block;
+  transition: color 0.28s var(--ease), transform 0.28s var(--ease);
+}
+
+/* Prefer hover-capable pointers; still apply when hover is available. */
+@media (hover: hover) {
+  body.cil-home .grid > .card.cil-info-card[data-reveal].is-in:hover,
+  .grid > .card.cil-info-card[data-reveal].is-in:hover,
+  .grid > .card.cil-info-card.is-in:hover,
+  body.cil-home .quote[data-reveal].is-in:hover,
+  .quote[data-reveal].is-in:hover,
+  .quote.is-in:hover,
+  body.cil-home a.card-group[data-reveal].is-in:hover,
+  a.card-group[data-reveal].is-in:hover,
+  .card-group[data-reveal].is-in:hover,
+  a.card-group.is-in:hover,
+  .card-group.is-in:hover {
+    transform: translateY(-4px) !important;
+    border-color: var(--blue);
+    box-shadow: 0 24px 50px -30px rgba(22, 32, 46, 0.4);
+  }
+
+  .figure:hover img {
+    transform: scale(1.03);
+  }
+
+  .cil-info-card .body-text > p:has(> a) > a:hover {
+    transform: translateX(3px);
+  }
+
+  a.card-group[data-reveal].is-in:hover .go::after,
+  .card-group[data-reveal].is-in:hover .go::after,
+  a.card-group.is-in:hover .go::after,
+  .card-group.is-in:hover .go::after {
+    transform: translateX(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid > .card.cil-info-card,
+  .grid > .card.cil-info-card[data-reveal].is-in,
+  .quote,
+  .quote[data-reveal].is-in,
+  .card-group,
+  .card-group[data-reveal].is-in,
+  a.card-group[data-reveal].is-in,
+  .figure img,
+  .cil-info-card .body-text > p:has(> a) > a {
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease) !important;
+  }
+  body.cil-home .grid > .card.cil-info-card[data-reveal].is-in:hover,
+  .grid > .card.cil-info-card[data-reveal].is-in:hover,
+  .grid > .card.cil-info-card.is-in:hover,
+  body.cil-home .quote[data-reveal].is-in:hover,
+  .quote[data-reveal].is-in:hover,
+  .quote.is-in:hover,
+  body.cil-home a.card-group[data-reveal].is-in:hover,
+  a.card-group[data-reveal].is-in:hover,
+  .card-group[data-reveal].is-in:hover,
+  a.card-group.is-in:hover,
+  .card-group.is-in:hover,
+  .figure:hover img,
+  .cil-info-card .body-text > p:has(> a) > a:hover,
+  a.card-group:hover .go::after,
+  .card-group:hover .go::after {
+    transform: none !important;
+  }
+  @media (hover: hover) {
+    .grid > .card.cil-info-card.is-in:hover,
+    .quote.is-in:hover,
+    a.card-group.is-in:hover,
+    .card-group.is-in:hover {
+      border-color: var(--blue);
+      box-shadow: 0 20px 44px -34px rgba(22, 32, 46, 0.34);
+    }
+  }
+}
+
+/* Clinic introduction checklist — scannable 2-up grid, not a wall of bullets.
+   Higher specificity than `.body-text ul li` so padding/markers are not overridden. */
+.body-text ul.cil-checklist,
+.body-text .wp-block-list.cil-checklist,
+.cil-checklist,
+ul.cil-checklist,
+.wp-block-list.cil-checklist {
+  list-style: none;
+  margin: clamp(22px, 2.6vw, 34px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 18px;
+}
+.body-text ul.cil-checklist > li,
+.body-text .wp-block-list.cil-checklist > li,
+.cil-checklist > li,
+ul.cil-checklist > li,
+.wp-block-list.cil-checklist > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  padding: 14px 16px;
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  list-style: none;
+  padding-left: 16px;
+}
+.body-text ul.cil-checklist > li::marker,
+.body-text .wp-block-list.cil-checklist > li::marker,
+.cil-checklist > li::marker,
+ul.cil-checklist > li::marker,
+.wp-block-list.cil-checklist > li::marker {
+  content: "";
+  font-size: 0;
+}
+.body-text ul.cil-checklist > li::before,
+.body-text .wp-block-list.cil-checklist > li::before,
+.cil-checklist > li::before,
+ul.cil-checklist > li::before,
+.wp-block-list.cil-checklist > li::before {
+  content: "";
+  position: static;
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.45em;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 18%, transparent);
+}
+
+@media (max-width: 680px) {
+  .body-text ul.cil-checklist,
+  .body-text .wp-block-list.cil-checklist,
+  .cil-checklist,
+  ul.cil-checklist,
+  .wp-block-list.cil-checklist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+

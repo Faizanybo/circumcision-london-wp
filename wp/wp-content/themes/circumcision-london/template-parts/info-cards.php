@@ -34,7 +34,7 @@ $htag    = 'h' . $level;
 		$cta2_url   = isset( $item['cta2Url'] ) ? $item['cta2Url'] : '';
 		$cta2_class = ( isset( $item['cta2Class'] ) && $item['cta2Class'] ) ? $item['cta2Class'] : 'btn btn-ghost';
 		?>
-		<div class="card" data-reveal<?php echo $delay ? ' data-reveal-delay="' . esc_attr( (string) $delay ) . '"' : ''; ?>>
+		<div class="card cil-info-card" data-reveal<?php echo $delay ? ' data-reveal-delay="' . esc_attr( (string) $delay ) . '"' : ''; ?>>
 			<?php if ( $eyebrow ) : ?>
 				<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
 			<?php endif; ?>
@@ -42,12 +42,12 @@ $htag    = 'h' . $level;
 				<<?php echo tag_escape( $htag ); ?> class="display d-3"><?php echo esc_html( $title ); ?></<?php echo tag_escape( $htag ); ?>>
 			<?php endif; ?>
 			<?php if ( $html ) : ?>
-				<div class="body-text" style="margin-top:12px"><?php echo cil_rich_text( $html ); ?></div>
+				<div class="body-text cil-info-card__body" style="margin-top:12px"><?php echo cil_rich_text( $html ); ?></div>
 			<?php elseif ( $body ) : ?>
-				<p><?php echo cil_rich_text( $body ); ?></p>
+				<p class="cil-info-card__body"><?php echo cil_rich_text( $body ); ?></p>
 			<?php endif; ?>
 			<?php if ( $cta_label || $cta2_label ) : ?>
-				<div class="btn-row" style="margin-top:20px">
+				<div class="btn-row cil-info-card__action" style="margin-top:20px">
 					<?php if ( $cta_label && $cta_url ) : ?>
 						<a class="<?php echo esc_attr( $cta_class ); ?>" href="<?php echo esc_url( $cta_url ); ?>"><?php echo esc_html( $cta_label ); ?></a>
 					<?php endif; ?>

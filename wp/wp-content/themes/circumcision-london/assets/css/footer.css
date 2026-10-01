@@ -16,15 +16,17 @@
 .footer-top { padding-block: clamp(52px, 6vw, 88px); }
 .footer-grid { display: grid; gap: clamp(30px, 4vw, 60px); grid-template-columns: 1.4fr 1fr 1fr 1fr 1.2fr; }
 .footer ul { margin: 0; padding: 0; }
-/* Full-colour CIL badge — do not invert (that flattened it to a white square). */
+/* Full-colour footer mark — transparent PNG; no invert / no clip radius. */
 .footer .brand img {
   width: auto;
   height: auto;
-  max-width: 168px;
-  max-height: 168px;
+  max-width: 140px;
+  max-height: 120px;
+  display: block;
+  object-fit: contain;
   filter: none;
   opacity: 1;
-  border-radius: 12px;
+  border-radius: 0;
 }
 .footer .brand .mark { color: #fff; }
 /* Logo lockup already includes the trading name. */

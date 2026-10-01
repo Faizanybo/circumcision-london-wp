@@ -9,4 +9,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-cil_wordmark();
+$context = ( isset( $args['context'] ) && 'footer' === $args['context'] ) ? 'footer' : 'header';
+cil_wordmark( '', $context );
