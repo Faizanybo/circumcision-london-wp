@@ -32,8 +32,8 @@
   --maxw: 1220px;
   /* Header/footer shell. 1220px cannot fit 8 nav items + phone + Book. */
   --chrome-max: 1440px;
-  /* Main bar 80px + trust strip (~32px). */
-  --header-h: 112px;
+  /* Main bar 96px + trust strip (~32px). */
+  --header-h: 128px;
   --r: 4px;
   --ease: cubic-bezier(.22, .61, .36, 1);
 }

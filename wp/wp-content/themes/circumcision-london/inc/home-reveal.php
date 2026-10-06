@@ -63,7 +63,7 @@ function cil_home_block_has_class( $attrs, $token ) {
  * @return string
  */
 function cil_home_reveal_render_block( $block_content, $block ) {
-	if ( is_admin() || wp_is_json_request() || ! is_front_page() ) {
+	if ( is_admin() || wp_is_json_request() || ( ! is_front_page() && ! is_page( 'babies' ) && ! is_page( 'children' ) && ! is_page( 'adults' ) && ! is_page( 'religious' ) ) ) {
 		return $block_content;
 	}
 	if ( empty( $block['blockName'] ) || ! is_string( $block_content ) || '' === $block_content ) {

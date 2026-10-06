@@ -19,7 +19,7 @@ $level   = isset( $args['heading_level'] ) ? (int) $args['heading_level'] : 3;
 $level   = in_array( $level, array( 2, 3 ), true ) ? $level : 3;
 $htag    = 'h' . $level;
 ?>
-<div class="grid <?php echo esc_attr( $columns ); ?>">
+<div class="grid <?php echo esc_attr( $columns ); ?> cil-info-cards-grid">
 	<?php foreach ( $items as $i => $item ) : ?>
 		<?php
 		$delay     = ( $i % 4 ) * 80;
