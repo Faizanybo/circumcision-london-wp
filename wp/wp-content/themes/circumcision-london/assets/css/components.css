@@ -1053,7 +1053,8 @@ ul.cil-checklist > li,
   line-height: 1.55;
   color: var(--ink-2);
   min-width: 0;
-  overflow-wrap: anywhere;
+  word-break: normal;
+  overflow-wrap: break-word;
   list-style: none;
   padding-left: 16px;
   transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
