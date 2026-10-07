@@ -24,28 +24,76 @@ function cil_condition_pages() {
 			array(
 				'slug'        => 'phimosis',
 				'name'        => 'Phimosis',
-				'title'       => 'Phimosis (Tight Foreskin) | Treatment in London | Beverley Clinic',
-				'description' => 'What phimosis is, when a tight foreskin needs treating and when it does not, and the options besides circumcision. CQC-registered clinic in Edgware, London.',
+				'title'       => 'Phimosis Treatment London | Tight Foreskin & Circumcision',
+				'description' => 'Phimosis is a tight foreskin that can cause pain, cracking, infections or painful erections. Learn about steroid treatment, BXO and circumcision for phimosis in London.',
 				'eyebrow'     => 'Condition · Tight foreskin',
-				'h1'          => 'Phimosis (tight foreskin)',
-				'lede'        => 'Phimosis means that the foreskin cannot be comfortably retracted over the head of the penis. In babies, a non-retractile foreskin can be a normal part of development and does not automatically mean they have phimosis.',
+				'h1'          => 'Phimosis (Tight Foreskin) Treatment in London',
+				'lede'        => 'Phimosis means that the foreskin is too tight to retract comfortably over the head of the penis (glans).',
 				'reasons'     => $reasons,
 				'intro'       => cil_proto_html(
-					'<p>In older children and adults, if there is pain/ discomfort or inability to retract the foreskin, the most predictable long term solution is a circumcision in our experience. The severity of phimosis varies, with some patients only experiencing some discomfort when retracting the foreskin whilst others are unable to retract the foreskin at all which leads to scarring, infections and in some severe cases the inability to pass urine.</p>
-      <p>It can become a vicious cycle where a patient will try to retract the tight foreskin but cause micro tears in the skin. When it heals, this causes scarring which leads to more tightness and the condition worsens. Circumcision is a suitable long term option where the scar tissue and tight skin is removed which can relieve symptoms immediately.</p>'
+					'<p>A non-retractable foreskin can be completely normal in babies and young boys. However, phimosis can become a medical problem when the foreskin is scarred, causes pain, repeatedly cracks or becomes inflamed, interferes with urination or causes problems during erections or sexual activity.</p>
+      <p>At Beverley Clinic in North-West London, we assess and treat children, teenagers and adults with tight foreskins and phimosis.</p>
+      <p>Treatment depends on the patient\'s age, symptoms, appearance of the foreskin and the underlying cause. Circumcision can provide a definitive surgical treatment for troublesome phimosis.</p>'
 				),
-				'sections'    => array(
+				'sections'    => array(),
+				'faqs'        => array(
 					array(
-						'eyebrow' => 'Assessment',
-						'heading' => 'Why the tight band matters',
-						'html'    => cil_proto_html(
-							'<p>It is important for the practitioner to recognize a phimosis and not treating it in the same way as a normal circumcision. There is often a phimotic (tight) band that must be removed to relieve the symptoms. Otherwise, the tightness will still exist but just behind the head of the penis which will affect the comfort and cosmetic result.</p>
-          <p>Seek urgent medical help if the foreskin has been pulled back and becomes trapped behind the head of the penis with increasing swelling, or if the patient cannot pass urine. That is <a href="/conditions/paraphimosis">paraphimosis</a>.</p>
-          <p>Adult circumcision with a medical or foreskin problem is listed on the <a href="/prices">prices page</a>. See also <a href="/adults">adult circumcision</a> and <a href="/aftercare">aftercare</a>.</p>'
-						),
+						'q' => 'What is phimosis?',
+						'a' => 'Phimosis is a foreskin that is too tight to retract comfortably over the head of the penis.',
+					),
+					array(
+						'q' => 'How do I know whether my foreskin is too tight?',
+						'a' => 'Symptoms can include difficulty retracting, pain, cracking, a visible tight ring, recurrent inflammation, painful erections or problems during sex.',
+					),
+					array(
+						'q' => 'Can phimosis develop later in life?',
+						'a' => 'Yes. An adult who previously had a retractable foreskin can develop increasing tightness because of inflammation, scarring or a skin condition such as BXO / lichen sclerosus.',
+					),
+					array(
+						'q' => 'Can phimosis go away by itself?',
+						'a' => 'Normal childhood non-retractability often improves naturally with development. Pathological or scar-related phimosis is different and may require treatment.',
+					),
+					array(
+						'q' => 'Can steroid cream cure phimosis?',
+						'a' => 'Topical steroid treatment can help some patients, particularly where significant scarring is not present. Results depend on the underlying cause and recurrence can occur. From our experience, it is often a short term fix and the definitive treatment is a circumcision.',
+					),
+					array(
+						'q' => 'Is circumcision a permanent treatment for phimosis?',
+						'a' => 'Complete circumcision removes the foreskin and therefore removes foreskin-related phimosis.',
+					),
+					array(
+						'q' => 'Can phimosis cause painful erections?',
+						'a' => 'Yes. A tight foreskin can become painful when stretched during an erection and may crack or tear.',
+					),
+					array(
+						'q' => 'Can phimosis affect sex?',
+						'a' => 'Yes. Significant phimosis can cause discomfort during intercourse or masturbation and can sometimes lead to tearing or bleeding.',
+					),
+					array(
+						'q' => 'Is a tight frenulum the same as phimosis?',
+						'a' => 'No. A tight frenulum affects the band of tissue underneath the glans. It can cause symptoms similar to phimosis but may be treated differently.',
+					),
+					array(
+						'q' => 'What is the difference between phimosis and paraphimosis?',
+						'a' => 'Phimosis is a foreskin that is too tight to retract. Paraphimosis occurs when a retracted foreskin becomes trapped behind the glans and cannot be returned forward. Paraphimosis requires urgent medical attention.',
+					),
+					array(
+						'q' => 'What is BXO?',
+						'a' => 'BXO, also called male genital lichen sclerosis, is a chronic inflammatory skin condition that can cause whitening, scarring and tightening of the foreskin.',
+					),
+					array(
+						'q' => 'How long does circumcision take to heal?',
+						'a' => 'Healing varies between patients. The wound heals progressively between 2-6 weeks and the scar continues to mature afterwards.',
+					),
+					array(
+						'q' => 'When can I have sex after circumcision?',
+						'a' => 'As a general guide, avoid sexual intercourse and masturbation for at least 2 weeks and until the wound is fully healed. Some patients require longer.',
+					),
+					array(
+						'q' => 'Can I speak to someone before booking?',
+						'a' => 'Yes. If you are unsure whether you have phimosis, BXO, a frenulum problem or another foreskin condition, contact us before booking. You do not need to diagnose the problem yourself.',
 					),
 				),
-				'faqs'        => array(),
 				'schema'      => array(
 					'@type'             => 'MedicalCondition',
 					'alternateName'     => array( 'Tight foreskin', 'Non-retractile foreskin' ),
@@ -72,18 +120,83 @@ function cil_condition_pages() {
 			array(
 				'slug'        => 'balanitis',
 				'name'        => 'Balanitis',
-				'title'       => 'Balanitis | Causes and Treatment | Beverley Clinic London',
-				'description' => 'Balanitis is inflammation of the glans: what causes it, how it is treated, and when repeated episodes make circumcision worth considering. Clinic in Edgware.',
+				'title'       => 'Recurrent Balanitis Treatment London | Circumcision Clinic',
+				'description' => 'Repeated balanitis can cause soreness, inflammation and foreskin problems. Learn about recurrent balanitis, phimosis, lichen sclerosis/BXO and circumcision in London.',
 				'eyebrow'     => 'Condition · Inflammation of the glans',
-				'h1'          => 'Balanitis',
-				'lede'        => 'Balanitis is inflammation affecting the head of the penis and can cause redness, soreness, irritation or discomfort. It can have different causes, so treatment should be based on assessment rather than assumption.',
+				'h1'          => 'Recurrent Balanitis and Circumcision in London',
+				'lede'        => 'Balanitis is inflammation of the head of the penis (glans). When the foreskin is also inflamed, this is sometimes called balanoposthitis.',
 				'reasons'     => $reasons,
 				'intro'       => cil_proto_html(
-					'<p>If episodes keep returning, or if there is associated foreskin tightness or scarring, circumcision will be required.</p>
+					'<p>When recurrent balanitis is associated with a tight, difficult-to-retract or scarred foreskin, circumcision may provide a definitive solution by permanently removing the foreskin.</p>
       <p>Spreading redness with fever, severe swelling or difficulty passing urine requires urgent medical assessment. See also <a href="/conditions/phimosis">phimosis</a>, <a href="/adults">adult circumcision</a> and <a href="/aftercare">aftercare</a>.</p>'
 				),
 				'sections'    => array(),
-				'faqs'        => array(),
+				'faqs'        => array(
+					array(
+						'q' => 'What is balanitis?',
+						'a' => 'Balanitis is inflammation of the head of the penis (glans). It can cause redness, swelling, soreness, itching and discomfort.',
+					),
+					array(
+						'q' => 'What is balanoposthitis?',
+						'a' => 'Balanoposthitis means inflammation affecting both the glans and foreskin.',
+					),
+					array(
+						'q' => 'Why does my balanitis keep returning?',
+						'a' => 'Recurrent balanitis can have several causes. A tight or difficult-to-retract foreskin, repeated irritation, infection, diabetes, scarring and lichen sclerosis / BXO can all be relevant.',
+					),
+					array(
+						'q' => 'Can a tight foreskin cause balanitis?',
+						'a' => 'Yes. A tight foreskin can make retraction and cleaning difficult and may be associated with recurrent inflammation.',
+					),
+					array(
+						'q' => 'Can balanitis cause phimosis?',
+						'a' => 'Repeated inflammation can contribute to scarring and increasing tightness of the foreskin in some patients.',
+					),
+					array(
+						'q' => 'Does balanitis mean I need circumcision?',
+						'a' => 'Not necessarily. A single episode of balanitis does not automatically require circumcision. Circumcision is particularly relevant to patients with significant recurrent balanitis where the foreskin is contributing to the problem.',
+					),
+					array(
+						'q' => 'Can circumcision stop recurrent balanitis?',
+						'a' => 'Circumcision removes the foreskin permanently and can provide a definitive treatment for the foreskin component of recurrent balanitis. It does not guarantee that the glans can never develop another inflammatory or dermatological condition.',
+					),
+					array(
+						'q' => 'Can balanitis be caused by diabetes?',
+						'a' => 'Recurrent genital inflammation can be associated with diabetes, particularly where blood glucose is poorly controlled. Adults with recurrent balanitis may need appropriate medical assessment for underlying causes.',
+					),
+					array(
+						'q' => 'Is balanitis an STI?',
+						'a' => 'Balanitis itself is not a specific sexually transmitted infection. However, some sexually transmitted conditions can cause similar symptoms, so appropriate sexual-health assessment may be required where there is a relevant risk.',
+					),
+					array(
+						'q' => 'What is the difference between balanitis and phimosis?',
+						'a' => 'Balanitis is inflammation of the glans. Phimosis is a foreskin that is too tight to retract. The two conditions can occur together.',
+					),
+					array(
+						'q' => 'What is the difference between balanitis and BXO?',
+						'a' => 'Balanitis describes inflammation of the glans. BXO is associated with lichen sclerosis and can cause characteristic chronic changes and scarring affecting the foreskin and penis.',
+					),
+					array(
+						'q' => 'Why has my foreskin become tighter after repeated balanitis?',
+						'a' => 'Repeated inflammation and healing can sometimes contribute to loss of elasticity and scarring, causing the foreskin to become progressively tighter.',
+					),
+					array(
+						'q' => 'Can children get recurrent balanitis?',
+						'a' => 'Yes. Children can experience balanitis and balanoposthitis. Repeated troublesome episodes may be a reason for circumcision after appropriate assessment.',
+					),
+					array(
+						'q' => 'Can adults be circumcised under local anaesthetic?',
+						'a' => 'Suitable adults at our clinic are normally circumcised using local anaesthetic.',
+					),
+					array(
+						'q' => 'When can I have sex after circumcision?',
+						'a' => 'Our clinic generally advises waiting at least two weeks and until the wound is sufficiently healed. If healing is incomplete at two weeks, wait longer and follow your individual aftercare instructions.',
+					),
+					array(
+						'q' => 'Can I speak to someone before booking?',
+						'a' => 'Yes. If you have recurrent balanitis and are unsure whether your foreskin is contributing to the problem, contact us and explain your symptoms.',
+					),
+				),
 				'schema'      => array(
 					'@type'             => 'MedicalCondition',
 					'alternateName'     => array( 'Balanoposthitis' ),
