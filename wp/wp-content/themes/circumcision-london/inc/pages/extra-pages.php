@@ -59,22 +59,79 @@ function cil_extra_pages() {
 		'buried-penis'    => array(
 			'slug'        => 'buried-penis',
 			'name'        => 'Buried penis',
-			'title'       => 'Buried Penis and Circumcision | Beverley Clinic London',
-			'description' => 'What a buried penis is, why circumcision does not cause it, how to keep the area clean afterwards, and when we advise waiting rather than operating.',
-			'eyebrow'     => 'Common, treatable, and not caused by circumcision',
-			'h1'          => 'Buried or hidden penis',
-			'lede'        => 'A buried penis is when some or all of the penis is hidden within the surrounding pubic tissue. It may be present from childhood or become more noticeable with changes in body shape or weight.',
+			'title'       => 'Buried Penis Circumcision London | Beverley Clinic',
+			'description' => 'Buried penis is common in babies but can also affect children and adults. Learn how buried penis affects circumcision, skin removal and aftercare.',
+			'eyebrow'     => 'Specialist assessment & aftercare · London clinic',
+			'h1'          => 'Buried Penis and Circumcision',
+			'lede'        => 'A buried penis, sometimes called a hidden or concealed penis, is when part of the penis is hidden within the surrounding skin and pubic tissue, making the visible penis appear shorter than it actually is.',
 			'crumbs'      => array(
 				array(
-					'label' => 'Reasons',
-					'href'  => cil_path_url( '/conditions/phimosis' ),
+					'label' => 'Who we see',
+					'href'  => cil_path_url( '/babies' ),
 				),
 				array(
 					'label' => 'Buried penis',
 					'href'  => '',
 				),
 			),
-			'faqs'        => array(),
+			'faqs'        => array(
+				array(
+					'q' => 'Can a baby with a buried penis be circumcised?',
+					'a' => 'Yes. At Beverley Clinic, we regularly circumcise babies with mild, moderate and severe buried penis. The penis is properly assessed and brought forwards before circumcision so that true penile length can be established and the appropriate amount of foreskin can be removed.',
+				),
+				array(
+					'q' => 'Does circumcision cause buried penis?',
+					'a' => 'No. Circumcision permanently removes foreskin; it does not create extra pubic fat or push the penis further into the body. However, before circumcision, the foreskin may project beyond the underlying penile shaft, which can be mistaken for shaft length. Once the foreskin is removed, the underlying relationship between the penile shaft and the surrounding pubic tissue becomes clearer.',
+				),
+				array(
+					'q' => 'Why does my baby\'s penis look buried after circumcision?',
+					'a' => 'A buried penis naturally tends to retract into the surrounding pubic tissue. As it does so, the remaining shaft skin can slide forwards towards the glans. Parents may mistake this for foreskin regrowth or foreskin left behind, but it is simply the shaft skin moving forwards because the penis is sitting deeper within the surrounding pubic tissue.',
+				),
+				array(
+					'q' => 'Can buried penis develop later?',
+					'a' => 'Yes. A baby may not have an obvious buried penis at the time of circumcision but can develop a buried appearance later as he grows. The penile shaft and the surrounding pubic tissue do not always grow at the same rate. As the child gains weight and develops a more prominent pubic fat pad, more of the shaft can become hidden within the tissue.',
+				),
+				array(
+					'q' => 'Does weight cause buried penis?',
+					'a' => 'Weight is a major contributing factor, but it is not the only cause. An increase in fatty tissue around the pubic area can conceal more of the penile shaft. However, slim children and adults can also have a buried penis due to natural anatomy, such as a naturally high pubic area or natural retraction.',
+				),
+				array(
+					'q' => 'Can adults have buried penis?',
+					'a' => 'Yes. Buried penis can affect adult men as well as babies and children. An adult may have a normal-sized penis with a prominent or fatty pubic area that conceals part of the shaft, particularly when flaccid. Weight gain can make this more noticeable, but it can also occur in slim men.',
+				),
+				array(
+					'q' => 'Can a buried penis be normal size?',
+					'a' => 'Yes. A buried penis is not the same as a small penis (micropenis). In many patients, the penile shaft is completely normal in length, but part of it is hidden within the surrounding pubic fat pad or tissue. Compressing the tissue backwards reveals the true shaft length.',
+				),
+				array(
+					'q' => 'What aftercare is needed after circumcision with a buried penis?',
+					'a' => 'Aftercare is particularly important because the penis naturally tends to retract inwards. Parents or patients are taught to gently press backwards on the pubic tissue around the base to bring the penis forwards and expose the glans and inner skin. This prevents the healing skin from sitting against the glans and sticking together, reducing the risk of penile adhesions and skin bridges.',
+				),
+			),
+			'schema'      => array(
+				array(
+					'@type'         => 'MedicalWebPage',
+					'name'          => 'Buried Penis and Circumcision',
+					'description'   => 'Buried penis is common in babies but can also affect children and adults. Learn how buried penis affects circumcision, skin removal and aftercare.',
+					'author'        => array(
+						'@type' => 'Person',
+						'name'  => 'Dr Haidar Al-Ali',
+						'url'   => cil_path_url( '/team#haidar' ),
+					),
+				),
+				array(
+					'@type'             => 'MedicalCondition',
+					'name'              => 'Buried penis',
+					'alternateName'     => array( 'Hidden penis', 'Concealed penis' ),
+					'possibleTreatment' => array(
+						array(
+							'@type' => 'MedicalProcedure',
+							'name'  => 'Circumcision with anatomical assessment',
+							'url'   => cil_path_url( '/babies' ),
+						),
+					),
+				),
+			),
 		),
 	);
 }

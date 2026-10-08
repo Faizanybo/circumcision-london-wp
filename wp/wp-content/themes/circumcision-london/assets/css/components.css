@@ -539,6 +539,63 @@ a.cil-pagination__item:hover {
   color: #fff;
 }
 
+/* Consultation buttons: 2-column top with centered button below */
+.cil-consultation-buttons-grid {
+  display: inline-grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+}
+.cil-consultation-buttons-grid > .wp-block-button:nth-child(1) {
+  grid-column: 1;
+}
+.cil-consultation-buttons-grid > .wp-block-button:nth-child(2) {
+  grid-column: 2;
+}
+.cil-consultation-buttons-grid > .wp-block-button:nth-child(1) .wp-block-button__link,
+.cil-consultation-buttons-grid > .wp-block-button:nth-child(2) .wp-block-button__link {
+  width: 100%;
+  white-space: nowrap;
+  text-align: center;
+}
+.cil-consultation-buttons-grid > .wp-block-button:nth-child(3) {
+  grid-column: 1 / span 2;
+  justify-self: center;
+}
+.cil-consultation-buttons-grid > .wp-block-button:nth-child(3) .wp-block-button__link {
+  white-space: nowrap;
+  text-align: center;
+}
+@media (max-width: 1080px) and (min-width: 901px) {
+  .cil-consultation-buttons-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .cil-consultation-buttons-grid > .wp-block-button {
+    width: 100% !important;
+  }
+  .cil-consultation-buttons-grid .wp-block-button__link {
+    width: 100% !important;
+    text-align: center;
+  }
+}
+@media (max-width: 580px) {
+  .cil-consultation-buttons-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .cil-consultation-buttons-grid > .wp-block-button {
+    width: 100% !important;
+  }
+  .cil-consultation-buttons-grid .wp-block-button__link {
+    width: 100% !important;
+    text-align: center;
+  }
+}
+
 /* Three age cards on tablet 2-col wrap: center the leftover third card. */
 @media (max-width: 900px) and (min-width: 681px) {
   .grid.g-3:has(> .card-group:nth-child(3):last-child) > .card-group:last-child {
@@ -868,6 +925,96 @@ body.page-re-circumcision .photographs-section .body-text {
   margin-top: clamp(22px, 2.5vw, 32px);
 }
 
+/* --------------------------------------------------- clinical cycle flow -- */
+.cil-cycle-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+  margin: clamp(24px, 2.6vw, 36px) 0;
+  counter-reset: cycle-step;
+}
+.cil-cycle-flow li {
+  counter-increment: cycle-step;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: clamp(18px, 2vw, 24px) 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
+}
+.cil-cycle-flow li:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+.cil-cycle-flow li::before {
+  content: counter(cycle-step);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue-soft);
+  color: var(--blue-deep);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.cil-cycle-flow .cycle-title {
+  font-family: var(--sans);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+@media (min-width: 901px) {
+  .cil-cycle-flow li:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -11px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 17px;
+    color: var(--blue);
+    font-weight: 700;
+    z-index: 2;
+    background: var(--card);
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+  }
+}
+@media (max-width: 900px) and (min-width: 641px) {
+  .cil-cycle-flow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+}
+@media (max-width: 640px) {
+  .cil-cycle-flow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .cil-cycle-flow li {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+  }
+  .cil-cycle-flow li::before {
+    margin-bottom: 0;
+  }
+}
+
 /* ------------------------------------------------ homepage reveal polish -- */
 /*
  * Reuses the global [data-reveal] / .is-in system (theme.js + base.css).
@@ -878,7 +1025,9 @@ body.cil-home [data-reveal],
 body.page-babies [data-reveal],
 body.page-children [data-reveal],
 body.page-adults [data-reveal],
-body.page-religious [data-reveal] {
+body.page-religious [data-reveal],
+body.parent-pageid-17 [data-reveal],
+body.page-id-21 [data-reveal] {
   transform: translateY(24px);
   transition-duration: 0.55s;
 }
@@ -886,7 +1035,9 @@ body.cil-home [data-reveal].is-in,
 body.page-babies [data-reveal].is-in,
 body.page-children [data-reveal].is-in,
 body.page-adults [data-reveal].is-in,
-body.page-religious [data-reveal].is-in {
+body.page-religious [data-reveal].is-in,
+body.parent-pageid-17 [data-reveal].is-in,
+body.page-id-21 [data-reveal].is-in {
   transform: none;
 }
 @media (max-width: 680px) {
@@ -894,7 +1045,9 @@ body.page-religious [data-reveal].is-in {
   body.page-babies [data-reveal],
   body.page-children [data-reveal],
   body.page-adults [data-reveal],
-  body.page-religious [data-reveal] {
+  body.page-religious [data-reveal],
+  body.parent-pageid-17 [data-reveal],
+  body.page-id-21 [data-reveal] {
     transform: translateY(14px);
     transition-duration: 0.45s;
   }
@@ -902,7 +1055,9 @@ body.page-religious [data-reveal].is-in {
   body.page-babies [data-reveal].is-in,
   body.page-children [data-reveal].is-in,
   body.page-adults [data-reveal].is-in,
-  body.page-religious [data-reveal].is-in {
+  body.page-religious [data-reveal].is-in,
+  body.parent-pageid-17 [data-reveal].is-in,
+  body.page-id-21 [data-reveal].is-in {
     transform: none;
   }
 }

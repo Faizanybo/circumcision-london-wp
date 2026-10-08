@@ -218,21 +218,75 @@ function cil_condition_pages() {
 			array(
 				'slug'        => 'bxo',
 				'name'        => 'BXO',
-				'title'       => 'BXO (Lichen Sclerosus) | Treatment in London | Beverley Clinic',
-				'description' => 'Balanitis xerotica obliterans is a scarring condition of the foreskin. Why circumcision is the standard treatment, and why BXO should not be left. Edgware, London.',
-				'eyebrow'     => 'Condition · Balanitis xerotica obliterans',
-				'h1'          => 'BXO / lichen sclerosus',
-				'lede'        => 'BXO, also known as male genital lichen sclerosus, can cause whitening, scarring and tightening of the foreskin. It may make retraction difficult and can cause discomfort or recurrent problems.',
+				'title'       => 'BXO Treatment London | Lichen Sclerosis Circumcision',
+				'description' => 'BXO (lichen sclerosis) can cause a white, scarred and progressively tight foreskin. Learn about symptoms, phimosis and circumcision for BXO in London.',
+				'eyebrow'     => 'Condition · Lichen sclerosis',
+				'h1'          => 'BXO / Lichen Sclerosis in Men',
+				'lede'        => 'BXO (balanitis xerotica obliterans), also known as male genital lichen sclerosis, is a chronic inflammatory condition that can cause whitening, scarring and progressive tightening of the foreskin.',
 				'reasons'     => $reasons,
 				'intro'       => cil_proto_html(
-					'<p>It can become a vicious cycle where a patient will try to retract the tight foreskin but cause micro tears in the skin. When it heals, this causes scarring which leads to more tightness and the condition worsens. Circumcision is a suitable long term option where the scar tissue and tight skin is removed which can relieve symptoms immediately.</p>
-      <p>See also <a href="/conditions/phimosis">phimosis</a>, <a href="/adults">adult circumcision</a> and <a href="/aftercare">aftercare</a>.</p>'
+					'<p>As the foreskin becomes less elastic, it can become increasingly difficult or painful to retract. Some patients develop cracking, bleeding, painful erections or a tight scarred ring around the foreskin opening.</p>
+      <p>At Beverley Clinic in North-West London, we provide circumcision for children, teenagers and adults with BXO / lichen sclerosis affecting the foreskin.</p>
+      <p>When circumcision is being performed for BXO, it is particularly important to recognise the abnormal scarred foreskin so that the affected foreskin is appropriately removed.</p>'
 				),
 				'sections'    => array(),
-				'faqs'        => array(),
+				'faqs'        => array(
+					array(
+						'q' => 'What does BXO stand for?',
+						'a' => 'BXO stands for balanitis xerotica obliterans. It is associated with male genital lichen sclerosis.',
+					),
+					array(
+						'q' => 'Is BXO the same as lichen sclerosis?',
+						'a' => 'BXO is the term commonly used when lichen sclerosis affects the male genital area, particularly the foreskin and glans. You may also see the condition spelled “lichen sclerosus” in medical literature.',
+					),
+					array(
+						'q' => 'What does BXO look like?',
+						'a' => 'It can cause white or pale areas, a tight white ring, thickening, loss of elasticity, cracking and scarring of the foreskin.',
+					),
+					array(
+						'q' => 'Does BXO cause phimosis?',
+						'a' => 'Yes. Scarring caused by BXO can narrow the foreskin opening and cause pathological phimosis.',
+					),
+					array(
+						'q' => 'Can children get BXO?',
+						'a' => 'Yes. BXO can affect boys as well as adult men.',
+					),
+					array(
+						'q' => 'Is BXO an STI?',
+						'a' => 'No. BXO is not a sexually transmitted infection and is not contagious.',
+					),
+					array(
+						'q' => 'Is BXO caused by poor hygiene?',
+						'a' => 'No. It is not simply caused by poor personal hygiene.',
+					),
+					array(
+						'q' => 'What treatment does Beverley Clinic offer for BXO?',
+						'a' => 'For BXO affecting the foreskin, the treatment we provide is circumcision.',
+					),
+					array(
+						'q' => 'Why does BXO circumcision need careful planning?',
+						'a' => 'The foreskin can contain a defined area of abnormal, scarred tissue. We assess where this tissue is located so that the circumcision appropriately addresses the problematic foreskin.',
+					),
+					array(
+						'q' => 'Can BXO affect the urinary opening?',
+						'a' => 'Yes. Lichen sclerosis can sometimes affect the opening through which urine passes. A weak, spraying or altered urinary stream should be reported.',
+					),
+					array(
+						'q' => 'Does circumcision cure BXO?',
+						'a' => 'Circumcision removes the affected foreskin and can successfully treat disease limited to the foreskin. BXO can sometimes also affect the glans or urinary opening, so persistent abnormalities after circumcision still require appropriate medical assessment.',
+					),
+					array(
+						'q' => 'Can I have BXO circumcision under local anaesthetic?',
+						'a' => 'Suitable adults at Beverley Clinic are normally circumcised under local anaesthetic.',
+					),
+					array(
+						'q' => 'When can I have sex after circumcision?',
+						'a' => 'Our clinic generally advises avoiding sex and masturbation for at least two weeks and until the wound is sufficiently healed. If healing is incomplete, you should wait longer.',
+					),
+				),
 				'schema'      => array(
 					'@type'             => 'MedicalCondition',
-					'alternateName'     => array( 'Balanitis xerotica obliterans', 'Genital lichen sclerosus', 'Male lichen sclerosus' ),
+					'alternateName'     => array( 'Balanitis xerotica obliterans', 'Genital lichen sclerosis', 'Male genital lichen sclerosis' ),
 					'possibleTreatment' => array(
 						array(
 							'@type' => 'MedicalTherapy',
