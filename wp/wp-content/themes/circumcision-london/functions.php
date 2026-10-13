@@ -914,7 +914,27 @@ function cil_document_title_parts( $parts ) {
 add_filter( 'document_title_parts', 'cil_document_title_parts' );
 
 /**
+ * Whether this request is served on a Vercel deployment host (*.vercel.app).
+ *
+ * Staging runs as Vercel's "production" deployment, so VERCEL_ENV cannot tell
+ * staging apart. The client's own domain never ends in .vercel.app.
+ *
+ * @param string|null $host Host to test. Defaults to the current request host.
+ * @return bool
+ */
+function cil_is_vercel_app_host( $host = null ) {
+	if ( null === $host ) {
+		$host = isset( $_SERVER['HTTP_HOST'] ) ? (string) $_SERVER['HTTP_HOST'] : '';
+	}
+	$host = strtolower( trim( (string) $host ) );
+	$host = preg_replace( '/:\d+$/', '', $host );
+	$host = rtrim( $host, '.' );
+	return (bool) preg_match( '/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+vercel\.app$/', $host );
+}
+
+/**
  * 404s stay out of the index, matching the prototype noindex flag.
+ * Vercel staging hosts are never indexed or followed.
  *
  * @param array<string, bool|string> $robots Robots directives.
  * @return array<string, bool|string>
@@ -925,9 +945,26 @@ function cil_robots( $robots ) {
 		$robots['follow']  = true;
 		unset( $robots['index'] );
 	}
+	if ( cil_is_vercel_app_host() ) {
+		$robots['noindex']  = true;
+		$robots['nofollow'] = true;
+		unset( $robots['index'], $robots['follow'] );
+	}
 	return $robots;
 }
 add_filter( 'wp_robots', 'cil_robots' );
+
+/**
+ * X-Robots-Tag on Vercel staging hosts, so non-HTML WordPress responses
+ * (feeds, sitemaps) carry the same noindex as the robots meta tag.
+ */
+function cil_staging_robots_header() {
+	if ( headers_sent() || ! cil_is_vercel_app_host() ) {
+		return;
+	}
+	header( 'X-Robots-Tag: noindex, nofollow', true );
+}
+add_action( 'send_headers', 'cil_staging_robots_header' );
 
 /**
  * Prototype 404 meta description.

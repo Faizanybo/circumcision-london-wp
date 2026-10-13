@@ -513,6 +513,348 @@ function cil_content_export_slug( $slug, $replace_from, $replace_to ) {
 	);
 }
 
+/*
+ * ---------------------------------------------------------------------------
+ * Optional SEO metadata sync.
+ *
+ * Separate from page-content sync: a fixture may carry an optional "seo"
+ * object. Only the two theme SEO meta keys below can be written, only to an
+ * existing published manifest page, and only through its own APPLY action.
+ * Page-content apply never reads the "seo" object and still refuses to change
+ * SEO meta. The homepage title/description are set in PHP, not here.
+ * ---------------------------------------------------------------------------
+ */
+
+/**
+ * Fixture "seo" keys mapped to the post meta keys they may write.
+ *
+ * @return array<string, string>
+ */
+function cil_content_seo_fields() {
+	return array(
+		'document_title'   => '_cil_document_title',
+		'meta_description' => '_cil_meta_description',
+	);
+}
+
+/**
+ * Validate the optional "seo" object of a loaded fixture.
+ *
+ * @param array<string, mixed> $fixture Fixture from cil_content_load_fixture().
+ * @return array<string, string>|null|WP_Error Validated values, null when absent.
+ */
+function cil_content_fixture_seo( $fixture ) {
+	if ( ! is_array( $fixture ) || ! array_key_exists( 'seo', $fixture ) ) {
+		return null;
+	}
+	$seo = $fixture['seo'];
+	if ( ! is_array( $seo ) || ! $seo ) {
+		return new WP_Error( 'cil_seo_malformed', 'Fixture "seo" must be a non-empty object.' );
+	}
+
+	$fields = cil_content_seo_fields();
+	$values = array();
+	foreach ( $seo as $key => $value ) {
+		if ( ! is_string( $key ) || ! isset( $fields[ $key ] ) ) {
+			return new WP_Error( 'cil_seo_key', 'Fixture "seo" has an unexpected key: ' . (string) $key );
+		}
+		if ( ! is_string( $value ) || '' === trim( $value ) ) {
+			return new WP_Error( 'cil_seo_empty', 'Fixture "seo" value is empty or not a string: ' . $key );
+		}
+		if ( $value !== sanitize_text_field( $value ) ) {
+			return new WP_Error( 'cil_seo_unsafe', 'Fixture "seo" value contains markup, line breaks or extra whitespace: ' . $key );
+		}
+		if ( strlen( $value ) > 400 ) {
+			return new WP_Error( 'cil_seo_length', 'Fixture "seo" value is too long: ' . $key );
+		}
+		$no_local = cil_content_assert_no_local_host( $value );
+		if ( is_wp_error( $no_local ) ) {
+			return $no_local;
+		}
+		$values[ $key ] = $value;
+	}
+	return $values;
+}
+
+/**
+ * Whether a page is the static front page (its SEO is set in PHP).
+ *
+ * @param WP_Post $page Page.
+ * @return bool
+ */
+function cil_content_seo_is_front_page( $page ) {
+	return 'page' === get_option( 'show_on_front' ) && (int) get_option( 'page_on_front' ) === (int) $page->ID;
+}
+
+/**
+ * Build the optional "seo" object from a live local page's saved meta.
+ * Empty meta is left out; nothing is invented or defaulted.
+ *
+ * @param string $slug Slug.
+ * @return array<string, string>|null|WP_Error Null when the page has no SEO meta.
+ */
+function cil_content_export_seo( $slug ) {
+	$fixture = cil_content_load_fixture( $slug );
+	if ( is_wp_error( $fixture ) ) {
+		return $fixture;
+	}
+	$page = cil_content_resolve_published_page( $fixture['path'] );
+	if ( is_wp_error( $page ) ) {
+		return $page;
+	}
+	if ( cil_content_seo_is_front_page( $page ) ) {
+		return new WP_Error( 'cil_seo_front_page', 'The homepage title and description are set in PHP, not in page meta.' );
+	}
+
+	$seo = array();
+	foreach ( cil_content_seo_fields() as $key => $meta_key ) {
+		$value = get_post_meta( $page->ID, $meta_key, true );
+		if ( is_string( $value ) && '' !== trim( $value ) ) {
+			$seo[ $key ] = $value;
+		}
+	}
+	if ( ! $seo ) {
+		return null;
+	}
+
+	$valid = cil_content_fixture_seo( array( 'seo' => $seo ) );
+	return is_wp_error( $valid ) ? $valid : $seo;
+}
+
+/**
+ * Inspect one manifest slug's SEO meta against its fixture (read-only).
+ *
+ * @param string $slug Slug.
+ * @return array<string, mixed>
+ */
+function cil_content_seo_inspect_slug( $slug ) {
+	$slug   = sanitize_title( $slug );
+	$report = array(
+		'slug'           => $slug,
+		'ok'             => false,
+		'can_apply'      => false,
+		'error'          => '',
+		'destination_id' => null,
+		'host_match'     => false,
+		'has_seo'        => false,
+		'fields'         => array(),
+	);
+
+	$fixture = cil_content_load_fixture( $slug );
+	if ( is_wp_error( $fixture ) ) {
+		$report['error'] = $fixture->get_error_message();
+		return $report;
+	}
+	$report['host_match'] = cil_content_current_host_matches_fixture( $fixture );
+
+	$seo = cil_content_fixture_seo( $fixture );
+	if ( is_wp_error( $seo ) ) {
+		$report['error'] = $seo->get_error_message();
+		return $report;
+	}
+	$report['has_seo'] = null !== $seo;
+
+	$page = cil_content_resolve_published_page( $fixture['path'] );
+	if ( is_wp_error( $page ) ) {
+		$report['error'] = $page->get_error_message();
+		return $report;
+	}
+	$report['destination_id'] = (int) $page->ID;
+
+	$any_different = false;
+	foreach ( cil_content_seo_fields() as $key => $meta_key ) {
+		$current  = get_post_meta( $page->ID, $meta_key, true );
+		$current  = is_string( $current ) ? $current : '';
+		$proposed = ( $seo && isset( $seo[ $key ] ) ) ? $seo[ $key ] : null;
+		if ( null === $proposed ) {
+			$state = 'not in fixture';
+		} elseif ( $current === $proposed ) {
+			$state = 'match';
+		} else {
+			$state         = 'different';
+			$any_different = true;
+		}
+		$report['fields'][ $key ] = array(
+			'meta_key' => $meta_key,
+			'current'  => $current,
+			'proposed' => $proposed,
+			'state'    => $state,
+		);
+	}
+
+	$report['ok'] = true;
+
+	if ( cil_content_seo_is_front_page( $page ) ) {
+		$report['error'] = 'Homepage SEO is set in PHP and is not managed here.';
+		return $report;
+	}
+	if ( ! $report['host_match'] ) {
+		$report['error'] = sprintf(
+			'This site host (%s) does not match fixture replace_to host (%s). Dry-run is allowed; apply is blocked here.',
+			cil_content_url_host( home_url() ),
+			cil_content_url_host( $fixture['replace_to'] )
+		);
+		return $report;
+	}
+
+	$report['can_apply'] = $report['has_seo'] && $any_different;
+	return $report;
+}
+
+/**
+ * Apply one fixture's SEO object: writes the two SEO meta keys only.
+ *
+ * @param string $slug Slug.
+ * @return array<string, mixed>|WP_Error
+ */
+function cil_content_seo_apply_slug( $slug ) {
+	$slug     = sanitize_title( $slug );
+	$manifest = cil_content_load_manifest();
+	if ( is_wp_error( $manifest ) ) {
+		return $manifest;
+	}
+	if ( 'blog' === $slug || ! in_array( $slug, $manifest['pages'], true ) ) {
+		return new WP_Error( 'cil_seo_not_listed', 'Slug is not an SEO-syncable manifest page: ' . $slug );
+	}
+
+	$inspect = cil_content_seo_inspect_slug( $slug );
+	if ( ! $inspect['ok'] || $inspect['error'] ) {
+		return new WP_Error( 'cil_seo_inspect', $inspect['error'] ? $inspect['error'] : 'SEO inspect failed.' );
+	}
+	if ( ! $inspect['has_seo'] ) {
+		return new WP_Error( 'cil_seo_none', 'Fixture has no "seo" object for ' . $slug );
+	}
+
+	$fixture = cil_content_load_fixture( $slug );
+	if ( is_wp_error( $fixture ) ) {
+		return $fixture;
+	}
+	$seo = cil_content_fixture_seo( $fixture );
+	if ( is_wp_error( $seo ) ) {
+		return $seo;
+	}
+	$page = cil_content_resolve_published_page( $fixture['path'] );
+	if ( is_wp_error( $page ) ) {
+		return $page;
+	}
+
+	$fields       = cil_content_seo_fields();
+	$before_guard = cil_content_page_guards( $page );
+	$before_hash  = hash( 'sha256', $page->post_content );
+	$before_mod   = $page->post_modified_gmt;
+	$before_meta  = get_post_meta( $page->ID );
+	foreach ( $fields as $meta_key ) {
+		unset( $before_meta[ $meta_key ] );
+	}
+	$previous = array();
+	foreach ( $fields as $meta_key ) {
+		$previous[ $meta_key ] = get_post_meta( $page->ID, $meta_key, true );
+	}
+
+	$changed = array();
+	foreach ( $seo as $key => $value ) {
+		$meta_key = $fields[ $key ];
+		if ( get_post_meta( $page->ID, $meta_key, true ) === $value ) {
+			continue;
+		}
+		update_post_meta( $page->ID, $meta_key, wp_slash( $value ) );
+		$changed[] = $meta_key;
+	}
+
+	clean_post_cache( $page->ID );
+	wp_cache_delete( $page->ID, 'post_meta' );
+	$after = get_post( $page->ID );
+
+	$problem = '';
+	if ( ! $after ) {
+		$problem = 'Page disappeared after SEO apply.';
+	} elseif ( cil_content_page_guards( $after ) !== $before_guard ) {
+		$problem = 'A guarded page field changed during SEO apply.';
+	} elseif ( hash( 'sha256', $after->post_content ) !== $before_hash || $after->post_modified_gmt !== $before_mod ) {
+		$problem = 'Page content or modified date changed during SEO apply.';
+	} else {
+		$after_meta = get_post_meta( $after->ID );
+		foreach ( $fields as $meta_key ) {
+			unset( $after_meta[ $meta_key ] );
+		}
+		if ( $after_meta !== $before_meta ) {
+			$problem = 'Unrelated post meta changed during SEO apply.';
+		}
+		foreach ( $seo as $key => $value ) {
+			if ( get_post_meta( $after->ID, $fields[ $key ], true ) !== $value ) {
+				$problem = 'SEO meta does not match the fixture after apply: ' . $fields[ $key ];
+			}
+		}
+	}
+
+	if ( $problem ) {
+		foreach ( $changed as $meta_key ) {
+			if ( '' === $previous[ $meta_key ] ) {
+				delete_post_meta( $page->ID, $meta_key );
+			} else {
+				update_post_meta( $page->ID, $meta_key, wp_slash( $previous[ $meta_key ] ) );
+			}
+		}
+		return new WP_Error( 'cil_seo_verify', $problem . ' SEO meta was restored.' );
+	}
+
+	return array(
+		'slug'    => $slug,
+		'id'      => (int) $page->ID,
+		'changed' => $changed,
+	);
+}
+
+/**
+ * Apply SEO for explicitly selected slugs after an explicit APPLY confirmation.
+ *
+ * @param string[] $slugs   Selected slugs.
+ * @param string   $confirm Confirmation text; must be exactly APPLY.
+ * @return array<int, array{type: string, slug: string, message: string}>
+ */
+function cil_content_seo_apply_selected( $slugs, $confirm ) {
+	if ( 'APPLY' !== $confirm ) {
+		return array(
+			array(
+				'type'    => 'error',
+				'slug'    => '',
+				'message' => 'SEO apply aborted: type APPLY in the SEO confirmation field.',
+			),
+		);
+	}
+	$slugs = array_values( array_unique( array_filter( array_map( 'sanitize_title', (array) $slugs ) ) ) );
+	if ( ! $slugs ) {
+		return array(
+			array(
+				'type'    => 'error',
+				'slug'    => '',
+				'message' => 'SEO apply aborted: no slugs selected.',
+			),
+		);
+	}
+
+	$messages = array();
+	foreach ( $slugs as $slug ) {
+		$result = cil_content_seo_apply_slug( $slug );
+		if ( is_wp_error( $result ) ) {
+			$messages[] = array(
+				'type'    => 'error',
+				'slug'    => $slug,
+				'message' => $slug . ': ' . $result->get_error_message(),
+			);
+			continue;
+		}
+		$messages[] = array(
+			'type'    => 'success',
+			'slug'    => $slug,
+			'message' => $result['changed']
+				? sprintf( 'SEO applied to %s (page ID %d): %s.', $slug, $result['id'], implode( ', ', $result['changed'] ) )
+				: sprintf( '%s SEO already matched; no write.', $slug ),
+		);
+	}
+	return $messages;
+}
+
 /**
  * Register the Tools → Content sync screen.
  */
@@ -570,6 +912,16 @@ function cil_content_sync_handle_post() {
 			sprintf( 'Blog pack applied. %s Upserted %d posts. %s', $page_msg, $post_n, $nav_msg ),
 			'success'
 		);
+		return;
+	}
+
+	if ( 'apply_seo' === $action ) {
+		check_admin_referer( 'cil_content_sync_apply_seo', 'cil_content_sync_seo_nonce' );
+		$confirm = isset( $_POST['cil_content_sync_seo_confirm'] ) ? sanitize_text_field( wp_unslash( $_POST['cil_content_sync_seo_confirm'] ) ) : '';
+		$slugs   = isset( $_POST['cil_content_sync_seo_slugs'] ) ? (array) wp_unslash( $_POST['cil_content_sync_seo_slugs'] ) : array();
+		foreach ( cil_content_seo_apply_selected( $slugs, $confirm ) as $i => $row ) {
+			add_settings_error( 'cil_content_sync', 'seo-' . $i, $row['message'], $row['type'] );
+		}
 		return;
 	}
 
@@ -749,5 +1101,75 @@ function cil_content_sync_render_admin() {
 	submit_button( __( 'Apply selected fixtures', 'circumcision-london' ) );
 	echo '</form>';
 
+	cil_content_sync_render_seo_section( $manifest );
+
 	echo '</div>';
+}
+
+/**
+ * Admin screen section: SEO metadata dry-run and its separate apply form.
+ *
+ * @param array<string, mixed> $manifest Loaded manifest.
+ */
+function cil_content_sync_render_seo_section( $manifest ) {
+	$labels = array(
+		'document_title'   => __( 'SEO title', 'circumcision-london' ),
+		'meta_description' => __( 'Meta description', 'circumcision-london' ),
+	);
+
+	$reports = array();
+	foreach ( $manifest['pages'] as $slug ) {
+		if ( 'blog' === $slug ) {
+			continue;
+		}
+		$reports[ $slug ] = cil_content_seo_inspect_slug( $slug );
+	}
+
+	echo '<hr style="margin:32px 0">';
+	echo '<h2>' . esc_html__( 'SEO metadata (separate, optional)', 'circumcision-london' ) . '</h2>';
+	echo '<p>' . esc_html__( 'Dry-run only until you apply below. Page-content apply above never writes SEO. This writes only the SEO title and meta description of the selected existing pages, and only where the fixture carries an "seo" object. The homepage SEO is set in PHP and is not managed here.', 'circumcision-london' ) . '</p>';
+
+	echo '<table class="widefat striped"><thead><tr>';
+	echo '<th>' . esc_html__( 'Slug', 'circumcision-london' ) . '</th>';
+	echo '<th>' . esc_html__( 'Field', 'circumcision-london' ) . '</th>';
+	echo '<th>' . esc_html__( 'Current value on this site', 'circumcision-london' ) . '</th>';
+	echo '<th>' . esc_html__( 'Fixture value', 'circumcision-london' ) . '</th>';
+	echo '<th>' . esc_html__( 'Status', 'circumcision-london' ) . '</th>';
+	echo '</tr></thead><tbody>';
+	foreach ( $reports as $slug => $report ) {
+		if ( empty( $report['fields'] ) ) {
+			echo '<tr><td><code>' . esc_html( $slug ) . '</code></td><td colspan="4">' . esc_html( $report['error'] ) . '</td></tr>';
+			continue;
+		}
+		$first = true;
+		foreach ( $report['fields'] as $key => $row ) {
+			echo '<tr>';
+			echo '<td>' . ( $first ? '<code>' . esc_html( $slug ) . '</code>' : '' ) . '</td>';
+			echo '<td>' . esc_html( $labels[ $key ] ) . '</td>';
+			echo '<td>' . ( '' === $row['current'] ? '<em>' . esc_html__( '(empty)', 'circumcision-london' ) . '</em>' : esc_html( $row['current'] ) ) . '</td>';
+			echo '<td>' . ( null === $row['proposed'] ? '<em>' . esc_html__( '(not in fixture)', 'circumcision-london' ) . '</em>' : esc_html( $row['proposed'] ) ) . '</td>';
+			echo '<td>' . esc_html( $row['state'] ) . '</td>';
+			echo '</tr>';
+			$first = false;
+		}
+		if ( $report['error'] ) {
+			echo '<tr><td></td><td colspan="4"><em>' . esc_html( $report['error'] ) . '</em></td></tr>';
+		}
+	}
+	echo '</tbody></table>';
+
+	echo '<h3>' . esc_html__( 'Apply SEO metadata', 'circumcision-london' ) . '</h3>';
+	echo '<p>' . esc_html__( 'Only pages whose fixture SEO differs from this site can be selected. Type APPLY in the SEO confirmation field to confirm.', 'circumcision-london' ) . '</p>';
+	echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '">';
+	wp_nonce_field( 'cil_content_sync_apply_seo', 'cil_content_sync_seo_nonce' );
+	echo '<input type="hidden" name="cil_content_sync_action" value="apply_seo">';
+	foreach ( $reports as $slug => $report ) {
+		$disabled = empty( $report['can_apply'] ) ? ' disabled' : '';
+		echo '<p><label><input type="checkbox" name="cil_content_sync_seo_slugs[]" value="' . esc_attr( $slug ) . '"' . $disabled . '> ';
+		echo esc_html( $slug );
+		echo '</label></p>';
+	}
+	echo '<p><label>' . esc_html__( 'SEO confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_seo_confirm" value="" class="regular-text" autocomplete="off"></label></p>';
+	submit_button( __( 'Apply SEO metadata', 'circumcision-london' ), 'secondary', 'submit_seo' );
+	echo '</form>';
 }

@@ -1026,8 +1026,10 @@ body.page-babies [data-reveal],
 body.page-children [data-reveal],
 body.page-adults [data-reveal],
 body.page-religious [data-reveal],
-body.parent-pageid-17 [data-reveal],
-body.page-id-21 [data-reveal] {
+body.page-phimosis [data-reveal],
+body.page-balanitis [data-reveal],
+body.page-bxo [data-reveal],
+body.page-paraphimosis [data-reveal] {
   transform: translateY(24px);
   transition-duration: 0.55s;
 }
@@ -1036,8 +1038,10 @@ body.page-babies [data-reveal].is-in,
 body.page-children [data-reveal].is-in,
 body.page-adults [data-reveal].is-in,
 body.page-religious [data-reveal].is-in,
-body.parent-pageid-17 [data-reveal].is-in,
-body.page-id-21 [data-reveal].is-in {
+body.page-phimosis [data-reveal].is-in,
+body.page-balanitis [data-reveal].is-in,
+body.page-bxo [data-reveal].is-in,
+body.page-paraphimosis [data-reveal].is-in {
   transform: none;
 }
 @media (max-width: 680px) {
@@ -1046,8 +1050,10 @@ body.page-id-21 [data-reveal].is-in {
   body.page-children [data-reveal],
   body.page-adults [data-reveal],
   body.page-religious [data-reveal],
-  body.parent-pageid-17 [data-reveal],
-  body.page-id-21 [data-reveal] {
+  body.page-phimosis [data-reveal],
+  body.page-balanitis [data-reveal],
+  body.page-bxo [data-reveal],
+  body.page-paraphimosis [data-reveal] {
     transform: translateY(14px);
     transition-duration: 0.45s;
   }
@@ -1056,8 +1062,10 @@ body.page-id-21 [data-reveal].is-in {
   body.page-children [data-reveal].is-in,
   body.page-adults [data-reveal].is-in,
   body.page-religious [data-reveal].is-in,
-  body.parent-pageid-17 [data-reveal].is-in,
-  body.page-id-21 [data-reveal].is-in {
+  body.page-phimosis [data-reveal].is-in,
+  body.page-balanitis [data-reveal].is-in,
+  body.page-bxo [data-reveal].is-in,
+  body.page-paraphimosis [data-reveal].is-in {
     transform: none;
   }
 }
