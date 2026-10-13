@@ -179,6 +179,28 @@ body.cil-home .entry-content {
 .wp-block-image.is-style-cil-figure-5-4 img { aspect-ratio: 5 / 4; object-fit: cover; width: 100%; }
 .wp-block-image.is-style-cil-figure-3-4 img { aspect-ratio: 3 / 4; object-fit: cover; width: 100%; }
 
+/* Clinical diagram: framed like .card, centred, with room above. */
+.wp-block-image.cil-diagram {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: clamp(40px, 5vw, 64px) auto 0;
+  padding: clamp(14px, 2vw, 24px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.wp-block-image.cil-diagram img { margin: 0 auto; }
+.wp-block-image.cil-diagram > figcaption {
+  display: block;
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-align: center;
+}
+
 @media (max-width: 900px) {
   .wp-block-columns.is-style-cil-split {
     grid-template-columns: minmax(0, 1fr);
