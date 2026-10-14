@@ -1109,12 +1109,24 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'boolean',
 						'default' => true,
 					),
+					'layout'    => array(
+						'type'    => 'string',
+						'default' => 'grid',
+					),
+					'itemLevel' => array(
+						'type'    => 'number',
+						'default' => 3,
+					),
 				),
 				'render_callback' => function ( $attrs ) {
-					$items = array();
+					$items   = array();
+					$is_list = isset( $attrs['layout'] ) && 'list' === $attrs['layout'];
 					foreach ( cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ) as $item ) {
 						$item = cil_resolve_video_item( $item );
-						if ( empty( $item['mp4'] ) && empty( $item['webm'] ) ) {
+						// List rows keep their title and warnings even when the file is not
+						// reachable yet (media store not configured); the row says so.
+						$keep_unresolved = $is_list && ( ! empty( $item['mediaKey'] ) || ! empty( $item['title'] ) );
+						if ( empty( $item['mp4'] ) && empty( $item['webm'] ) && ! $keep_unresolved ) {
 							continue;
 						}
 						$items[] = $item;
@@ -1123,6 +1135,8 @@ function cil_register_dynamic_blocks() {
 						'items'      => $items,
 						'show_empty' => ! empty( $attrs['showEmpty'] ),
 						'show_head'  => ! isset( $attrs['showHead'] ) || ! empty( $attrs['showHead'] ),
+						'layout'     => ( isset( $attrs['layout'] ) && 'list' === $attrs['layout'] ) ? 'list' : 'grid',
+						'item_level' => isset( $attrs['itemLevel'] ) ? (int) $attrs['itemLevel'] : 3,
 					);
 					if ( ! empty( $attrs['eyebrow'] ) ) {
 						$args['eyebrow'] = $attrs['eyebrow'];
@@ -1422,14 +1436,22 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'mediaKey' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
+					$url = isset( $attrs['url'] ) ? $attrs['url'] : '';
+					if ( '' === $url && ! empty( $attrs['mediaKey'] ) ) {
+						$url = cil_media_url( $attrs['mediaKey'] );
+					}
 					return cil_render_part(
 						'file-link',
 						array(
 							'file_id' => isset( $attrs['fileId'] ) ? $attrs['fileId'] : 0,
 							'text'    => isset( $attrs['text'] ) ? $attrs['text'] : '',
-							'url'     => isset( $attrs['url'] ) ? $attrs['url'] : '',
+							'url'     => $url,
 						)
 					);
 				},

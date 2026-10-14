@@ -210,7 +210,70 @@ function cil_front_hero_poster_id() {
 }
 
 /**
+ * Public base URL of the external media store (videos, PDFs), no trailing slash.
+ *
+ * Read from content-fixtures/media/media-config.json so LocalWP and Vercel build
+ * identical URLs. A CIL_MEDIA_BASE_URL constant (LocalWP wp-config only) may
+ * override it for local testing. Never a secret: credentials stay in the
+ * upload tooling and are not known to WordPress.
+ *
+ * @return string Empty when not configured.
+ */
+function cil_media_base_url() {
+	static $base = null;
+	if ( null !== $base ) {
+		return $base;
+	}
+	$base = '';
+	if ( defined( 'CIL_MEDIA_BASE_URL' ) && is_string( CIL_MEDIA_BASE_URL ) ) {
+		$base = CIL_MEDIA_BASE_URL;
+	} else {
+		$file = get_template_directory() . '/content-fixtures/media/media-config.json';
+		$data = is_readable( $file ) ? json_decode( (string) file_get_contents( $file ), true ) : null;
+		if ( is_array( $data ) && ! empty( $data['base_url'] ) && is_string( $data['base_url'] ) ) {
+			$base = $data['base_url'];
+		}
+	}
+	$base = untrailingslashit( esc_url_raw( $base ) );
+	return $base;
+}
+
+/**
+ * Public URL for a key in the media store, e.g. aftercare/videos/x.mp4.
+ *
+ * @param string $key Storage key (lowercase letters, digits, - _ . /).
+ * @return string Empty when the key is invalid or no store is configured.
+ */
+function cil_media_url( $key ) {
+	$key  = ltrim( (string) $key, '/' );
+	$base = cil_media_base_url();
+	if ( '' === $base || ! preg_match( '#^[a-z0-9][a-z0-9_./-]*$#', $key ) || false !== strpos( $key, '..' ) ) {
+		return '';
+	}
+	return $base . '/' . $key;
+}
+
+/**
+ * Replace media:<key> hrefs in editor HTML with media-store URLs.
+ *
+ * @param string $html HTML.
+ * @return string
+ */
+function cil_media_resolve_html( $html ) {
+	return preg_replace_callback(
+		'#href="media:([a-z0-9][a-z0-9_./-]*)"#',
+		static function ( $m ) {
+			$url = cil_media_url( $m[1] );
+			return $url ? 'href="' . esc_url( $url ) . '"' : 'href="#" aria-disabled="true"';
+		},
+		(string) $html
+	);
+}
+
+/**
  * Resolve video-grid item URLs from attachment IDs when URL fields are empty.
+ *
+ * Order: Media Library attachment, then explicit URL, then media-store key.
  *
  * @param array<string, mixed> $item Item.
  * @return array<string, mixed>
@@ -218,6 +281,12 @@ function cil_front_hero_poster_id() {
 function cil_resolve_video_item( $item ) {
 	if ( ! is_array( $item ) ) {
 		return array();
+	}
+	if ( empty( $item['mp4'] ) && ! empty( $item['mediaKey'] ) ) {
+		$item['mp4'] = cil_media_url( $item['mediaKey'] );
+	}
+	if ( ! empty( $item['description'] ) ) {
+		$item['description'] = cil_media_resolve_html( $item['description'] );
 	}
 	// Prefer Media Library attachment URLs over stored strings so editor
 	// replacements stay in sync (avoids stale .mov paths after re-upload).

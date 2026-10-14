@@ -59,6 +59,9 @@ function cil_managed_pages() {
 	if ( function_exists( 'cil_legal_pages' ) ) {
 		$pages = array_merge( $pages, cil_legal_pages() );
 	}
+	if ( function_exists( 'cil_aftercare_video_pages' ) ) {
+		$pages = array_merge( $pages, cil_aftercare_video_pages() );
+	}
 	return $pages;
 }
 
@@ -89,6 +92,9 @@ function cil_managed_page_blocks( $slug ) {
 	}
 	if ( function_exists( 'cil_legal_pages' ) && isset( cil_legal_pages()[ $slug ] ) ) {
 		return cil_legal_page_blocks( $slug );
+	}
+	if ( function_exists( 'cil_aftercare_video_pages' ) && isset( cil_aftercare_video_pages()[ $slug ] ) ) {
+		return cil_aftercare_video_page_blocks( $slug );
 	}
 	if ( function_exists( 'cil_extra_page_blocks' ) ) {
 		return cil_extra_page_blocks( $slug );

@@ -1,0 +1,5 @@
+{
+    "schema": 1,
+    "note": "Public base URL of the media object store (no trailing slash). Not a secret. Empty until the storage plan is approved and the files are uploaded and verified. Page content stores only storage keys such as aftercare/videos/consultation-0-2.mp4; URLs are built as base_url + '/' + key at render time.",
+    "base_url": "https://zveq6ift0ivhorct.public.blob.vercel-storage.com"
+}

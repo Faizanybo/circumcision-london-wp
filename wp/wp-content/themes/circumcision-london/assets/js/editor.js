@@ -1690,6 +1690,8 @@
       lede: { type: 'string', default: '' },
       showEmpty: { type: 'boolean', default: false },
       showHead: { type: 'boolean', default: true },
+      layout: { type: 'string', default: 'grid' },
+      itemLevel: { type: 'number', default: 3 },
     },
     inspect: function (props) {
       var items = props.attributes.items && props.attributes.items.length ? props.attributes.items.slice() : [];
@@ -1742,6 +1744,32 @@
             props.setAttributes({ showEmpty: v });
           },
         }),
+        el(SelectControl, {
+          label: 'Layout',
+          help: 'List: one row per video with its title and note beside a poster; the video loads only when played (aftercare pages).',
+          value: props.attributes.layout || 'grid',
+          options: [
+            { label: 'Grid (video testimonials)', value: 'grid' },
+            { label: 'List (aftercare videos)', value: 'list' },
+          ],
+          onChange: function (v) {
+            props.setAttributes({ layout: v });
+          },
+        }),
+        props.attributes.layout === 'list'
+          ? el(SelectControl, {
+              label: 'Video title heading level',
+              value: String(props.attributes.itemLevel || 3),
+              options: [
+                { label: 'H2', value: '2' },
+                { label: 'H3', value: '3' },
+                { label: 'H4', value: '4' },
+              ],
+              onChange: function (v) {
+                props.setAttributes({ itemLevel: parseInt(v, 10) || 3 });
+              },
+            })
+          : null,
         items.map(function (item, i) {
           return el(
             'div',
@@ -1754,6 +1782,22 @@
               value: item.title || '',
               onChange: function (v) {
                 updateItem(i, { title: v });
+              },
+            }),
+            el(TextareaControl, {
+              label: 'Note (list layout, optional)',
+              help: 'Shown under the title. Simple links and bold text are allowed.',
+              value: item.description || '',
+              rows: 3,
+              onChange: function (v) {
+                updateItem(i, { description: v });
+              },
+            }),
+            el(TextControl, {
+              label: 'Length (list layout, optional, e.g. 2:30)',
+              value: item.duration || '',
+              onChange: function (v) {
+                updateItem(i, { duration: v });
               },
             }),
             el(AttachmentControl, {
@@ -1791,6 +1835,14 @@
               },
             }),
             el(TextControl, {
+              label: 'Media store key (aftercare videos)',
+              help: 'File path in the clinic media store, e.g. aftercare/videos/consultation-0-2.mp4. Used when no MP4 file or MP4 URL is set.',
+              value: item.mediaKey || '',
+              onChange: function (v) {
+                updateItem(i, { mediaKey: v.trim() });
+              },
+            }),
+            el(TextControl, {
               label: 'MP4 URL (optional)',
               help: 'Use for videos hosted outside WordPress. Prefer H.264 MP4 for Chrome/Edge.',
               value: item.mp4 || '',
@@ -1806,17 +1858,49 @@
               },
             }),
             el(
-              Button,
-              {
-                isLink: true,
-                isDestructive: true,
-                onClick: function () {
-                  var next = items.slice();
-                  next.splice(i, 1);
-                  props.setAttributes({ items: next });
+              'div',
+              { style: { display: 'flex', gap: '12px', flexWrap: 'wrap' } },
+              el(
+                Button,
+                {
+                  isLink: true,
+                  disabled: i === 0,
+                  onClick: function () {
+                    var next = items.slice();
+                    var moved = next.splice(i, 1)[0];
+                    next.splice(i - 1, 0, moved);
+                    props.setAttributes({ items: next });
+                  },
                 },
-              },
-              'Remove video'
+                'Move up'
+              ),
+              el(
+                Button,
+                {
+                  isLink: true,
+                  disabled: i === items.length - 1,
+                  onClick: function () {
+                    var next = items.slice();
+                    var moved = next.splice(i, 1)[0];
+                    next.splice(i + 1, 0, moved);
+                    props.setAttributes({ items: next });
+                  },
+                },
+                'Move down'
+              ),
+              el(
+                Button,
+                {
+                  isLink: true,
+                  isDestructive: true,
+                  onClick: function () {
+                    var next = items.slice();
+                    next.splice(i, 1);
+                    props.setAttributes({ items: next });
+                  },
+                },
+                'Remove video'
+              )
             )
           );
         }),
@@ -1827,7 +1911,7 @@
             onClick: function () {
               props.setAttributes({
                 items: items.concat([
-                  { title: '', poster: '', mp4: '', webm: '', posterId: 0, mp4Id: 0, webmId: 0 },
+                  { title: '', description: '', duration: '', mediaKey: '', poster: '', mp4: '', webm: '', posterId: 0, mp4Id: 0, webmId: 0 },
                 ]),
               });
             },
@@ -2092,6 +2176,7 @@
       fileId: { type: 'number', default: 0 },
       text: { type: 'string', default: '' },
       url: { type: 'string', default: '' },
+      mediaKey: { type: 'string', default: '' },
     },
     inspect: function (props) {
       return el(
@@ -2124,6 +2209,14 @@
           value: props.attributes.url,
           onChange: function (v) {
             props.setAttributes({ url: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Media store key (optional)',
+          help: 'File path in the clinic media store, e.g. aftercare/documents/ring-method-aftercare-sheet.pdf. Used when no PDF or URL is set above.',
+          value: props.attributes.mediaKey || '',
+          onChange: function (v) {
+            props.setAttributes({ mediaKey: v.trim() });
           },
         })
       );

@@ -109,6 +109,70 @@
     }
   }
 
+  /* ------------------------------------------------ click-to-play videos */
+  /* Aftercare video lists render a poster link, not a <video>, so no video
+     bytes load until the visitor asks. On activation the link is swapped for
+     a native player with controls. Without JS the link opens the MP4. */
+  function startVideo(facade) {
+    if (facade.classList.contains('is-active')) return;
+    var src = facade.getAttribute('data-src');
+    if (!src) return;
+    var link = facade.querySelector('.cil-video-facade__link');
+    var error = facade.querySelector('.cil-video-facade__error');
+    var video = d.createElement('video');
+    video.className = 'cil-video-facade__player';
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = 'auto';
+    var poster = facade.getAttribute('data-poster');
+    if (poster) video.poster = poster;
+    if (link && link.getAttribute('aria-label')) video.setAttribute('aria-label', link.getAttribute('aria-label').replace(/^Play video: /, ''));
+    var source = d.createElement('source');
+    source.src = src;
+    source.type = facade.getAttribute('data-type') || 'video/mp4';
+    video.appendChild(source);
+    function fail() {
+      facade.classList.remove('is-loading');
+      facade.classList.add('has-error');
+      if (error) error.hidden = false;
+    }
+    source.addEventListener('error', fail);
+    video.addEventListener('error', fail);
+    video.addEventListener('playing', function () { facade.classList.remove('is-loading'); });
+    video.addEventListener('canplay', function () { facade.classList.remove('is-loading'); });
+    facade.classList.add('is-active', 'is-loading');
+    if (link) link.replaceWith(video); else facade.insertBefore(video, facade.firstChild);
+    /* Only one aftercare video plays at a time. */
+    d.querySelectorAll('.cil-video-facade__player').forEach(function (other) {
+      if (other !== video && !other.paused) other.pause();
+    });
+    video.addEventListener('play', function () {
+      d.querySelectorAll('.cil-video-facade__player').forEach(function (other) {
+        if (other !== video && !other.paused) other.pause();
+      });
+    });
+    video.focus();
+    var p = video.play();
+    if (p && p.catch) p.catch(function () { facade.classList.remove('is-loading'); });
+  }
+
+  d.querySelectorAll('[data-cil-video]').forEach(function (facade) {
+    var link = facade.querySelector('.cil-video-facade__link');
+    if (!link) return;
+    link.setAttribute('role', 'button');
+    link.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      startVideo(facade);
+    });
+    link.addEventListener('keydown', function (e) {
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        startVideo(facade);
+      }
+    });
+  });
+
   /* ------------------------------------------------------- scroll reveal */
   var reveals = d.querySelectorAll('[data-reveal]');
   if (!reveals.length) {

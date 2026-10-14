@@ -391,8 +391,8 @@ function cil_default_nav() {
 			'url'   => home_url( '/testimonials/' ),
 		),
 		array(
-			'label' => __( 'Videos', 'circumcision-london' ),
-			'url'   => home_url( '/video-testimonials/' ),
+			'label' => __( 'Aftercare', 'circumcision-london' ),
+			'url'   => home_url( '/aftercare/' ),
 		),
 		array(
 			'label' => __( 'Prices', 'circumcision-london' ),
@@ -1156,6 +1156,7 @@ require get_template_directory() . '/inc/pages/about-pages.php';
 require get_template_directory() . '/inc/pages/visit-pages.php';
 require get_template_directory() . '/inc/pages/legal-pages.php';
 require get_template_directory() . '/inc/pages/home-page.php';
+require get_template_directory() . '/inc/pages/aftercare-videos.php';
 require get_template_directory() . '/inc/home-reveal.php';
 require get_template_directory() . '/inc/setup-pages.php';
 require get_template_directory() . '/inc/content-sync.php';
