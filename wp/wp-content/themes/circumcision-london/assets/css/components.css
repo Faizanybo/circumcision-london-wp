@@ -1181,7 +1181,8 @@ body.page-religious [data-reveal],
 body.page-phimosis [data-reveal],
 body.page-balanitis [data-reveal],
 body.page-bxo [data-reveal],
-body.page-paraphimosis [data-reveal] {
+body.page-paraphimosis [data-reveal],
+body.page-frenuloplasty [data-reveal] {
   transform: translateY(24px);
   transition-duration: 0.55s;
 }
@@ -1193,7 +1194,8 @@ body.page-religious [data-reveal].is-in,
 body.page-phimosis [data-reveal].is-in,
 body.page-balanitis [data-reveal].is-in,
 body.page-bxo [data-reveal].is-in,
-body.page-paraphimosis [data-reveal].is-in {
+body.page-paraphimosis [data-reveal].is-in,
+body.page-frenuloplasty [data-reveal].is-in {
   transform: none;
 }
 @media (max-width: 680px) {
@@ -1205,7 +1207,8 @@ body.page-paraphimosis [data-reveal].is-in {
   body.page-phimosis [data-reveal],
   body.page-balanitis [data-reveal],
   body.page-bxo [data-reveal],
-  body.page-paraphimosis [data-reveal] {
+  body.page-paraphimosis [data-reveal],
+  body.page-frenuloplasty [data-reveal] {
     transform: translateY(14px);
     transition-duration: 0.45s;
   }
@@ -1217,11 +1220,17 @@ body.page-paraphimosis [data-reveal].is-in {
   body.page-phimosis [data-reveal].is-in,
   body.page-balanitis [data-reveal].is-in,
   body.page-bxo [data-reveal].is-in,
-  body.page-paraphimosis [data-reveal].is-in {
+  body.page-paraphimosis [data-reveal].is-in,
+  body.page-frenuloplasty [data-reveal].is-in {
     transform: none;
   }
 }
 /* Keep reduced-motion / no-js behaviour from base.css (already !important). */
+
+/* Frenuloplasty: paired text columns start level so their headings line up. */
+body.page-frenuloplasty .split {
+  align-items: start;
+}
 
 /* ------------------------------------------------ interactive hovers -- */
 /*
