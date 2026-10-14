@@ -407,6 +407,10 @@ function cil_default_nav() {
 			'url'      => home_url( '/contact/' ),
 			'children' => array(
 				array(
+					'label' => __( 'About', 'circumcision-london' ),
+					'url'   => home_url( '/about/' ),
+				),
+				array(
 					'label'   => __( 'Our clinics', 'circumcision-london' ),
 					'heading' => true,
 				),
@@ -1157,6 +1161,7 @@ require get_template_directory() . '/inc/pages/visit-pages.php';
 require get_template_directory() . '/inc/pages/legal-pages.php';
 require get_template_directory() . '/inc/pages/home-page.php';
 require get_template_directory() . '/inc/pages/aftercare-videos.php';
+require get_template_directory() . '/inc/pages/about-clinic.php';
 require get_template_directory() . '/inc/home-reveal.php';
 require get_template_directory() . '/inc/setup-pages.php';
 require get_template_directory() . '/inc/content-sync.php';
