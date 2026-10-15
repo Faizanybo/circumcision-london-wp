@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $quotes   = ( isset( $args['quotes'] ) && is_array( $args['quotes'] ) ) ? $args['quotes'] : cil_testimonials();
 $per_page = isset( $args['per_page'] ) ? (int) $args['per_page'] : 0;
+$stars    = ! isset( $args['show_stars'] ) || ! empty( $args['show_stars'] );
 $total    = count( $quotes );
 $page     = 1;
 $pages    = 1;
@@ -37,6 +38,7 @@ if ( $per_page > 0 && $total > $per_page ) {
 					'context' => isset( $quote['context'] ) ? $quote['context'] : '',
 					'quote'   => isset( $quote['quote'] ) ? $quote['quote'] : '',
 					'sample'  => ! empty( $quote['sample'] ),
+					'stars'   => $stars,
 					'delay'   => ( $i % 3 ) * 90,
 				)
 			);

@@ -285,6 +285,9 @@ function cil_resolve_video_item( $item ) {
 	if ( empty( $item['mp4'] ) && ! empty( $item['mediaKey'] ) ) {
 		$item['mp4'] = cil_media_url( $item['mediaKey'] );
 	}
+	if ( empty( $item['poster'] ) && ! empty( $item['posterKey'] ) ) {
+		$item['poster'] = cil_media_url( $item['posterKey'] );
+	}
 	if ( ! empty( $item['description'] ) ) {
 		$item['description'] = cil_media_resolve_html( $item['description'] );
 	}

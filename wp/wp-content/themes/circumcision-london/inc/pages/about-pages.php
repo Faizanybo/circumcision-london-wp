@@ -86,11 +86,13 @@ function cil_about_pages() {
 			'slug'        => 'testimonials',
 			'path'        => '/testimonials',
 			'name'        => 'Testimonials',
-			'title'       => 'Patient Testimonials | Circumcision Clinic in London',
+			// Title, H1 and lede: Testimonials.docx (client source). Review counts are
+			// left to the review platforms rather than written into the copy.
+			'title'       => 'Circumcision Reviews & Patient Testimonials | Beverley Clinic',
 			'description' => 'Read patient and parent feedback about baby, child and adult circumcision at Beverley Clinic in Edgware.',
-			'eyebrow'     => $clinic['reviews']['rating'] . ' from ' . $clinic['reviews']['count_display'] . ' Google reviews',
-			'h1'          => 'Patient testimonials',
-			'lede'        => 'Most of our patients come to us through recommendations from family and friends. We are grateful to the parents and patients who have shared feedback about their experience of the clinic. The Google rating above was checked on ' . $clinic['reviews']['verified'] . '.',
+			'eyebrow'     => 'What our patients say',
+			'h1'          => 'Circumcision Reviews & Patient Testimonials',
+			'lede'        => 'Choosing where to have a circumcision is an important decision.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Testimonials',

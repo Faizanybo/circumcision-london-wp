@@ -41,6 +41,59 @@ foreach ( $items as $item ) {
 }
 
 /*
+ * Cards layout (testimonials): portrait poster tiles in a row, captioned.
+ * Uses the same click-to-play facade as the list layout, so no video bytes
+ * load until the visitor presses play. Rendered without its own <section>.
+ */
+if ( isset( $args['layout'] ) && 'cards' === $args['layout'] ) {
+	$tiles = array();
+	foreach ( $items as $item ) {
+		$item = cil_resolve_video_item( is_array( $item ) ? $item : array() );
+		if ( ! empty( $item['mp4'] ) || ! empty( $item['webm'] ) || ! empty( $item['mediaKey'] ) || ! empty( $item['title'] ) ) {
+			$tiles[] = $item;
+		}
+	}
+	if ( ! $tiles ) {
+		return;
+	}
+	?>
+	<div class="grid g-4 cil-video-cards">
+		<?php foreach ( $tiles as $i => $item ) : ?>
+			<?php
+			$title = isset( $item['title'] ) ? (string) $item['title'] : '';
+			$label = $title ? $title : __( 'Video', 'circumcision-london' );
+			$src   = ! empty( $item['mp4'] ) ? $item['mp4'] : ( ! empty( $item['webm'] ) ? $item['webm'] : '' );
+			?>
+			<figure class="cil-video-tile" data-reveal data-reveal-delay="<?php echo esc_attr( (string) ( ( $i % 4 ) * 80 ) ); ?>">
+				<?php if ( ! $src ) : ?>
+				<div class="cil-video-facade cil-video-facade--portrait is-unavailable">
+					<?php if ( ! empty( $item['poster'] ) ) : ?>
+						<img class="cil-video-facade__poster" src="<?php echo esc_url( $item['poster'] ); ?>" alt="" loading="lazy" decoding="async" width="720" height="1280">
+					<?php endif; ?>
+					<p class="cil-video-facade__error"><?php echo esc_html( sprintf( /* translators: %s: clinic phone number */ __( 'This video is not available at the moment. Please call the clinic on %s.', 'circumcision-london' ), cil_clinic()['phone']['display'] ) ); ?></p>
+				</div>
+				<?php else : ?>
+				<div class="cil-video-facade cil-video-facade--portrait" data-cil-video data-src="<?php echo esc_url( $src ); ?>" data-type="<?php echo esc_attr( cil_video_mime_from_url( $src ) ); ?>"<?php echo ! empty( $item['poster'] ) ? ' data-poster="' . esc_url( $item['poster'] ) . '"' : ''; ?>>
+					<a class="cil-video-facade__link" href="<?php echo esc_url( $src ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: video title */ __( 'Play video: %s', 'circumcision-london' ), $label ) ); ?>">
+						<?php if ( ! empty( $item['poster'] ) ) : ?>
+							<img class="cil-video-facade__poster" src="<?php echo esc_url( $item['poster'] ); ?>" alt="" loading="lazy" decoding="async" width="720" height="1280">
+						<?php endif; ?>
+						<span class="cil-video-facade__play" aria-hidden="true"></span>
+					</a>
+					<p class="cil-video-facade__error" role="alert" hidden><?php echo esc_html( sprintf( /* translators: %s: clinic phone number */ __( 'This video could not be loaded. Please try again later, or call the clinic on %s.', 'circumcision-london' ), cil_clinic()['phone']['display'] ) ); ?></p>
+				</div>
+				<?php endif; ?>
+				<?php if ( $title ) : ?>
+					<figcaption class="cil-video-tile__caption meta"><?php echo esc_html( $title ); ?></figcaption>
+				<?php endif; ?>
+			</figure>
+		<?php endforeach; ?>
+	</div>
+	<?php
+	return;
+}
+
+/*
  * List layout (aftercare age pages): one row per video with its heading and
  * note beside a poster. No <video> element or video bytes load until the
  * visitor presses play (theme.js swaps the link for a player). Without JS the

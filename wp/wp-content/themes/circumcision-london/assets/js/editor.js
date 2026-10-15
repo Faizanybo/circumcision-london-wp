@@ -1508,11 +1508,20 @@
     attributes: {
       quotes: { type: 'array', default: [] },
       perPage: { type: 'number', default: 0 },
+      showStars: { type: 'boolean', default: true },
     },
     inspect: function (props) {
       return el(
         PanelBody,
         { title: 'Quotes' },
+        el(ToggleControl, {
+          label: 'Show five-star rating on each card',
+          help: 'Turn off when the feedback did not come with a star rating.',
+          checked: props.attributes.showStars !== false,
+          onChange: function (v) {
+            props.setAttributes({ showStars: !!v });
+          },
+        }),
         el(
           'p',
           { style: { fontSize: '13px', color: '#55637a' } },
@@ -1746,11 +1755,12 @@
         }),
         el(SelectControl, {
           label: 'Layout',
-          help: 'List: one row per video with its title and note beside a poster; the video loads only when played (aftercare pages).',
+          help: 'List: one row per video with its title and note beside a poster. Cards: portrait poster tiles in a row. In both, the video loads only when played.',
           value: props.attributes.layout || 'grid',
           options: [
             { label: 'Grid (video testimonials)', value: 'grid' },
             { label: 'List (aftercare videos)', value: 'list' },
+            { label: 'Cards (portrait testimonial videos)', value: 'cards' },
           ],
           onChange: function (v) {
             props.setAttributes({ layout: v });
@@ -1835,8 +1845,16 @@
               },
             }),
             el(TextControl, {
-              label: 'Media store key (aftercare videos)',
-              help: 'File path in the clinic media store, e.g. aftercare/videos/consultation-0-2.mp4. Used when no MP4 file or MP4 URL is set.',
+              label: 'Poster media store key (optional)',
+              help: 'Poster image in the clinic media store, e.g. testimonials/posters/img-4542.jpg. Used when no poster image or poster URL is set.',
+              value: item.posterKey || '',
+              onChange: function (v) {
+                updateItem(i, { posterKey: v.trim() });
+              },
+            }),
+            el(TextControl, {
+              label: 'Video media store key',
+              help: 'File path in the clinic media store, e.g. aftercare/videos/consultation-0-2.mp4 or testimonials/videos/img-4542.mp4. Used when no MP4 file or MP4 URL is set.',
               value: item.mediaKey || '',
               onChange: function (v) {
                 updateItem(i, { mediaKey: v.trim() });
@@ -1911,7 +1929,7 @@
             onClick: function () {
               props.setAttributes({
                 items: items.concat([
-                  { title: '', description: '', duration: '', mediaKey: '', poster: '', mp4: '', webm: '', posterId: 0, mp4Id: 0, webmId: 0 },
+                  { title: '', description: '', duration: '', mediaKey: '', posterKey: '', poster: '', mp4: '', webm: '', posterId: 0, mp4Id: 0, webmId: 0 },
                 ]),
               });
             },

@@ -725,10 +725,16 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'number',
 						'default' => 0,
 					),
+					'showStars' => array(
+						'type'    => 'boolean',
+						'default' => true,
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					$quotes = cil_block_list( isset( $attrs['quotes'] ) ? $attrs['quotes'] : array() );
-					$args   = array();
+					$args   = array(
+						'show_stars' => ! isset( $attrs['showStars'] ) || ! empty( $attrs['showStars'] ),
+					);
 					if ( $quotes ) {
 						$args['quotes'] = $quotes;
 					}
@@ -1120,7 +1126,8 @@ function cil_register_dynamic_blocks() {
 				),
 				'render_callback' => function ( $attrs ) {
 					$items   = array();
-					$is_list = isset( $attrs['layout'] ) && 'list' === $attrs['layout'];
+					$layout  = ( isset( $attrs['layout'] ) && in_array( $attrs['layout'], array( 'list', 'cards' ), true ) ) ? $attrs['layout'] : 'grid';
+					$is_list = 'grid' !== $layout;
 					foreach ( cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ) as $item ) {
 						$item = cil_resolve_video_item( $item );
 						// List rows keep their title and warnings even when the file is not
@@ -1135,7 +1142,7 @@ function cil_register_dynamic_blocks() {
 						'items'      => $items,
 						'show_empty' => ! empty( $attrs['showEmpty'] ),
 						'show_head'  => ! isset( $attrs['showHead'] ) || ! empty( $attrs['showHead'] ),
-						'layout'     => ( isset( $attrs['layout'] ) && 'list' === $attrs['layout'] ) ? 'list' : 'grid',
+						'layout'     => $layout,
 						'item_level' => isset( $attrs['itemLevel'] ) ? (int) $attrs['itemLevel'] : 3,
 					);
 					if ( ! empty( $attrs['eyebrow'] ) ) {

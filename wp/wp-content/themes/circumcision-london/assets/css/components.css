@@ -451,6 +451,34 @@ a.cil-pagination__item:hover {
   .cil-video-facade__play { transition: none; }
 }
 
+/* ------------------------------------- testimonial video cards (portrait) -- */
+.cil-video-cards {
+  margin-top: clamp(24px, 3vw, 36px);
+}
+.cil-video-tile {
+  min-width: 0;
+  margin: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.cil-video-facade--portrait {
+  aspect-ratio: 9 / 16;
+  border-radius: 0;
+}
+.cil-video-facade--portrait .cil-video-facade__poster { object-fit: cover; }
+/* The tile clips overflow, so draw the keyboard focus ring inside the poster. */
+.cil-video-tile .cil-video-facade__link:focus-visible { outline-offset: -4px; }
+.cil-video-tile__caption {
+  padding: 12px 16px 14px;
+  margin: 0;
+}
+@media (max-width: 680px) {
+  .cil-video-cards.g-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .cil-video-cards .cil-video-facade__play { width: 52px; height: 52px; margin: -26px 0 0 -26px; }
+}
+
 /* Dedicated video testimonials page: tighten intro → grid spacing only. */
 .page-video-testimonials .page-head {
   padding-block: clamp(28px, 3.2vw, 52px) clamp(12px, 1.6vw, 24px);
@@ -1182,7 +1210,8 @@ body.page-phimosis [data-reveal],
 body.page-balanitis [data-reveal],
 body.page-bxo [data-reveal],
 body.page-paraphimosis [data-reveal],
-body.page-frenuloplasty [data-reveal] {
+body.page-frenuloplasty [data-reveal],
+body.page-testimonials [data-reveal] {
   transform: translateY(24px);
   transition-duration: 0.55s;
 }
@@ -1195,7 +1224,8 @@ body.page-phimosis [data-reveal].is-in,
 body.page-balanitis [data-reveal].is-in,
 body.page-bxo [data-reveal].is-in,
 body.page-paraphimosis [data-reveal].is-in,
-body.page-frenuloplasty [data-reveal].is-in {
+body.page-frenuloplasty [data-reveal].is-in,
+body.page-testimonials [data-reveal].is-in {
   transform: none;
 }
 @media (max-width: 680px) {
@@ -1208,7 +1238,8 @@ body.page-frenuloplasty [data-reveal].is-in {
   body.page-balanitis [data-reveal],
   body.page-bxo [data-reveal],
   body.page-paraphimosis [data-reveal],
-  body.page-frenuloplasty [data-reveal] {
+  body.page-frenuloplasty [data-reveal],
+  body.page-testimonials [data-reveal] {
     transform: translateY(14px);
     transition-duration: 0.45s;
   }
@@ -1221,11 +1252,18 @@ body.page-frenuloplasty [data-reveal].is-in {
   body.page-balanitis [data-reveal].is-in,
   body.page-bxo [data-reveal].is-in,
   body.page-paraphimosis [data-reveal].is-in,
-  body.page-frenuloplasty [data-reveal].is-in {
+  body.page-frenuloplasty [data-reveal].is-in,
+  body.page-testimonials [data-reveal].is-in {
     transform: none;
   }
 }
 /* Keep reduced-motion / no-js behaviour from base.css (already !important). */
+
+/* Testimonials: full-length written feedback reads at body size, not pull-quote size. */
+body.page-testimonials .cil-quotes-grid .quote blockquote {
+  font-size: 17px;
+  line-height: 1.55;
+}
 
 /* Frenuloplasty: paired text columns start level so their headings line up. */
 body.page-frenuloplasty .split {
