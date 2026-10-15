@@ -1223,7 +1223,8 @@ body.page-bxo [data-reveal],
 body.page-paraphimosis [data-reveal],
 body.page-frenuloplasty [data-reveal],
 body.page-testimonials [data-reveal],
-body.page-prices [data-reveal] {
+body.page-prices [data-reveal],
+body.page-courses [data-reveal] {
   transform: translateY(24px);
   transition-duration: 0.55s;
 }
@@ -1238,7 +1239,8 @@ body.page-bxo [data-reveal].is-in,
 body.page-paraphimosis [data-reveal].is-in,
 body.page-frenuloplasty [data-reveal].is-in,
 body.page-testimonials [data-reveal].is-in,
-body.page-prices [data-reveal].is-in {
+body.page-prices [data-reveal].is-in,
+body.page-courses [data-reveal].is-in {
   transform: none;
 }
 @media (max-width: 680px) {
@@ -1253,7 +1255,8 @@ body.page-prices [data-reveal].is-in {
   body.page-paraphimosis [data-reveal],
   body.page-frenuloplasty [data-reveal],
   body.page-testimonials [data-reveal],
-  body.page-prices [data-reveal] {
+  body.page-prices [data-reveal],
+  body.page-courses [data-reveal] {
     transform: translateY(14px);
     transition-duration: 0.45s;
   }
@@ -1268,7 +1271,8 @@ body.page-prices [data-reveal].is-in {
   body.page-paraphimosis [data-reveal].is-in,
   body.page-frenuloplasty [data-reveal].is-in,
   body.page-testimonials [data-reveal].is-in,
-  body.page-prices [data-reveal].is-in {
+  body.page-prices [data-reveal].is-in,
+  body.page-courses [data-reveal].is-in {
     transform: none;
   }
 }
@@ -1280,8 +1284,15 @@ body.page-testimonials .cil-quotes-grid .quote blockquote {
   line-height: 1.55;
 }
 
-/* Frenuloplasty: paired text columns start level so their headings line up. */
-body.page-frenuloplasty .split {
+/* Course: in-page "Enquire" links land below the sticky header. */
+body.page-courses #enquire,
+body.page-courses #courses {
+  scroll-margin-top: 120px;
+}
+
+/* Frenuloplasty, Course: paired text columns start level so their headings line up. */
+body.page-frenuloplasty .split,
+body.page-courses .split {
   align-items: start;
 }
 

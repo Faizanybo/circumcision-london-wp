@@ -124,18 +124,29 @@ function cil_about_pages() {
 			'slug'        => 'courses',
 			'path'        => '/courses',
 			'name'        => 'For doctors',
-			'title'       => 'Circumcision Training Course for Doctors | London',
-			'description' => 'A five-day, one-to-one circumcision training course for doctors in London. Plastibell, forceps guided and free hand methods, live surgery and practice setup.',
-			'eyebrow'     => 'One-to-one programme',
-			'h1'          => 'Circumcision training for doctors',
-			'lede'        => 'We provide training for doctors who want to develop their knowledge and skills in male circumcision. The course combines theory with observation of clinical practice and is designed to cover circumcision across different age groups.',
+			// Title, description, H1, lede and FAQs: Course for doctors.docx (client source).
+			'title'       => 'Circumcision Training Course UK | 2-Day Intensive Training',
+			'description' => '2-day intensive one-to-one circumcision training for doctors and healthcare professionals in London. Theory, live surgery observation, practical training, complications and clinic set-up.',
+			'eyebrow'     => '2-Day Intensive One-to-One Circumcision Training Programme',
+			'h1'          => 'Circumcision Training Course in London',
+			'lede'        => 'Beverley Clinic provides an intensive 2-day one-to-one circumcision training programme for doctors and appropriately qualified healthcare professionals who want to develop their knowledge and practical understanding of circumcision.',
 			'crumbs'      => array(
 				array(
 					'label' => 'For doctors',
 					'href'  => '',
 				),
 			),
-			'faqs'        => array(),
+			'faqs'        => array(
+				array( 'q' => 'How long is the circumcision training course?', 'a' => '<p>The programme takes place over two intensive days.</p>' ),
+				array( 'q' => 'Is the training one-to-one?', 'a' => '<p>Yes. The programme is delivered one-to-one, allowing the teaching to be tailored to your experience and learning requirements.</p>' ),
+				array( 'q' => 'Does the course include live circumcision?', 'a' => '<p>The course includes observation of live circumcision procedures where suitable cases are scheduled and appropriate for teaching.</p> <p>The exact case mix cannot be guaranteed in advance.</p>' ),
+				array( 'q' => 'Which circumcision techniques are covered?', 'a' => '<p>The programme covers Plastibell circumcision and forceps-guided circumcision, together with an overview of freehand circumcision where appropriate.</p>' ),
+				array( 'q' => 'Does the course cover babies and adults?', 'a' => '<p>Yes. The programme discusses circumcision across different age groups, including babies, children and adults.</p> <p>Live case availability depends on the procedures scheduled during the training dates.</p>' ),
+				array( 'q' => 'Is there practical training?', 'a' => '<p>Yes. Practical training is carried out using circumcision mannequins and instruments and includes procedural technique and suturing.</p>' ),
+				array( 'q' => 'Does the course cover circumcision complications?', 'a' => '<p>Yes. Complication prevention, recognition and management form an important part of the programme.</p> <p>Topics include bleeding, excessive or insufficient skin removal, scarring, constriction and buried penis.</p>' ),
+				array( 'q' => 'Does the course cover setting up a circumcision clinic?', 'a' => '<p>Yes. We discuss staffing, documentation, consent, equipment, instruments, suppliers, indemnity, emergency arrangements and other practical aspects of establishing a circumcision service.</p>' ),
+				array( 'q' => 'Will I receive a certificate?', 'a' => '<p>Yes. A certificate of completion is provided following completion of the 2-day programme.</p>' ),
+			),
 		),
 	);
 }
