@@ -571,6 +571,7 @@ a.cil-pagination__item:hover {
 }
 .consent input { width: 20px; height: 20px; margin: 3px 0 0; flex: 0 0 auto; accent-color: var(--blue); }
 .form-note { grid-column: 1 / -1; font-size: 15px; color: var(--muted); }
+.form-note p + p { margin-top: 10px; }
 .form-status { grid-column: 1 / -1; font-size: 15px; }
 .form-status[data-state="ok"] { color: var(--blue-deep); }
 .form-status[data-state="err"] { color: #a0432a; }

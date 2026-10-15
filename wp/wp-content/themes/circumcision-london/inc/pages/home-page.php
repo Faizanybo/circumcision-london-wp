@@ -27,8 +27,11 @@ function cil_homepage_blocks() {
 	$callback_html .= '<p>Some patients get circumcised to meet cultural requirements such as Filipinos, certain parts of Africa, Fiji and other countries where circumcision is an important part of their culture.</p>';
 	$callback_html .= '<p>We also get a big portion of patients who have a medical reason for getting circumcised, most common is a tight foreskin (phimosis and paraphimosis), inflammation of the head of the penis (balanitis) as well as short and scarred frenulum.</p>';
 
-	$callback_card_html  = '<p><strong>Want to ask before you book?</strong></p>';
-	$callback_card_html .= '<p>We often call you back within a few minutes, but always within the same day even during busy times. Monday – Saturday 09:00–17:00.</p>';
+	// Call-back intro: client-approved wording shared with template-parts/callback-form.php.
+	$callback_card_html  = '<p>Have a question or need some advice? We\'re here to help and would be happy to give you a call.</p>';
+	$callback_card_html .= '<p>Our opening hours are <em>Monday to Saturday, 9:00am–5:00pm</em>.</p>';
+	$callback_card_html .= '<p>We aim to call you back <em>within 1 hour during opening hours</em>, and always on the same working day. If you contact us outside these hours, we\'ll get back to you the next working day.</p>';
+	$callback_card_html .= '<p><em>There\'s no pressure or obligation to book</em> — we\'re simply here to answer your questions and help you make the right decision.</p>';
 	$callback_card_html .= '<p><strong>Name, phone number</strong></p>';
 	$callback_card_html .= '<p><strong>Patient DOB</strong></p>';
 	$callback_card_html .= '<p><strong>Anything you would like us to know (optional)</strong></p>';
