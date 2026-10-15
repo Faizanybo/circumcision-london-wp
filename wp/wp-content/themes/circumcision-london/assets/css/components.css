@@ -618,6 +618,17 @@ a.cil-pagination__item:hover {
 .price-row p { font-size: 15px; color: var(--muted); max-width: 56ch; }
 .price-row .amount { font-family: var(--display); font-size: clamp(24px, 2.3vw, 32px); font-weight: 400; color: var(--ink-2); white-space: nowrap; }
 .price-row .btn { min-height: 42px; padding: 9px 18px; font-size: 14px; }
+/* Price figure inside cards and body text (prices page), styled like .price-row .amount. */
+.cil-price-amount,
+.body-text p.cil-price-amount,
+.cil-info-card .body-text p.cil-price-amount {
+  font-family: var(--display);
+  font-size: clamp(28px, 2.6vw, 36px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--ink-2);
+}
+.cil-info-card .body-text p.cil-price-amount { margin: 0 0 4px; }
 
 .reviewed-by { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--muted-2); }
 .reviewed-by a { color: var(--muted); }
@@ -1211,7 +1222,8 @@ body.page-balanitis [data-reveal],
 body.page-bxo [data-reveal],
 body.page-paraphimosis [data-reveal],
 body.page-frenuloplasty [data-reveal],
-body.page-testimonials [data-reveal] {
+body.page-testimonials [data-reveal],
+body.page-prices [data-reveal] {
   transform: translateY(24px);
   transition-duration: 0.55s;
 }
@@ -1225,7 +1237,8 @@ body.page-balanitis [data-reveal].is-in,
 body.page-bxo [data-reveal].is-in,
 body.page-paraphimosis [data-reveal].is-in,
 body.page-frenuloplasty [data-reveal].is-in,
-body.page-testimonials [data-reveal].is-in {
+body.page-testimonials [data-reveal].is-in,
+body.page-prices [data-reveal].is-in {
   transform: none;
 }
 @media (max-width: 680px) {
@@ -1239,7 +1252,8 @@ body.page-testimonials [data-reveal].is-in {
   body.page-bxo [data-reveal],
   body.page-paraphimosis [data-reveal],
   body.page-frenuloplasty [data-reveal],
-  body.page-testimonials [data-reveal] {
+  body.page-testimonials [data-reveal],
+  body.page-prices [data-reveal] {
     transform: translateY(14px);
     transition-duration: 0.45s;
   }
@@ -1253,7 +1267,8 @@ body.page-testimonials [data-reveal].is-in {
   body.page-bxo [data-reveal].is-in,
   body.page-paraphimosis [data-reveal].is-in,
   body.page-frenuloplasty [data-reveal].is-in,
-  body.page-testimonials [data-reveal].is-in {
+  body.page-testimonials [data-reveal].is-in,
+  body.page-prices [data-reveal].is-in {
     transform: none;
   }
 }

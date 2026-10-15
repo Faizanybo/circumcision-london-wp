@@ -20,11 +20,12 @@ function cil_misc_pages() {
 			'slug'        => 'prices',
 			'path'        => '/prices',
 			'name'        => 'Prices',
-			'title'       => 'Circumcision Prices London | From £200 | Edgware Clinic',
-			'description' => 'Circumcision prices by age band, from £200 for babies to £1,080 for adults with a foreskin problem. Aftercare, the next-day call and free follow-ups included.',
-			'eyebrow'     => 'By age band · Everything included',
-			'h1'          => 'Circumcision prices',
-			'lede'        => 'The price includes the procedure, local anaesthetic, preparation/aftercare information, a next-day follow-up call, written aftercare, free follow-up appointments during healing and a GP letter, nursery/ school/ work letter where required.',
+			// Title, description, H1 and lede: Prices.docx (client source).
+			'title'       => 'Circumcision Prices London | Baby, Child & Adult Costs',
+			'description' => 'View circumcision prices at Beverley Clinic in London for babies, children, teenagers and adults. Baby circumcision from £200 and adult circumcision from £680.',
+			'eyebrow'     => 'Clear pricing. Aftercare and follow-up included.',
+			'h1'          => 'Circumcision Prices',
+			'lede'        => 'Clear circumcision prices for babies, children, teenagers and adults at Beverley Clinic in North-West London.',
 			'crumbs'      => array(
 				array(
 					'label' => 'Prices',
