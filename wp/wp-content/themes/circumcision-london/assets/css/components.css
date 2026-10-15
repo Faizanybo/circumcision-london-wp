@@ -958,12 +958,11 @@ a.cil-pagination__item:hover {
 }
 
 /*
- * Age pages (babies, children, adults, religious): center the medical + methods
- * section heading and supporting paragraph, with one line-height gap between
- * them. Scoped to wraps that include .cil-section-lede. On the homepage these two
- * sections are left-aligned (see the homepage rule below).
+ * Age pages (children, adults, religious): center the section heading and
+ * supporting paragraph above a card grid, with one line-height gap between
+ * them. Scoped to wraps that include .cil-section-lede. The homepage and the
+ * babies page left-align these sections instead (see the rule below).
  */
-body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head),
 body.page-children .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head),
 body.page-adults .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head),
 body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) {
@@ -971,11 +970,9 @@ body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-led
   margin-inline: auto;
   text-align: center;
 }
-body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
 body.page-children .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
 body.page-adults .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
 body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
-body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head,
 body.page-children .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head,
 body.page-adults .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head,
 body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head {
@@ -985,7 +982,6 @@ body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-led
   margin-bottom: 0;
   text-align: center;
 }
-body.page-babies .wp-block-cil-section.section > .wrap > .cil-section-lede,
 body.page-children .wp-block-cil-section.section > .wrap > .cil-section-lede,
 body.page-adults .wp-block-cil-section.section > .wrap > .cil-section-lede,
 body.page-religious .wp-block-cil-section.section > .wrap > .cil-section-lede {
@@ -995,17 +991,21 @@ body.page-religious .wp-block-cil-section.section > .wrap > .cil-section-lede {
 }
 
 /*
- * Homepage: medical + methods (3-column card grids) are left-aligned (client
- * feedback; homepage only for now). Other homepage sections are unchanged.
+ * Homepage and babies page: section heading + supporting paragraph above a
+ * card grid are left-aligned (client feedback). Other sections are unchanged.
  */
-body.cil-home .wp-block-cil-section.section > .wrap > .cil-section-lede {
+body.cil-home .wp-block-cil-section.section > .wrap > .cil-section-lede,
+body.page-babies .wp-block-cil-section.section > .wrap > .cil-section-lede {
   margin-top: 1.15em;
 }
-body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head {
+body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
+body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
+body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head {
   margin-bottom: 0;
 }
-/* WordPress centres constrained-layout children with !important; anchor these two headings left. */
-body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+/* WordPress centres constrained-layout children with !important; anchor these headings left. */
+body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)),
+body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
   margin-left: 0 !important;
   margin-right: auto !important;
 }
