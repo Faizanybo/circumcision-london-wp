@@ -1226,7 +1226,8 @@ body.page-testimonials [data-reveal],
 body.page-prices [data-reveal],
 body.page-courses [data-reveal],
 body.page-luton-circumcision-clinic [data-reveal],
-body.page-southampton-circumcision-clinic [data-reveal] {
+body.page-southampton-circumcision-clinic [data-reveal],
+body.page-birmingham-circumcision-clinic [data-reveal] {
   transform: translateY(24px);
   transition-duration: 0.55s;
 }
@@ -1244,7 +1245,8 @@ body.page-testimonials [data-reveal].is-in,
 body.page-prices [data-reveal].is-in,
 body.page-courses [data-reveal].is-in,
 body.page-luton-circumcision-clinic [data-reveal].is-in,
-body.page-southampton-circumcision-clinic [data-reveal].is-in {
+body.page-southampton-circumcision-clinic [data-reveal].is-in,
+body.page-birmingham-circumcision-clinic [data-reveal].is-in {
   transform: none;
 }
 @media (max-width: 680px) {
@@ -1262,7 +1264,8 @@ body.page-southampton-circumcision-clinic [data-reveal].is-in {
   body.page-prices [data-reveal],
   body.page-courses [data-reveal],
   body.page-luton-circumcision-clinic [data-reveal],
-  body.page-southampton-circumcision-clinic [data-reveal] {
+  body.page-southampton-circumcision-clinic [data-reveal],
+  body.page-birmingham-circumcision-clinic [data-reveal] {
     transform: translateY(14px);
     transition-duration: 0.45s;
   }
@@ -1280,7 +1283,8 @@ body.page-southampton-circumcision-clinic [data-reveal].is-in {
   body.page-prices [data-reveal].is-in,
   body.page-courses [data-reveal].is-in,
   body.page-luton-circumcision-clinic [data-reveal].is-in,
-  body.page-southampton-circumcision-clinic [data-reveal].is-in {
+  body.page-southampton-circumcision-clinic [data-reveal].is-in,
+  body.page-birmingham-circumcision-clinic [data-reveal].is-in {
     transform: none;
   }
 }
@@ -1292,21 +1296,24 @@ body.page-testimonials .cil-quotes-grid .quote blockquote {
   line-height: 1.55;
 }
 
-/* Course, Luton, Southampton: in-page "Enquire" links land below the sticky header. */
+/* Course and location pages: in-page "Enquire" links land below the sticky header. */
 body.page-courses #enquire,
 body.page-courses #courses,
 body.page-luton-circumcision-clinic #enquire,
 body.page-luton-circumcision-clinic #luton,
 body.page-southampton-circumcision-clinic #enquire,
-body.page-southampton-circumcision-clinic #southampton {
+body.page-southampton-circumcision-clinic #southampton,
+body.page-birmingham-circumcision-clinic #enquire,
+body.page-birmingham-circumcision-clinic #birmingham {
   scroll-margin-top: 150px;
 }
 
-/* Frenuloplasty, Course, Luton, Southampton: paired text columns start level so their headings line up. */
+/* Frenuloplasty, Course and location pages: paired text columns start level so their headings line up. */
 body.page-frenuloplasty .split,
 body.page-courses .split,
 body.page-luton-circumcision-clinic .split,
-body.page-southampton-circumcision-clinic .split {
+body.page-southampton-circumcision-clinic .split,
+body.page-birmingham-circumcision-clinic .split {
   align-items: start;
 }
 
