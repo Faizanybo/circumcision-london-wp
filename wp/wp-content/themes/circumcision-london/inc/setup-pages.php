@@ -65,6 +65,9 @@ function cil_managed_pages() {
 	if ( function_exists( 'cil_about_clinic_pages' ) ) {
 		$pages = array_merge( $pages, cil_about_clinic_pages() );
 	}
+	if ( function_exists( 'cil_diary_pages' ) ) {
+		$pages = array_merge( $pages, cil_diary_pages() );
+	}
 	return $pages;
 }
 
@@ -101,6 +104,9 @@ function cil_managed_page_blocks( $slug ) {
 	}
 	if ( function_exists( 'cil_about_clinic_pages' ) && isset( cil_about_clinic_pages()[ $slug ] ) ) {
 		return cil_about_clinic_page_blocks( $slug );
+	}
+	if ( function_exists( 'cil_diary_pages' ) && isset( cil_diary_pages()[ $slug ] ) ) {
+		return cil_diary_page_blocks( $slug );
 	}
 	if ( function_exists( 'cil_extra_page_blocks' ) ) {
 		return cil_extra_page_blocks( $slug );

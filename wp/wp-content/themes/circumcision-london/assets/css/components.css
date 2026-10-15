@@ -1290,6 +1290,12 @@ body.page-birmingham-circumcision-clinic [data-reveal].is-in {
 }
 /* Keep reduced-motion / no-js behaviour from base.css (already !important). */
 
+/* Circumcision Diary: long-form text left-aligned with the page heading, at a readable width. */
+.cil-diary,
+body.page-circumcision-diary .callout {
+  max-width: 720px;
+}
+
 /* Testimonials: full-length written feedback reads at body size, not pull-quote size. */
 body.page-testimonials .cil-quotes-grid .quote blockquote {
   font-size: 17px;
