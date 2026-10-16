@@ -1479,11 +1479,11 @@ ul.cil-checklist > li::before,
 }
 
 /*
- * Babies, children, adults, religious, re-circumcision: tighter vertical
- * spacing between content sections (client request). Standard sections only;
- * the smaller .section-sm spacing is unchanged.
+ * All pages except the homepage: tighter vertical spacing between content
+ * sections (client request). Standard sections only; the smaller .section-sm
+ * spacing is unchanged.
  */
-body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision) .entry-content .section {
+body:not(.cil-home) .entry-content .section {
   padding-block: clamp(36px, 4vw, 56px);
 }
 
@@ -1541,4 +1541,35 @@ body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-ci
   }
 }
 
+/*
+ * Remaining pages (all except the homepage): an odd leftover card stays in
+ * the left column instead of being centred (client request). Only the odd
+ * last card is touched; other grid placement is unchanged.
+ */
+@media (min-width: 681px) {
+  body:not(.cil-home) .grid.g-2 > :last-child:nth-child(odd):not(:first-child) {
+    grid-column: auto !important;
+  }
+  body:not(.cil-home) .grid.g-2 > :last-child:nth-child(odd):not(:first-child),
+  body:not(.cil-home) :is(.grid.g-3, .cil-quotes-grid) > :last-child:not(:first-child) {
+    justify-self: stretch !important;
+    margin-inline: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+@media (min-width: 681px) and (max-width: 900px) {
+  body:not(.cil-home) :is(.grid.g-3, .cil-quotes-grid) > :last-child:nth-child(odd):not(:first-child) {
+    grid-column: auto !important;
+  }
+}
+@media (min-width: 901px) {
+  body:not(.cil-home) :is(.grid.g-3, .cil-quotes-grid.g-3) > :last-child:nth-child(3n + 1):not(:first-child) {
+    grid-column: auto !important;
+  }
+}
 
+/* Card body: no extra top margin when it starts with a list (heading-to-text gap matches other cards). */
+.cil-info-card__body > :first-child {
+  margin-top: 0;
+}

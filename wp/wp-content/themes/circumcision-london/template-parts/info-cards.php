@@ -43,6 +43,9 @@ $htag    = 'h' . $level;
 			<?php endif; ?>
 			<?php if ( $html ) : ?>
 				<div class="body-text cil-info-card__body" style="margin-top:12px"><?php echo cil_rich_text( $html ); ?></div>
+			<?php elseif ( $body && preg_match( '/<(p|ul|ol|div|h[1-6]|blockquote)[\s>]/i', $body ) ) : ?>
+				<?php // Paragraph markup in "body": a <p> wrapper would be split by the browser and leave an empty stretching <p>. ?>
+				<div class="body-text cil-info-card__body" style="margin-top:12px"><?php echo cil_rich_text( $body ); ?></div>
 			<?php elseif ( $body ) : ?>
 				<p class="cil-info-card__body"><?php echo cil_rich_text( $body ); ?></p>
 			<?php endif; ?>
