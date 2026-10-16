@@ -206,18 +206,15 @@
     grid-column: 2;
   }
 
-  /* Two leftovers → 6-col track so the pair sits centred with equal side space. */
+  /* Two leftovers → 6-col track; the last pair together spans the full row width. */
   .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
   .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) > .quote {
     grid-column: span 2;
   }
-  .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) > .quote:nth-last-child(2) {
-    grid-column: 2 / span 2;
-  }
-  .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) > .quote:last-child {
-    grid-column: 4 / span 2;
+  .cil-quotes-grid.g-3:has(> .quote:last-child:nth-child(3n + 2)) > .quote:nth-last-child(-n + 2) {
+    grid-column: span 3;
   }
 }
 
@@ -808,7 +805,7 @@ a.cil-pagination__item:hover {
     grid-column: 2;
   }
 
-  /* Two leftovers in a 3-col card grid (e.g. 5 cards) -> 6-col track so the pair sits centred with equal side space. */
+  /* Two leftovers in a 3-col card grid (e.g. 5 cards) -> 6-col track; the last pair together spans the full row width. */
   .grid.g-3:has(> .card:last-child:nth-child(3n + 2):not(:nth-child(2))),
   .grid.g-3:has(> .card-group:last-child:nth-child(3n + 2):not(:nth-child(2))),
   .grid.g-3:has(> .cil-info-card:last-child:nth-child(3n + 2):not(:nth-child(2))),
@@ -821,17 +818,11 @@ a.cil-pagination__item:hover {
   .grid.g-3.cil-info-cards-grid:has(> *:last-child:nth-child(3n + 2):not(:nth-child(2))) > * {
     grid-column: span 2;
   }
-  .grid.g-3:has(> .card:last-child:nth-child(3n + 2):not(:nth-child(2))) > .card:nth-last-child(2),
-  .grid.g-3:has(> .card-group:last-child:nth-child(3n + 2):not(:nth-child(2))) > .card-group:nth-last-child(2),
-  .grid.g-3:has(> .cil-info-card:last-child:nth-child(3n + 2):not(:nth-child(2))) > .cil-info-card:nth-last-child(2),
-  .grid.g-3.cil-info-cards-grid:has(> *:last-child:nth-child(3n + 2):not(:nth-child(2))) > *:nth-last-child(2) {
-    grid-column: 2 / span 2;
-  }
-  .grid.g-3:has(> .card:last-child:nth-child(3n + 2):not(:nth-child(2))) > .card:last-child,
-  .grid.g-3:has(> .card-group:last-child:nth-child(3n + 2):not(:nth-child(2))) > .card-group:last-child,
-  .grid.g-3:has(> .cil-info-card:last-child:nth-child(3n + 2):not(:nth-child(2))) > .cil-info-card:last-child,
-  .grid.g-3.cil-info-cards-grid:has(> *:last-child:nth-child(3n + 2):not(:nth-child(2))) > *:last-child {
-    grid-column: 4 / span 2;
+  .grid.g-3:has(> .card:last-child:nth-child(3n + 2):not(:nth-child(2))) > .card:nth-last-child(-n + 2),
+  .grid.g-3:has(> .card-group:last-child:nth-child(3n + 2):not(:nth-child(2))) > .card-group:nth-last-child(-n + 2),
+  .grid.g-3:has(> .cil-info-card:last-child:nth-child(3n + 2):not(:nth-child(2))) > .cil-info-card:nth-last-child(-n + 2),
+  .grid.g-3.cil-info-cards-grid:has(> *:last-child:nth-child(3n + 2):not(:nth-child(2))) > *:nth-last-child(-n + 2) {
+    grid-column: span 3;
   }
 }
 
@@ -958,59 +949,24 @@ a.cil-pagination__item:hover {
 }
 
 /*
- * Age pages (children, adults, religious): center the section heading and
- * supporting paragraph above a card grid, with one line-height gap between
- * them. Scoped to wraps that include .cil-section-lede. The homepage and the
- * babies page left-align these sections instead (see the rule below).
+ * Homepage, babies, children, adults and religious pages: section heading +
+ * supporting paragraph above a card grid are left-aligned (client feedback).
+ * Checklist cards inside these sections stay centred on the page.
  */
-body.page-children .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head),
-body.page-adults .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head),
-body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) {
-  max-width: 46rem;
-  margin-inline: auto;
-  text-align: center;
-}
-body.page-children .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
-body.page-adults .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
-body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
-body.page-children .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head,
-body.page-adults .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head,
-body.page-religious .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head {
-  max-width: none;
-  width: 100%;
-  margin-inline: auto;
-  margin-bottom: 0;
-  text-align: center;
-}
-body.page-children .wp-block-cil-section.section > .wrap > .cil-section-lede,
-body.page-adults .wp-block-cil-section.section > .wrap > .cil-section-lede,
-body.page-religious .wp-block-cil-section.section > .wrap > .cil-section-lede {
-  text-align: center;
-  margin-inline: auto;
+body:is(.cil-home, .page-babies, .page-children, .page-adults, .page-religious) .wp-block-cil-section.section > .wrap > .cil-section-lede {
   margin-top: 1.15em;
 }
-
-/*
- * Homepage and babies page: section heading + supporting paragraph above a
- * card grid are left-aligned (client feedback). Other sections are unchanged.
- */
-body.cil-home .wp-block-cil-section.section > .wrap > .cil-section-lede,
-body.page-babies .wp-block-cil-section.section > .wrap > .cil-section-lede {
-  margin-top: 1.15em;
-}
-body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
-body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
-body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head {
+body:is(.cil-home, .page-babies, .page-children, .page-adults, .page-religious) .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .wp-block-group:has(> .section-head) .section-head,
+body:is(.page-babies, .page-children, .page-adults, .page-religious) .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .section-head {
   margin-bottom: 0;
 }
 /* WordPress centres constrained-layout children with !important; anchor these headings left. */
-body.cil-home .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)),
-body.page-babies .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+body:is(.cil-home, .page-babies, .page-children, .page-adults, .page-religious) .wp-block-cil-section.section > .wrap:has(> .cil-section-lede) > .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull):not(.cil-checklist)) {
   margin-left: 0 !important;
   margin-right: auto !important;
 }
 
-/* Recircumcision page: Center-aligned photographs section */
+/* Recircumcision page: photographs section, left-aligned (client feedback) */
 body.page-re-circumcision #photographs .section-head,
 body.page-re-circumcision .photographs-section .section-head,
 body.page-re-circumcision #photographs .wp-block-heading,
@@ -1019,8 +975,8 @@ body.page-re-circumcision #photographs h2,
 body.page-re-circumcision .photographs-section h2 {
   max-width: 48rem;
   width: 100%;
-  margin-inline: auto;
-  text-align: center;
+  margin-inline: 0 auto;
+  text-align: left;
   margin-bottom: 24px;
 }
 body.page-re-circumcision #photographs .section-head .eyebrow,
@@ -1031,7 +987,7 @@ body.page-re-circumcision .photographs-section .section-head .eyebrow {
 body.page-re-circumcision #photographs .body-text,
 body.page-re-circumcision .photographs-section .body-text {
   max-width: 48rem;
-  margin-inline: auto;
+  margin-inline: 0 auto;
 }
 
 /* Info cards (cil/info-cards): equal-height flex cards; pin Learn more / CTAs to bottom. */
@@ -1522,35 +1478,30 @@ ul.cil-checklist > li::before,
   }
 }
 
-/* Checklist cards: centre an odd leftover card in the final row on desktop / tablet (2-col grid) */
+/*
+ * Babies, children, adults, religious, re-circumcision: an odd leftover card
+ * stays in the left column, not centred (client request). A 3-col grid with
+ * two leftovers keeps the full-row pair from the rule above.
+ */
 @media (min-width: 681px) {
-  .body-text ul.cil-checklist > li:last-child:nth-child(odd):not(:first-child),
-  .body-text .wp-block-list.cil-checklist > li:last-child:nth-child(odd):not(:first-child),
-  .cil-checklist > li:last-child:nth-child(odd):not(:first-child),
-  ul.cil-checklist > li:last-child:nth-child(odd):not(:first-child),
-  .wp-block-list.cil-checklist > li:last-child:nth-child(odd):not(:first-child) {
-    grid-column: 1 / -1;
-    justify-self: center;
-    margin-inline: auto;
-    width: calc((100% - 18px) / 2);
-  }
-}
-
-/* Babies: an odd leftover card / checklist item stays in the left column, not centred (client request). */
-@media (min-width: 681px) {
-  body.page-babies :is(.cil-checklist, .grid.g-2, .grid.g-3, .cil-quotes-grid) > * {
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision) .grid.g-2 > * {
     grid-column: auto !important;
   }
-  body.page-babies :is(.cil-checklist, .grid.g-2, .grid.g-3, .cil-quotes-grid) > :last-child {
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision) :is(.grid.g-2, .grid.g-3, .cil-quotes-grid) > :last-child {
     justify-self: stretch !important;
     margin-inline: 0 !important;
     width: auto !important;
     max-width: none !important;
   }
 }
+@media (min-width: 681px) and (max-width: 900px) {
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision) :is(.grid.g-3, .cil-quotes-grid) > * {
+    grid-column: auto !important;
+  }
+}
 @media (min-width: 901px) {
-  body.page-babies :is(.grid.g-3, .cil-quotes-grid.g-3) {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision) :is(.grid.g-3, .cil-quotes-grid.g-3) > :last-child:nth-child(3n + 1) {
+    grid-column: auto !important;
   }
 }
 
