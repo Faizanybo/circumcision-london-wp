@@ -1515,6 +1515,16 @@ body:not(.cil-home) .entry-content .section {
 }
 
 /*
+ * Frenuloplasty page: "What is frenuloplasty?" and "What happens during
+ * frenuloplasty" stack one below the other, like the questions that follow
+ * (client request).
+ */
+body.page-frenuloplasty #what-is-frenuloplasty .split {
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(36px, 4vw, 56px);
+}
+
+/*
  * Buried penis page, medical review & references: stacked and left-aligned
  * instead of a two-column split with a vertically centred author card
  * (client request). References become three even cards with the source name
