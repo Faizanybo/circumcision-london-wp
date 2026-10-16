@@ -1434,6 +1434,46 @@ function cil_register_dynamic_blocks() {
 	);
 
 	register_block_type(
+		'cil/map-embed',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Map', 'circumcision-london' ),
+				'description'     => __( 'Embedded Google Map (lazy-loaded) with an address caption and an Open in Google Maps link.', 'circumcision-london' ),
+				'attributes'      => array(
+					'query'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'title'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'address' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'linkUrl' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return cil_render_part(
+						'map-embed',
+						array(
+							'query'    => isset( $attrs['query'] ) ? $attrs['query'] : '',
+							'title'    => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'address'  => isset( $attrs['address'] ) ? $attrs['address'] : '',
+							'link_url' => isset( $attrs['linkUrl'] ) ? $attrs['linkUrl'] : '',
+						)
+					);
+				},
+			)
+		)
+	);
+
+	register_block_type(
 		'cil/file-link',
 		array_merge(
 			$common,

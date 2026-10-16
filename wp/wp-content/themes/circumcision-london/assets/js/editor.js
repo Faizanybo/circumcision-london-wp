@@ -2210,6 +2210,38 @@
     },
   });
 
+  dynamicBlock('cil/map-embed', 'Map', {
+    icon: 'location',
+    attributes: {
+      query: { type: 'string', default: '' },
+      title: { type: 'string', default: '' },
+      address: { type: 'string', default: '' },
+      linkUrl: { type: 'string', default: '' },
+    },
+    inspect: function (props) {
+      function text(label, key, help) {
+        return el(TextControl, {
+          label: label,
+          help: help,
+          value: props.attributes[key] || '',
+          onChange: function (v) {
+            var next = {};
+            next[key] = v;
+            props.setAttributes(next);
+          },
+        });
+      }
+      return el(
+        PanelBody,
+        { title: 'Map' },
+        text('Map search (place name and address)', 'query', 'What Google Maps should show, e.g. the clinic name and full address.'),
+        text('Map title (screen readers)', 'title'),
+        text('Address caption (optional)', 'address'),
+        text('"Open in Google Maps" link (optional)', 'linkUrl', 'The clinic’s Google Maps listing URL.')
+      );
+    },
+  });
+
   dynamicBlock('cil/file-link', 'Document link', {
     icon: 'media-document',
     attributes: {

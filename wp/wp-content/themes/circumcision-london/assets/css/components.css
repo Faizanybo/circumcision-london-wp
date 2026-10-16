@@ -719,9 +719,9 @@ a.cil-pagination__item:hover {
 }
 
 /* Book/Call buttons nested inside .body-text inherit the body-link colour; restore white label. */
-.body-text a.btn,
-.body-text a.btn:hover,
-.body-text a.btn:focus,
+.body-text a.btn:not(.btn-ghost),
+.body-text a.btn:not(.btn-ghost):hover,
+.body-text a.btn:not(.btn-ghost):focus,
 .body-text .wp-block-button:not(.is-style-outline) .wp-block-button__link,
 .body-text .wp-block-button:not(.is-style-outline) .wp-block-button__link:hover,
 .body-text .wp-block-button:not(.is-style-outline) .wp-block-button__link:focus {
@@ -1804,4 +1804,47 @@ body.single-post .entry-content > .section-sm > .wrap-narrow > * {
 body.single-post .entry-content > .section-sm > .wrap-narrow .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
   margin-left: 0 !important;
   margin-right: auto !important;
+}
+
+/* Ghost buttons inside .body-text: dark label on the light outline (was white on white). */
+.body-text a.btn.btn-ghost,
+.body-text a.btn.btn-ghost:focus {
+  color: var(--ink);
+}
+.body-text a.btn.btn-ghost:hover {
+  color: var(--blue-deep);
+}
+
+/* Embedded map (cil/map-embed). */
+.cil-map {
+  margin: 0;
+}
+.cil-map__frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--paper-2);
+}
+.cil-map__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.cil-map__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 20px;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+@media (max-width: 680px) {
+  .cil-map__frame { aspect-ratio: 1 / 1; }
 }
