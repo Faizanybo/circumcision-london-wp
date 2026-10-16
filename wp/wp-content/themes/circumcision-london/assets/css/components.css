@@ -1858,3 +1858,15 @@ body.page-contact .entry-content > .wp-block-cil-section > .wrap-narrow:has(> .c
   margin-left: 0;
   margin-right: auto;
 }
+
+/* About page: intro video sits closer to the page intro, with equal space
+   above it and between it and the text below (client request). */
+body.page-about #practitioners {
+  padding-top: 0;
+}
+body.page-about #practitioners .cil-video-list {
+  margin-top: 0;
+}
+body.page-about #practitioners .cil-video-list + * {
+  margin-top: clamp(30px, 3.5vw, 56px); /* same as the page intro's bottom padding */
+}
