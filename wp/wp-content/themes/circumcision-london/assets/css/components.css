@@ -1790,3 +1790,18 @@ body.page-video-testimonials .entry-content > .cil-video-cards {
   max-width: var(--maxw);
   padding-inline: var(--gap);
 }
+
+/* Blog articles (single posts): body text starts at the same left edge as the
+   title instead of a centred narrow column; line length stays readable. */
+body.single-post .entry-content > .section-sm > .wrap-narrow {
+  max-width: var(--maxw);
+}
+body.single-post .entry-content > .section-sm > .wrap-narrow > * {
+  max-width: 760px;
+  margin-left: 0;
+  margin-right: auto;
+}
+body.single-post .entry-content > .section-sm > .wrap-narrow .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}

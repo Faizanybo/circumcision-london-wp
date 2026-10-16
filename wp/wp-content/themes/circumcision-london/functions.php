@@ -391,8 +391,8 @@ function cil_default_nav() {
 			'url'   => home_url( '/testimonials/' ),
 		),
 		array(
-			'label' => __( 'Aftercare', 'circumcision-london' ),
-			'url'   => home_url( '/aftercare/' ),
+			'label' => __( 'About', 'circumcision-london' ),
+			'url'   => home_url( '/about/' ),
 		),
 		array(
 			'label' => __( 'Prices', 'circumcision-london' ),
@@ -407,8 +407,8 @@ function cil_default_nav() {
 			'url'      => home_url( '/contact/' ),
 			'children' => array(
 				array(
-					'label' => __( 'About', 'circumcision-london' ),
-					'url'   => home_url( '/about/' ),
+					'label' => __( 'Aftercare', 'circumcision-london' ),
+					'url'   => home_url( '/aftercare/' ),
 				),
 				array(
 					'label'   => __( 'Our clinics', 'circumcision-london' ),
