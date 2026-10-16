@@ -28,14 +28,14 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 8px 14px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   letter-spacing: .04em;
-  color: var(--muted);
+  color: var(--ink);
   box-sizing: border-box;
 }
 .header-trust-item { white-space: nowrap; }
-.header-trust-sep { color: var(--line); font-weight: 400; }
+.header-trust-sep { color: var(--muted); font-weight: 400; }
 
 .header-inner {
   width: 100%;
@@ -269,7 +269,7 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
     max-height: 62px;
     max-width: min(236px, 62vw);
   }
-  .header-trust-inner { padding-block: 6px; font-size: 11px; gap: 6px 10px; }
+  .header-trust-inner { padding-block: 6px; font-size: 11px; letter-spacing: 0; gap: 6px 10px; }
   .header-trust-sep { display: none; }
 }
 
@@ -298,4 +298,20 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   top: calc(var(--header-h) + var(--wp-admin--admin-bar--height, 32px));
   height: calc(100vh - var(--header-h) - var(--wp-admin--admin-bar--height, 32px));
   height: calc(100dvh - var(--header-h) - var(--wp-admin--admin-bar--height, 32px));
+}
+
+/* Icon + wordmark logo (client request): a wide single-line lockup, so it is
+   sized by width; caps are chosen from the free space in the header row. */
+.header .brand img[src*="logo-wordmark"] { max-width: min(380px, 26vw); }
+@media (max-width: 1440px) {
+  .header .brand img[src*="logo-wordmark"] { max-width: min(340px, 24vw); }
+}
+@media (max-width: 1180px) {
+  .header .brand img[src*="logo-wordmark"] { max-width: min(340px, 60vw); }
+}
+@media (max-width: 680px) {
+  .header .brand img[src*="logo-wordmark"] { max-width: min(280px, 66vw); }
+}
+@media (max-width: 390px) {
+  .header .brand img[src*="logo-wordmark"] { max-width: min(250px, 64vw); }
 }

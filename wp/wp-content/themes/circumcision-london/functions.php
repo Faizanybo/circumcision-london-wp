@@ -704,6 +704,8 @@ function cil_logo_html( $clinic, $context = 'header' ) {
 			'assets/images/logo.png',
 		)
 		: array(
+			// Icon + "CIRCUMCISION IN LONDON" only (client request); trust lines live in the top bar.
+			'assets/images/circumcision-in-london-logo-wordmark.png',
 			'assets/images/Circumcision in London Logo - transparent background.png',
 			'assets/images/Circumcision in London Clinic Logo - header.png',
 			'assets/images/circumcision-in-london-logo.png',
