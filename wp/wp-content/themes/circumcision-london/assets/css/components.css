@@ -1479,6 +1479,15 @@ ul.cil-checklist > li::before,
 }
 
 /*
+ * Babies, children, adults, religious, re-circumcision: tighter vertical
+ * spacing between content sections (client request). Standard sections only;
+ * the smaller .section-sm spacing is unchanged.
+ */
+body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision) .entry-content .section {
+  padding-block: clamp(36px, 4vw, 56px);
+}
+
+/*
  * Babies, children, adults, religious, re-circumcision: an odd leftover card
  * stays in the left column, not centred (client request). A 3-col grid with
  * two leftovers keeps the full-row pair from the rule above.
