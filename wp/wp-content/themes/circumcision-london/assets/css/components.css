@@ -1515,6 +1515,49 @@ body:not(.cil-home) .entry-content .section {
 }
 
 /*
+ * Buried penis page, medical review & references: stacked and left-aligned
+ * instead of a two-column split with a vertically centred author card
+ * (client request). References become three even cards with the source name
+ * above its description.
+ */
+body.page-buried-penis #authorship-and-references .split {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(28px, 3vw, 40px);
+}
+body.page-buried-penis #authorship-and-references .callout {
+  margin: 0 !important;
+  max-width: 760px;
+}
+body.page-buried-penis #authorship-and-references .body-text > p {
+  max-width: 760px;
+}
+body.page-buried-penis #authorship-and-references ul.cil-checklist {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 0;
+}
+body.page-buried-penis #authorship-and-references ul.cil-checklist > li {
+  display: block;
+  padding: 18px 20px 18px 40px;
+}
+body.page-buried-penis #authorship-and-references ul.cil-checklist > li::before {
+  position: absolute;
+  left: 18px;
+  top: 25px;
+  margin-top: 0;
+}
+body.page-buried-penis #authorship-and-references ul.cil-checklist > li > strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+@media (max-width: 900px) {
+  body.page-buried-penis #authorship-and-references ul.cil-checklist {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/*
  * Balanitis page: two-up info cards become full-width horizontal boxes, one
  * per row, so no card is stretched to its neighbour's height (client request).
  */
