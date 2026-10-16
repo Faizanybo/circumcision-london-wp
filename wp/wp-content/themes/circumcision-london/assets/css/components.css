@@ -1515,6 +1515,27 @@ body:not(.cil-home) .entry-content .section {
 }
 
 /*
+ * Balanitis page: two-up info cards become full-width horizontal boxes, one
+ * per row, so no card is stretched to its neighbour's height (client request).
+ */
+@media (min-width: 681px) {
+  body.page-balanitis .grid.g-2.cil-info-cards-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+@media (min-width: 901px) {
+  /* Keep a readable line length across the wide cards. */
+  body.page-balanitis .grid.g-2.cil-info-cards-grid > .cil-info-card > .cil-info-card__body:has(> :nth-child(2)) {
+    display: block;
+    columns: 2;
+    column-gap: clamp(32px, 4vw, 56px);
+  }
+  body.page-balanitis .grid.g-2.cil-info-cards-grid > .cil-info-card > .cil-info-card__body :is(p, li) {
+    break-inside: avoid;
+  }
+}
+
+/*
  * Babies, children, adults, religious, re-circumcision: an odd leftover card
  * stays in the left column, not centred (client request). A 3-col grid with
  * two leftovers keeps the full-row pair from the rule above.
