@@ -1489,13 +1489,16 @@ body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-ci
 
 /*
  * Religious page, faiths & traditions: the Sunnah card runs full width as a
- * horizontal box with the other two cards side by side below it (client request).
+ * horizontal box with the other two cards side by side below it. Surgical
+ * methods: two wider cards, then the Adults card full width (client request).
  */
 @media (min-width: 681px) {
-  body.page-religious #faiths-and-traditions .grid.g-3 {
+  body.page-religious #faiths-and-traditions .grid.g-3,
+  body.page-religious #methods-and-anaesthetic > .wrap > .grid.g-3 {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
-  body.page-religious #faiths-and-traditions .grid.g-3 > :first-child {
+  body.page-religious #faiths-and-traditions .grid.g-3 > :first-child,
+  body.page-religious #methods-and-anaesthetic > .wrap > .grid.g-3 > :last-child {
     grid-column: 1 / -1 !important;
   }
 }
