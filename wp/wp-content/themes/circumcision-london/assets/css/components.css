@@ -1848,3 +1848,13 @@ body.single-post .entry-content > .section-sm > .wrap-narrow .is-layout-constrai
 @media (max-width: 680px) {
   .cil-map__frame { aspect-ratio: 1 / 1; }
 }
+
+/* Contact page: "Ask us to call you" card starts at the content left edge (was centred). */
+body.page-contact .entry-content > .wp-block-cil-section > .wrap-narrow:has(> .card form) {
+  max-width: var(--maxw);
+}
+body.page-contact .entry-content > .wp-block-cil-section > .wrap-narrow:has(> .card form) > .card {
+  max-width: 720px;
+  margin-left: 0;
+  margin-right: auto;
+}
