@@ -56,6 +56,15 @@ if ( isset( $args['layout'] ) && 'cards' === $args['layout'] ) {
 	if ( ! $tiles ) {
 		return;
 	}
+	// Optional category heading (e.g. Baby Testimonials). Rendered only with
+	// videos, so an empty category shows nothing on the page.
+	$category = isset( $args['category_title'] ) ? trim( (string) $args['category_title'] ) : '';
+	if ( '' !== $category ) {
+		$category_id = isset( $args['category_id'] ) ? sanitize_html_class( (string) $args['category_id'] ) : '';
+		?>
+		<h3 class="display d-3 cil-video-category"<?php echo $category_id ? ' id="' . esc_attr( $category_id ) . '"' : ''; ?>><?php echo esc_html( $category ); ?></h3>
+		<?php
+	}
 	?>
 	<div class="grid g-4 cil-video-cards">
 		<?php foreach ( $tiles as $i => $item ) : ?>

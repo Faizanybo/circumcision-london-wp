@@ -1701,6 +1701,8 @@
       showHead: { type: 'boolean', default: true },
       layout: { type: 'string', default: 'grid' },
       itemLevel: { type: 'number', default: 3 },
+      categoryTitle: { type: 'string', default: '' },
+      categoryId: { type: 'string', default: '' },
     },
     inspect: function (props) {
       var items = props.attributes.items && props.attributes.items.length ? props.attributes.items.slice() : [];
@@ -1766,6 +1768,26 @@
             props.setAttributes({ layout: v });
           },
         }),
+        props.attributes.layout === 'cards'
+          ? el(TextControl, {
+              label: 'Category heading (cards layout, optional)',
+              help: 'e.g. Baby Testimonials. Shown above the videos only when this block has at least one video.',
+              value: props.attributes.categoryTitle || '',
+              onChange: function (v) {
+                props.setAttributes({ categoryTitle: v });
+              },
+            })
+          : null,
+        props.attributes.layout === 'cards'
+          ? el(TextControl, {
+              label: 'Category anchor ID (optional)',
+              help: 'Lowercase letters, numbers and hyphens, e.g. baby-video-testimonials.',
+              value: props.attributes.categoryId || '',
+              onChange: function (v) {
+                props.setAttributes({ categoryId: v.toLowerCase().replace(/[^a-z0-9-]/g, '') });
+              },
+            })
+          : null,
         props.attributes.layout === 'list'
           ? el(SelectControl, {
               label: 'Video title heading level',

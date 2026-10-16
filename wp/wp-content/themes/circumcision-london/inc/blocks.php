@@ -1123,6 +1123,14 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'number',
 						'default' => 3,
 					),
+					'categoryTitle' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'categoryId'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					$items   = array();
@@ -1144,6 +1152,8 @@ function cil_register_dynamic_blocks() {
 						'show_head'  => ! isset( $attrs['showHead'] ) || ! empty( $attrs['showHead'] ),
 						'layout'     => $layout,
 						'item_level' => isset( $attrs['itemLevel'] ) ? (int) $attrs['itemLevel'] : 3,
+						'category_title' => isset( $attrs['categoryTitle'] ) ? (string) $attrs['categoryTitle'] : '',
+						'category_id'    => isset( $attrs['categoryId'] ) ? (string) $attrs['categoryId'] : '',
 					);
 					if ( ! empty( $attrs['eyebrow'] ) ) {
 						$args['eyebrow'] = $attrs['eyebrow'];

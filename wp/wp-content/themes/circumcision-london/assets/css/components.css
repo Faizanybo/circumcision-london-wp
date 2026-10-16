@@ -1647,3 +1647,146 @@ body.page-buried-penis #authorship-and-references ul.cil-checklist > li > strong
 .cil-info-card__body > :first-child {
   margin-top: 0;
 }
+
+/*
+ * Testimonials page (client feedback): navigation banners, review-platform
+ * buttons and video category headings. Page-scoped; shared blocks unchanged.
+ */
+body.page-testimonials :is(#selected-testimonials, #video-testimonials, #independent-reviews) {
+  scroll-margin-top: calc(var(--header-h) + 8px);
+}
+body.page-testimonials #testimonial-types .cil-info-cards-grid {
+  margin-top: clamp(28px, 3vw, 40px);
+}
+body.page-testimonials #testimonial-types .cil-info-card {
+  position: relative;
+  padding-top: clamp(26px, 2.6vw, 34px);
+  border-top: 4px solid var(--blue);
+  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+}
+body.page-testimonials #testimonial-types .cil-info-card::before {
+  content: "";
+  position: absolute;
+  top: clamp(22px, 2.4vw, 30px);
+  right: clamp(22px, 2.4vw, 30px);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--blue) 10%, var(--card)) center / 22px 22px no-repeat;
+}
+body.page-testimonials #testimonial-types .cil-info-card:nth-child(1)::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231d5fa0' d='M4 18v-5.5C4 8.4 6.2 5.6 10 5l.6 1.9C8.4 7.6 7.4 9 7.3 11H10v7H4zm10 0v-5.5c0-4.1 2.2-6.9 6-7.5l.6 1.9c-2.2.7-3.2 2.1-3.3 4.1H20v7h-6z'/%3E%3C/svg%3E");
+}
+body.page-testimonials #testimonial-types .cil-info-card:nth-child(2)::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231d5fa0' d='M8 5.5v13l11-6.5z'/%3E%3C/svg%3E");
+}
+body.page-testimonials #testimonial-types .cil-info-card :is(.eyebrow, h2) {
+  padding-right: 56px;
+}
+body.page-testimonials #testimonial-types .cil-info-card:has(a:focus-visible),
+body.page-testimonials #testimonial-types .cil-info-card:hover {
+  box-shadow: 0 14px 34px -22px rgba(22, 32, 46, 0.45);
+}
+@media (prefers-reduced-motion: no-preference) {
+  body.page-testimonials #testimonial-types .cil-info-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Review platforms: branded, equal-width link buttons. */
+body.page-testimonials .cil-review-platform-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: clamp(24px, 3vw, 34px);
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button {
+  margin: 0;
+  width: auto;
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 14px 18px;
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  text-decoration: none;
+  box-shadow: none;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link::before {
+  content: "";
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link::after {
+  content: "";
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  margin-left: auto;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%2355637a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M6 3H3v10h10v-3M9 2h5v5M14 2 7 9'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+body.page-testimonials .cil-platform-google .wp-block-button__link::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23EA4335' d='M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z'/%3E%3Cpath fill='%234285F4' d='M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z'/%3E%3Cpath fill='%23FBBC05' d='M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z'/%3E%3Cpath fill='%2334A853' d='M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z'/%3E%3C/svg%3E");
+}
+body.page-testimonials .cil-platform-trustpilot .wp-block-button__link::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2300B67A' d='M12 1.5l3.09 7.36 7.91.6-6.03 5.15 1.86 7.72L12 18.16 5.17 22.33l1.86-7.72L1 9.46l7.91-.6z'/%3E%3C/svg%3E");
+}
+body.page-testimonials .cil-platform-yell .wp-block-button__link::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23FFD100'/%3E%3Ctext x='12' y='17.5' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='15' fill='%23111111'%3EY%3C/text%3E%3C/svg%3E");
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:hover {
+  border-color: var(--blue);
+  box-shadow: 0 10px 26px -20px rgba(22, 32, 46, 0.5);
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:active {
+  box-shadow: none;
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+body.page-testimonials .cil-review-platform-note {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--muted);
+}
+@media (max-width: 900px) {
+  body.page-testimonials .cil-review-platform-buttons {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 480px;
+  }
+}
+
+/* Video categories: Baby / Children / Adult headings above each grid. */
+body.page-testimonials .cil-video-category {
+  margin-top: clamp(36px, 4vw, 52px);
+  padding-top: clamp(20px, 2.4vw, 28px);
+  border-top: 1px solid var(--line);
+  scroll-margin-top: calc(var(--header-h) + 8px);
+}
+body.page-testimonials .cil-video-category + .cil-video-cards {
+  margin-top: 18px;
+}
+
+/* Video testimonials page: the gallery uses the standard content width (it sits
+   directly in the page content, which otherwise narrows it to 780px). */
+body.page-video-testimonials .entry-content > .cil-video-cards {
+  max-width: var(--maxw);
+  padding-inline: var(--gap);
+}
