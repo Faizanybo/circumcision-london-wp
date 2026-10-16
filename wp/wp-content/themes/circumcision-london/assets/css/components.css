@@ -1536,4 +1536,22 @@ ul.cil-checklist > li::before,
   }
 }
 
+/* Babies: an odd leftover card / checklist item stays in the left column, not centred (client request). */
+@media (min-width: 681px) {
+  body.page-babies :is(.cil-checklist, .grid.g-2, .grid.g-3, .cil-quotes-grid) > * {
+    grid-column: auto !important;
+  }
+  body.page-babies :is(.cil-checklist, .grid.g-2, .grid.g-3, .cil-quotes-grid) > :last-child {
+    justify-self: stretch !important;
+    margin-inline: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+@media (min-width: 901px) {
+  body.page-babies :is(.grid.g-3, .cil-quotes-grid.g-3) {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
 
