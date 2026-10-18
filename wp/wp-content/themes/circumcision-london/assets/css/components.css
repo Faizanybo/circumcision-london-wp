@@ -1870,3 +1870,11 @@ body.page-about #practitioners .cil-video-list {
 body.page-about #practitioners .cil-video-list + * {
   margin-top: clamp(30px, 3.5vw, 56px); /* same as the page intro's bottom padding */
 }
+
+/* Babies page: headings and text in these sections start at the content left
+   edge like the rest of the page; the checklist card grid keeps its centred
+   tabular layout (client request). */
+body.page-babies :is(#preparation, #safety-and-suitability, #when-to-contact) > .wrap > .is-layout-constrained > :where(:not(.cil-checklist):not(.alignleft):not(.alignright):not(.alignfull)) {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
