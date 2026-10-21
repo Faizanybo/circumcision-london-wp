@@ -355,12 +355,14 @@ body.cil-home #clinic-introduction .cil-split-copy .eyebrow {
   margin-bottom: 22px;
 }
 
-/* Clinic introduction: checklist as three columns of ticked tiles. */
+/* Clinic introduction: checklist as left-aligned tiles (8 items → 2×4 on desktop). */
 body.cil-home #clinic-introduction .cil-checklist {
   max-width: none;
+  justify-content: start;
+  justify-items: stretch;
 }
 @media (min-width: 901px) {
-  body.cil-home #clinic-introduction .cil-checklist { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  body.cil-home #clinic-introduction .cil-checklist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 body.cil-home #clinic-introduction .cil-home-intro:has(> .cil-checklist) {
   max-width: none;
