@@ -160,17 +160,20 @@
 .cil-trust.section-sm {
   background: linear-gradient(180deg, #fff 0%, var(--sky-2) 100%);
 }
-.cil-trust .grid.g-4 { gap: clamp(14px, 1.6vw, 22px); align-items: start; }
+.cil-trust .grid.g-4 { gap: clamp(14px, 1.6vw, 22px); align-items: stretch; }
 .cil-trust .stat {
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  min-height: 100%;
   padding: clamp(22px, 2vw, 28px);
   background: #fff;
   border: 1px solid rgba(13, 39, 71, .08);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
 }
+.cil-trust .stat .stat-link { margin-top: auto; }
 .cil-trust .stat::before {
   content: "";
   position: absolute;
@@ -205,7 +208,7 @@
 }
 .stat-link::after { content: "→"; transition: transform .25s var(--ease); }
 .stat-link:hover::after { transform: translateX(3px); }
-.cqc-widget-slot { margin-top: 16px; max-width: 100%; overflow: hidden; }
+/* CQC embed widget removed — trust strip uses a simple “CQC Good” link instead. */
 
 /* ------------------------------------------------- image-and-text split -- */
 .split > .cil-split-copy > .cil-section-lede { margin-top: 1.15em; }
@@ -343,6 +346,13 @@ body.cil-home .groups::before {
   inset: 45% 0 -40px;
   z-index: -1;
   background: linear-gradient(180deg, transparent, var(--sky-2));
+}
+
+/* Clinic introduction: slightly larger “About our clinic” eyebrow. */
+body.cil-home #clinic-introduction .cil-split-copy .eyebrow {
+  font-size: clamp(14px, 1.15vw, 16px);
+  letter-spacing: .14em;
+  margin-bottom: 22px;
 }
 
 /* Clinic introduction: checklist as three columns of ticked tiles. */

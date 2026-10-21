@@ -502,8 +502,8 @@
           },
         }),
         el(ToggleControl, {
-          label: 'Official CQC ratings widget in the CQC figure',
-          help: 'Loads the live rating from cqc.org.uk for the clinic location.',
+          label: 'CQC Good link in the CQC figure',
+          help: 'Shows a “CQC Good” link to the clinic’s CQC report page.',
           checked: !!props.attributes.cqcWidget,
           onChange: function (v) {
             props.setAttributes({ cqcWidget: !!v });

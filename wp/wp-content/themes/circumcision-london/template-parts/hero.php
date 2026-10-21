@@ -130,7 +130,7 @@ $has_aside        = ( '' !== trim( wp_strip_all_tags( $html ) ) );
 				?>
 			<li class="hero-fact--google"><?php echo cil_icon( 'google' ); ?><span><b><?php echo esc_html( $clinic['reviews']['rating'] ); ?></b> <?php echo esc_html( sprintf( /* translators: %s: review count */ __( 'from %s Google reviews', 'circumcision-london' ), $clinic['reviews']['count_display'] ) ); ?></span></li>
 			<li><?php echo cil_icon( 'shield' ); ?><span><?php echo esc_html( sprintf( /* translators: %s: CQC rating */ __( 'CQC registered, rated %s', 'circumcision-london' ), $clinic['cqc_rating'] ) ); ?></span></li>
-			<li><?php echo cil_icon( 'clock' ); ?><span><?php esc_html_e( 'Open', 'circumcision-london' ); ?> <b><?php esc_html_e( 'Monday to Saturday', 'circumcision-london' ); ?></b></span></li>
+			<li><?php echo cil_icon( 'clock' ); ?><span><b><?php esc_html_e( 'Weekday and Weekend appointments available', 'circumcision-london' ); ?></b></span></li>
 			<li><?php echo cil_icon( 'pin' ); ?><span><?php esc_html_e( 'Free street parking. Outside the Congestion Charge zone', 'circumcision-london' ); ?></span></li>
 			<?php endif; ?>
 		</ul>

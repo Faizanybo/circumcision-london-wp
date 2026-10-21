@@ -370,12 +370,8 @@ function cil_default_nav() {
 					'note'  => __( 'From £680', 'circumcision-london' ),
 				),
 				array(
-					'label' => __( 'Religious and cultural', 'circumcision-london' ),
-					'url'   => home_url( '/religious/' ),
-				),
-				array(
-					'label' => __( 'Re-circumcision', 'circumcision-london' ),
-					'url'   => home_url( '/re-circumcision/' ),
+					'label' => __( 'Buried penis', 'circumcision-london' ),
+					'url'   => home_url( '/buried-penis/' ),
 				),
 			),
 		),
@@ -400,8 +396,12 @@ function cil_default_nav() {
 					'url'   => home_url( '/conditions/paraphimosis/' ),
 				),
 				array(
-					'label' => __( 'Buried penis', 'circumcision-london' ),
-					'url'   => home_url( '/buried-penis/' ),
+					'label' => __( 'Religious and cultural', 'circumcision-london' ),
+					'url'   => home_url( '/religious/' ),
+				),
+				array(
+					'label' => __( 'Re-circumcision', 'circumcision-london' ),
+					'url'   => home_url( '/re-circumcision/' ),
 				),
 				array(
 					'label' => __( 'Frenulum removal', 'circumcision-london' ),
@@ -472,7 +472,7 @@ function cil_default_footer_who() {
 		array( 'label' => __( 'Babies & Toddlers', 'circumcision-london' ), 'url' => home_url( '/babies/' ) ),
 		array( 'label' => __( 'Children & Teenagers', 'circumcision-london' ), 'url' => home_url( '/children/' ) ),
 		array( 'label' => __( 'Adults', 'circumcision-london' ), 'url' => home_url( '/adults/' ) ),
-		array( 'label' => __( 'Religious & Cultural', 'circumcision-london' ), 'url' => home_url( '/religious/' ) ),
+		array( 'label' => __( 'Buried Penis', 'circumcision-london' ), 'url' => home_url( '/buried-penis/' ) ),
 		array( 'label' => __( 'Prices', 'circumcision-london' ), 'url' => home_url( '/prices/' ) ),
 		array( 'label' => __( 'Testimonials', 'circumcision-london' ), 'url' => home_url( '/testimonials/' ) ),
 		array( 'label' => __( 'Aftercare', 'circumcision-london' ), 'url' => home_url( '/aftercare/' ) ),
@@ -493,7 +493,8 @@ function cil_default_footer_reasons() {
 		array( 'label' => __( 'Balanitis', 'circumcision-london' ), 'url' => home_url( '/conditions/balanitis/' ) ),
 		array( 'label' => __( 'BXO', 'circumcision-london' ), 'url' => home_url( '/conditions/bxo/' ) ),
 		array( 'label' => __( 'Paraphimosis', 'circumcision-london' ), 'url' => home_url( '/conditions/paraphimosis/' ) ),
-		array( 'label' => __( 'Buried Penis', 'circumcision-london' ), 'url' => home_url( '/buried-penis/' ) ),
+		array( 'label' => __( 'Religious & Cultural', 'circumcision-london' ), 'url' => home_url( '/religious/' ) ),
+		array( 'label' => __( 'Re-circumcision', 'circumcision-london' ), 'url' => home_url( '/re-circumcision/' ) ),
 		array( 'label' => __( 'Frenuloplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/frenuloplasty/' ) ),
 		array( 'label' => __( 'Preputioplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/preputioplasty/' ) ),
 	);
@@ -795,7 +796,8 @@ function cil_wordmark( $extra_class = '', $context = 'header' ) {
  * Desktop primary navigation markup.
  */
 function cil_primary_nav() {
-	$items = cil_menu_tree( 'primary', cil_default_nav() );
+	// Theme owns primary nav structure (Appearance > Menus primary location is ignored).
+	$items = cil_default_nav();
 	echo '<ul class="nav">';
 	foreach ( $items as $item ) {
 		$has_children = ! empty( $item['children'] );
@@ -836,7 +838,8 @@ function cil_primary_nav() {
  * Mobile overlay navigation markup.
  */
 function cil_mobile_nav() {
-	$items = cil_menu_tree( 'primary', cil_default_nav() );
+	// Keep mobile nav in sync with desktop (theme-owned structure).
+	$items = cil_default_nav();
 	foreach ( $items as $item ) {
 		if ( empty( $item['children'] ) ) {
 			echo '<a href="' . esc_url( $item['url'] ) . '"' . cil_current_attr( $item['url'] ) . '>' . esc_html( $item['label'] ) . '</a>';

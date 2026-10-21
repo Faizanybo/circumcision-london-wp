@@ -59,10 +59,7 @@ $enhanced    = $google_logo || $cqc_widget;
 						<a class="stat-link" href="<?php echo esc_url( $clinic['reviews']['read_url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track="reviews-trust-strip"><?php esc_html_e( 'View on Google Maps', 'circumcision-london' ); ?></a>
 					<?php endif; ?>
 					<?php if ( $is_cqc ) : ?>
-						<div class="cqc-widget-slot">
-							<?php // Official CQC ratings widget (code from the clinic's CQC "Ratings posters and widgets" page) with async so a slow CQC server never blocks the page. ?>
-							<script type="text/javascript" async src="<?php echo esc_url( 'https://www.cqc.org.uk/sites/all/modules/custom/cqc_widget/widget.js?data-id=' . rawurlencode( $clinic['cqc_location_id'] ) . '&data-host=https://www.cqc.org.uk&type=location' ); ?>"></script>
-						</div>
+						<a class="stat-link" href="<?php echo esc_url( $clinic['cqc_url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track="cqc-trust-strip"><?php echo esc_html( sprintf( /* translators: %s: CQC rating */ __( 'CQC %s', 'circumcision-london' ), $clinic['cqc_rating'] ) ); ?></a>
 					<?php endif; ?>
 				</li>
 			<?php endforeach; ?>

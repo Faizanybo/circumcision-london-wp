@@ -26,8 +26,8 @@ function cil_extra_pages() {
 			'lede'        => 'Religious and cultural circumcision is a large part of our work. We welcome families and adult patients from all faiths and backgrounds and aim to provide a respectful clinical service that understands the importance of the decision.',
 			'crumbs'      => array(
 				array(
-					'label' => 'Who we see',
-					'href'  => cil_path_url( '/babies' ),
+					'label' => 'Reasons',
+					'href'  => cil_path_url( '/conditions/phimosis' ),
 				),
 				array(
 					'label' => 'Religious and cultural',
@@ -46,8 +46,8 @@ function cil_extra_pages() {
 			'lede'        => 'We assess children and adults who have previously been circumcised but are unhappy with the result or have a clinical problem that needs correction.',
 			'crumbs'      => array(
 				array(
-					'label' => 'Who we see',
-					'href'  => cil_path_url( '/babies' ),
+					'label' => 'Reasons',
+					'href'  => cil_path_url( '/conditions/phimosis' ),
 				),
 				array(
 					'label' => 'Re-circumcision',
