@@ -304,11 +304,11 @@ function cil_figure_asset( $name ) {
 			'height'  => 1600,
 			'ratio'   => '3-4',
 		),
-		// Clinic photographs from the original circumcisioninlondon.co.uk site (bundled, optimised).
+		// Beverley Clinic exterior (night window signage at 78 Beverley Drive).
 		'clinic-exterior' => array(
 			'src'     => $base . 'home/clinic-exterior-700.webp',
 			'webp'    => $base . 'home/clinic-exterior-700.webp 700w, ' . $base . 'home/clinic-exterior-1200.webp 1200w',
-			'alt'     => 'The Beverley Clinic window sign at 78 Beverley Drive, Edgware.',
+			'alt'     => 'Beverley Clinic illuminated window sign at 78 Beverley Drive, Edgware, at night.',
 			'caption' => '',
 			'width'   => 1200,
 			'height'  => 900,
