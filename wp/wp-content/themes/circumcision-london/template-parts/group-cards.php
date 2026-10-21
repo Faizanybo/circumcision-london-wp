@@ -38,8 +38,14 @@ $i = 0;
 		<?php
 		$delay = $i * 90;
 		$i++;
+		// Optional photo (theme image path or media-store key), editable per card.
+		$img_url = ! empty( $group['image'] ) ? cil_image_ref_url( $group['image'] ) : '';
+		$img_alt = isset( $group['imageAlt'] ) ? (string) $group['imageAlt'] : '';
 		?>
-		<a class="card-group" href="<?php echo esc_url( $group['href'] ); ?>" data-reveal data-reveal-delay="<?php echo esc_attr( (string) $delay ); ?>">
+		<a class="card-group<?php echo $img_url ? ' has-media' : ''; ?>" href="<?php echo esc_url( $group['href'] ); ?>" data-reveal data-reveal-delay="<?php echo esc_attr( (string) $delay ); ?>">
+			<?php if ( $img_url ) : ?>
+				<span class="card-group__media"><img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" width="720" height="450" decoding="async"></span>
+			<?php endif; ?>
 			<span class="caps age"><?php echo esc_html( $group['age'] ); ?></span>
 			<<?php echo tag_escape( $tag ); ?> class="display d-3"><?php echo esc_html( $group['title'] ); ?></<?php echo tag_escape( $tag ); ?>>
 			<span class="price"><?php echo esc_html( $group['price'] ); ?></span>

@@ -139,9 +139,17 @@ function cil_register_dynamic_blocks() {
 				'title'           => __( 'Trust strip', 'circumcision-london' ),
 				'description'     => __( 'Reviews, experience, CQC and languages.', 'circumcision-london' ),
 				'attributes'      => array(
-					'items' => array(
+					'items'      => array(
 						'type'    => 'array',
 						'default' => array(),
+					),
+					'googleLogo' => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'cqcWidget'  => array(
+						'type'    => 'boolean',
+						'default' => false,
 					),
 				),
 				'render_callback' => function ( $attrs ) {
@@ -149,7 +157,9 @@ function cil_register_dynamic_blocks() {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'trust-strip',
 						array(
-							'items' => $items,
+							'items'       => $items,
+							'google_logo' => ! empty( $attrs['googleLogo'] ),
+							'cqc_widget'  => ! empty( $attrs['cqcWidget'] ),
 						)
 					) . '</div>';
 				},

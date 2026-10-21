@@ -59,16 +59,24 @@ function cil_clinic() {
 			),
 		),
 		'hours_note' => 'Sundays/public holidays/bank holidays: phone lines closed; some pre-booked appointments may still take place.',
-		'cqc_url'    => 'https://www.cqc.org.uk/location/1-2192226003',
+		// Verified on cqc.org.uk (October 2026): LMCS Limited, 78 Beverley Drive, overall Good.
+		'cqc_url'    => 'https://www.cqc.org.uk/location/1-470883883',
+		'cqc_location_id' => '1-470883883',
 		'cqc_rating' => 'Good',
 		'reviews'    => array(
 			'rating'         => '4.9',
 			'count'          => 2092,
 			'count_display'  => '2,092',
 			'verified'       => '2 September 2026',
-			'read_url'       => 'https://www.google.com/maps/search/?api=1&query=Beverley+Clinic+Edgware',
+			// Verified Google Maps business listing (opens the listing, not the review form).
+			'read_url'       => 'https://www.google.com/maps?cid=3913365297956493985',
 		),
 		'languages'  => 'English, Arabic, Urdu, Hindi, Punjabi and Turkish',
+		// Editable in Appearance > Customize > Social links; empty values are not shown.
+		'social'     => array(
+			'instagram' => get_theme_mod( 'cil_social_instagram', 'https://www.instagram.com/circumcision.in.london/' ),
+			'youtube'   => get_theme_mod( 'cil_social_youtube', '' ),
+		),
 		'next_available' => 'Usually within 7 days',
 		'book_path'  => '/book/',
 	);
@@ -179,6 +187,8 @@ function cil_enqueue_assets() {
 	wp_enqueue_style( 'cil-footer', $uri . '/assets/css/footer.css', array( 'cil-base' ), cil_asset_version( 'assets/css/footer.css' ) );
 	wp_enqueue_style( 'cil-components', $uri . '/assets/css/components.css', array( 'cil-base' ), cil_asset_version( 'assets/css/components.css' ) );
 	wp_enqueue_style( 'cil-gutenberg', $uri . '/assets/css/gutenberg.css', array( 'cil-base', 'cil-components' ), cil_asset_version( 'assets/css/gutenberg.css' ) );
+	// Visual layer: photo cards, colour bands, icons, trust indicators, homepage composition.
+	wp_enqueue_style( 'cil-visual', $uri . '/assets/css/visual.css', array( 'cil-components', 'cil-gutenberg' ), cil_asset_version( 'assets/css/visual.css' ) );
 
 	wp_enqueue_script(
 		'cil-theme',
@@ -288,6 +298,16 @@ function cil_icon( $name ) {
 		'star'     => '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 2.9 6.3 6.8.8-5 4.7 1.3 6.8L12 17.3 6 20.6l1.3-6.8-5-4.7 6.8-.8z"/></svg>',
 		'pin'      => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>',
 		'clock'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+		'users'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
+		'award'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="6"/><path d="m8.2 13.8-1.4 7.7L12 18.6l5.2 2.9-1.4-7.7"/></svg>',
+		'heart'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>',
+		'refresh'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.5 6.2L3 16M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/></svg>',
+		'map'      => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 3 5.5v15.5l6-2.5 6 2.5 6-2.5V3l-6 2.5z"/><path d="M9 3v15.5M15 5.5V21"/></svg>',
+		'globe'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>',
+		'check'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+		'arrow-right' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+		// Google "G" mark in its standard colours, beside Google review figures.
+		'google'   => '<svg class="icon-google" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>',
 	);
 
 	return isset( $icons[ $name ] ) ? $icons[ $name ] : '';
@@ -1169,3 +1189,42 @@ require get_template_directory() . '/inc/home-reveal.php';
 require get_template_directory() . '/inc/setup-pages.php';
 require get_template_directory() . '/inc/content-sync.php';
 require get_template_directory() . '/inc/content-sync-blog.php';
+
+/**
+ * Social profile links (Appearance > Customize > Social links). Shown in the
+ * footer bottom bar on all screen sizes; a link is hidden while its URL is empty.
+ *
+ * @param WP_Customize_Manager $wp_customize Customizer.
+ */
+function cil_customize_social( $wp_customize ) {
+	$wp_customize->add_section(
+		'cil_social',
+		array(
+			'title'       => __( 'Social links', 'circumcision-london' ),
+			'description' => __( 'Full profile URLs. Leave a field empty to hide that icon.', 'circumcision-london' ),
+			'priority'    => 160,
+		)
+	);
+	$fields = array(
+		'cil_social_instagram' => array( __( 'Instagram profile URL', 'circumcision-london' ), 'https://www.instagram.com/circumcision.in.london/' ),
+		'cil_social_youtube'   => array( __( 'YouTube channel URL', 'circumcision-london' ), '' ),
+	);
+	foreach ( $fields as $id => $field ) {
+		$wp_customize->add_setting(
+			$id,
+			array(
+				'default'           => $field[1],
+				'sanitize_callback' => 'esc_url_raw',
+			)
+		);
+		$wp_customize->add_control(
+			$id,
+			array(
+				'label'   => $field[0],
+				'section' => 'cil_social',
+				'type'    => 'url',
+			)
+		);
+	}
+}
+add_action( 'customize_register', 'cil_customize_social' );

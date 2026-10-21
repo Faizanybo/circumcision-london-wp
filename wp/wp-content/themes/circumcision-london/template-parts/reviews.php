@@ -17,13 +17,13 @@ $body   = ( isset( $args['body'] ) && '' !== $args['body'] ) ? $args['body'] : _
 	<div class="wrap">
 		<div class="split" style="align-items:center;margin-bottom:clamp(34px,4vw,60px)">
 			<div data-reveal>
-				<span class="caps eyebrow"><?php esc_html_e( 'Reviews', 'circumcision-london' ); ?></span>
+				<span class="caps eyebrow cil-eyebrow-google"><?php echo cil_icon( 'google' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static theme SVG. ?><?php esc_html_e( 'Reviews', 'circumcision-london' ); ?></span>
 				<h2 class="display d-1"><?php echo esc_html( sprintf( /* translators: 1: rating, 2: review count */ __( '%1$s from %2$s Google reviews', 'circumcision-london' ), $clinic['reviews']['rating'], $clinic['reviews']['count_display'] ) ); ?></h2>
 				<p class="lede" style="margin-top:18px"><?php echo esc_html( sprintf( /* translators: %s: verification date */ __( 'Checked on %s, and refreshed quarterly so the number here is the number on the profile.', 'circumcision-london' ), $clinic['reviews']['verified'] ) ); ?></p>
 				<p class="body-text" style="margin-top:18px"><?php echo esc_html( $body ); ?></p>
 				<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:26px">
 					<a class="rating-badge" href="<?php echo esc_url( $clinic['reviews']['read_url'] ); ?>" rel="noopener" target="_blank" data-track="reviews-read">
-						<span class="score"><?php echo esc_html( $clinic['reviews']['rating'] ); ?></span>
+						<span class="score"><?php echo cil_icon( 'google' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static theme SVG. ?><?php echo esc_html( $clinic['reviews']['rating'] ); ?></span>
 						<span class="txt"><strong><?php esc_html_e( 'Read them on Google', 'circumcision-london' ); ?></strong><br><?php echo esc_html( sprintf( /* translators: %s: review count */ __( '%s reviews, new tab', 'circumcision-london' ), $clinic['reviews']['count_display'] ) ); ?></span>
 					</a>
 					<a class="btn btn-ghost" href="<?php echo esc_url( home_url( '/testimonials/' ) ); ?>"><?php esc_html_e( 'Read patient testimonials', 'circumcision-london' ); ?></a>

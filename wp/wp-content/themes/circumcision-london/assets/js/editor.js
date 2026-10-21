@@ -331,6 +331,8 @@
                 { label: 'None', value: '' },
                 { label: 'White + edge', value: 'bg-card edge' },
                 { label: 'Warm paper', value: 'bg-warm' },
+                { label: 'Sky tint', value: 'bg-sky' },
+                { label: 'Navy (white text)', value: 'bg-navy' },
               ],
               onChange: function (v) {
                 props.setAttributes({ band: v });
@@ -383,9 +385,10 @@
     supports: { html: false, align: ['wide', 'full'] },
     attributes: {
       reverse: { type: 'boolean', default: false },
+      bleed: { type: 'boolean', default: false },
     },
     edit: function (props) {
-      var cls = 'split' + (props.attributes.reverse ? ' reverse' : '');
+      var cls = 'split' + (props.attributes.reverse ? ' reverse' : '') + (props.attributes.bleed ? ' split--bleed' : '');
       return el(
         Fragment,
         {},
@@ -400,6 +403,14 @@
               checked: !!props.attributes.reverse,
               onChange: function (v) {
                 props.setAttributes({ reverse: v });
+              },
+            }),
+            el(ToggleControl, {
+              label: 'Photo bleeds to the screen edge',
+              help: 'Wide screens only. Put a Clinic figure in the outer column.',
+              checked: !!props.attributes.bleed,
+              onChange: function (v) {
+                props.setAttributes({ bleed: v });
               },
             })
           )
@@ -418,9 +429,33 @@
       );
     },
     save: function (props) {
-      var cls = 'split' + (props.attributes.reverse ? ' reverse' : '');
+      var cls = 'split' + (props.attributes.reverse ? ' reverse' : '') + (props.attributes.bleed ? ' split--bleed' : '');
       return el('div', useBlockProps.save({ className: cls }), el(InnerBlocks.Content));
     },
+  });
+
+  /*
+   * Homepage grouping wrappers. They add no markup of their own (saved content
+   * is just their inner blocks); without a registration the editor showed them
+   * as missing blocks and the sections inside could not be edited.
+   */
+  [
+    ['cil/home-clinic-introduction', 'Homepage: clinic introduction'],
+    ['cil/home-additional-sections', 'Homepage: additional sections'],
+  ].forEach(function (def) {
+    registerBlockType(def[0], {
+      apiVersion: 3,
+      title: def[1],
+      category: 'circumcision-london',
+      icon: 'screenoptions',
+      supports: { html: false, reusable: false },
+      edit: function () {
+        return el('div', useBlockProps({ className: 'cil-editor-wrapper' }), el(InnerBlocks, { templateLock: false }));
+      },
+      save: function () {
+        return el(InnerBlocks.Content);
+      },
+    });
   });
 
   /* ----------------------------------------------------- dynamic clinic */
@@ -452,6 +487,29 @@
     icon: 'shield',
     attributes: {
       items: { type: 'array', default: [] },
+      googleLogo: { type: 'boolean', default: false },
+      cqcWidget: { type: 'boolean', default: false },
+    },
+    inspect: function (props) {
+      return el(
+        PanelBody,
+        { title: 'Trust indicators' },
+        el(ToggleControl, {
+          label: 'Icons, Google logo and Google Maps link',
+          checked: !!props.attributes.googleLogo,
+          onChange: function (v) {
+            props.setAttributes({ googleLogo: !!v });
+          },
+        }),
+        el(ToggleControl, {
+          label: 'Official CQC ratings widget in the CQC figure',
+          help: 'Loads the live rating from cqc.org.uk for the clinic location.',
+          checked: !!props.attributes.cqcWidget,
+          onChange: function (v) {
+            props.setAttributes({ cqcWidget: !!v });
+          },
+        })
+      );
     },
     fields: [
       {
@@ -690,7 +748,7 @@
         label: 'Age-group cards',
         kind: 'repeater',
         help: 'Leave empty to keep the current theme cards.',
-        blank: { title: '', age: '', price: '', blurb: '', cta: '', href: '' },
+        blank: { title: '', age: '', price: '', blurb: '', cta: '', href: '', image: '', imageAlt: '' },
         fields: [
           { key: 'title', label: 'Title' },
           { key: 'age', label: 'Age line' },
@@ -698,6 +756,8 @@
           { key: 'blurb', label: 'Description', rows: 3 },
           { key: 'cta', label: 'Link label' },
           { key: 'href', label: 'URL' },
+          { key: 'image', label: 'Photo (theme image e.g. home/babies-card-720.webp, media-store key or full URL)' },
+          { key: 'imageAlt', label: 'Photo alt text (leave empty when the photo is decorative)' },
         ],
         addLabel: 'Add card',
         fallback: function () {
@@ -2148,6 +2208,9 @@
               { label: 'Certificates', value: 'certificates' },
               { label: 'Dr Haidar', value: 'dr-haidar' },
               { label: 'Dr Samir', value: 'dr-samir' },
+              { label: 'Clinic exterior', value: 'clinic-exterior' },
+              { label: 'Treatment room', value: 'treatment-room' },
+              { label: 'Sterilisation', value: 'sterilisation' },
             ],
             onChange: function (v) {
               props.setAttributes({ name: v });
@@ -2326,6 +2389,7 @@
         label: 'Cards',
         kind: 'repeater',
         blank: {
+          icon: '',
           eyebrow: '',
           title: '',
           body: '',
@@ -2338,6 +2402,7 @@
           cta2Class: 'btn btn-ghost',
         },
         fields: [
+          { key: 'icon', label: 'Icon (optional: award, users, heart, refresh, map, globe, shield, star, clock, pin, calendar, check)' },
           { key: 'eyebrow', label: 'Eyebrow' },
           { key: 'title', label: 'Heading' },
           { key: 'body', label: 'Paragraph text', rows: 3 },

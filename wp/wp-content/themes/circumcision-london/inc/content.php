@@ -304,9 +304,60 @@ function cil_figure_asset( $name ) {
 			'height'  => 1600,
 			'ratio'   => '3-4',
 		),
+		// Clinic photographs from the original circumcisioninlondon.co.uk site (bundled, optimised).
+		'clinic-exterior' => array(
+			'src'     => $base . 'home/clinic-exterior-700.webp',
+			'webp'    => $base . 'home/clinic-exterior-700.webp 700w, ' . $base . 'home/clinic-exterior-1200.webp 1200w',
+			'alt'     => 'The Beverley Clinic window sign at 78 Beverley Drive, Edgware.',
+			'caption' => '',
+			'width'   => 1200,
+			'height'  => 900,
+			'ratio'   => '4-3',
+		),
+		'treatment-room'  => array(
+			'src'     => $base . 'home/treatment-room-700.webp',
+			'webp'    => $base . 'home/treatment-room-700.webp 700w, ' . $base . 'home/treatment-room-1200.webp 1200w',
+			'alt'     => 'The clean, white treatment room at the Edgware clinic, with a treatment couch.',
+			'caption' => '',
+			'width'   => 1200,
+			'height'  => 900,
+			'ratio'   => '4-3',
+		),
+		'sterilisation'   => array(
+			'src'     => $base . 'home/sterilisation-700.webp',
+			'webp'    => $base . 'home/sterilisation-700.webp 700w, ' . $base . 'home/sterilisation-1200.webp 1200w',
+			'alt'     => 'An autoclave used to sterilise instruments at the clinic.',
+			'caption' => '',
+			'width'   => 1200,
+			'height'  => 900,
+			'ratio'   => '4-3',
+		),
 	);
 
 	return isset( $catalog[ $name ] ) ? $catalog[ $name ] : null;
+}
+
+/**
+ * URL for an editable image reference: an http(s) URL, a path under the theme's
+ * assets/images/ folder (e.g. home/babies-card-720.webp), or a key in the clinic
+ * media store (e.g. home/images/babies-card-720.webp). Empty when unresolvable.
+ *
+ * @param string $ref Image reference from a block attribute.
+ * @return string
+ */
+function cil_image_ref_url( $ref ) {
+	$ref = trim( (string) $ref );
+	if ( '' === $ref ) {
+		return '';
+	}
+	if ( preg_match( '#^https?://#i', $ref ) ) {
+		return esc_url_raw( $ref );
+	}
+	$ref = ltrim( $ref, '/' );
+	if ( false === strpos( $ref, '..' ) && preg_match( '#^[A-Za-z0-9][A-Za-z0-9_./-]*$#', $ref ) && file_exists( get_template_directory() . '/assets/images/' . $ref ) ) {
+		return cil_asset( 'images/' . $ref );
+	}
+	return function_exists( 'cil_media_url' ) ? cil_media_url( $ref ) : '';
 }
 
 /**

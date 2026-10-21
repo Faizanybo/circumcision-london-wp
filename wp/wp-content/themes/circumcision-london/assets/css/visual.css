@@ -1,0 +1,537 @@
+/* =========================================================================
+   Visual layer (client feedback: more colour, photography and graphics).
+   Brand palette taken from the logo: deep navy, clinic blue and the gold of
+   the hands. Everything here is opt-in through block settings or scoped to
+   the homepage (body.cil-home); pages without those settings are unchanged.
+   ========================================================================= */
+
+:root {
+  --navy: #0d2747;
+  --navy-2: #143a66;
+  --sky: #eaf3fc;
+  --sky-2: #f5f9fe;
+  --gold: #f2b705;
+  --gold-soft: #fff3c8;
+  --radius-lg: 18px;
+  --shadow-soft: 0 24px 60px -38px rgba(13, 39, 71, .45);
+  --shadow-card: 0 18px 44px -30px rgba(13, 39, 71, .38);
+}
+
+/* ------------------------------------------------------------ bands -- */
+.bg-sky {
+  background:
+    radial-gradient(1200px 420px at 100% 0%, rgba(47, 127, 216, .10), transparent 60%),
+    linear-gradient(180deg, var(--sky) 0%, var(--sky-2) 100%);
+}
+.bg-navy {
+  position: relative;
+  background:
+    radial-gradient(900px 480px at 0% 0%, rgba(47, 127, 216, .30), transparent 60%),
+    radial-gradient(700px 420px at 100% 100%, rgba(242, 183, 5, .12), transparent 65%),
+    var(--navy);
+  color: rgba(255, 255, 255, .82);
+}
+.bg-navy :is(h1, h2, h3, h4, .display) { color: #fff; }
+.bg-navy .eyebrow,
+.bg-navy .caps { color: var(--gold); }
+.bg-navy .lede,
+.bg-navy .body-text p { color: rgba(255, 255, 255, .78); }
+.bg-navy a:not(.btn) { color: #fff; }
+.bg-navy .card.cil-info-card {
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, .06);
+  border-color: rgba(255, 255, 255, .14);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+}
+.bg-navy .card.cil-info-card p,
+.bg-navy .card.cil-info-card .body-text p { color: rgba(255, 255, 255, .76); }
+.bg-navy .card.cil-info-card:hover { border-color: rgba(242, 183, 5, .55); }
+
+/* ------------------------------------------------- photo age-group cards -- */
+.card-group.has-media {
+  padding-top: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  border-color: rgba(13, 39, 71, .08);
+  box-shadow: var(--shadow-card);
+}
+.card-group__media {
+  position: relative;
+  display: block;
+  margin: 0 calc(-1 * clamp(24px, 2.4vw, 36px)) clamp(20px, 2vw, 26px);
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--paper-2);
+}
+.card-group__media::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue) 0%, var(--gold) 100%);
+}
+.card-group__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .7s var(--ease);
+}
+.card-group.has-media .age {
+  align-self: flex-start;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--sky);
+  color: var(--blue-deep);
+}
+.card-group.has-media .price {
+  align-self: flex-start;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--navy);
+  font-size: 21px;
+}
+.card-group.has-media .go {
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 20px;
+  margin-top: auto;
+  border-top: 1px solid var(--line-2);
+}
+.card-group.has-media .go::after {
+  content: "→";
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--blue);
+  color: var(--blue);
+  font-size: 17px;
+  transition: background-color .25s var(--ease), color .25s var(--ease), transform .25s var(--ease);
+}
+.card-group.has-media:hover .go::after {
+  background: var(--blue);
+  color: #fff;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card-group.has-media:hover .card-group__media img { transform: scale(1.05); }
+}
+
+/* --------------------------------------------------- info-card icons -- */
+.cil-info-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--sky) 0%, #d8e9fb 100%);
+  color: var(--blue-deep);
+}
+.cil-info-card__icon svg { width: 26px; height: 26px; }
+.bg-navy .cil-info-card__icon {
+  background: rgba(242, 183, 5, .14);
+  color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(242, 183, 5, .35);
+}
+
+/* ------------------------------------------------ Google mark sizing -- */
+.icon-google { display: inline-block; flex: 0 0 auto; }
+.hero-facts .hero-fact--google .icon-google {
+  width: 18px;
+  height: 18px;
+  padding: 2px;
+  margin-top: 0;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 1;
+}
+.cil-eyebrow-google { display: inline-flex; align-items: center; gap: 8px; }
+.cil-eyebrow-google .icon-google { width: 16px; height: 16px; }
+.rating-badge .score { display: inline-flex; align-items: center; gap: 10px; }
+.rating-badge .score .icon-google { width: 26px; height: 26px; }
+
+/* ------------------------------------------------------ trust strip -- */
+.cil-trust.section-sm {
+  background: linear-gradient(180deg, #fff 0%, var(--sky-2) 100%);
+}
+.cil-trust .grid.g-4 { gap: clamp(14px, 1.6vw, 22px); align-items: start; }
+.cil-trust .stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2vw, 28px);
+  background: #fff;
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.cil-trust .stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: linear-gradient(90deg, var(--blue), var(--gold));
+}
+.stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  border-radius: 14px;
+  background: var(--sky);
+  color: var(--blue-deep);
+}
+.stat-icon svg { width: 24px; height: 24px; }
+.stat--google .stat-icon { background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.stat--google .stat-icon .icon-google { width: 26px; height: 26px; }
+.stat-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue-deep);
+  text-decoration: none;
+}
+.stat-link::after { content: "→"; transition: transform .25s var(--ease); }
+.stat-link:hover::after { transform: translateX(3px); }
+.cqc-widget-slot { margin-top: 16px; max-width: 100%; overflow: hidden; }
+
+/* ------------------------------------------------- image-and-text split -- */
+.split > .cil-split-copy > .cil-section-lede { margin-top: 1.15em; }
+.split > .cil-split-copy > .wp-block-group:has(> .section-head) .section-head { margin-bottom: 0; }
+.split > .cil-split-copy > .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+.wp-block-cil-section .wrap > .split:has(> .cil-split-copy) { align-items: center; }
+.split:has(> .cil-split-copy) .figure {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  overflow: visible;
+}
+.split:has(> .cil-split-copy) .figure picture,
+.split:has(> .cil-split-copy) .figure img {
+  border-radius: var(--radius-lg);
+}
+/* Caption as a floating badge on the photograph. */
+.split:has(> .cil-split-copy) .figure figcaption {
+  position: absolute;
+  left: clamp(14px, 2vw, 24px);
+  bottom: clamp(14px, 2vw, 24px);
+  max-width: min(78%, 300px);
+  margin: 0;
+  padding: 12px 16px 12px 46px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 16px 34px -20px rgba(13, 39, 71, .55);
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.split:has(> .cil-split-copy) .figure figcaption::before {
+  content: "✓";
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 13px;
+}
+/* Photo bleeding to the screen edge on wide screens. */
+@media (min-width: 901px) {
+  .split--bleed { column-gap: clamp(40px, 5vw, 80px); }
+  .split--bleed > .figure:last-child,
+  .split--bleed > .wp-block-cil-figure:last-child {
+    margin-right: calc(-1 * max(var(--gap), (100vw - var(--maxw)) / 2 + var(--gap)));
+  }
+  .split--bleed > .figure:last-child img,
+  .split--bleed > .figure:last-child picture {
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  }
+  .split--bleed.reverse > .figure:first-child,
+  .split--bleed > .figure:first-child:not(:last-child) {
+    margin-left: calc(-1 * max(var(--gap), (100vw - var(--maxw)) / 2 + var(--gap)));
+  }
+  .split--bleed > .figure:first-child:not(:last-child) img,
+  .split--bleed > .figure:first-child:not(:last-child) picture {
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
+  .split--bleed .figure { aspect-ratio: 4 / 3.1; }
+}
+
+/* ------------------------------------------------------- footer social -- */
+.footer .footer-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.footer .footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .24);
+  border-radius: 50%;
+  color: #fff;
+  transition: background-color .2s var(--ease), border-color .2s var(--ease);
+}
+.footer .footer-social a:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+.footer .footer-social a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* =========================================================================
+   Homepage composition
+   ========================================================================= */
+
+/* Full-bleed photographs must never cause sideways scrolling (100vw includes the scrollbar). */
+body.cil-home main { overflow-x: clip; }
+
+/* Section headings: short gold-to-blue accent bar under the eyebrow. */
+body.cil-home .section-head .eyebrow,
+body.cil-home .cil-split-copy > .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+body.cil-home .section-head .eyebrow::before,
+body.cil-home .cil-split-copy > .eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+}
+
+/* Hero: deeper, brand-tinted overlay so the copy reads strongly. */
+body.cil-home .hero-media::after {
+  background:
+    linear-gradient(90deg, rgba(13, 39, 71, .92) 0%, rgba(13, 39, 71, .72) 42%, rgba(13, 39, 71, .25) 75%, rgba(13, 39, 71, .45) 100%),
+    linear-gradient(180deg, transparent 60%, rgba(13, 39, 71, .55) 100%);
+}
+
+/* Patient cards: soft sky field behind the overlapping row. */
+body.cil-home .groups::before {
+  content: "";
+  position: absolute;
+  inset: 45% 0 -40px;
+  z-index: -1;
+  background: linear-gradient(180deg, transparent, var(--sky-2));
+}
+
+/* Clinic introduction: checklist as three columns of ticked tiles. */
+body.cil-home #clinic-introduction .cil-checklist {
+  max-width: none;
+}
+@media (min-width: 901px) {
+  body.cil-home #clinic-introduction .cil-checklist { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+body.cil-home #clinic-introduction .cil-home-intro:has(> .cil-checklist) {
+  max-width: none;
+  margin-top: clamp(32px, 4vw, 52px);
+}
+body.cil-home #clinic-introduction .cil-checklist > li {
+  border: 0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
+}
+body.cil-home #clinic-introduction .cil-checklist > li::before {
+  content: "✓";
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: none;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* "Next steps": numbered horizontal timeline with gold markers. */
+body.cil-home section:has(> .wrap .steps) {
+  background:
+    radial-gradient(800px 360px at 100% 0%, rgba(242, 183, 5, .10), transparent 60%),
+    #fff;
+}
+body.cil-home .steps {
+  gap: clamp(16px, 2vw, 24px);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+@media (min-width: 901px) {
+  body.cil-home .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); position: relative; }
+  body.cil-home .steps::before {
+    content: "";
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 44px;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--gold) 0 10px, transparent 10px 18px);
+  }
+}
+body.cil-home .steps li {
+  position: relative;
+  padding: clamp(24px, 2.2vw, 30px);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+body.cil-home .steps li::before {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 0 18px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 17px;
+  box-shadow: 0 0 0 6px #fff, 0 0 0 7px rgba(242, 183, 5, .5);
+}
+body.cil-home .steps h3 { font-size: 18px; color: var(--navy); }
+
+/* Call-back section: sky field, lifted form card. */
+body.cil-home section:has(> .wrap > .split.reverse > div > .card form) {
+  background:
+    radial-gradient(900px 420px at 0% 100%, rgba(47, 127, 216, .12), transparent 60%),
+    linear-gradient(180deg, var(--sky-2), var(--sky));
+}
+body.cil-home .split.reverse > div > .card:has(form) {
+  border: 0;
+  border-radius: var(--radius-lg);
+  border-top: 5px solid var(--blue);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Location: rounded, shadowed photograph. */
+body.cil-home .section .split > .figure.ratio-5-4 {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Reviews: sky band, gold stars, lifted quote cards. */
+body.cil-home section:has(.rating-badge) {
+  background:
+    radial-gradient(1000px 420px at 100% 0%, rgba(242, 183, 5, .12), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.cil-home section:has(.rating-badge) .quote {
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+body.cil-home section:has(.rating-badge) .stars { color: var(--gold); letter-spacing: 2px; }
+body.cil-home section:has(.rating-badge) .stat {
+  padding: 20px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .45);
+}
+body.cil-home .rating-badge {
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .45);
+}
+
+/* Our clinics: navy-capped location cards. */
+body.cil-home #our-clinics .cil-info-card {
+  border-radius: var(--radius-lg);
+  border-top: 5px solid var(--navy);
+  box-shadow: var(--shadow-card);
+}
+body.cil-home #our-clinics .cil-info-card .eyebrow { color: var(--blue); }
+
+/* Call-to-action band: navy with the clinic's logo mark. */
+body.cil-home .cta-band {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 400px at 100% 0%, rgba(47, 127, 216, .35), transparent 60%),
+    radial-gradient(600px 360px at 0% 100%, rgba(242, 183, 5, .14), transparent 65%),
+    var(--navy);
+  color: rgba(255, 255, 255, .82);
+}
+body.cil-home .cta-band::before {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -50px;
+  width: 360px;
+  height: 230px;
+  background: url("../images/home/logo-mark.webp") center / contain no-repeat;
+  opacity: .10;
+  pointer-events: none;
+}
+body.cil-home .cta-band .wrap { position: relative; }
+body.cil-home .cta-band h2 { color: #fff; }
+body.cil-home .cta-band .eyebrow { color: var(--gold); }
+body.cil-home .cta-band .lede { color: rgba(255, 255, 255, .8); }
+body.cil-home .cta-band .btn:not(.btn-ghost) { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+body.cil-home .cta-band .btn:not(.btn-ghost):hover { background: #ffd23f; border-color: #ffd23f; }
+body.cil-home .cta-band .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, .45); }
+body.cil-home .cta-band .btn-ghost:hover { background: rgba(255, 255, 255, .1); border-color: #fff; color: #fff; }
+body.cil-home .cta-band .card {
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .55);
+}
+body.cil-home .cta-band .card a { color: var(--blue-deep); }
+
+/* FAQ: card-like accordion rows. */
+body.cil-home .faq details {
+  margin-bottom: 10px;
+  padding-inline: 20px;
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 26px -24px rgba(13, 39, 71, .5);
+}
+body.cil-home .faq details[open] { border-color: rgba(29, 95, 160, .35); }
+
+/* Medical-reason cards: gold accent rule. */
+body.cil-home .wp-block-cil-section .split--bleed ~ .grid .cil-info-card {
+  border-radius: var(--radius-lg);
+  border-top: 4px solid var(--gold);
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 900px) {
+  .split:has(> .cil-split-copy) .figure figcaption { position: static; margin-top: 12px; max-width: none; box-shadow: none; padding: 10px 14px 10px 44px; position: relative; }
+}

@@ -31,14 +31,39 @@ if ( ! $items ) {
 		),
 	);
 }
+$google_logo = ! empty( $args['google_logo'] );
+$cqc_widget  = ! empty( $args['cqc_widget'] ) && ! empty( $clinic['cqc_location_id'] );
+$enhanced    = $google_logo || $cqc_widget;
 ?>
-<section class="section-sm bg-card edge">
+<section class="section-sm bg-card edge<?php echo $enhanced ? ' cil-trust' : ''; ?>">
 	<div class="wrap">
 		<ul class="grid g-4" style="list-style:none">
 			<?php foreach ( $items as $i => $item ) : ?>
-				<li class="stat" data-reveal<?php echo $i ? ' data-reveal-delay="' . esc_attr( (string) ( $i * 80 ) ) . '"' : ''; ?>>
-					<span class="n"><?php echo esc_html( isset( $item['n'] ) ? $item['n'] : '' ); ?></span>
-					<span class="l"><?php echo wp_kses_post( isset( $item['l'] ) ? $item['l'] : '' ); ?></span>
+				<?php
+				$n         = isset( $item['n'] ) ? (string) $item['n'] : '';
+				$l         = isset( $item['l'] ) ? (string) $item['l'] : '';
+				$is_google = $google_logo && false !== stripos( $l, 'Google' );
+				$is_cqc    = $cqc_widget && 'CQC' === trim( $n );
+				$icon      = '';
+				if ( $enhanced ) {
+					$icon = $is_google ? 'google' : ( 'CQC' === trim( $n ) ? 'shield' : ( false !== stripos( $l, 'Languages' ) ? 'globe' : 'award' ) );
+				}
+				?>
+				<li class="stat<?php echo $is_google ? ' stat--google' : ''; ?><?php echo $is_cqc ? ' stat--cqc' : ''; ?>" data-reveal<?php echo $i ? ' data-reveal-delay="' . esc_attr( (string) ( $i * 80 ) ) . '"' : ''; ?>>
+					<?php if ( $icon ) : ?>
+						<span class="stat-icon"><?php echo cil_icon( $icon ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static theme SVG. ?></span>
+					<?php endif; ?>
+					<span class="n"><?php echo esc_html( $n ); ?></span>
+					<span class="l"><?php echo wp_kses_post( $l ); ?></span>
+					<?php if ( $is_google ) : ?>
+						<a class="stat-link" href="<?php echo esc_url( $clinic['reviews']['read_url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track="reviews-trust-strip"><?php esc_html_e( 'View on Google Maps', 'circumcision-london' ); ?></a>
+					<?php endif; ?>
+					<?php if ( $is_cqc ) : ?>
+						<div class="cqc-widget-slot">
+							<?php // Official CQC ratings widget (code from the clinic's CQC "Ratings posters and widgets" page) with async so a slow CQC server never blocks the page. ?>
+							<script type="text/javascript" async src="<?php echo esc_url( 'https://www.cqc.org.uk/sites/all/modules/custom/cqc_widget/widget.js?data-id=' . rawurlencode( $clinic['cqc_location_id'] ) . '&data-host=https://www.cqc.org.uk&type=location' ); ?>"></script>
+						</div>
+					<?php endif; ?>
 				</li>
 			<?php endforeach; ?>
 		</ul>

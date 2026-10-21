@@ -34,7 +34,14 @@ $htag    = 'h' . $level;
 		$cta2_url   = isset( $item['cta2Url'] ) ? $item['cta2Url'] : '';
 		$cta2_class = ( isset( $item['cta2Class'] ) && $item['cta2Class'] ) ? $item['cta2Class'] : 'btn btn-ghost';
 		?>
-		<div class="card cil-info-card" data-reveal<?php echo $delay ? ' data-reveal-delay="' . esc_attr( (string) $delay ) . '"' : ''; ?>>
+		<?php
+		// Optional icon from the theme icon set (cil_icon), e.g. award, users, heart.
+		$icon_svg = ! empty( $item['icon'] ) ? cil_icon( sanitize_key( $item['icon'] ) ) : '';
+		?>
+		<div class="card cil-info-card<?php echo $icon_svg ? ' has-icon' : ''; ?>" data-reveal<?php echo $delay ? ' data-reveal-delay="' . esc_attr( (string) $delay ) . '"' : ''; ?>>
+			<?php if ( $icon_svg ) : ?>
+				<span class="cil-info-card__icon"><?php echo $icon_svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static theme SVG. ?></span>
+			<?php endif; ?>
 			<?php if ( $eyebrow ) : ?>
 				<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
 			<?php endif; ?>
