@@ -240,7 +240,7 @@
       if (bad) {
         e.preventDefault();
         bad.focus();
-        if (status) { status.dataset.state = 'err'; status.textContent = 'Please complete the highlighted field.'; }
+        if (status) { status.dataset.state = 'err'; status.textContent = form.getAttribute('data-msg-invalid') || 'Please complete the highlighted field.'; }
         return;
       }
 
@@ -252,7 +252,7 @@
         e.preventDefault();
         if (status) {
           status.dataset.state = 'ok';
-          status.textContent = 'Opening your email app so this reaches the clinic. If nothing happens, call 020 8951 3794.';
+          status.textContent = form.getAttribute('data-msg-sent') || 'Opening your email app so this reaches the clinic. If nothing happens, call 020 8951 3794.';
         }
         var fd = new FormData(form);
         var lines = [];

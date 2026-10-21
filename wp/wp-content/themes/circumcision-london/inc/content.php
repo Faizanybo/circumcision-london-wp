@@ -332,6 +332,15 @@ function cil_figure_asset( $name ) {
 			'height'  => 900,
 			'ratio'   => '4-3',
 		),
+		'baby-smiling'    => array(
+			'src'     => $base . 'babies/baby-smiling-700.webp',
+			'webp'    => $base . 'babies/baby-smiling-700.webp 700w, ' . $base . 'babies/baby-smiling-1200.webp 1200w',
+			'alt'     => 'A smiling baby lying on a soft white blanket.',
+			'caption' => '',
+			'width'   => 1200,
+			'height'  => 900,
+			'ratio'   => '4-3',
+		),
 	);
 
 	return isset( $catalog[ $name ] ) ? $catalog[ $name ] : null;

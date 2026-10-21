@@ -14,10 +14,11 @@ if ( ! $crumbs ) {
 	return;
 }
 
-$count = count( $crumbs );
+$count      = count( $crumbs );
+$home_label = ( isset( $args['home_label'] ) && '' !== $args['home_label'] ) ? $args['home_label'] : __( 'Home', 'circumcision-london' );
 ?>
 <ol class="breadcrumb">
-	<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'Home', 'circumcision-london' ); ?></a></li>
+	<li><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( $home_label ); ?></a></li>
 	<?php foreach ( $crumbs as $i => $crumb ) : ?>
 		<?php if ( $i === $count - 1 ) : ?>
 			<li aria-current="page"><?php echo esc_html( $crumb['label'] ); ?></li>

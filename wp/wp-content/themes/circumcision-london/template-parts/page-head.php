@@ -15,11 +15,22 @@ $eyebrow      = isset( $args['eyebrow'] ) ? $args['eyebrow'] : '';
 $crumbs       = ( isset( $args['crumbs'] ) && is_array( $args['crumbs'] ) ) ? $args['crumbs'] : array();
 $reviewed_by  = isset( $args['reviewed_by'] ) ? $args['reviewed_by'] : '';
 $lede_is_html = ! empty( $args['lede_html'] );
+$home_label   = isset( $args['home_label'] ) ? (string) $args['home_label'] : '';
+$reviewed_pre = isset( $args['reviewed_label'] ) ? (string) $args['reviewed_label'] : '';
 ?>
 <section class="page-head">
 	<div class="wrap">
 		<?php if ( $crumbs ) : ?>
-			<?php get_template_part( 'template-parts/breadcrumbs', null, array( 'crumbs' => $crumbs ) ); ?>
+			<?php
+			get_template_part(
+				'template-parts/breadcrumbs',
+				null,
+				array(
+					'crumbs'     => $crumbs,
+					'home_label' => $home_label,
+				)
+			);
+			?>
 		<?php endif; ?>
 		<?php if ( $eyebrow ) : ?>
 			<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
@@ -28,7 +39,9 @@ $lede_is_html = ! empty( $args['lede_html'] );
 		<?php if ( $lede ) : ?>
 			<p class="lede" style="margin-top:24px"><?php echo $lede_is_html ? cil_rich_text( $lede ) : esc_html( $lede ); ?></p>
 		<?php endif; ?>
-		<?php if ( $reviewed_by ) : ?>
+		<?php if ( $reviewed_by && '' !== $reviewed_pre ) : ?>
+			<p class="reviewed-by"><?php echo wp_kses_post( $reviewed_pre . ' ' . $reviewed_by . '.' ); ?></p>
+		<?php elseif ( $reviewed_by ) : ?>
 			<p class="reviewed-by"><?php echo wp_kses_post( sprintf( /* translators: %s: reviewer name, possibly linked */ __( 'Clinically reviewed by %s.', 'circumcision-london' ), $reviewed_by ) ); ?></p>
 		<?php endif; ?>
 	</div>

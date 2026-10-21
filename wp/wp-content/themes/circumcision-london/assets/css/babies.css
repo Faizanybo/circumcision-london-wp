@@ -1,0 +1,403 @@
+/* =========================================================================
+   Babies & Toddlers page: the homepage visual system (navy, sky and gold
+   bands, photographs beside text, lifted cards). Enqueued only on /babies/
+   and scoped to body.page-babies. All wording lives in the page's blocks.
+   ========================================================================= */
+
+/* Full-bleed photographs must never cause sideways scrolling. */
+body.page-babies main { overflow-x: clip; }
+
+/* Section headings: short gold-to-blue accent bar under the eyebrow. */
+body.page-babies .section-head .eyebrow,
+body.page-babies #overview .wrap > div:has(> .spec) > .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+body.page-babies .section-head .eyebrow::before,
+body.page-babies #overview .wrap > div:has(> .spec) > .eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+}
+
+/* ------------------------------------------------------------ page head -- */
+body.page-babies .page-head {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 480px at 0% 0%, rgba(47, 127, 216, .30), transparent 60%),
+    radial-gradient(700px 420px at 100% 100%, rgba(242, 183, 5, .12), transparent 65%),
+    var(--navy);
+  color: rgba(255, 255, 255, .82);
+}
+body.page-babies .page-head::before {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -50px;
+  width: 360px;
+  height: 230px;
+  background: url("../images/home/logo-mark.webp") center / contain no-repeat;
+  opacity: .08;
+  pointer-events: none;
+}
+body.page-babies .page-head .wrap { position: relative; }
+body.page-babies .page-head h1 { color: #fff; }
+body.page-babies .page-head .eyebrow { color: var(--gold); }
+body.page-babies .page-head .lede { color: rgba(255, 255, 255, .8); }
+body.page-babies .page-head .breadcrumb { color: rgba(255, 255, 255, .62); }
+body.page-babies .page-head .breadcrumb a { color: rgba(255, 255, 255, .78); }
+body.page-babies .page-head .breadcrumb a:hover { color: #fff; }
+body.page-babies .page-head .breadcrumb li + li::before { color: rgba(255, 255, 255, .3); }
+body.page-babies .page-head .reviewed-by {
+  border-top-color: rgba(255, 255, 255, .14);
+  color: rgba(255, 255, 255, .62);
+}
+body.page-babies .page-head .reviewed-by a { color: rgba(255, 255, 255, .88); }
+body.page-babies .page-head a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* --------------------------------------------- introduction + at a glance -- */
+body.page-babies #overview .split .body-text > p:first-child { color: var(--ink-2); }
+body.page-babies #overview .wrap > div:has(> .spec) {
+  margin-top: clamp(40px, 5vw, 72px);
+}
+body.page-babies #overview .spec {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+  border-top: 0;
+}
+body.page-babies #overview .spec li {
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 20px 22px;
+  border: 0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
+}
+body.page-babies #overview .spec li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 22px;
+  width: 28px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+}
+body.page-babies #overview .spec dt { font-size: 14px; color: var(--muted); }
+body.page-babies #overview .spec dd {
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--navy);
+  text-align: left;
+}
+body.page-babies #overview .spec li:last-child:nth-child(4n + 3) { grid-column: span 2; }
+body.page-babies #overview .spec li:last-child { background: var(--gold-soft); }
+@media (max-width: 1100px) {
+  body.page-babies #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.page-babies #overview .spec li:last-child:nth-child(4n + 3) { grid-column: auto; }
+  body.page-babies #overview .spec li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (max-width: 560px) {
+  body.page-babies #overview .spec { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Heading, lede and text sitting together in a split column. */
+body.page-babies .cil-split-copy > .section-head,
+body.page-babies #best-age > .wrap > .section-head { margin-bottom: 0; }
+body.page-babies .cil-split-copy > .cil-section-lede,
+body.page-babies #best-age > .wrap > .cil-section-lede { margin-top: 1.15em; }
+body.page-babies .cil-split-copy > .cil-section-lede { margin-bottom: 0; }
+body.page-babies .cil-split-copy > .cil-section-lede + .wp-block-group { margin-top: 1.15em; }
+
+/* ---------------------------------------------------------- best age -- */
+body.page-babies #best-age > .wrap > .wp-block-group:not(.cil-section-lede) {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+@media (min-width: 901px) {
+  body.page-babies #best-age > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: start;
+  }
+  body.page-babies #best-age > .wrap > .section-head { grid-column: 1; grid-row: 1; }
+  body.page-babies #best-age > .wrap > .cil-section-lede { grid-column: 1; grid-row: 2; }
+  body.page-babies #best-age > .wrap > .wp-block-group:not(.cil-section-lede) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+}
+
+/* ------------------------------------------------------- ring methods -- */
+body.page-babies #ring-methods .split + .grid { margin-top: clamp(40px, 5vw, 72px); }
+body.page-babies #ring-methods > .wrap > .grid + .wp-block-group {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(22px, 2.4vw, 32px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--blue);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+body.page-babies #ring-methods > .wrap > .grid + .wp-block-group > * {
+  max-width: 78ch;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* --------------------------------------------- cards: gold accent rule -- */
+body.page-babies .wp-block-cil-section:not(.bg-navy) .cil-info-card {
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+body.page-babies .bg-navy .card.cil-info-card { border-top: 4px solid var(--gold); }
+body.page-babies .bg-navy .cil-info-card .body-text a { color: var(--gold); }
+body.page-babies .bg-navy .cil-info-card .body-text a:hover { color: #ffd23f; }
+
+/* ----------------------------------------------- appointment timeline -- */
+body.page-babies #appointment-walkthrough {
+  background:
+    radial-gradient(800px 360px at 100% 0%, rgba(242, 183, 5, .10), transparent 60%),
+    #fff;
+}
+body.page-babies #appointment-walkthrough .steps {
+  position: relative;
+  gap: 14px;
+  padding-left: 56px;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+body.page-babies #appointment-walkthrough .steps::before {
+  content: "";
+  position: absolute;
+  left: 21px;
+  top: 30px;
+  bottom: 30px;
+  width: 2px;
+  background: repeating-linear-gradient(180deg, var(--gold) 0 10px, transparent 10px 18px);
+}
+body.page-babies #appointment-walkthrough .steps li {
+  position: relative;
+  padding: clamp(20px, 2vw, 26px) clamp(22px, 2.2vw, 30px);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+body.page-babies #appointment-walkthrough .steps li::before {
+  content: "";
+  position: absolute;
+  left: -45px;
+  top: clamp(22px, 2.2vw, 28px);
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold) 0 4px, var(--navy) 5px);
+  box-shadow: 0 0 0 5px #fff, 0 0 0 6px rgba(242, 183, 5, .5);
+}
+body.page-babies #appointment-walkthrough .steps h3 { font-size: 18px; color: var(--navy); }
+@media (min-width: 901px) {
+  body.page-babies #appointment-walkthrough > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: start;
+  }
+  body.page-babies #appointment-walkthrough > .wrap > .section-head {
+    position: sticky;
+    top: 120px;
+    margin-bottom: 0;
+  }
+}
+@media (max-width: 560px) {
+  body.page-babies #appointment-walkthrough .steps { padding-left: 38px; }
+  body.page-babies #appointment-walkthrough .steps::before { left: 12px; }
+  body.page-babies #appointment-walkthrough .steps li::before { left: -37px; width: 18px; height: 18px; background: radial-gradient(circle, var(--gold) 0 3px, var(--navy) 4px); }
+}
+
+/* ------------------------------------------------- checklist tiles -- */
+/* Same centred two-column grid as before (client request); homepage tile finish. */
+body.page-babies .wp-block-cil-section .cil-checklist > li {
+  border: 0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
+}
+body.page-babies .bg-card .cil-checklist > li {
+  background: var(--sky-2);
+  box-shadow: inset 0 0 0 1px rgba(13, 39, 71, .07);
+}
+body.page-babies #preparation .cil-checklist > li::before {
+  content: "✓";
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-top: 0;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: none;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+body.page-babies #preparation .body-text > h2 { margin-top: clamp(8px, 1.5vw, 16px); }
+
+/* ------------------------------------------------ contact + follow-up -- */
+body.page-babies #when-to-contact .is-style-cil-card {
+  max-width: none;
+  margin-top: clamp(36px, 4.5vw, 64px);
+  padding: clamp(26px, 3vw, 44px);
+  border: 0;
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(700px 300px at 100% 0%, rgba(47, 127, 216, .10), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-babies #when-to-contact .is-style-cil-card > * { margin-left: 0; margin-right: 0; }
+@media (min-width: 901px) {
+  body.page-babies #when-to-contact .is-style-cil-card {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(36px, 4.5vw, 72px);
+    align-items: start;
+  }
+  body.page-babies #when-to-contact .is-style-cil-card > h2 {
+    grid-column: 1;
+    grid-row: 1 / span 10;
+    margin: 0;
+  }
+  body.page-babies #when-to-contact .is-style-cil-card > :not(h2) { grid-column: 2; }
+  body.page-babies #when-to-contact .is-style-cil-card > h2 + p { margin-top: 0; }
+}
+
+/* ------------------------------------------------------------- FAQ -- */
+body.page-babies .faq { border-top: 0; }
+body.page-babies .faq details {
+  margin-bottom: 10px;
+  padding-inline: 20px;
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 26px -24px rgba(13, 39, 71, .5);
+}
+body.page-babies .faq details[open] { border-color: rgba(29, 95, 160, .35); }
+
+/* -------------------------------------------------------- call back -- */
+body.page-babies section.bg-sky:has(> .wrap > .split .card form) {
+  background:
+    radial-gradient(900px 420px at 0% 100%, rgba(47, 127, 216, .12), transparent 60%),
+    linear-gradient(180deg, var(--sky-2), var(--sky));
+}
+body.page-babies .split > .card:has(form) {
+  border: 0;
+  border-top: 5px solid var(--blue);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+body.page-babies .split:has(> .card form) > .figure {
+  overflow: visible;
+  border-radius: var(--radius-lg);
+  background: none;
+}
+@media (min-width: 901px) {
+  body.page-babies .split:has(> .card form) { align-items: start; }
+  body.page-babies .split:has(> .card form) > .figure {
+    position: sticky;
+    top: 120px;
+  }
+}
+body.page-babies .split:has(> .card form) > .figure picture,
+body.page-babies .split:has(> .card form) > .figure img {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+body.page-babies .split:has(> .card form) > .figure figcaption {
+  position: relative;
+  margin-top: 16px;
+  padding: 12px 16px 12px 46px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+body.page-babies .split:has(> .card form) > .figure figcaption::before {
+  content: "✓";
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 13px;
+}
+
+/* -------------------------------------------- call-to-action band -- */
+body.page-babies .cta-band {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 400px at 100% 0%, rgba(47, 127, 216, .35), transparent 60%),
+    radial-gradient(600px 360px at 0% 100%, rgba(242, 183, 5, .14), transparent 65%),
+    var(--navy);
+  color: rgba(255, 255, 255, .82);
+}
+body.page-babies .cta-band::before {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -50px;
+  width: 360px;
+  height: 230px;
+  background: url("../images/home/logo-mark.webp") center / contain no-repeat;
+  opacity: .10;
+  pointer-events: none;
+}
+body.page-babies .cta-band .wrap { position: relative; }
+body.page-babies .cta-band h2 { color: #fff; }
+body.page-babies .cta-band .eyebrow { color: var(--gold); }
+body.page-babies .cta-band .lede { color: rgba(255, 255, 255, .8); }
+body.page-babies .cta-band .btn:not(.btn-ghost) { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+body.page-babies .cta-band .btn:not(.btn-ghost):hover { background: #ffd23f; border-color: #ffd23f; }
+body.page-babies .cta-band .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, .45); }
+body.page-babies .cta-band .btn-ghost:hover { background: rgba(255, 255, 255, .1); border-color: #fff; color: #fff; }
+body.page-babies .cta-band .card {
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .55);
+}
+body.page-babies .cta-band .card a { color: var(--blue-deep); }
+body.page-babies .cta-band a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }

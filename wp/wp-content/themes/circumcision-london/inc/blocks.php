@@ -621,8 +621,66 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'formNote'       => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'nameLabel'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'phoneLabel'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'dobLabel'       => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'messageLabel'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'optionalLabel'  => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'consentHtml'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'submitLabel'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'invalidMessage' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'sentMessage'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
+					$copy_keys = array(
+						'note'     => 'formNote',
+						'name'     => 'nameLabel',
+						'phone'    => 'phoneLabel',
+						'dob'      => 'dobLabel',
+						'message'  => 'messageLabel',
+						'optional' => 'optionalLabel',
+						'consent'  => 'consentHtml',
+						'submit'   => 'submitLabel',
+						'invalid'  => 'invalidMessage',
+						'sent'     => 'sentMessage',
+					);
+					$copy      = array();
+					foreach ( $copy_keys as $key => $attr ) {
+						if ( isset( $attrs[ $attr ] ) && '' !== trim( (string) $attrs[ $attr ] ) ) {
+							$copy[ $key ] = (string) $attrs[ $attr ];
+						}
+					}
 					return cil_render_part(
 						'callback-card',
 						array(
@@ -633,6 +691,7 @@ function cil_register_dynamic_blocks() {
 							'urgent'       => ! empty( $attrs['urgent'] ),
 							'urgent_title' => isset( $attrs['urgentTitle'] ) ? $attrs['urgentTitle'] : '',
 							'urgent_body'  => isset( $attrs['urgentBody'] ) ? $attrs['urgentBody'] : '',
+							'copy'         => $copy,
 						)
 					);
 				},
@@ -846,6 +905,14 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'reviewedLabel' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'homeLabel'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 					'crumbs'      => array(
 						'type'    => 'array',
 						'default' => array(),
@@ -855,11 +922,13 @@ function cil_register_dynamic_blocks() {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'page-head',
 						array(
-							'eyebrow'     => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'title'       => isset( $attrs['title'] ) ? $attrs['title'] : '',
-							'lede'        => isset( $attrs['lede'] ) ? $attrs['lede'] : '',
-							'reviewed_by' => isset( $attrs['reviewedBy'] ) ? $attrs['reviewedBy'] : '',
-							'crumbs'      => cil_block_list( isset( $attrs['crumbs'] ) ? $attrs['crumbs'] : array() ),
+							'eyebrow'        => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'title'          => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'lede'           => isset( $attrs['lede'] ) ? $attrs['lede'] : '',
+							'reviewed_by'    => isset( $attrs['reviewedBy'] ) ? $attrs['reviewedBy'] : '',
+							'reviewed_label' => isset( $attrs['reviewedLabel'] ) ? $attrs['reviewedLabel'] : '',
+							'home_label'     => isset( $attrs['homeLabel'] ) ? $attrs['homeLabel'] : '',
+							'crumbs'         => cil_block_list( isset( $attrs['crumbs'] ) ? $attrs['crumbs'] : array() ),
 						)
 					) . '</div>';
 				},
@@ -1023,6 +1092,10 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => 'Questions people ask us',
 					),
+					'eyebrow' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 					'items'   => array(
 						'type'    => 'array',
 						'default' => array(),
@@ -1032,6 +1105,7 @@ function cil_register_dynamic_blocks() {
 					$items = cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() );
 					$args  = array(
 						'heading' => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+						'eyebrow' => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
 					);
 					if ( $items ) {
 						$args['items'] = $items;

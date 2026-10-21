@@ -27,6 +27,7 @@ $has_urgent   = ( '' !== $urgent_title || '' !== $urgent_body || ! empty( $args[
 		array(
 			'id'      => $form_id,
 			'subject' => $subject,
+			'copy'    => ( isset( $args['copy'] ) && is_array( $args['copy'] ) ) ? $args['copy'] : array(),
 		)
 	);
 	?>
