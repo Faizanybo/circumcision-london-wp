@@ -441,6 +441,7 @@
    */
   [
     ['cil/home-clinic-introduction', 'Homepage: clinic introduction'],
+    ['cil/home-meet-practitioners', 'Homepage: meet practitioners'],
     ['cil/home-additional-sections', 'Homepage: additional sections'],
   ].forEach(function (def) {
     registerBlockType(def[0], {

@@ -480,6 +480,52 @@ body.cil-home .rating-badge {
   box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .45);
 }
 
+/* Meet our practitioners: sky band + same About video player, homepage CTA. */
+body.cil-home #meet-practitioners {
+  background:
+    radial-gradient(900px 420px at 100% 0%, rgba(242, 183, 5, .10), transparent 55%),
+    radial-gradient(1100px 480px at 0% 100%, rgba(47, 127, 216, .12), transparent 60%),
+    linear-gradient(180deg, var(--sky-2), var(--sky));
+}
+body.cil-home #meet-practitioners .body-text > .wp-block-buttons {
+  margin-bottom: clamp(8px, 1.5vw, 16px);
+}
+body.cil-home #meet-practitioners .cil-video-list {
+  margin-top: clamp(20px, 3vw, 36px);
+}
+body.cil-home #meet-practitioners .cil-video-row {
+  border-radius: var(--radius-lg);
+  border-color: rgba(13, 39, 71, .08);
+  box-shadow: var(--shadow-card);
+  background: #fff;
+}
+body.cil-home #meet-practitioners .cil-video-facade {
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+body.cil-home #meet-practitioners .cil-video-row__title {
+  color: var(--navy);
+}
+body.cil-home #meet-practitioners .wp-block-button:not(.is-style-outline) .wp-block-button__link {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 22px;
+}
+body.cil-home #meet-practitioners .wp-block-button:not(.is-style-outline) .wp-block-button__link:hover,
+body.cil-home #meet-practitioners .wp-block-button:not(.is-style-outline) .wp-block-button__link:focus {
+  background: var(--navy-2);
+  border-color: var(--navy-2);
+  color: #fff;
+}
+@media (max-width: 760px) {
+  body.cil-home #meet-practitioners .cil-video-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Our clinics: navy-capped location cards. */
 body.cil-home #our-clinics .cil-info-card {
   border-radius: var(--radius-lg);
