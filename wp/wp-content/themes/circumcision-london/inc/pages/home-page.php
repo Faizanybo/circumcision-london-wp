@@ -21,21 +21,6 @@ function cil_homepage_blocks() {
 	$intro_html .= '<p>Our two practitioners have more than forty years of combined experience between them, in the UK and abroad, and have carried out thousands of circumcisions across every age group. They also <a href="' . $courses . '">train doctors in the UK and internationally</a> in how to circumcise safely.</p>';
 	$intro_html .= '<p>Whether you are here for religious, medical, cultural or personal reasons, the standard does not change: local anaesthetic every time, tested and shown to be working before we begin, and aftercare we explain to you and then give you in writing.</p>';
 
-	$callback_html  = '<p><strong>Who is suitable for circumcision?</strong></p>';
-	$callback_html .= '<p>We circumcise males of all ages and backgrounds, so whether it is for religious, cultural or medical reasons, we have you covered. Let us know when booking what your main reason for circumcising and we will accommodate you accordingly.</p>';
-	$callback_html .= '<p>Our 2 practitioners are Muslim and we treat a big portion of the Muslim community in London and from other parts of the UK. We also get patients from the Jewish community coming in for religious circumcisions.</p>';
-	$callback_html .= '<p>Some patients get circumcised to meet cultural requirements such as Filipinos, certain parts of Africa, Fiji and other countries where circumcision is an important part of their culture.</p>';
-	$callback_html .= '<p>We also get a big portion of patients who have a medical reason for getting circumcised, most common is a tight foreskin (phimosis and paraphimosis), inflammation of the head of the penis (balanitis) as well as short and scarred frenulum.</p>';
-
-	// Call-back intro: client-approved wording shared with template-parts/callback-form.php.
-	$callback_card_html  = '<p>Have a question or need some advice? We\'re here to help and would be happy to give you a call.</p>';
-	$callback_card_html .= '<p>Our opening hours are <em>Monday to Saturday, 9:00am–5:00pm</em>.</p>';
-	$callback_card_html .= '<p>We aim to call you back <em>within 1 hour during opening hours</em>, and always on the same working day. If you contact us outside these hours, we\'ll get back to you the next working day.</p>';
-	$callback_card_html .= '<p><em>There\'s no pressure or obligation to book</em> — we\'re simply here to answer your questions and help you make the right decision.</p>';
-	$callback_card_html .= '<p><strong>Name, phone number</strong></p>';
-	$callback_card_html .= '<p><strong>Patient DOB</strong></p>';
-	$callback_card_html .= '<p><strong>Anything you would like us to know (optional)</strong></p>';
-
 	$blocks   = array();
 	$blocks[] = cil_dyn_block(
 		'cil/hero',
@@ -118,23 +103,22 @@ function cil_homepage_blocks() {
 		)
 	);
 	$blocks[] = cil_dyn_block(
-		'cil/home-callback',
-		array(
-			'formId'      => 'home',
-			'subject'     => 'homepage callback',
-			'cardEyebrow' => 'Request a call back',
-			'cardTitle'   => 'Ask before you book',
-			'cardHtml'    => $callback_card_html,
-			'eyebrow'     => '',
-			'heading'     => 'When we may postpone',
-			'html'        => $callback_html,
-		)
-	);
-	$blocks[] = cil_dyn_block(
 		'cil/cta-band',
 		array(
-			'title' => 'Ask us anything before you decide',
-			'text'  => 'Most people call with a question rather than to book. That is what the phone is for, and nothing is booked until you say so.',
+			'title'           => 'If you have further questions',
+			'text'            => '<p>If you have further questions, you can either <a href="tel:+442089513794">call us</a> or <a href="#request-callback">request for us to call you back</a>. You can also send us an <a href="mailto:info@circumcisioninlondon.co.uk">email enquiry</a> or speak to us via <a href="https://wa.me/447886779958" rel="noopener noreferrer" target="_blank">Whatsapp</a>.</p><p>Email is: <a href="mailto:info@circumcisioninlondon.co.uk">info@circumcisioninlondon.co.uk</a><br><a href="tel:07886779958">07886779958</a></p>',
+			'eyebrow'         => 'Talk to us',
+			'ctaLabel'        => 'Book online',
+			'ctaUrl'          => home_url( '/book/' ),
+			'phoneLabel'      => 'Call 020 8951 3794',
+			'phoneUrl'        => 'tel:+442089513794',
+			'cardEyebrow'     => 'Request a call back',
+			'cardTitle'       => '',
+			'cardHtml'        => '',
+			'showCallback'    => true,
+			'formId'          => 'home',
+			'formSubject'     => 'homepage callback',
+			'callbackAnchor'  => 'request-callback',
 		)
 	);
 	$blocks[] = cil_dyn_block(

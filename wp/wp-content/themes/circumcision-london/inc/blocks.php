@@ -774,7 +774,7 @@ function cil_register_dynamic_blocks() {
 			$common,
 			array(
 				'title'           => __( 'Talk to us band', 'circumcision-london' ),
-				'description'     => __( 'Closing CTA with booking, phone and WhatsApp card.', 'circumcision-london' ),
+				'description'     => __( 'Closing CTA with booking, phone and WhatsApp card or callback form.', 'circumcision-london' ),
 				'attributes'      => array(
 					'title' => array(
 						'type'    => 'string',
@@ -812,20 +812,45 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'cardEyebrow'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'showCallback'    => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
+					'formId'          => array(
+						'type'    => 'string',
+						'default' => 'home',
+					),
+					'formSubject'     => array(
+						'type'    => 'string',
+						'default' => 'homepage callback',
+					),
+					'callbackAnchor'  => array(
+						'type'    => 'string',
+						'default' => 'request-callback',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'cta-band',
 						array(
-							'title'       => isset( $attrs['title'] ) ? $attrs['title'] : '',
-							'text'        => isset( $attrs['text'] ) ? $attrs['text'] : '',
-							'eyebrow'     => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'cta_label'   => isset( $attrs['ctaLabel'] ) ? $attrs['ctaLabel'] : '',
-							'cta_url'     => isset( $attrs['ctaUrl'] ) ? $attrs['ctaUrl'] : '',
-							'phone_label' => isset( $attrs['phoneLabel'] ) ? $attrs['phoneLabel'] : '',
-							'phone_url'   => isset( $attrs['phoneUrl'] ) ? $attrs['phoneUrl'] : '',
-							'card_title'  => isset( $attrs['cardTitle'] ) ? $attrs['cardTitle'] : '',
-							'card_html'   => isset( $attrs['cardHtml'] ) ? $attrs['cardHtml'] : '',
+							'title'            => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'text'             => isset( $attrs['text'] ) ? $attrs['text'] : '',
+							'eyebrow'          => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'cta_label'        => isset( $attrs['ctaLabel'] ) ? $attrs['ctaLabel'] : '',
+							'cta_url'          => isset( $attrs['ctaUrl'] ) ? $attrs['ctaUrl'] : '',
+							'phone_label'      => isset( $attrs['phoneLabel'] ) ? $attrs['phoneLabel'] : '',
+							'phone_url'        => isset( $attrs['phoneUrl'] ) ? $attrs['phoneUrl'] : '',
+							'card_title'       => isset( $attrs['cardTitle'] ) ? $attrs['cardTitle'] : '',
+							'card_html'        => isset( $attrs['cardHtml'] ) ? $attrs['cardHtml'] : '',
+							'card_eyebrow'     => isset( $attrs['cardEyebrow'] ) ? $attrs['cardEyebrow'] : '',
+							'show_callback'    => ! empty( $attrs['showCallback'] ),
+							'form_id'          => isset( $attrs['formId'] ) ? $attrs['formId'] : 'home',
+							'form_subject'     => isset( $attrs['formSubject'] ) ? $attrs['formSubject'] : 'homepage callback',
+							'callback_anchor'  => isset( $attrs['callbackAnchor'] ) ? $attrs['callbackAnchor'] : 'request-callback',
 						)
 					) . '</div>';
 				},

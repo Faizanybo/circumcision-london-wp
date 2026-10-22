@@ -1428,36 +1428,118 @@
       phoneUrl: { type: 'string', default: '' },
       cardTitle: { type: 'string', default: '' },
       cardHtml: { type: 'string', default: '' },
+      cardEyebrow: { type: 'string', default: '' },
+      showCallback: { type: 'boolean', default: false },
+      formId: { type: 'string', default: 'home' },
+      formSubject: { type: 'string', default: 'homepage callback' },
+      callbackAnchor: { type: 'string', default: 'request-callback' },
     },
     fields: [
       { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow', placeholder: 'Talk to us' },
       { key: 'title', label: 'Heading', tagName: 'h2', className: 'display d-2' },
-      { key: 'text', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
+      { key: 'text', label: 'Lede (HTML allowed)', kind: 'html' },
       { key: 'ctaLabel', label: 'Book button text' },
       { key: 'ctaUrl', label: 'Book button URL' },
       { key: 'phoneLabel', label: 'Phone button text' },
       { key: 'phoneUrl', label: 'Phone button URL' },
+      { key: 'cardEyebrow', label: 'Callback card eyebrow' },
       { key: 'cardTitle', label: 'Card heading' },
-      { key: 'cardHtml', label: 'Card body', kind: 'html' },
+      { key: 'cardHtml', label: 'Card body / form intro', kind: 'html' },
+      { key: 'callbackAnchor', label: 'Callback card anchor id' },
+      { key: 'formId', label: 'Callback form id' },
+      { key: 'formSubject', label: 'Callback form subject' },
     ],
     inspect: function (props) {
+      var ToggleControl = wp.components.ToggleControl;
       return el(
-        PanelBody,
-        { title: 'Copy' },
-        el(TextControl, {
-          label: 'Heading',
-          value: props.attributes.title,
-          onChange: function (v) {
-            props.setAttributes({ title: v });
-          },
-        }),
-        el(TextareaControl, {
-          label: 'Lede',
-          value: props.attributes.text,
-          onChange: function (v) {
-            props.setAttributes({ text: v });
-          },
-        })
+        Fragment,
+        {},
+        el(
+          PanelBody,
+          { title: 'Copy' },
+          el(TextControl, {
+            label: 'Heading',
+            value: props.attributes.title,
+            onChange: function (v) {
+              props.setAttributes({ title: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Lede HTML',
+            help: 'Supports links (mailto, tel, WhatsApp, #request-callback).',
+            value: props.attributes.text,
+            onChange: function (v) {
+              props.setAttributes({ text: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Book button text',
+            value: props.attributes.ctaLabel,
+            onChange: function (v) {
+              props.setAttributes({ ctaLabel: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Book button URL',
+            value: props.attributes.ctaUrl,
+            onChange: function (v) {
+              props.setAttributes({ ctaUrl: v });
+            },
+          })
+        ),
+        el(
+          PanelBody,
+          { title: 'Right card', initialOpen: true },
+          el(ToggleControl, {
+            label: 'Show callback form (instead of WhatsApp card)',
+            checked: !!props.attributes.showCallback,
+            onChange: function (v) {
+              props.setAttributes({ showCallback: !!v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Callback card eyebrow',
+            value: props.attributes.cardEyebrow,
+            onChange: function (v) {
+              props.setAttributes({ cardEyebrow: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Card heading',
+            value: props.attributes.cardTitle,
+            onChange: function (v) {
+              props.setAttributes({ cardTitle: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Card body / form intro HTML',
+            value: props.attributes.cardHtml,
+            onChange: function (v) {
+              props.setAttributes({ cardHtml: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Callback anchor id',
+            value: props.attributes.callbackAnchor,
+            onChange: function (v) {
+              props.setAttributes({ callbackAnchor: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Form id',
+            value: props.attributes.formId,
+            onChange: function (v) {
+              props.setAttributes({ formId: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Form subject',
+            value: props.attributes.formSubject,
+            onChange: function (v) {
+              props.setAttributes({ formSubject: v });
+            },
+          })
+        )
       );
     },
   });
