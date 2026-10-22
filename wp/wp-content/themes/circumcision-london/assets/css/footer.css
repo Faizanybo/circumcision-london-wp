@@ -45,6 +45,22 @@
 .footer-bottom .spacer { margin-left: auto; }
 .footer-legal { display: flex; flex-wrap: wrap; gap: 4px 22px; list-style: none; }
 .footer-legal a { display: inline-flex; align-items: center; min-height: 27px; }
+.footer-social { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; }
+.footer-social a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; min-height: 40px; border-radius: 50%;
+  color: rgba(255, 255, 255, .85); border: 1px solid rgba(255, 255, 255, .22);
+}
+.footer-social a:hover { color: #fff; border-color: rgba(255, 255, 255, .55); }
+
+/* Accordion columns: open + non-interactive on desktop; collapsible below. */
+.footer-accordion { margin: 0; border: 0; }
+.footer-accordion__summary {
+  list-style: none;
+  cursor: default;
+}
+.footer-accordion__summary::-webkit-details-marker { display: none; }
+.footer-accordion__summary::marker { content: ""; }
 
 .action-bar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: none;
@@ -74,8 +90,26 @@
 .to-top:hover { border-color: var(--blue); color: var(--blue-deep); }
 .to-top svg { width: 18px; height: 18px; }
 
-@media (max-width: 1180px) {
-  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* ---- Tablet: brand beside a 2×2 of link columns (shorter than stacked) ---- */
+@media (max-width: 1180px) and (min-width: 681px) {
+  .footer-top { padding-block: clamp(28px, 3.5vw, 44px); }
+  .footer-grid {
+    grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr));
+    gap: clamp(16px, 2.2vw, 28px) clamp(18px, 2.5vw, 32px);
+    align-items: start;
+  }
+  .footer-col--brand {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+  .footer .brand img { max-width: 112px; max-height: 96px; }
+  .footer address { margin-top: 10px; line-height: 1.5; font-size: 14.5px; }
+  .footer ul { font-size: 14.5px; gap: 2px; }
+  .footer .caps,
+  .footer-accordion__summary.caps { margin-bottom: 8px; }
+  .footer-aside { margin-top: 6px; font-size: 13.5px; }
+  .footer-aside + .footer-aside { margin-top: 6px; }
+  .footer-bottom { padding-block: 14px; gap: 8px 18px; font-size: 13.5px; }
 }
 
 @media (max-width: 900px) {
@@ -84,6 +118,70 @@
   .to-top { bottom: calc(65px + env(safe-area-inset-bottom) + 16px); }
 }
 
+/* ---- Compact phone: brand + hours visible; link groups collapse ---- */
 @media (max-width: 680px) {
-  .footer-grid { grid-template-columns: minmax(0, 1fr); }
+  .footer-top { padding-block: 28px 18px; }
+  .footer-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .footer-col--brand {
+    grid-column: auto;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+  }
+  .footer .brand img { max-width: 108px; max-height: 92px; }
+  .footer address { margin-top: 10px; font-size: 14.5px; line-height: 1.5; }
+  .footer ul { font-size: 14.5px; gap: 2px; }
+  .footer ul a,
+  .footer address a { min-height: 36px; padding-block: 6px; }
+
+  .footer-accordion {
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+  }
+  .footer-accordion__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin: 0;
+    padding-block: 12px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, .72);
+    font-size: 12px;
+    letter-spacing: .12em;
+  }
+  .footer-accordion__summary::after {
+    content: "";
+    flex: 0 0 10px;
+    width: 10px;
+    height: 10px;
+    border-right: 1.5px solid rgba(255, 255, 255, .65);
+    border-bottom: 1.5px solid rgba(255, 255, 255, .65);
+    transform: rotate(45deg);
+    transition: transform .2s ease;
+  }
+  .footer-accordion[open] > .footer-accordion__summary::after {
+    transform: rotate(-135deg);
+    margin-top: 4px;
+  }
+  .footer-accordion__body { padding: 0 0 12px; }
+  .footer-col--hours .footer-aside { font-size: 13.5px; }
+  .footer-bottom {
+    padding-block: 14px 18px;
+    gap: 10px 16px;
+    font-size: 13px;
+  }
+  .footer-bottom .spacer { margin-left: 0; width: 100%; }
+  .footer-legal { gap: 2px 16px; }
+  .footer-legal a { min-height: 36px; }
+}
+
+/* Desktop/tablet: keep accordion chrome inactive; content always shown via [open]. */
+@media (min-width: 681px) {
+  .footer-accordion__summary {
+    pointer-events: none;
+  }
 }

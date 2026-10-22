@@ -833,3 +833,66 @@ body.cil-home .wp-block-cil-section .split--bleed ~ .grid .cil-info-card {
 @media (max-width: 900px) {
   .split:has(> .cil-split-copy) .figure figcaption { position: static; margin-top: 12px; max-width: none; box-shadow: none; padding: 10px 14px 10px 44px; position: relative; }
 }
+
+/* Tablet: keep homepage age-group + 3-up info cards on one row.
+   Global .g-3 drops to 2 columns below 900px; restore 3 columns on the
+   homepage from 700px up so 768 / 820 / 1024 stay a single level.
+   Also cancel the shared "centre leftover third card" tablet rules. */
+@media (max-width: 900px) and (min-width: 700px) {
+  body.cil-home .grid.g-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(10px, 1.5vw, 18px);
+  }
+
+  /* Beat shared tablet leftover-centering (higher specificity than
+     .grid.g-3 > .cil-info-card:last-child:nth-child(odd):not(:first-child)). */
+  body.cil-home .grid.g-3 > .card-group:last-child:nth-child(odd):not(:first-child),
+  body.cil-home .grid.g-3 > .cil-info-card:last-child:nth-child(odd):not(:first-child),
+  body.cil-home .grid.g-3 > .card:last-child:nth-child(odd):not(:first-child),
+  body.cil-home .grid.g-3.cil-info-cards-grid > .card:last-child:nth-child(odd):not(:first-child),
+  body.cil-home .grid.g-3:has(> .card-group:nth-child(3):last-child) > .card-group:last-child,
+  body.cil-home .grid.g-3 > .card-group,
+  body.cil-home .grid.g-3 > .cil-info-card,
+  body.cil-home .grid.g-3 > .card,
+  body.cil-home .grid.g-3.cil-info-cards-grid > * {
+    grid-column: auto;
+    width: auto;
+    max-width: none;
+    justify-self: stretch;
+    margin-inline: 0;
+  }
+
+  body.cil-home .card-group {
+    padding: clamp(14px, 1.8vw, 22px);
+  }
+  body.cil-home .card-group.has-media {
+    padding-top: 0;
+  }
+  body.cil-home .card-group.has-media .card-group__media {
+    margin-inline: calc(-1 * clamp(14px, 1.8vw, 22px));
+    margin-bottom: 12px;
+  }
+  body.cil-home .card-group .price { font-size: clamp(17px, 2vw, 21px); }
+  body.cil-home .card-group p { font-size: 13.5px; line-height: 1.55; }
+  body.cil-home .card-group .go { padding-top: 14px; font-size: 13.5px; }
+  body.cil-home .card-group.has-media .go::after {
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+  }
+  body.cil-home .card-group .display.d-3 {
+    font-size: clamp(17px, 2.1vw, 22px);
+  }
+
+  body.cil-home .cil-info-card {
+    padding: clamp(14px, 1.8vw, 22px);
+  }
+  body.cil-home .cil-info-card .display.d-3 {
+    font-size: clamp(16px, 2vw, 20px);
+  }
+  body.cil-home .cil-info-card .body-text,
+  body.cil-home .cil-info-card .body-text p {
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+}

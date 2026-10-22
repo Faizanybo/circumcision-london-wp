@@ -2,6 +2,9 @@
 /**
  * Site footer: brand, contact, who we see, reasons, hours, legal.
  *
+ * Link groups use <details> so tablet/mobile can collapse secondary columns
+ * without removing content. Desktop keeps them expanded.
+ *
  * @package Circumcision_London
  */
 
@@ -10,11 +13,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $clinic = cil_clinic();
+
+/**
+ * Render a footer link column as an accessible accordion group.
+ *
+ * @param string               $label Column heading.
+ * @param string               $location Menu location.
+ * @param array<int, array>    $fallback Fallback links.
+ */
+$cil_footer_nav_group = static function ( $label, $location, $fallback ) {
+	?>
+	<details class="footer-accordion" open>
+		<summary class="footer-accordion__summary caps"><?php echo esc_html( $label ); ?></summary>
+		<div class="footer-accordion__body">
+			<?php cil_link_list( $location, $fallback ); ?>
+		</div>
+	</details>
+	<?php
+};
 ?>
 <footer class="footer">
 	<div class="wrap footer-top">
 		<div class="footer-grid">
-			<div>
+			<div class="footer-col footer-col--brand">
 				<?php get_template_part( 'template-parts/brand', null, array( 'context' => 'footer' ) ); ?>
 				<address>
 					<?php echo esc_html( $clinic['address']['street'] ); ?><br>
@@ -24,27 +45,28 @@ $clinic = cil_clinic();
 					<a href="<?php echo esc_url( 'mailto:' . $clinic['email'] ); ?>"><?php echo esc_html( $clinic['email'] ); ?></a>
 				</address>
 			</div>
-			<div>
-				<span class="caps"><?php esc_html_e( 'Who we see', 'circumcision-london' ); ?></span>
-				<?php cil_link_list( 'footer-who', cil_default_footer_who() ); ?>
+			<div class="footer-col">
+				<?php $cil_footer_nav_group( __( 'Who we see', 'circumcision-london' ), 'footer-who', cil_default_footer_who() ); ?>
 			</div>
-			<div>
-				<span class="caps"><?php esc_html_e( 'Our locations', 'circumcision-london' ); ?></span>
-				<?php cil_link_list( 'footer-clinics', cil_default_footer_clinics() ); ?>
+			<div class="footer-col">
+				<?php $cil_footer_nav_group( __( 'Our locations', 'circumcision-london' ), 'footer-clinics', cil_default_footer_clinics() ); ?>
 			</div>
-			<div>
-				<span class="caps"><?php esc_html_e( 'Reasons', 'circumcision-london' ); ?></span>
-				<?php cil_link_list( 'footer-reasons', cil_default_footer_reasons() ); ?>
+			<div class="footer-col">
+				<?php $cil_footer_nav_group( __( 'Reasons', 'circumcision-london' ), 'footer-reasons', cil_default_footer_reasons() ); ?>
 			</div>
-			<div>
-				<span class="caps"><?php esc_html_e( 'Opening hours', 'circumcision-london' ); ?></span>
-				<ul class="hours">
-					<?php foreach ( $clinic['hours'] as $row ) : ?>
-						<li><span><?php echo esc_html( $row['days'] ); ?></span> <span><?php echo esc_html( $row['open'] . ' – ' . $row['close'] ); ?></span></li>
-					<?php endforeach; ?>
-				</ul>
-				<p class="footer-aside"><?php echo esc_html( $clinic['hours_note'] ); ?></p>
-				<p class="footer-aside"><?php esc_html_e( 'Free Parking on the street. outside congestion charge zone.', 'circumcision-london' ); ?></p>
+			<div class="footer-col footer-col--hours">
+				<details class="footer-accordion" open>
+					<summary class="footer-accordion__summary caps"><?php esc_html_e( 'Opening hours', 'circumcision-london' ); ?></summary>
+					<div class="footer-accordion__body">
+						<ul class="hours">
+							<?php foreach ( $clinic['hours'] as $row ) : ?>
+								<li><span><?php echo esc_html( $row['days'] ); ?></span> <span><?php echo esc_html( $row['open'] . ' – ' . $row['close'] ); ?></span></li>
+							<?php endforeach; ?>
+						</ul>
+						<p class="footer-aside"><?php echo esc_html( $clinic['hours_note'] ); ?></p>
+						<p class="footer-aside"><?php esc_html_e( 'Free Parking on the street. outside congestion charge zone.', 'circumcision-london' ); ?></p>
+					</div>
+				</details>
 			</div>
 		</div>
 	</div>

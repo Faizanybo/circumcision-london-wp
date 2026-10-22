@@ -253,6 +253,29 @@
     );
   });
 
+  /* ------------------------------------------- footer accordion (mobile) */
+  /* Keep secondary footer columns collapsed on small screens so the footer
+     is shorter; expand them again from tablet/desktop widths. */
+  (function () {
+    var mq = window.matchMedia('(max-width: 680px)');
+    function syncFooterAccordions() {
+      var mobile = mq.matches;
+      d.querySelectorAll('.footer-accordion').forEach(function (el) {
+        if (mobile) {
+          el.removeAttribute('open');
+        } else {
+          el.setAttribute('open', '');
+        }
+      });
+    }
+    syncFooterAccordions();
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', syncFooterAccordions);
+    } else if (typeof mq.addListener === 'function') {
+      mq.addListener(syncFooterAccordions);
+    }
+  })();
+
   /* -------------------------------------------------------------- forms */
   d.querySelectorAll('form[data-form]').forEach(function (form) {
     form.addEventListener('submit', function (e) {
