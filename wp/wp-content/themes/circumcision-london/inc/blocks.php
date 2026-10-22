@@ -462,7 +462,7 @@ function cil_register_dynamic_blocks() {
 					),
 					'cardTitle'    => array(
 						'type'    => 'string',
-						'default' => 'Ask before you book',
+						'default' => '',
 					),
 					'cardHtml'     => array(
 						'type'    => 'string',
@@ -474,7 +474,7 @@ function cil_register_dynamic_blocks() {
 					),
 					'heading'      => array(
 						'type'    => 'string',
-						'default' => 'When we may postpone',
+						'default' => '',
 					),
 					'html'         => array(
 						'type'    => 'string',

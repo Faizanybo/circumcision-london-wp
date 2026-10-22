@@ -438,16 +438,22 @@ body.cil-home .steps li::before {
 body.cil-home .steps h3 { font-size: 18px; color: var(--navy); }
 
 /* Call-back section: sky field, lifted form card. */
-body.cil-home section:has(> .wrap > .split.reverse > div > .card form) {
+body.cil-home section:has(> .wrap > .split.reverse > div > .card form),
+body.cil-home section:has(> .wrap > .cil-callback-form-only > div > .card form) {
   background:
     radial-gradient(900px 420px at 0% 100%, rgba(47, 127, 216, .12), transparent 60%),
     linear-gradient(180deg, var(--sky-2), var(--sky));
 }
-body.cil-home .split.reverse > div > .card:has(form) {
+body.cil-home .split.reverse > div > .card:has(form),
+body.cil-home .cil-callback-form-only > div > .card:has(form) {
   border: 0;
   border-radius: var(--radius-lg);
   border-top: 5px solid var(--blue);
   box-shadow: var(--shadow-soft);
+}
+body.cil-home .cil-callback-form-only {
+  max-width: 560px;
+  margin-inline: auto;
 }
 
 /* Location: rounded, shadowed photograph. */
