@@ -258,24 +258,22 @@
   color: var(--navy);
   font-size: 13px;
 }
-/* Photo bleeding to the screen edge on wide screens. */
+/* Contained photographs: stay inside .wrap so they align with content above/below
+   (header chrome / section copy), instead of bleeding to the viewport edge. */
 @media (min-width: 901px) {
   .split--bleed { column-gap: clamp(40px, 5vw, 80px); }
   .split--bleed > .figure:last-child,
-  .split--bleed > .wp-block-cil-figure:last-child {
-    margin-right: calc(-1 * max(var(--gap), (100vw - var(--maxw)) / 2 + var(--gap)));
-  }
-  .split--bleed > .figure:last-child img,
-  .split--bleed > .figure:last-child picture {
-    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-  }
+  .split--bleed > .wp-block-cil-figure:last-child,
   .split--bleed.reverse > .figure:first-child,
   .split--bleed > .figure:first-child:not(:last-child) {
-    margin-left: calc(-1 * max(var(--gap), (100vw - var(--maxw)) / 2 + var(--gap)));
+    margin-left: 0;
+    margin-right: 0;
   }
+  .split--bleed > .figure:last-child img,
+  .split--bleed > .figure:last-child picture,
   .split--bleed > .figure:first-child:not(:last-child) img,
   .split--bleed > .figure:first-child:not(:last-child) picture {
-    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    border-radius: var(--radius-lg);
   }
   .split--bleed .figure { aspect-ratio: 4 / 3.1; }
 }
