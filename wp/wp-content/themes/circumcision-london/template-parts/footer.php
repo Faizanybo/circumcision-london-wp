@@ -29,7 +29,7 @@ $clinic = cil_clinic();
 				<?php cil_link_list( 'footer-who', cil_default_footer_who() ); ?>
 			</div>
 			<div>
-				<span class="caps"><?php esc_html_e( 'Our clinics', 'circumcision-london' ); ?></span>
+				<span class="caps"><?php esc_html_e( 'Our locations', 'circumcision-london' ); ?></span>
 				<?php cil_link_list( 'footer-clinics', cil_default_footer_clinics() ); ?>
 			</div>
 			<div>

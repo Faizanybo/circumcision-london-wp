@@ -146,7 +146,7 @@ function cil_setup() {
 			'primary'         => __( 'Primary', 'circumcision-london' ),
 			'footer-who'      => __( 'Footer: Who we see', 'circumcision-london' ),
 			'footer-reasons'  => __( 'Footer: Reasons', 'circumcision-london' ),
-			'footer-clinics'  => __( 'Footer: Our clinics', 'circumcision-london' ),
+			'footer-clinics'  => __( 'Footer: Our locations', 'circumcision-london' ),
 			'footer-legal'    => __( 'Footer: Legal', 'circumcision-london' ),
 		)
 	);
@@ -438,7 +438,7 @@ function cil_default_nav() {
 					'url'   => home_url( '/aftercare/' ),
 				),
 				array(
-					'label'   => __( 'Our clinics', 'circumcision-london' ),
+					'label'   => __( 'Our locations', 'circumcision-london' ),
 					'heading' => true,
 				),
 				array(
@@ -505,7 +505,7 @@ function cil_default_footer_reasons() {
 }
 
 /**
- * Default footer "Our clinics" links.
+ * Default footer "Our locations" links.
  *
  * @return array<int, array<string, string>>
  */
@@ -568,7 +568,7 @@ function cil_groups() {
 		array(
 			'href'  => home_url( '/children/' ),
 			'title' => __( 'Children and teenagers', 'circumcision-london' ),
-			'age'   => __( 'One to seventeen years', 'circumcision-london' ),
+			'age'   => __( '3-17 years old', 'circumcision-london' ),
 			'price' => __( 'From £300', 'circumcision-london' ),
 			'cta'   => __( 'Circumcision for boys, from £300', 'circumcision-london' ),
 			'blurb' => __( 'The forceps guided method with thermal cautery, under local anaesthetic. School holiday appointments book up quickly.', 'circumcision-london' ),
