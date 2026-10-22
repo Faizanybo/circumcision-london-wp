@@ -26,6 +26,12 @@ $testimonials_label = ( isset( $args['testimonials_label'] ) && '' !== $args['te
 $testimonials_url = ( isset( $args['testimonials_url'] ) && '' !== $args['testimonials_url'] )
 	? $args['testimonials_url']
 	: home_url( '/testimonials/' );
+$heading = isset( $args['heading'] ) ? (string) $args['heading'] : '';
+if ( '' === $heading ) {
+	$heading = sprintf( /* translators: 1: rating, 2: review count */ __( '%1$s from %2$s Google reviews', 'circumcision-london' ), $clinic['reviews']['rating'], $clinic['reviews']['count_display'] );
+}
+$stars = ( isset( $args['stars'] ) && '' !== $args['stars'] ) ? (string) $args['stars'] : '★★★★★';
+$stats = ( isset( $args['stats'] ) && is_array( $args['stats'] ) && $args['stats'] ) ? $args['stats'] : array();
 
 $resolved_videos = array();
 foreach ( $videos as $item ) {
@@ -40,7 +46,7 @@ foreach ( $videos as $item ) {
 		<div class="split" style="align-items:center;margin-bottom:clamp(34px,4vw,60px)">
 			<div data-reveal>
 				<span class="caps eyebrow cil-eyebrow-google"><?php echo cil_icon( 'google' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static theme SVG. ?><?php echo esc_html( $eyebrow ); ?></span>
-				<h2 class="display d-1"><?php echo esc_html( sprintf( /* translators: 1: rating, 2: review count */ __( '%1$s from %2$s Google reviews', 'circumcision-london' ), $clinic['reviews']['rating'], $clinic['reviews']['count_display'] ) ); ?></h2>
+				<h2 class="display d-1"><?php echo esc_html( $heading ); ?></h2>
 				<?php if ( '' !== $checked ) : ?>
 				<p class="cil-reviews-note"><?php echo esc_html( $checked ); ?></p>
 				<?php endif; ?>
@@ -74,10 +80,20 @@ foreach ( $videos as $item ) {
 			</div>
 			<div data-reveal data-reveal-delay="120">
 				<ul class="grid g-2" style="list-style:none;gap:18px">
+					<?php if ( $stats ) : ?>
+						<?php foreach ( $stats as $stat ) : ?>
+							<?php
+							$stat_n = isset( $stat['n'] ) ? (string) $stat['n'] : '';
+							$stat_l = isset( $stat['l'] ) ? (string) $stat['l'] : '';
+							?>
+					<li class="stat"><span class="n"><?php echo str_replace( "\n", '<br>', esc_html( $stat_n ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped, then a line break is restored. ?></span><span class="l"><?php echo esc_html( $stat_l ); ?></span></li>
+						<?php endforeach; ?>
+					<?php else : ?>
 					<li class="stat"><span class="n"><?php echo esc_html( $clinic['reviews']['count_display'] ); ?></span><span class="l"><?php echo esc_html( sprintf( /* translators: %s: rating */ __( 'Google reviews, at %s out of 5.', 'circumcision-london' ), $clinic['reviews']['rating'] ) ); ?></span></li>
 					<li class="stat"><span class="n"><?php echo wp_kses( __( 'Word of<br>mouth', 'circumcision-london' ), array( 'br' => array() ) ); ?></span><span class="l"><?php esc_html_e( 'How most of our patients find us: family and friends who came first.', 'circumcision-london' ); ?></span></li>
 					<li class="stat"><span class="n"><?php echo wp_kses( __( 'Years<br>apart', 'circumcision-london' ), array( 'br' => array() ) ); ?></span><span class="l"><?php esc_html_e( 'Families returning whenever there is a new son in the family.', 'circumcision-london' ); ?></span></li>
 					<li class="stat"><span class="n"><?php echo esc_html( sprintf( /* translators: %s: CQC rating */ __( 'CQC %s', 'circumcision-london' ), $clinic['cqc_rating'] ) ); ?></span><span class="l"><?php esc_html_e( 'Rated at previous inspections by the regulator.', 'circumcision-london' ); ?></span></li>
+					<?php endif; ?>
 				</ul>
 			</div>
 		</div>
@@ -85,7 +101,7 @@ foreach ( $videos as $item ) {
 		<div class="grid g-3">
 			<?php foreach ( $quotes as $i => $quote ) : ?>
 				<figure class="quote" data-reveal data-reveal-delay="<?php echo esc_attr( (string) ( ( $i % 3 ) * 90 ) ); ?>">
-					<span class="stars" aria-label="<?php esc_attr_e( 'Five out of five', 'circumcision-london' ); ?>">★★★★★</span>
+					<span class="stars" aria-label="<?php esc_attr_e( 'Five out of five', 'circumcision-london' ); ?>"><?php echo esc_html( $stars ); ?></span>
 					<blockquote>&ldquo;<?php echo esc_html( $quote['quote'] ); ?>&rdquo;</blockquote>
 					<figcaption class="meta"><strong style="color:var(--ink)"><?php echo esc_html( $quote['name'] ); ?></strong><br><?php echo esc_html( $quote['context'] ); ?></figcaption>
 				</figure>

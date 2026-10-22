@@ -108,22 +108,29 @@ $has_aside        = ( '' !== trim( wp_strip_all_tags( $html ) ) );
 		<ul class="hero-facts">
 			<?php
 			$fact_icons = array( 'star', 'shield', 'clock', 'pin' );
-			$fact_lines = array();
+			$fact_rows  = array();
 			foreach ( $facts as $fact ) {
 				if ( is_array( $fact ) ) {
 					$line = isset( $fact['text'] ) ? $fact['text'] : ( isset( $fact['label'] ) ? $fact['label'] : '' );
+					$icon = isset( $fact['icon'] ) ? sanitize_key( (string) $fact['icon'] ) : '';
 				} else {
 					$line = (string) $fact;
+					$icon = '';
 				}
-				$line = trim( wp_strip_all_tags( $line ) );
-				if ( '' !== $line ) {
-					$fact_lines[] = $line;
+				$line = trim( (string) $line );
+				if ( '' === trim( wp_strip_all_tags( $line ) ) ) {
+					continue;
 				}
+				$fact_rows[] = array(
+					'html' => $line,
+					'icon' => $icon,
+				);
 			}
-			if ( $fact_lines ) :
-				foreach ( $fact_lines as $i => $line ) :
+			if ( $fact_rows ) :
+				foreach ( $fact_rows as $i => $row ) :
+					$icon = in_array( $row['icon'], array( 'google', 'shield', 'clock', 'pin', 'star' ), true ) ? $row['icon'] : $fact_icons[ $i % count( $fact_icons ) ];
 					?>
-			<li><?php echo cil_icon( $fact_icons[ $i % count( $fact_icons ) ] ); ?><span><?php echo esc_html( $line ); ?></span></li>
+			<li<?php echo 'google' === $icon ? ' class="hero-fact--google"' : ''; ?>><?php echo cil_icon( $icon ); ?><span><?php echo wp_kses( $row['html'], array( 'b' => array(), 'strong' => array() ) ); ?></span></li>
 					<?php
 				endforeach;
 			else :

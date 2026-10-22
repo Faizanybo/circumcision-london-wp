@@ -23,6 +23,7 @@
   var Button = wp.components.Button;
   var ServerSideRender = wp.serverSideRender;
   var withSelect = wp.data && wp.data.withSelect ? wp.data.withSelect : null;
+  var useSelect = wp.data.useSelect;
 
   function ssr(name, attrs) {
     return el(
@@ -64,6 +65,44 @@
           blank: field.blank || {},
           fields: field.fields,
           addLabel: field.addLabel,
+          onChange: function (next) {
+            setAttr(props, field.key, next);
+          },
+        })
+      );
+    }
+    if (field.kind === 'toggle') {
+      return el(ToggleControl, {
+        key: field.key,
+        label: field.label,
+        help: field.help,
+        checked: !!value,
+        onChange: function (next) {
+          setAttr(props, field.key, !!next);
+        },
+      });
+    }
+    if (field.kind === 'select') {
+      return el(SelectControl, {
+        key: field.key,
+        label: field.label,
+        help: field.help,
+        value: value === undefined || value === null ? '' : String(value),
+        options: field.options || [],
+        onChange: function (next) {
+          setAttr(props, field.key, field.numeric ? parseInt(next, 10) : next);
+        },
+      });
+    }
+    if (field.kind === 'markup') {
+      return el(
+        'div',
+        { className: 'cil-ed-field', key: field.key },
+        edLabel(field.label),
+        field.help ? el('p', { className: 'cil-ed-help' }, field.help) : null,
+        el(TextareaControl, {
+          value: value || '',
+          rows: field.rows || 4,
           onChange: function (next) {
             setAttr(props, field.key, next);
           },
@@ -152,6 +191,17 @@
       props.onChange(next);
     }
 
+    function move(i, direction) {
+      var next = items.slice();
+      var target = i + direction;
+      if (target < 0 || target >= next.length) {
+        return;
+      }
+      var moved = next.splice(i, 1)[0];
+      next.splice(target, 0, moved);
+      props.onChange(next);
+    }
+
     return el(
       Fragment,
       {},
@@ -173,10 +223,40 @@
                 },
               });
             }
+            if (field.kind === 'image-url') {
+              return el(
+                'div',
+                { key: field.key },
+                el(TextControl, {
+                  label: field.label,
+                  help: field.help,
+                  value: item[field.key] || '',
+                  onChange: function (v) {
+                    update(i, field.key, v);
+                  },
+                }),
+                el(
+                  MediaUploadCheck,
+                  {},
+                  el(MediaUpload, {
+                    onSelect: function (media) {
+                      if (media && media.url) {
+                        update(i, field.key, media.url);
+                      }
+                    },
+                    allowedTypes: ['image'],
+                    render: function (obj) {
+                      return el(Button, { variant: 'secondary', onClick: obj.open }, 'Choose a photo from the Media Library');
+                    },
+                  })
+                )
+              );
+            }
             var Control = field.rows ? TextareaControl : TextControl;
             return el(Control, {
               key: field.key,
               label: field.label,
+              help: field.help,
               value: item[field.key] || '',
               onChange: function (v) {
                 update(i, field.key, v);
@@ -185,9 +265,11 @@
             });
           }),
           el(
-            Button,
-            { isLink: true, isDestructive: true, onClick: function () { remove(i); } },
-            'Remove'
+            'div',
+            { style: { display: 'flex', gap: '12px', flexWrap: 'wrap' } },
+            el(Button, { isLink: true, disabled: i === 0, onClick: function () { move(i, -1); } }, 'Move up'),
+            el(Button, { isLink: true, disabled: i === items.length - 1, onClick: function () { move(i, 1); } }, 'Move down'),
+            el(Button, { isLink: true, isDestructive: true, onClick: function () { remove(i); } }, 'Remove')
           )
         );
       }),
@@ -260,13 +342,36 @@
       supports: { html: false, align: ['wide', 'full'] },
       attributes: extra.attributes || {},
       edit: function (props) {
-        var canvas = extra.fields
-          ? canvasFields(props, extra.fields)
-          : ssr(name, props.attributes);
+        function instruction() {
+          return extra.instruction ? el('p', { className: 'cil-ed-instruction' }, extra.instruction) : null;
+        }
+        function description() {
+          return extra.description ? el('p', { className: 'cil-ed-help' }, extra.description) : null;
+        }
+        function fieldStack() {
+          return el('div', { className: 'cil-ed-stack' }, instruction(), description(), canvasFields(props, extra.fields));
+        }
+        var inspect = extra.inspect ? extra.inspect(props) : null;
+        var sidebar = null;
+        var canvas;
+        if (extra.shared && extra.fields) {
+          sidebar = el(
+            InspectorControls,
+            {},
+            el(PanelBody, { title: extra.panelTitle || 'Section content', initialOpen: true }, fieldStack())
+          );
+          canvas = el('div', { className: 'cil-editor-fields' }, fieldStack());
+        } else if (extra.mirrorInspect && inspect) {
+          sidebar = el(InspectorControls, {}, inspect);
+          canvas = el('div', { className: 'cil-editor-fields' }, instruction(), description(), extra.inspect(props));
+        } else {
+          sidebar = inspect ? el(InspectorControls, {}, inspect) : null;
+          canvas = extra.fields ? canvasFields(props, extra.fields) : ssr(name, props.attributes);
+        }
         return el(
           Fragment,
           {},
-          extra.inspect ? el(InspectorControls, {}, extra.inspect(props)) : null,
+          sidebar,
           el('div', useBlockProps({ className: 'cil-editor-canvas' }), canvas)
         );
       },
@@ -287,6 +392,286 @@
   registerBlockStyle('core/image', { name: 'cil-figure-4-3', label: 'Figure 4:3' });
   registerBlockStyle('core/image', { name: 'cil-figure-5-4', label: 'Figure 5:4' });
   registerBlockStyle('core/image', { name: 'cil-figure-3-4', label: 'Figure 3:4' });
+
+  /* Words inside a layout section stay in their own blocks. The sidebar
+   * edits those blocks directly, so there is one copy of each sentence. */
+  var figureChoices = [
+    { label: 'Custom / none', value: '' },
+    { label: 'Baby and parent', value: 'baby-parent' },
+    { label: 'Waiting room', value: 'waiting-room' },
+    { label: 'Certificates', value: 'certificates' },
+    { label: 'Dr Haidar', value: 'dr-haidar' },
+    { label: 'Dr Samir', value: 'dr-samir' },
+    { label: 'Clinic exterior', value: 'clinic-exterior' },
+    { label: 'Treatment room', value: 'treatment-room' },
+    { label: 'Sterilisation', value: 'sterilisation' },
+    { label: 'Smiling baby', value: 'baby-smiling' },
+  ];
+
+  function writeBlock(clientId, key, value) {
+    var patch = {};
+    patch[key] = value;
+    wp.data.dispatch('core/block-editor').updateBlockAttributes(clientId, patch);
+  }
+
+  function wordControl(clientId, key, label, value, help, rows) {
+    var Control = rows ? TextareaControl : TextControl;
+    return el(Control, {
+      key: clientId + ':' + key,
+      label: label,
+      help: help || '',
+      value: value == null ? '' : String(value),
+      rows: rows || undefined,
+      onChange: function (next) {
+        writeBlock(clientId, key, next);
+      },
+    });
+  }
+
+  function flattenBlocks(blocks, parent, acc) {
+    (blocks || []).forEach(function (block) {
+      acc.push({ block: block, parent: parent });
+      if (block.innerBlocks && block.innerBlocks.length) {
+        flattenBlocks(block.innerBlocks, block, acc);
+      }
+    });
+    return acc;
+  }
+
+  function SectionWords(props) {
+    var blocks = useSelect(
+      function (select) {
+        return select('core/block-editor').getBlocks(props.clientId);
+      },
+      [props.clientId]
+    );
+    var flat = flattenBlocks(blocks, null, []);
+    var controls = [];
+    var paragraphCount = 0;
+    var paragraphTotal = flat.filter(function (row) {
+      return row.block.name === 'core/paragraph';
+    }).length;
+    var listCount = 0;
+    var buttonCount = 0;
+    var sawHeading = false;
+
+    flat.forEach(function (row) {
+      var block = row.block;
+      var attrs = block.attributes || {};
+      var id = block.clientId;
+
+      if (block.name === 'cil/rich-html') {
+        var html = attrs.html || '';
+        var eyebrow = html.match(/^<span class="caps eyebrow">([\s\S]*)<\/span>$/);
+        if (eyebrow) {
+          controls.push(
+            el(TextControl, {
+              key: id + ':eyebrow',
+              label: 'Small heading above the title',
+              help: 'The short line above the main text.',
+              value: eyebrow[1],
+              onChange: function (next) {
+                writeBlock(id, 'html', '<span class="caps eyebrow">' + next + '</span>');
+              },
+            })
+          );
+        } else if (html) {
+          controls.push(wordControl(id, 'html', 'Text', html, 'Keep any existing styling in this box.', 3));
+        }
+        return;
+      }
+
+      if (block.name === 'cil/section-head') {
+        if (attrs.eyebrow) {
+          controls.push(wordControl(id, 'eyebrow', 'Small heading above the title', attrs.eyebrow, '', 0));
+        }
+        if (attrs.heading) {
+          sawHeading = true;
+          controls.push(wordControl(id, 'heading', 'Main heading', attrs.heading, '', 2));
+        }
+        if (attrs.lede) {
+          controls.push(wordControl(id, 'lede', 'Text under the heading', attrs.lede, 'Keep any links unless you mean to change them.', 3));
+        }
+        return;
+      }
+
+      if (block.name === 'core/heading' && attrs.content) {
+        sawHeading = true;
+        controls.push(wordControl(id, 'content', 'Main heading', attrs.content, '', 0));
+        return;
+      }
+
+      if (block.name === 'core/paragraph') {
+        paragraphCount += 1;
+        var paragraphLabel = paragraphTotal === 1 && sawHeading ? 'Text under the heading' : 'Paragraph ' + paragraphCount;
+        var paragraphHelp = String(attrs.content || '').indexOf('<') !== -1 ? 'Keep any links unless you mean to change them.' : '';
+        controls.push(wordControl(id, 'content', paragraphLabel, attrs.content, paragraphHelp, 4));
+        return;
+      }
+
+      if (block.name === 'core/list-item') {
+        listCount += 1;
+        var listClass = row.parent && row.parent.attributes ? row.parent.attributes.className || '' : '';
+        var listLabel = listClass.indexOf('cil-checklist') !== -1 ? 'Checklist line ' + listCount : 'List item ' + listCount;
+        controls.push(wordControl(id, 'content', listLabel, attrs.content, '', 2));
+        return;
+      }
+
+      if (block.name === 'core/button') {
+        buttonCount += 1;
+        var buttonPrefix = buttonCount > 1 ? 'Button ' + buttonCount + ' ' : 'Button ';
+        controls.push(wordControl(id, 'text', buttonPrefix + 'text', attrs.text, '', 0));
+        controls.push(wordControl(id, 'url', buttonPrefix + 'destination', attrs.url, '', 0));
+        return;
+      }
+
+      if (block.name === 'cil/figure') {
+        controls.push(
+          el(SelectControl, {
+            key: id + ':name',
+            label: 'Photograph already on the page',
+            help: 'Leave this on the current choice to keep the same picture.',
+            value: attrs.name || '',
+            options: figureChoices,
+            onChange: function (next) {
+              writeBlock(id, 'name', next);
+            },
+          })
+        );
+        controls.push(wordControl(id, 'alt', 'Image description for accessibility', attrs.alt, '', 0));
+        if (attrs.caption) {
+          controls.push(wordControl(id, 'caption', 'Caption', attrs.caption, '', 0));
+        }
+        return;
+      }
+
+      if (block.name === 'cil/info-cards') {
+        var cards = attrs.items || [];
+        var cardFields = [{ key: 'title', label: 'Card heading' }];
+        if (cards.some(function (card) { return card && card.icon; })) {
+          cardFields.unshift({ key: 'icon', label: 'Symbol', help: 'award, users, heart, refresh, map or star. Leave this to keep the current symbol.' });
+        }
+        if (cards.some(function (card) { return card && card.eyebrow; })) {
+          cardFields.push({ key: 'eyebrow', label: 'Small heading' });
+        }
+        if (cards.some(function (card) { return card && card.body; })) {
+          cardFields.push({ key: 'body', label: 'Card text', rows: 3 });
+        }
+        if (cards.some(function (card) { return card && card.html; })) {
+          cardFields.push({
+            key: 'html',
+            label: 'Card text with links or an address',
+            rows: 5,
+            help: 'Keep the links and line breaks unless you mean to change them.',
+          });
+        }
+        if (cards.some(function (card) { return card && card.ctaLabel; })) {
+          cardFields.push({ key: 'ctaLabel', label: 'Button text' });
+          cardFields.push({ key: 'ctaUrl', label: 'Button destination' });
+        }
+        if (cards.some(function (card) { return card && card.cta2Label; })) {
+          cardFields.push({ key: 'cta2Label', label: 'Second button text' });
+          cardFields.push({ key: 'cta2Url', label: 'Second button destination' });
+        }
+        controls.push(
+          el('div', { key: id + ':cards' },
+            el('p', { className: 'cil-ed-label' }, 'Cards'),
+            el(Repeater, {
+              items: cards,
+              blank: {
+                icon: '',
+                eyebrow: '',
+                title: '',
+                body: '',
+                html: '',
+                ctaLabel: '',
+                ctaUrl: '',
+                ctaClass: 'btn',
+                cta2Label: '',
+                cta2Url: '',
+                cta2Class: 'btn btn-ghost',
+              },
+              fields: cardFields,
+              addLabel: 'Add card',
+              onChange: function (next) {
+                writeBlock(id, 'items', next);
+              },
+            })
+          )
+        );
+        return;
+      }
+
+      if (block.name === 'cil/video-grid') {
+        (attrs.items || []).forEach(function (item, index) {
+          function patchItem(key, value) {
+            var next = (attrs.items || []).slice();
+            var rowPatch = {};
+            rowPatch[key] = value;
+            next[index] = Object.assign({}, next[index] || {}, rowPatch);
+            writeBlock(id, 'items', next);
+          }
+          var prefix = (attrs.items || []).length > 1 ? 'Video ' + (index + 1) + ' ' : 'Video ';
+          controls.push(el(TextControl, {
+            key: id + ':title:' + index,
+            label: prefix + 'title',
+            value: item.title || '',
+            onChange: function (next) { patchItem('title', next); },
+          }));
+          if (item.description) {
+            controls.push(el(TextareaControl, {
+              key: id + ':description:' + index,
+              label: 'Text under the video',
+              value: item.description,
+              rows: 3,
+              onChange: function (next) { patchItem('description', next); },
+            }));
+          }
+          if (item.duration) {
+            controls.push(el(TextControl, {
+              key: id + ':duration:' + index,
+              label: 'Video length',
+              value: item.duration,
+              onChange: function (next) { patchItem('duration', next); },
+            }));
+          }
+          if (item.mediaKey) {
+            controls.push(el(TextControl, {
+              key: id + ':media:' + index,
+              label: 'Video file',
+              help: 'The video already on the page. Leave it unless the clinic gives you a replacement file path.',
+              value: item.mediaKey,
+              onChange: function (next) { patchItem('mediaKey', next); },
+            }));
+          }
+          if (item.poster) {
+            controls.push(el(TextControl, {
+              key: id + ':poster:' + index,
+              label: 'Poster image',
+              help: 'The still image shown before the video plays. Leave it to keep the current poster.',
+              value: item.poster,
+              onChange: function (next) { patchItem('poster', next); },
+            }));
+          }
+        });
+      }
+    });
+
+    if (!controls.length) {
+      return el('p', { className: 'cil-ed-help' }, 'This section has no text of its own.');
+    }
+    return el(Fragment, {}, controls);
+  }
+
+  function wordsPanel(clientId) {
+    return el(
+      PanelBody,
+      { title: 'Words in this section', initialOpen: true },
+      el('p', { className: 'cil-ed-instruction' }, 'Edit this section — change the fields below, then update the page.'),
+      el('p', { className: 'cil-ed-help' }, 'These fields edit the text already in this section. The layout stays the same.'),
+      el(SectionWords, { clientId: clientId })
+    );
+  }
 
   /* -------------------------------------------------------- layout blocks */
   registerBlockType('cil/section', {
@@ -310,9 +695,11 @@
         el(
           InspectorControls,
           {},
+          wordsPanel(props.clientId),
           el(
             PanelBody,
-            { title: 'Section layout' },
+            { title: 'Section layout', initialOpen: false },
+            el('p', { className: 'cil-ed-help' }, 'Background, width and the in-page link name. The words for this section are in the panel above.'),
             el(SelectControl, {
               label: 'Padding',
               value: props.attributes.size,
@@ -350,8 +737,8 @@
               },
             }),
             el(TextControl, {
-              label: 'HTML anchor',
-              help: 'Used for in-page links such as /team#haidar',
+              label: 'In-page link name',
+              help: 'Other buttons use this to jump to the section. Leave it unless you mean to change one of those links.',
               value: props.attributes.anchor,
               onChange: function (v) {
                 props.setAttributes({ anchor: v.replace(/^#/, '') });
@@ -398,6 +785,7 @@
           el(
             PanelBody,
             { title: 'Split' },
+            el('p', { className: 'cil-ed-help' }, 'This only changes how the two columns sit. The words and the photograph are edited from the section’s Words panel.'),
             el(ToggleControl, {
               label: 'Reverse on small screens',
               checked: !!props.attributes.reverse,
@@ -450,8 +838,35 @@
       category: 'circumcision-london',
       icon: 'screenoptions',
       supports: { html: false, reusable: false },
-      edit: function () {
-        return el('div', useBlockProps({ className: 'cil-editor-wrapper' }), el(InnerBlocks, { templateLock: false }));
+      edit: function (props) {
+        var several = def[0] === 'cil/home-additional-sections';
+        return el(
+          Fragment,
+          {},
+          el(
+            InspectorControls,
+            {},
+            several
+              ? el(
+                  PanelBody,
+                  { title: 'Sections in this group', initialOpen: true },
+                  el('p', { className: 'cil-ed-help' }, 'This group holds several sections and has no words of its own. Select a section below, then edit its words in the sidebar.')
+                )
+              : wordsPanel(props.clientId)
+          ),
+          el(
+            'div',
+            useBlockProps({ className: 'cil-editor-wrapper' }),
+            el(
+              'p',
+              { className: 'cil-ed-instruction' },
+              several
+                ? 'Select a section below, then edit its words in the sidebar.'
+                : 'Edit this section — change the fields in the sidebar, then update the page.'
+            ),
+            el(InnerBlocks, { templateLock: false })
+          )
+        );
       },
       save: function () {
         return el(InnerBlocks.Content);
@@ -486,47 +901,47 @@
 
   dynamicBlock('cil/trust-strip', 'Trust strip', {
     icon: 'shield',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The four figures shown under the age-group cards, including the Google and CQC links.',
+    panelTitle: 'Trust strip',
     attributes: {
       items: { type: 'array', default: [] },
       googleLogo: { type: 'boolean', default: false },
       cqcWidget: { type: 'boolean', default: false },
-    },
-    inspect: function (props) {
-      return el(
-        PanelBody,
-        { title: 'Trust indicators' },
-        el(ToggleControl, {
-          label: 'Icons, Google logo and Google Maps link',
-          checked: !!props.attributes.googleLogo,
-          onChange: function (v) {
-            props.setAttributes({ googleLogo: !!v });
-          },
-        }),
-        el(ToggleControl, {
-          label: 'CQC Good link in the CQC figure',
-          help: 'Shows a “CQC Good” link to the clinic’s CQC report page.',
-          checked: !!props.attributes.cqcWidget,
-          onChange: function (v) {
-            props.setAttributes({ cqcWidget: !!v });
-          },
-        })
-      );
+      googleLinkLabel: { type: 'string', default: '' },
+      cqcLinkLabel: { type: 'string', default: '' },
+      googleLinkUrl: { type: 'string', default: '' },
+      cqcLinkUrl: { type: 'string', default: '' },
     },
     fields: [
+      {
+        key: 'googleLogo',
+        label: 'Show the Google logo and a link to Google Maps',
+        kind: 'toggle',
+      },
+      { key: 'googleLinkLabel', label: 'Google Maps link text' },
+      { key: 'googleLinkUrl', label: 'Google Maps link destination' },
+      {
+        key: 'cqcWidget',
+        label: 'Show the CQC link under the CQC figure',
+        kind: 'toggle',
+      },
+      { key: 'cqcLinkLabel', label: 'CQC link text' },
+      { key: 'cqcLinkUrl', label: 'CQC link destination' },
       {
         key: 'items',
         label: 'Trust facts',
         kind: 'repeater',
-        help: 'Leave empty to keep the current clinic figures.',
-        blank: { n: '', l: '' },
+        help: 'Each row is one figure. Only the CQC fact needs the optional link.',
+        blank: { n: '', l: '', linkLabel: '', linkUrl: '' },
         fields: [
           { key: 'n', label: 'Figure' },
           { key: 'l', label: 'Text', rows: 3 },
+          { key: 'linkLabel', label: 'Link text, if this fact has one' },
+          { key: 'linkUrl', label: 'Link destination, if this fact has one' },
         ],
         addLabel: 'Add fact',
-        fallback: function () {
-          return window.cilEditorData && cilEditorData.trustDefaults ? cilEditorData.trustDefaults.slice() : [];
-        },
       },
     ],
   });
@@ -600,6 +1015,10 @@
 
   dynamicBlock('cil/hero', 'Homepage hero', {
     icon: 'cover-image',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The opening banner: heading, short text, the four facts, buttons, poster and video.',
+    panelTitle: 'Homepage hero',
     attributes: {
       eyebrow: { type: 'string', default: 'CQC registered · Edgware, North-West London' },
       title: { type: 'string', default: 'Dedicated Circumcision Clinic in London' },
@@ -620,117 +1039,63 @@
       showFacts: { type: 'boolean', default: true },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
-      { key: 'title', label: 'Heading', tagName: 'h1', className: 'display d-hero' },
-      { key: 'html', label: 'Right-column body', kind: 'html', tagName: 'div', className: 'hero-aside hero-copy' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'title', label: 'Main heading' },
+      { key: 'sub', label: 'Text under the heading', kind: 'markup', rows: 3 },
+      {
+        key: 'html',
+        label: 'Text in the right-hand column',
+        kind: 'html',
+        help: 'Leave this empty. This homepage does not show a column beside the heading.',
+      },
+      {
+        key: 'showFacts',
+        label: 'Show the row of facts',
+        kind: 'toggle',
+        help: 'The four short facts along the bottom of the banner.',
+      },
       {
         key: 'facts',
-        label: 'Hero facts',
+        label: 'Facts',
         kind: 'repeater',
-        help: 'Leave empty to keep the current theme facts.',
-        blank: { text: '' },
-        fields: [{ key: 'text', label: 'Fact' }],
+        blank: { text: '', icon: 'star' },
+        fields: [
+          {
+            key: 'text',
+            label: 'Fact',
+            rows: 2,
+            help: 'Words inside <b> and </b> stay bold, as they are on the page now.',
+          },
+          { key: 'icon', label: 'Symbol (google, shield, clock or pin)' },
+        ],
         addLabel: 'Add fact',
       },
-      { key: 'ctaLabel', label: 'Button text', placeholder: 'Book online' },
-      { key: 'ctaUrl', label: 'Button URL', placeholder: '/book/' },
-      { key: 'phoneLabel', label: 'Phone button text' },
-      { key: 'phoneUrl', label: 'Phone button URL' },
-      { key: 'posterId', label: 'Poster image', kind: 'image', help: 'Leave empty to keep the current theme poster.' },
-      { key: 'videoMp4Id', label: 'Hero video (MP4)', kind: 'video' },
-      { key: 'videoWebmId', label: 'Hero video (WebM)', kind: 'video' },
+      { key: 'ctaLabel', label: 'First button text' },
+      { key: 'ctaUrl', label: 'First button destination' },
+      { key: 'phoneLabel', label: 'Second button text' },
+      { key: 'phoneUrl', label: 'Second button destination' },
+      {
+        key: 'posterId',
+        label: 'Still image behind the video',
+        kind: 'image',
+        help: 'Leave this unset to keep the clinic photograph already on the page.',
+      },
+      {
+        key: 'videoMp4Id',
+        label: 'Hero video',
+        kind: 'video',
+        help: 'Leave this unset to keep the clinic video already on the page.',
+      },
+      { key: 'videoWebmId', label: 'Hero video, WebM version', kind: 'video' },
     ],
-    inspect: function (props) {
-      return el(
-        Fragment,
-        {},
-        el(
-          PanelBody,
-          { title: 'Hero copy' },
-          el(TextControl, {
-            label: 'Eyebrow',
-            value: props.attributes.eyebrow,
-            onChange: function (v) {
-              props.setAttributes({ eyebrow: v });
-            },
-          }),
-          el(TextareaControl, {
-            label: 'Heading',
-            value: props.attributes.title,
-            onChange: function (v) {
-              props.setAttributes({ title: v });
-            },
-          }),
-          el(TextareaControl, {
-            label: 'Right-column body HTML',
-            help: 'Clinic introduction paragraphs and bullet list shown beside the hero heading, over the video.',
-            value: props.attributes.html,
-            onChange: function (v) {
-              props.setAttributes({ html: v });
-            },
-          }),
-          el(TextareaControl, {
-            label: 'Short subheading',
-            help: 'Shown under the heading on the left.',
-            value: props.attributes.sub,
-            onChange: function (v) {
-              props.setAttributes({ sub: v });
-            },
-          }),
-          el(Repeater, {
-            items: props.attributes.facts,
-            blank: { text: '' },
-            fields: [{ key: 'text', label: 'Fact' }],
-            addLabel: 'Add fact',
-            onChange: function (next) {
-              props.setAttributes({ facts: next });
-            },
-          }),
-          el(ToggleControl, {
-            label: 'Show facts strip in hero',
-            help: 'Trust facts at the bottom of the hero, above the age-group cards.',
-            checked: false !== props.attributes.showFacts,
-            onChange: function (v) {
-              props.setAttributes({ showFacts: v });
-            },
-          })
-        ),
-        el(
-          PanelBody,
-          { title: 'Media', initialOpen: false },
-          el(AttachmentControl, {
-            label: 'Poster image',
-            help: 'Leave empty to keep the current theme poster.',
-            allowedTypes: ['image'],
-            value: props.attributes.posterId,
-            onSelect: function (media) {
-              props.setAttributes({ posterId: media.id || 0 });
-            },
-          }),
-          el(AttachmentControl, {
-            label: 'Hero video (MP4)',
-            help: 'Optional Media Library MP4. Large clinic videos are better hosted outside WordPress.',
-            allowedTypes: ['video'],
-            value: props.attributes.videoMp4Id,
-            onSelect: function (media) {
-              props.setAttributes({ videoMp4Id: media.id || 0 });
-            },
-          }),
-          el(AttachmentControl, {
-            label: 'Hero video (WebM)',
-            allowedTypes: ['video'],
-            value: props.attributes.videoWebmId,
-            onSelect: function (media) {
-              props.setAttributes({ videoWebmId: media.id || 0 });
-            },
-          })
-        )
-      );
-    },
   });
 
   dynamicBlock('cil/groups', 'Homepage age groups', {
     icon: 'groups',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The three treatment cards for babies, children and adults.',
+    panelTitle: 'Age-group cards',
     attributes: {
       level: { type: 'number', default: 2 },
       items: { type: 'array', default: [] },
@@ -738,74 +1103,46 @@
     },
     fields: [
       {
-        key: 'facts',
-        label: 'Facts above cards',
-        kind: 'repeater',
-        help: 'Shown directly above the three treatment cards. Leave empty to hide.',
-        blank: { text: '' },
-        fields: [{ key: 'text', label: 'Fact' }],
-        addLabel: 'Add fact',
+        key: 'level',
+        label: 'Heading size',
+        kind: 'select',
+        numeric: true,
+        options: [
+          { label: 'Large', value: '2' },
+          { label: 'Medium', value: '3' },
+        ],
       },
       {
         key: 'items',
-        label: 'Age-group cards',
+        label: 'Cards',
         kind: 'repeater',
-        help: 'Leave empty to keep the current theme cards.',
         blank: { title: '', age: '', price: '', blurb: '', cta: '', href: '', image: '', imageAlt: '' },
         fields: [
-          { key: 'title', label: 'Title' },
+          { key: 'title', label: 'Card heading' },
           { key: 'age', label: 'Age line' },
           { key: 'price', label: 'Price' },
           { key: 'blurb', label: 'Description', rows: 3 },
-          { key: 'cta', label: 'Link label' },
-          { key: 'href', label: 'URL' },
-          { key: 'image', label: 'Photo (theme image e.g. home/babies-card-720.webp, media-store key or full URL)' },
-          { key: 'imageAlt', label: 'Photo alt text (leave empty when the photo is decorative)' },
+          { key: 'cta', label: 'Link text' },
+          { key: 'href', label: 'Link destination' },
+          {
+            key: 'image',
+            label: 'Photo',
+            kind: 'image-url',
+            help: 'The photo already used on this card. Leave it unless you are choosing a replacement.',
+          },
+          { key: 'imageAlt', label: 'Image description for accessibility' },
         ],
         addLabel: 'Add card',
-        fallback: function () {
-          return window.cilEditorData && cilEditorData.groups ? cilEditorData.groups.slice() : [];
-        },
       },
     ],
-    inspect: function (props) {
-      return el(
-        Fragment,
-        {},
-        el(
-          PanelBody,
-          { title: 'Facts above cards' },
-          el(Repeater, {
-            items: props.attributes.facts,
-            blank: { text: '' },
-            fields: [{ key: 'text', label: 'Fact' }],
-            addLabel: 'Add fact',
-            onChange: function (next) {
-              props.setAttributes({ facts: next });
-            },
-          })
-        ),
-        el(
-          PanelBody,
-          { title: 'Cards' },
-          el(SelectControl, {
-            label: 'Heading level',
-            value: String(props.attributes.level),
-            options: [
-              { label: 'H2', value: '2' },
-              { label: 'H3', value: '3' },
-            ],
-            onChange: function (v) {
-              props.setAttributes({ level: parseInt(v, 10) });
-            },
-          })
-        )
-      );
-    },
   });
 
   dynamicBlock('cil/intro', 'Homepage introduction', {
     icon: 'id',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The location section: address, map and the two buttons.',
+    panelTitle: 'Location',
     attributes: {
       eyebrow: { type: 'string', default: 'Welcome to the clinic' },
       heading: {
@@ -823,17 +1160,26 @@
       btn2Url: { type: 'string', default: '' },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
-      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-1' },
-      { key: 'html', label: 'Body', kind: 'html', help: 'Leave blank to keep the current default paragraphs.' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'heading', label: 'Main heading' },
+      { key: 'html', label: 'Address and directions', kind: 'markup', rows: 6, help: 'Keep the existing link addresses unless you mean to change them.' },
       { key: 'btn1Label', label: 'First button text' },
-      { key: 'btn1Url', label: 'First button URL' },
+      { key: 'btn1Url', label: 'First button destination' },
       { key: 'btn2Label', label: 'Second button text' },
-      { key: 'btn2Url', label: 'Second button URL' },
-      { key: 'caption', label: 'Media caption' },
-      { key: 'mediaType', label: 'Media type', help: 'image, map, or blank (Location defaults to map).' },
-      { key: 'mapEmbedUrl', label: 'Map embed URL', help: 'Optional override. Leave blank for the clinic Google Maps embed.' },
-      { key: 'imageId', label: 'Photograph', kind: 'image', help: 'Used when media type is image.' },
+      { key: 'btn2Url', label: 'Second button destination' },
+      { key: 'caption', label: 'Caption' },
+      {
+        key: 'mediaType',
+        label: 'What to show beside the text',
+        kind: 'select',
+        options: [
+          { label: 'Map', value: 'map' },
+          { label: 'Photograph', value: 'image' },
+          { label: 'Automatic', value: '' },
+        ],
+      },
+      { key: 'mapEmbedUrl', label: 'Map address', help: 'Leave blank to keep the clinic map already on the page.' },
+      { key: 'imageId', label: 'Photograph', kind: 'image', help: 'Used only when a photograph is selected above.' },
     ],
     inspect: function (props) {
       return el(
@@ -934,6 +1280,10 @@
   });
 
   dynamicBlock('cil/process', 'Homepage process', {
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The four next steps.',
+    panelTitle: 'Next steps',
     icon: 'editor-ol',
     attributes: {
       eyebrow: { type: 'string', default: 'What happens' },
@@ -946,9 +1296,9 @@
       items: { type: 'array', default: [] },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
-      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-1' },
-      { key: 'lede', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'heading', label: 'Main heading' },
+      { key: 'lede', label: 'Text under the heading', kind: 'markup', rows: 3 },
       {
         key: 'items',
         label: 'Steps',
@@ -1109,8 +1459,15 @@
 
   dynamicBlock('cil/reviews', 'Homepage reviews', {
     icon: 'star-filled',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The review heading, statistic tiles, platform buttons, written quotes and video clips.',
+    panelTitle: 'Reviews',
     attributes: {
       eyebrow: { type: 'string', default: '' },
+      heading: { type: 'string', default: '' },
+      stars: { type: 'string', default: '' },
+      stats: { type: 'array', default: [] },
       checkedNote: { type: 'string', default: '' },
       body: { type: 'string', default: '' },
       platforms: { type: 'array', default: [] },
@@ -1123,23 +1480,36 @@
       quotes: { type: 'array', default: [] },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow' },
-      { key: 'checkedNote', label: 'Checked-on note (optional)', help: 'Leave blank to hide.' },
-      { key: 'body', label: 'Body paragraph (optional)', help: 'Leave blank to hide. Prefer platform buttons instead.' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'heading', label: 'Review heading' },
+      { key: 'checkedNote', label: 'Date the reviews were checked', help: 'Leave blank to hide this line.' },
+      { key: 'body', label: 'Extra paragraph', help: 'Leave blank to hide this line.' },
+      {
+        key: 'stats',
+        label: 'Statistic tiles',
+        kind: 'repeater',
+        blank: { n: '', l: '' },
+        fields: [
+          { key: 'n', label: 'Figure', rows: 2, help: 'Press Enter where the figure breaks onto a second line.' },
+          { key: 'l', label: 'Explanation', rows: 2 },
+        ],
+        addLabel: 'Add tile',
+      },
       {
         key: 'platforms',
-        label: 'Review platforms',
+        label: 'Review websites',
         kind: 'repeater',
         blank: { label: '', url: '', icon: '' },
         fields: [
-          { key: 'label', label: 'Button label' },
-          { key: 'url', label: 'URL' },
-          { key: 'icon', label: 'Icon key (google, trustpilot, yell)' },
+          { key: 'label', label: 'Button text' },
+          { key: 'url', label: 'Button destination' },
+          { key: 'icon', label: 'Logo (google, trustpilot or yell)' },
         ],
-        addLabel: 'Add platform',
+        addLabel: 'Add website',
       },
-      { key: 'testimonialsLabel', label: 'Testimonials button label' },
-      { key: 'testimonialsUrl', label: 'Testimonials button URL' },
+      { key: 'testimonialsLabel', label: 'Testimonials button text' },
+      { key: 'testimonialsUrl', label: 'Testimonials button destination' },
+      { key: 'stars', label: 'Stars shown on each written review' },
       { key: 'videosHeading', label: 'Videos heading' },
       {
         key: 'videos',
@@ -1147,25 +1517,33 @@
         kind: 'repeater',
         blank: { title: '', mediaKey: '', posterKey: '' },
         fields: [
-          { key: 'title', label: 'Category / title' },
-          { key: 'mediaKey', label: 'Media key' },
-          { key: 'posterKey', label: 'Poster key' },
+          { key: 'title', label: 'Video title' },
+          {
+            key: 'mediaKey',
+            label: 'Video file',
+            help: 'This is the video already on the page. Leave it unless the clinic gives you a replacement file path.',
+          },
+          {
+            key: 'posterKey',
+            label: 'Poster image file',
+            help: 'The still image shown before the video plays. Leave it to keep the current poster.',
+          },
         ],
         addLabel: 'Add video',
       },
-      { key: 'videosCtaLabel', label: 'Videos CTA label' },
-      { key: 'videosCtaUrl', label: 'Videos CTA URL' },
+      { key: 'videosCtaLabel', label: 'Videos button text' },
+      { key: 'videosCtaUrl', label: 'Videos button destination' },
       {
         key: 'quotes',
-        label: 'Written testimonials',
+        label: 'Written reviews',
         kind: 'repeater',
         blank: { name: '', context: '', quote: '' },
         fields: [
           { key: 'name', label: 'Name' },
-          { key: 'context', label: 'Context' },
-          { key: 'quote', label: 'Quote', rows: 4 },
+          { key: 'context', label: 'Who the review is about' },
+          { key: 'quote', label: 'Review', rows: 4 },
         ],
-        addLabel: 'Add quote',
+        addLabel: 'Add review',
       },
     ],
     inspect: function (props) {
@@ -1414,6 +1792,10 @@
 
   dynamicBlock('cil/cta-band', 'Talk to us band', {
     icon: 'megaphone',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The closing band: the message on the left, the two buttons, and the callback form.',
+    panelTitle: 'Talk to us',
     attributes: {
       title: { type: 'string', default: 'Ask us anything before you decide' },
       text: {
@@ -1433,21 +1815,40 @@
       formId: { type: 'string', default: 'home' },
       formSubject: { type: 'string', default: 'homepage callback' },
       callbackAnchor: { type: 'string', default: 'request-callback' },
+      nameLabel: { type: 'string', default: '' },
+      phoneFieldLabel: { type: 'string', default: '' },
+      dobLabel: { type: 'string', default: '' },
+      messageLabel: { type: 'string', default: '' },
+      optionalLabel: { type: 'string', default: '' },
+      consentHtml: { type: 'string', default: '' },
+      submitLabel: { type: 'string', default: '' },
+      invalidMessage: { type: 'string', default: '' },
+      sentMessage: { type: 'string', default: '' },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow', placeholder: 'Talk to us' },
-      { key: 'title', label: 'Heading', tagName: 'h2', className: 'display d-2' },
-      { key: 'text', label: 'Lede (HTML allowed)', kind: 'html' },
-      { key: 'ctaLabel', label: 'Book button text' },
-      { key: 'ctaUrl', label: 'Book button URL' },
-      { key: 'phoneLabel', label: 'Phone button text' },
-      { key: 'phoneUrl', label: 'Phone button URL' },
-      { key: 'cardEyebrow', label: 'Callback card eyebrow' },
-      { key: 'cardTitle', label: 'Card heading' },
-      { key: 'cardHtml', label: 'Card body / form intro', kind: 'html' },
-      { key: 'callbackAnchor', label: 'Callback card anchor id' },
-      { key: 'formId', label: 'Callback form id' },
-      { key: 'formSubject', label: 'Callback form subject' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'title', label: 'Main heading' },
+      { key: 'text', label: 'Text under the heading', kind: 'markup', rows: 6, help: 'Keep the telephone, email and WhatsApp links unless you mean to change them.' },
+      { key: 'ctaLabel', label: 'First button text' },
+      { key: 'ctaUrl', label: 'First button destination' },
+      { key: 'phoneLabel', label: 'Second button text' },
+      { key: 'phoneUrl', label: 'Second button destination' },
+      { key: 'showCallback', label: 'Show the callback form', kind: 'toggle' },
+      { key: 'cardEyebrow', label: 'Form heading' },
+      { key: 'cardTitle', label: 'Second form heading' },
+      { key: 'cardHtml', label: 'Text above the form', kind: 'html' },
+      { key: 'nameLabel', label: 'Name field label' },
+      { key: 'phoneFieldLabel', label: 'Phone field label' },
+      { key: 'dobLabel', label: 'Date of birth field label' },
+      { key: 'messageLabel', label: 'Message field label' },
+      { key: 'optionalLabel', label: 'Optional marker' },
+      { key: 'consentHtml', label: 'Consent wording', kind: 'markup', rows: 4, help: 'Keep the privacy-notice link unless you mean to change it.' },
+      { key: 'submitLabel', label: 'Form button text' },
+      { key: 'invalidMessage', label: 'Message when a field is missing' },
+      { key: 'sentMessage', label: 'Message after the form is sent' },
+      { key: 'callbackAnchor', label: 'In-page link name', help: 'Used by the “call you back” link. Leave this as request-callback.' },
+      { key: 'formId', label: 'Form reference', help: 'Leave this as home.' },
+      { key: 'formSubject', label: 'Email subject line' },
     ],
     inspect: function (props) {
       var ToggleControl = wp.components.ToggleControl;
@@ -1628,6 +2029,10 @@
 
   dynamicBlock('cil/section-head', 'Section heading', {
     icon: 'editor-textcolor',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The heading for this part of the page. Paragraphs underneath are edited by clicking them.',
+    panelTitle: 'Section heading',
     attributes: {
       eyebrow: { type: 'string', default: '' },
       heading: { type: 'string', default: '' },
@@ -1635,9 +2040,19 @@
       display: { type: 'string', default: 'd-2' },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
-      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-2' },
-      { key: 'lede', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'heading', label: 'Main heading' },
+      { key: 'lede', label: 'Text under the heading', kind: 'markup', rows: 3 },
+      {
+        key: 'display',
+        label: 'Heading size',
+        kind: 'select',
+        options: [
+          { label: 'Large', value: 'd-1' },
+          { label: 'Medium', value: 'd-2' },
+          { label: 'Small', value: 'd-3' },
+        ],
+      },
     ],
     inspect: function (props) {
       return el(
@@ -1942,23 +2357,26 @@
 
   dynamicBlock('cil/faq', 'FAQ accordion', {
     icon: 'editor-help',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The questions at the bottom of the homepage.',
+    panelTitle: 'Questions',
     attributes: {
       heading: { type: 'string', default: 'Questions people ask us' },
       eyebrow: { type: 'string', default: '' },
       items: { type: 'array', default: [] },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow', placeholder: 'Questions' },
-      { key: 'heading', label: 'Heading', tagName: 'h2', className: 'display d-2' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'heading', label: 'Main heading' },
       {
         key: 'items',
         label: 'Questions',
         kind: 'repeater',
-        help: 'Leave empty to use the homepage FAQs.',
         blank: { q: '', a: '' },
         fields: [
           { key: 'q', label: 'Question' },
-          { key: 'a', label: 'Answer', rows: 4 },
+          { key: 'a', label: 'Answer', rows: 4, help: 'Keep any existing links unless you mean to change them.' },
         ],
         addLabel: 'Add question',
       },
@@ -2050,6 +2468,9 @@
 
   dynamicBlock('cil/video-grid', 'Video testimonials', {
     icon: 'video-alt3',
+    mirrorInspect: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The practitioner video. The file path keeps the video that is already on the page.',
     attributes: {
       items: { type: 'array', default: [] },
       eyebrow: { type: 'string', default: '' },
@@ -2225,16 +2646,16 @@
               },
             }),
             el(TextControl, {
-              label: 'Poster media store key (optional)',
-              help: 'Poster image in the clinic media store, e.g. testimonials/posters/img-4542.jpg. Used when no poster image or poster URL is set.',
+              label: 'Poster image file',
+              help: 'The still image shown before the video plays. Leave this to keep the current poster.',
               value: item.posterKey || '',
               onChange: function (v) {
                 updateItem(i, { posterKey: v.trim() });
               },
             }),
             el(TextControl, {
-              label: 'Video media store key',
-              help: 'File path in the clinic media store, e.g. aftercare/videos/consultation-0-2.mp4 or testimonials/videos/img-4542.mp4. Used when no MP4 file or MP4 URL is set.',
+              label: 'Video file',
+              help: 'The video already on the page. Leave this unless the clinic gives you a replacement file path.',
               value: item.mediaKey || '',
               onChange: function (v) {
                 updateItem(i, { mediaKey: v.trim() });
@@ -2497,26 +2918,16 @@
             },
           }),
           el(SelectControl, {
-            label: 'Named theme asset',
+            label: 'Photograph already on the page',
+            help: 'Leave this on the current choice to keep the same picture.',
             value: attrs.name,
-            options: [
-              { label: 'Custom / none', value: '' },
-              { label: 'Baby and parent', value: 'baby-parent' },
-              { label: 'Waiting room', value: 'waiting-room' },
-              { label: 'Certificates', value: 'certificates' },
-              { label: 'Dr Haidar', value: 'dr-haidar' },
-              { label: 'Dr Samir', value: 'dr-samir' },
-              { label: 'Clinic exterior', value: 'clinic-exterior' },
-              { label: 'Treatment room', value: 'treatment-room' },
-              { label: 'Sterilisation', value: 'sterilisation' },
-              { label: 'Smiling baby', value: 'baby-smiling' },
-            ],
+            options: figureChoices,
             onChange: function (v) {
               props.setAttributes({ name: v });
             },
           }),
           el(TextControl, {
-            label: 'Alt',
+            label: 'Image description for accessibility',
             value: attrs.alt,
             onChange: function (v) {
               props.setAttributes({ alt: v });
@@ -2531,7 +2942,40 @@
           })
         )
       ),
-      el('div', useBlockProps({ className: 'cil-editor-canvas' }), ssr('cil/figure', previewAttrs))
+      el(
+        'div',
+        useBlockProps({ className: 'cil-editor-canvas' }),
+        el(
+          'div',
+          { className: 'cil-editor-fields' },
+          el('p', { className: 'cil-ed-instruction' }, 'Edit this section — change the fields below, then update the page.'),
+          el('p', { className: 'cil-ed-help' }, 'The same photograph, description and caption are in the sidebar.'),
+          el(SelectControl, {
+            label: 'Photograph already on the page',
+            help: 'Leave this on the current choice to keep the same picture.',
+            value: attrs.name || '',
+            options: figureChoices,
+            onChange: function (v) {
+              props.setAttributes({ name: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Image description for accessibility',
+            value: attrs.alt,
+            onChange: function (v) {
+              props.setAttributes({ alt: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Caption',
+            value: attrs.caption,
+            onChange: function (v) {
+              props.setAttributes({ caption: v });
+            },
+          })
+        ),
+        ssr('cil/figure', previewAttrs)
+      )
     );
   }
 
@@ -2677,12 +3121,26 @@
 
   dynamicBlock('cil/info-cards', 'Info cards', {
     icon: 'screenoptions',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The cards in this section. Card text keeps its paragraphs and links.',
+    panelTitle: 'Cards',
     attributes: {
       items: { type: 'array', default: [] },
       columns: { type: 'string', default: 'g-3' },
       headingLevel: { type: 'number', default: 3 },
     },
     fields: [
+      {
+        key: 'columns',
+        label: 'Cards in each row',
+        kind: 'select',
+        options: [
+          { label: 'Two', value: 'g-2' },
+          { label: 'Three', value: 'g-3' },
+          { label: 'Four', value: 'g-4' },
+        ],
+      },
       {
         key: 'items',
         label: 'Cards',
@@ -2701,15 +3159,15 @@
           cta2Class: 'btn btn-ghost',
         },
         fields: [
-          { key: 'icon', label: 'Icon (optional: award, users, heart, refresh, map, globe, shield, star, clock, pin, calendar, check)' },
-          { key: 'eyebrow', label: 'Eyebrow' },
-          { key: 'title', label: 'Heading' },
-          { key: 'body', label: 'Paragraph text', rows: 3 },
-          { key: 'html', label: 'Rich body (lists or address)', rows: 4 },
+          { key: 'icon', label: 'Symbol (award, users, heart, refresh, map, star)' },
+          { key: 'eyebrow', label: 'Small heading' },
+          { key: 'title', label: 'Card heading' },
+          { key: 'body', label: 'Card text', rows: 3 },
+          { key: 'html', label: 'Card text with links or an address', rows: 5, help: 'Use this when the card already contains a link or several lines. Keep those links unless you mean to change them.' },
           { key: 'ctaLabel', label: 'Button text' },
-          { key: 'ctaUrl', label: 'Button URL' },
+          { key: 'ctaUrl', label: 'Button destination' },
           { key: 'cta2Label', label: 'Second button text' },
-          { key: 'cta2Url', label: 'Second button URL' },
+          { key: 'cta2Url', label: 'Second button destination' },
         ],
         addLabel: 'Add card',
       },
@@ -2749,15 +3207,19 @@
 
   dynamicBlock('cil/rich-html', 'Rich content', {
     icon: 'editor-paragraph',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'A short piece of text, such as the line above the clinic introduction.',
+    panelTitle: 'Text',
     attributes: {
       html: { type: 'string', default: '' },
     },
     fields: [
       {
         key: 'html',
-        label: 'Content',
+        label: 'Text',
         kind: 'html',
-        help: 'Edit the text, links and lists. Layout and styling stay with the theme.',
+        help: 'Edit the words. Leave any existing styling in place.',
       },
     ],
   });

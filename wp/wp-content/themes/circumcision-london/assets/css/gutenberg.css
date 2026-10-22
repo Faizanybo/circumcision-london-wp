@@ -327,6 +327,22 @@ body.cil-home .entry-content {
   font-size: 13px;
   color: var(--muted);
 }
+.editor-styles-wrapper .cil-editor-fields,
+.editor-styles-wrapper .cil-editor-wrapper {
+  padding: 16px;
+  border: 1px solid #d7deea;
+  border-radius: 8px;
+  background: #f7f4ee;
+}
+.editor-styles-wrapper .cil-ed-instruction {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1c2430;
+}
 .editor-styles-wrapper .cil-ed-media {
   padding: 12px;
   border: 1px dashed var(--line);

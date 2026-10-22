@@ -34,14 +34,23 @@ if ( ! $items ) {
 $google_logo = ! empty( $args['google_logo'] );
 $cqc_widget  = ! empty( $args['cqc_widget'] ) && ! empty( $clinic['cqc_location_id'] );
 $enhanced    = $google_logo || $cqc_widget;
+$google_link_label = ( isset( $args['google_link_label'] ) && '' !== $args['google_link_label'] ) ? $args['google_link_label'] : __( 'View on Google Maps', 'circumcision-london' );
+$google_link_url   = ( isset( $args['google_link_url'] ) && '' !== $args['google_link_url'] ) ? $args['google_link_url'] : $clinic['reviews']['read_url'];
+$cqc_link_url      = ( isset( $args['cqc_link_url'] ) && '' !== $args['cqc_link_url'] ) ? $args['cqc_link_url'] : $clinic['cqc_url'];
+$cqc_link_label    = ( isset( $args['cqc_link_label'] ) && '' !== $args['cqc_link_label'] ) ? $args['cqc_link_label'] : sprintf( /* translators: %s: CQC rating */ __( 'CQC %s', 'circumcision-london' ), $clinic['cqc_rating'] );
 ?>
 <section class="section-sm bg-card edge<?php echo $enhanced ? ' cil-trust' : ''; ?>">
 	<div class="wrap">
 		<ul class="grid g-4" style="list-style:none">
 			<?php foreach ( $items as $i => $item ) : ?>
 				<?php
-				$n         = isset( $item['n'] ) ? (string) $item['n'] : '';
-				$l         = isset( $item['l'] ) ? (string) $item['l'] : '';
+				$n          = isset( $item['n'] ) ? (string) $item['n'] : '';
+				$l          = isset( $item['l'] ) ? (string) $item['l'] : '';
+				$link_label = isset( $item['linkLabel'] ) ? trim( (string) $item['linkLabel'] ) : '';
+				$link_url   = isset( $item['linkUrl'] ) ? trim( (string) $item['linkUrl'] ) : '';
+				if ( '' !== $link_label && '' !== $link_url ) {
+					$l .= ' <a href="' . esc_url( $link_url ) . '" rel="noopener" target="_blank" style="color:var(--blue-deep)">' . esc_html( $link_label ) . '</a>.';
+				}
 				$is_google = $google_logo && false !== stripos( $l, 'Google' );
 				$is_cqc    = $cqc_widget && 'CQC' === trim( $n );
 				$icon      = '';
@@ -56,10 +65,10 @@ $enhanced    = $google_logo || $cqc_widget;
 					<span class="n"><?php echo esc_html( $n ); ?></span>
 					<span class="l"><?php echo wp_kses_post( $l ); ?></span>
 					<?php if ( $is_google ) : ?>
-						<a class="stat-link" href="<?php echo esc_url( $clinic['reviews']['read_url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track="reviews-trust-strip"><?php esc_html_e( 'View on Google Maps', 'circumcision-london' ); ?></a>
+						<a class="stat-link" href="<?php echo esc_url( $google_link_url ); ?>" target="_blank" rel="noopener noreferrer" data-track="reviews-trust-strip"><?php echo esc_html( $google_link_label ); ?></a>
 					<?php endif; ?>
 					<?php if ( $is_cqc ) : ?>
-						<a class="stat-link" href="<?php echo esc_url( $clinic['cqc_url'] ); ?>" target="_blank" rel="noopener noreferrer" data-track="cqc-trust-strip"><?php echo esc_html( sprintf( /* translators: %s: CQC rating */ __( 'CQC %s', 'circumcision-london' ), $clinic['cqc_rating'] ) ); ?></a>
+						<a class="stat-link" href="<?php echo esc_url( $cqc_link_url ); ?>" target="_blank" rel="noopener noreferrer" data-track="cqc-trust-strip"><?php echo esc_html( $cqc_link_label ); ?></a>
 					<?php endif; ?>
 				</li>
 			<?php endforeach; ?>

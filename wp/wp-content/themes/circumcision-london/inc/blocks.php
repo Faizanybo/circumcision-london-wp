@@ -151,15 +151,35 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'boolean',
 						'default' => false,
 					),
+					'googleLinkLabel' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'cqcLinkLabel'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'googleLinkUrl'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'cqcLinkUrl'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					$items = cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() );
 					return '<div class="cil-breakout">' . cil_render_part(
 						'trust-strip',
 						array(
-							'items'       => $items,
-							'google_logo' => ! empty( $attrs['googleLogo'] ),
-							'cqc_widget'  => ! empty( $attrs['cqcWidget'] ),
+							'items'             => $items,
+							'google_logo'       => ! empty( $attrs['googleLogo'] ),
+							'cqc_widget'        => ! empty( $attrs['cqcWidget'] ),
+							'google_link_label' => isset( $attrs['googleLinkLabel'] ) ? $attrs['googleLinkLabel'] : '',
+							'cqc_link_label'    => isset( $attrs['cqcLinkLabel'] ) ? $attrs['cqcLinkLabel'] : '',
+							'google_link_url'   => isset( $attrs['googleLinkUrl'] ) ? $attrs['googleLinkUrl'] : '',
+							'cqc_link_url'      => isset( $attrs['cqcLinkUrl'] ) ? $attrs['cqcLinkUrl'] : '',
 						)
 					) . '</div>';
 				},
@@ -572,11 +592,26 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'array',
 						'default' => array(),
 					),
+					'heading'            => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'stars'              => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'stats'              => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					$quotes = cil_block_list( isset( $attrs['quotes'] ) ? $attrs['quotes'] : array() );
+					$stats  = cil_block_list( isset( $attrs['stats'] ) ? $attrs['stats'] : array() );
 					$args   = array(
 						'eyebrow'             => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+						'heading'             => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+						'stars'               => isset( $attrs['stars'] ) ? $attrs['stars'] : '',
 						'checked_note'        => isset( $attrs['checkedNote'] ) ? $attrs['checkedNote'] : '',
 						'body'                => isset( $attrs['body'] ) ? $attrs['body'] : '',
 						'platforms'           => cil_block_list( isset( $attrs['platforms'] ) ? $attrs['platforms'] : array() ),
@@ -587,6 +622,9 @@ function cil_register_dynamic_blocks() {
 						'videos_cta_label'    => isset( $attrs['videosCtaLabel'] ) ? $attrs['videosCtaLabel'] : '',
 						'videos_cta_url'      => isset( $attrs['videosCtaUrl'] ) ? $attrs['videosCtaUrl'] : '',
 					);
+					if ( $stats ) {
+						$args['stats'] = $stats;
+					}
 					if ( $quotes ) {
 						$args['quotes'] = $quotes;
 					}
@@ -832,25 +870,70 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => 'request-callback',
 					),
+					'nameLabel'       => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'phoneFieldLabel' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'dobLabel'        => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'messageLabel'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'optionalLabel'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'consentHtml'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'submitLabel'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'invalidMessage'  => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'sentMessage'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'cta-band',
 						array(
-							'title'            => isset( $attrs['title'] ) ? $attrs['title'] : '',
-							'text'             => isset( $attrs['text'] ) ? $attrs['text'] : '',
-							'eyebrow'          => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'cta_label'        => isset( $attrs['ctaLabel'] ) ? $attrs['ctaLabel'] : '',
-							'cta_url'          => isset( $attrs['ctaUrl'] ) ? $attrs['ctaUrl'] : '',
-							'phone_label'      => isset( $attrs['phoneLabel'] ) ? $attrs['phoneLabel'] : '',
-							'phone_url'        => isset( $attrs['phoneUrl'] ) ? $attrs['phoneUrl'] : '',
-							'card_title'       => isset( $attrs['cardTitle'] ) ? $attrs['cardTitle'] : '',
-							'card_html'        => isset( $attrs['cardHtml'] ) ? $attrs['cardHtml'] : '',
-							'card_eyebrow'     => isset( $attrs['cardEyebrow'] ) ? $attrs['cardEyebrow'] : '',
-							'show_callback'    => ! empty( $attrs['showCallback'] ),
-							'form_id'          => isset( $attrs['formId'] ) ? $attrs['formId'] : 'home',
-							'form_subject'     => isset( $attrs['formSubject'] ) ? $attrs['formSubject'] : 'homepage callback',
-							'callback_anchor'  => isset( $attrs['callbackAnchor'] ) ? $attrs['callbackAnchor'] : 'request-callback',
+							'title'              => isset( $attrs['title'] ) ? $attrs['title'] : '',
+							'text'               => isset( $attrs['text'] ) ? $attrs['text'] : '',
+							'eyebrow'            => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'cta_label'          => isset( $attrs['ctaLabel'] ) ? $attrs['ctaLabel'] : '',
+							'cta_url'            => isset( $attrs['ctaUrl'] ) ? $attrs['ctaUrl'] : '',
+							'phone_label'        => isset( $attrs['phoneLabel'] ) ? $attrs['phoneLabel'] : '',
+							'phone_url'          => isset( $attrs['phoneUrl'] ) ? $attrs['phoneUrl'] : '',
+							'card_title'         => isset( $attrs['cardTitle'] ) ? $attrs['cardTitle'] : '',
+							'card_html'          => isset( $attrs['cardHtml'] ) ? $attrs['cardHtml'] : '',
+							'card_eyebrow'       => isset( $attrs['cardEyebrow'] ) ? $attrs['cardEyebrow'] : '',
+							'show_callback'      => ! empty( $attrs['showCallback'] ),
+							'form_id'            => isset( $attrs['formId'] ) ? $attrs['formId'] : 'home',
+							'form_subject'       => isset( $attrs['formSubject'] ) ? $attrs['formSubject'] : 'homepage callback',
+							'callback_anchor'    => isset( $attrs['callbackAnchor'] ) ? $attrs['callbackAnchor'] : 'request-callback',
+							'name_label'         => isset( $attrs['nameLabel'] ) ? $attrs['nameLabel'] : '',
+							'phone_field_label'  => isset( $attrs['phoneFieldLabel'] ) ? $attrs['phoneFieldLabel'] : '',
+							'dob_label'          => isset( $attrs['dobLabel'] ) ? $attrs['dobLabel'] : '',
+							'message_label'      => isset( $attrs['messageLabel'] ) ? $attrs['messageLabel'] : '',
+							'optional_label'     => isset( $attrs['optionalLabel'] ) ? $attrs['optionalLabel'] : '',
+							'consent_html'       => isset( $attrs['consentHtml'] ) ? $attrs['consentHtml'] : '',
+							'submit_label'       => isset( $attrs['submitLabel'] ) ? $attrs['submitLabel'] : '',
+							'invalid_message'    => isset( $attrs['invalidMessage'] ) ? $attrs['invalidMessage'] : '',
+							'sent_message'       => isset( $attrs['sentMessage'] ) ? $attrs['sentMessage'] : '',
 						)
 					) . '</div>';
 				},
@@ -1692,6 +1775,10 @@ function cil_register_dynamic_blocks() {
 			),
 			'attributes'  => array(
 				'reverse' => array(
+					'type'    => 'boolean',
+					'default' => false,
+				),
+				'bleed'   => array(
 					'type'    => 'boolean',
 					'default' => false,
 				),

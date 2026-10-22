@@ -66,6 +66,24 @@ $text_has_markup = (bool) preg_match( '/<[a-z][\s\S]*>/i', $text );
 					</div>
 					<?php endif; ?>
 					<?php
+					$form_copy = array();
+					foreach (
+						array(
+							'name'     => 'name_label',
+							'phone'    => 'phone_field_label',
+							'dob'      => 'dob_label',
+							'message'  => 'message_label',
+							'optional' => 'optional_label',
+							'consent'  => 'consent_html',
+							'submit'   => 'submit_label',
+							'invalid'  => 'invalid_message',
+							'sent'     => 'sent_message',
+						) as $copy_key => $arg_key
+					) {
+						if ( isset( $args[ $arg_key ] ) && '' !== (string) $args[ $arg_key ] ) {
+							$form_copy[ $copy_key ] = (string) $args[ $arg_key ];
+						}
+					}
 					get_template_part(
 						'template-parts/callback-form',
 						null,
@@ -73,6 +91,7 @@ $text_has_markup = (bool) preg_match( '/<[a-z][\s\S]*>/i', $text );
 							'id'        => $form_id,
 							'subject'   => $form_subject,
 							'hide_note' => true,
+							'copy'      => $form_copy,
 						)
 					);
 					?>
