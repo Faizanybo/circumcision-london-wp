@@ -122,6 +122,44 @@ function cil_maps_url() {
 }
 
 /**
+ * Iframe src for an embedded Google Map of the clinic.
+ *
+ * Uses the Maps Embed API place endpoint when a key is set in Customizer
+ * (Appearance → Customize → Circumcision London → Google Maps embed key).
+ * Without a key, falls back to Google's standard maps embed URL for the
+ * clinic address (still served by Google, with Google attribution in-frame).
+ * Does not scrape tiles or strip attribution.
+ *
+ * @return string
+ */
+function cil_maps_embed_url() {
+	$clinic = cil_clinic();
+	$query  = $clinic['address']['street'] . ', ' . $clinic['address']['locality'] . ' ' . $clinic['address']['postcode'];
+	$key    = trim( (string) get_theme_mod( 'cil_google_maps_embed_key', '' ) );
+
+	if ( '' !== $key ) {
+		$url = add_query_arg(
+			array(
+				'key'   => $key,
+				'q'     => $query,
+				'zoom'  => '16',
+			),
+			'https://www.google.com/maps/embed/v1/place'
+		);
+	} else {
+		$url = 'https://maps.google.com/maps?q=' . rawurlencode( $query ) . '&z=16&hl=en&output=embed';
+	}
+
+	/**
+	 * Filter the Google Maps iframe embed URL for the clinic location.
+	 *
+	 * @param string               $url    Embed URL.
+	 * @param array<string, mixed> $clinic Clinic details.
+	 */
+	return (string) apply_filters( 'cil_maps_embed_url', $url, $clinic );
+}
+
+/**
  * Published price list from prototype src/site.js PRICES.
  *
  * @return array<string, array<int, array<string, string>>>

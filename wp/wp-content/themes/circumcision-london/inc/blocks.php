@@ -340,7 +340,7 @@ function cil_register_dynamic_blocks() {
 			$common,
 			array(
 				'title'           => __( 'Homepage introduction', 'circumcision-london' ),
-				'description'     => __( 'Welcome or location copy with a photograph. Location heading uses the clinic waiting-room image by default.', 'circumcision-london' ),
+				'description'     => __( 'Welcome or location copy with a photograph or Google Map. Location heading defaults to an embedded map.', 'circumcision-london' ),
 				'attributes'      => array(
 					'eyebrow' => array(
 						'type'    => 'string',
@@ -359,6 +359,14 @@ function cil_register_dynamic_blocks() {
 						'default' => 0,
 					),
 					'caption' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'mediaType' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'mapEmbedUrl' => array(
 						'type'    => 'string',
 						'default' => '',
 					),
@@ -383,15 +391,17 @@ function cil_register_dynamic_blocks() {
 					return '<div class="cil-breakout">' . cil_render_part(
 						'intro',
 						array(
-							'eyebrow'    => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
-							'heading'    => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
-							'html'       => isset( $attrs['html'] ) ? $attrs['html'] : '',
-							'image_id'   => isset( $attrs['imageId'] ) ? $attrs['imageId'] : 0,
-							'caption'    => isset( $attrs['caption'] ) ? $attrs['caption'] : '',
-							'btn1_label' => isset( $attrs['btn1Label'] ) ? $attrs['btn1Label'] : '',
-							'btn1_url'   => isset( $attrs['btn1Url'] ) ? $attrs['btn1Url'] : '',
-							'btn2_label' => isset( $attrs['btn2Label'] ) ? $attrs['btn2Label'] : '',
-							'btn2_url'   => isset( $attrs['btn2Url'] ) ? $attrs['btn2Url'] : '',
+							'eyebrow'        => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+							'heading'        => isset( $attrs['heading'] ) ? $attrs['heading'] : '',
+							'html'           => isset( $attrs['html'] ) ? $attrs['html'] : '',
+							'image_id'       => isset( $attrs['imageId'] ) ? $attrs['imageId'] : 0,
+							'caption'        => isset( $attrs['caption'] ) ? $attrs['caption'] : '',
+							'media_type'     => isset( $attrs['mediaType'] ) ? $attrs['mediaType'] : '',
+							'map_embed_url'  => isset( $attrs['mapEmbedUrl'] ) ? $attrs['mapEmbedUrl'] : '',
+							'btn1_label'     => isset( $attrs['btn1Label'] ) ? $attrs['btn1Label'] : '',
+							'btn1_url'       => isset( $attrs['btn1Url'] ) ? $attrs['btn1Url'] : '',
+							'btn2_label'     => isset( $attrs['btn2Label'] ) ? $attrs['btn2Label'] : '',
+							'btn2_url'       => isset( $attrs['btn2Url'] ) ? $attrs['btn2Url'] : '',
 						)
 					) . '</div>';
 				},

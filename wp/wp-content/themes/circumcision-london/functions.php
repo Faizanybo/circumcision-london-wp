@@ -1235,3 +1235,39 @@ function cil_customize_social( $wp_customize ) {
 	}
 }
 add_action( 'customize_register', 'cil_customize_social' );
+
+/**
+ * Optional Google Maps Embed API key (Appearance → Customize → Maps).
+ *
+ * When set, location embeds use Maps Embed API v1 (place). When empty, the
+ * theme uses Google's standard maps embed URL for the clinic address.
+ *
+ * @param WP_Customize_Manager $wp_customize Customizer.
+ */
+function cil_customize_maps( $wp_customize ) {
+	$wp_customize->add_section(
+		'cil_maps',
+		array(
+			'title'       => __( 'Maps', 'circumcision-london' ),
+			'description' => __( 'Optional Google Maps Embed API key for the homepage Location map. Create a key in Google Cloud with Maps Embed API enabled. Leave empty to use Google’s standard embed URL for the clinic address.', 'circumcision-london' ),
+			'priority'    => 165,
+		)
+	);
+	$wp_customize->add_setting(
+		'cil_google_maps_embed_key',
+		array(
+			'default'           => '',
+			'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+	$wp_customize->add_control(
+		'cil_google_maps_embed_key',
+		array(
+			'label'       => __( 'Google Maps Embed API key', 'circumcision-london' ),
+			'description' => __( 'Used only in iframe embeds. Never scrapes map tiles.', 'circumcision-london' ),
+			'section'     => 'cil_maps',
+			'type'        => 'text',
+		)
+	);
+}
+add_action( 'customize_register', 'cil_customize_maps' );

@@ -1,6 +1,6 @@
 <?php
 /**
- * Clinic introduction / location split with photograph.
+ * Clinic introduction / location split with photograph or Google Map.
  *
  * @package Circumcision_London
  */
@@ -25,6 +25,10 @@ $image_html = $image_id ? cil_attachment_image_html(
 ) : '';
 
 $is_location = ( 0 === strcasecmp( trim( $heading ), 'Location' ) );
+$media_type  = isset( $args['media_type'] ) ? sanitize_key( (string) $args['media_type'] ) : '';
+if ( ! in_array( $media_type, array( 'image', 'map' ), true ) ) {
+	$media_type = $is_location ? 'map' : 'image';
+}
 
 $figure = array(
 	'file'    => 'dr-haidar',
@@ -39,9 +43,31 @@ if ( $is_location ) {
 	);
 }
 
-$caption = ( isset( $args['caption'] ) && '' !== $args['caption'] ) ? $args['caption'] : $figure['caption'];
+$caption = ( isset( $args['caption'] ) && '' !== $args['caption'] ) ? $args['caption'] : ( 'map' === $media_type ? '' : $figure['caption'] );
+
+$map_embed = ( isset( $args['map_embed_url'] ) && '' !== trim( (string) $args['map_embed_url'] ) )
+	? esc_url_raw( trim( (string) $args['map_embed_url'] ) )
+	: cil_maps_embed_url();
+$clinic    = cil_clinic();
+
+$btn1_label = ( isset( $args['btn1_label'] ) && '' !== $args['btn1_label'] ) ? $args['btn1_label'] : '';
+$btn1_url   = ( isset( $args['btn1_url'] ) && '' !== $args['btn1_url'] ) ? $args['btn1_url'] : '';
+$btn2_label = ( isset( $args['btn2_label'] ) && '' !== $args['btn2_label'] ) ? $args['btn2_label'] : '';
+$btn2_url   = ( isset( $args['btn2_url'] ) && '' !== $args['btn2_url'] ) ? $args['btn2_url'] : '';
+if ( '' === $btn1_label ) {
+	$btn1_label = $is_location ? __( 'Book online', 'circumcision-london' ) : __( 'Meet the two practitioners', 'circumcision-london' );
+}
+if ( '' === $btn1_url ) {
+	$btn1_url = $is_location ? cil_book_url() : home_url( '/team/' );
+}
+if ( '' === $btn2_label ) {
+	$btn2_label = $is_location ? __( 'Call us', 'circumcision-london' ) : __( 'What aftercare involves', 'circumcision-london' );
+}
+if ( '' === $btn2_url ) {
+	$btn2_url = $is_location ? $clinic['phone']['href'] : home_url( '/aftercare/' );
+}
 ?>
-<section class="section">
+<section class="section<?php echo $is_location ? ' cil-location-section' : ''; ?>">
 	<div class="wrap">
 		<div class="split">
 			<div data-reveal>
@@ -58,18 +84,30 @@ $caption = ( isset( $args['caption'] ) && '' !== $args['caption'] ) ? $args['cap
 					<p><?php esc_html_e( 'Whether you are here for religious, medical, cultural or personal reasons, the standard does not change: local anaesthetic every time, tested and shown to be working before we begin, and aftercare we explain to you and then give you in writing.', 'circumcision-london' ); ?></p>
 					<?php endif; ?>
 				</div>
-				<?php
-				$btn1_label = ( isset( $args['btn1_label'] ) && '' !== $args['btn1_label'] ) ? $args['btn1_label'] : __( 'Meet the two practitioners', 'circumcision-london' );
-				$btn1_url   = ( isset( $args['btn1_url'] ) && '' !== $args['btn1_url'] ) ? $args['btn1_url'] : home_url( '/team/' );
-				$btn2_label = ( isset( $args['btn2_label'] ) && '' !== $args['btn2_label'] ) ? $args['btn2_label'] : __( 'What aftercare involves', 'circumcision-london' );
-				$btn2_url   = ( isset( $args['btn2_url'] ) && '' !== $args['btn2_url'] ) ? $args['btn2_url'] : home_url( '/aftercare/' );
-				?>
 				<div class="btn-row" style="margin-top:30px">
-					<a class="btn btn-ghost" href="<?php echo esc_url( $btn1_url ); ?>"><?php echo esc_html( $btn1_label ); ?></a>
-					<a class="btn btn-ghost" href="<?php echo esc_url( $btn2_url ); ?>"><?php echo esc_html( $btn2_label ); ?></a>
+					<a class="btn<?php echo $is_location ? '' : ' btn-ghost'; ?>" href="<?php echo esc_url( $btn1_url ); ?>"<?php echo $is_location ? ' data-track="book-location"' : ''; ?>><?php echo esc_html( $btn1_label ); ?></a>
+					<a class="btn btn-ghost" href="<?php echo esc_url( $btn2_url ); ?>"<?php echo $is_location ? ' data-track="call-location"' : ''; ?>><?php echo esc_html( $btn2_label ); ?></a>
 				</div>
 			</div>
 
+			<?php if ( 'map' === $media_type ) : ?>
+			<figure class="figure ratio-5-4 cil-location-map" data-reveal data-reveal-delay="120" data-cil-map-zoom>
+				<div class="cil-location-map__stage">
+					<div class="cil-location-map__orbit" aria-hidden="true"></div>
+					<iframe
+						class="cil-location-map__frame"
+						title="<?php echo esc_attr( sprintf( /* translators: %s: clinic legal name */ __( 'Google Map showing %s', 'circumcision-london' ), $clinic['legal_name'] ) ); ?>"
+						src="<?php echo esc_url( $map_embed ); ?>"
+						loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"
+						allowfullscreen></iframe>
+					<div class="cil-location-map__veil" aria-hidden="true"></div>
+				</div>
+				<?php if ( $caption ) : ?>
+				<figcaption><?php echo esc_html( $caption ); ?></figcaption>
+				<?php endif; ?>
+			</figure>
+			<?php else : ?>
 			<figure class="figure ratio-5-4" data-reveal data-reveal-delay="120">
 				<?php if ( $image_html ) : ?>
 					<?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_attachment_image(). ?>
@@ -82,6 +120,7 @@ $caption = ( isset( $args['caption'] ) && '' !== $args['caption'] ) ? $args['cap
 				<?php endif; ?>
 				<figcaption><?php echo esc_html( $caption ); ?></figcaption>
 			</figure>
+			<?php endif; ?>
 		</div>
 	</div>
 </section>

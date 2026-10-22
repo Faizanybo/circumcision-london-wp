@@ -173,6 +173,33 @@
     });
   });
 
+  /* ----------------------------------------- location map Earth-style zoom */
+  /* Visual zoom over a legitimate Google Maps iframe (no tile scraping).
+     prefers-reduced-motion skips the fly-in and shows the settled map. */
+  (function () {
+    var maps = d.querySelectorAll('[data-cil-map-zoom]');
+    if (!maps.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function settle(el) {
+      el.classList.add('is-settled');
+      el.classList.remove('is-zooming');
+    }
+    if (reduce || !('IntersectionObserver' in window)) {
+      maps.forEach(settle);
+      return;
+    }
+    var mio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        el.classList.add('is-zooming');
+        window.setTimeout(function () { settle(el); }, 2600);
+        mio.unobserve(el);
+      });
+    }, { threshold: 0.35, rootMargin: '0px 0px -10% 0px' });
+    maps.forEach(function (el) { mio.observe(el); });
+  })();
+
   /* ------------------------------------------------------- scroll reveal */
   var reveals = d.querySelectorAll('[data-reveal]');
   if (!reveals.length) {

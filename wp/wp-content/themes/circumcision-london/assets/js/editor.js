@@ -815,6 +815,8 @@
       html: { type: 'string', default: '' },
       imageId: { type: 'number', default: 0 },
       caption: { type: 'string', default: '' },
+      mediaType: { type: 'string', default: '' },
+      mapEmbedUrl: { type: 'string', default: '' },
       btn1Label: { type: 'string', default: '' },
       btn1Url: { type: 'string', default: '' },
       btn2Label: { type: 'string', default: '' },
@@ -828,8 +830,10 @@
       { key: 'btn1Url', label: 'First button URL' },
       { key: 'btn2Label', label: 'Second button text' },
       { key: 'btn2Url', label: 'Second button URL' },
-      { key: 'caption', label: 'Photograph caption' },
-      { key: 'imageId', label: 'Photograph', kind: 'image', help: 'Leave empty for the theme image (waiting room when heading is Location).' },
+      { key: 'caption', label: 'Media caption' },
+      { key: 'mediaType', label: 'Media type', help: 'image, map, or blank (Location defaults to map).' },
+      { key: 'mapEmbedUrl', label: 'Map embed URL', help: 'Optional override. Leave blank for the clinic Google Maps embed.' },
+      { key: 'imageId', label: 'Photograph', kind: 'image', help: 'Used when media type is image.' },
     ],
     inspect: function (props) {
       return el(
@@ -859,14 +863,65 @@
             onChange: function (v) {
               props.setAttributes({ html: v });
             },
+          }),
+          el(TextControl, {
+            label: 'First button text',
+            value: props.attributes.btn1Label,
+            onChange: function (v) {
+              props.setAttributes({ btn1Label: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'First button URL',
+            value: props.attributes.btn1Url,
+            onChange: function (v) {
+              props.setAttributes({ btn1Url: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Second button text',
+            value: props.attributes.btn2Label,
+            onChange: function (v) {
+              props.setAttributes({ btn2Label: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Second button URL',
+            value: props.attributes.btn2Url,
+            onChange: function (v) {
+              props.setAttributes({ btn2Url: v });
+            },
           })
         ),
         el(
           PanelBody,
-          { title: 'Photograph', initialOpen: false },
+          { title: 'Media', initialOpen: true },
+          el(TextControl, {
+            label: 'Media type',
+            help: 'Use “map” for Google Maps, “image” for a photograph. Blank: Location uses map.',
+            value: props.attributes.mediaType,
+            onChange: function (v) {
+              props.setAttributes({ mediaType: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Map embed URL',
+            help: 'Optional. Leave blank to use the clinic address embed (or Maps Embed API key from Customizer).',
+            value: props.attributes.mapEmbedUrl,
+            onChange: function (v) {
+              props.setAttributes({ mapEmbedUrl: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Caption',
+            value: props.attributes.caption,
+            onChange: function (v) {
+              props.setAttributes({ caption: v });
+            },
+          }),
           el(AttachmentControl, {
             label: 'Photograph',
-            help: 'Leave empty for the theme image (Dr Haidar, or the waiting room when the heading is Location).',
+            help: 'Used when media type is image.',
             allowedTypes: ['image'],
             value: props.attributes.imageId,
             onSelect: function (media) {
