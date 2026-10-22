@@ -602,6 +602,95 @@
         return;
       }
 
+      if (block.name === 'cil/spec-panel') {
+        if (attrs.eyebrow) {
+          controls.push(wordControl(id, 'eyebrow', 'Small heading', attrs.eyebrow, '', 0));
+        }
+        controls.push(
+          el(Repeater, {
+            key: id + ':rows',
+            items: attrs.rows || [],
+            blank: { k: '', v: '' },
+            fields: [
+              { key: 'k', label: 'Fact' },
+              { key: 'v', label: 'Detail' },
+            ],
+            addLabel: 'Add fact',
+            onChange: function (next) {
+              writeBlock(id, 'rows', next);
+            },
+          })
+        );
+        if (attrs.note) {
+          controls.push(wordControl(id, 'note', 'Note under the facts', attrs.note, 'Keep the price-list link unless you mean to change it.', 3));
+        }
+        return;
+      }
+
+      if (block.name === 'cil/steps') {
+        controls.push(
+          el(Repeater, {
+            key: id + ':steps',
+            items: attrs.items || [],
+            blank: { h: '', p: '' },
+            fields: [
+              { key: 'h', label: 'Step heading' },
+              { key: 'p', label: 'Step text', rows: 4 },
+            ],
+            addLabel: 'Add step',
+            onChange: function (next) {
+              writeBlock(id, 'items', next);
+            },
+          })
+        );
+        return;
+      }
+
+      if (block.name === 'cil/group-cards') {
+        controls.push(
+          el(Repeater, {
+            key: id + ':groups',
+            items: attrs.items || [],
+            blank: { title: '', age: '', price: '', blurb: '', cta: '', href: '', image: '', imageAlt: '' },
+            fields: [
+              { key: 'title', label: 'Card heading' },
+              { key: 'age', label: 'Age line' },
+              { key: 'price', label: 'Price' },
+              { key: 'blurb', label: 'Description', rows: 3 },
+              { key: 'cta', label: 'Link text' },
+              { key: 'href', label: 'Link destination' },
+              { key: 'image', label: 'Photo', kind: 'image-url', help: 'The photo already used on this card. Leave it unless you are choosing a replacement.' },
+              { key: 'imageAlt', label: 'Image description for accessibility' },
+            ],
+            addLabel: 'Add card',
+            onChange: function (next) {
+              writeBlock(id, 'items', next);
+            },
+          })
+        );
+        return;
+      }
+
+      if (block.name === 'cil/callback-card') {
+        controls.push(wordControl(id, 'eyebrow', 'Form heading', attrs.eyebrow, '', 0));
+        controls.push(wordControl(id, 'title', 'Main heading', attrs.title, '', 0));
+        if (attrs.formNote) {
+          controls.push(wordControl(id, 'formNote', 'Text above the form', attrs.formNote, '', 3));
+        }
+        controls.push(wordControl(id, 'nameLabel', 'Name field label', attrs.nameLabel, '', 0));
+        controls.push(wordControl(id, 'phoneLabel', 'Phone field label', attrs.phoneLabel, '', 0));
+        controls.push(wordControl(id, 'dobLabel', 'Date of birth field label', attrs.dobLabel, '', 0));
+        controls.push(wordControl(id, 'messageLabel', 'Message field label', attrs.messageLabel, '', 0));
+        controls.push(wordControl(id, 'optionalLabel', 'Optional marker', attrs.optionalLabel, '', 0));
+        if (attrs.consentHtml) {
+          controls.push(wordControl(id, 'consentHtml', 'Consent wording', attrs.consentHtml, 'Keep the privacy-notice link unless you mean to change it.', 4));
+        }
+        controls.push(wordControl(id, 'submitLabel', 'Form button text', attrs.submitLabel, '', 0));
+        controls.push(wordControl(id, 'invalidMessage', 'Message when a field is missing', attrs.invalidMessage, '', 2));
+        controls.push(wordControl(id, 'sentMessage', 'Message after the form is sent', attrs.sentMessage, '', 3));
+        return;
+      }
+
       if (block.name === 'cil/video-grid') {
         (attrs.items || []).forEach(function (item, index) {
           function patchItem(key, value) {
@@ -950,6 +1039,10 @@
 
   dynamicBlock('cil/group-cards', 'Age group cards', {
     icon: 'groups',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The cards for the other age groups.',
+    panelTitle: 'Other ages',
     attributes: {
       level: { type: 'number', default: 3 },
       exclude: { type: 'string', default: '' },
@@ -958,20 +1051,32 @@
     },
     fields: [
       {
+        key: 'level',
+        label: 'Heading size',
+        kind: 'select',
+        numeric: true,
+        options: [
+          { label: 'Large', value: '2' },
+          { label: 'Medium', value: '3' },
+        ],
+      },
+      { key: 'exclude', label: 'Hide the card for this page', help: 'The address of the page you are editing, so its own card is not repeated here.' },
+      { key: 'banded', label: 'Use the warm background', kind: 'toggle' },
+      {
         key: 'items',
-        label: 'Age-group cards',
+        label: 'Cards',
         kind: 'repeater',
-        help: 'Leave empty to keep the current theme cards.',
+        help: 'Leave this empty on a page that should keep the standard age-group cards.',
         blank: { title: '', age: '', price: '', blurb: '', cta: '', href: '', image: '', imageAlt: '' },
         fields: [
-          { key: 'title', label: 'Title' },
+          { key: 'title', label: 'Card heading' },
           { key: 'age', label: 'Age line' },
           { key: 'price', label: 'Price' },
           { key: 'blurb', label: 'Description', rows: 3 },
-          { key: 'cta', label: 'Link label' },
-          { key: 'href', label: 'URL' },
-          { key: 'image', label: 'Photo (optional theme image path, e.g. home/children-card-720.webp)' },
-          { key: 'imageAlt', label: 'Photo alt text (leave empty if decorative)' },
+          { key: 'cta', label: 'Link text' },
+          { key: 'href', label: 'Link destination' },
+          { key: 'image', label: 'Photo', kind: 'image-url', help: 'The photo already used on this card. Leave it unless you are choosing a replacement.' },
+          { key: 'imageAlt', label: 'Image description for accessibility' },
         ],
         addLabel: 'Add card',
         fallback: function () {
@@ -1697,6 +1802,10 @@
 
   dynamicBlock('cil/callback-card', 'Callback card', {
     icon: 'email-alt',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The callback form: its heading, field labels, consent wording and button.',
+    panelTitle: 'Callback form',
     attributes: {
       eyebrow: { type: 'string', default: 'Request a call back' },
       title: { type: 'string', default: 'Ask us first' },
@@ -1718,20 +1827,24 @@
       sentMessage: { type: 'string', default: '' },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
-      { key: 'title', label: 'Heading', tagName: 'h2', className: 'display d-2' },
-      { key: 'formNote', label: 'Form introduction', kind: 'html', help: 'Leave blank to keep the standard introduction.' },
-      { key: 'nameLabel', label: 'Name field label', placeholder: 'Your name' },
-      { key: 'phoneLabel', label: 'Phone field label', placeholder: 'Phone number' },
-      { key: 'dobLabel', label: 'Date of birth field label', placeholder: 'Patient DOB' },
-      { key: 'messageLabel', label: 'Message field label', placeholder: 'Anything you would like us to know' },
-      { key: 'optionalLabel', label: 'Optional marker', placeholder: '(optional)' },
-      { key: 'consentHtml', label: 'Consent text', kind: 'html', tagName: 'p', className: '', help: 'Leave blank to keep the standard consent wording.' },
-      { key: 'submitLabel', label: 'Button text', placeholder: 'Request a call back' },
-      { key: 'invalidMessage', label: 'Message when a field is missing', placeholder: 'Please complete the highlighted field.' },
-      { key: 'sentMessage', label: 'Message after sending', placeholder: 'Opening your email app so this reaches the clinic. If nothing happens, call 020 8951 3794.' },
-      { key: 'urgentTitle', label: 'Urgent heading', tagName: 'h2', className: 'display d-3' },
-      { key: 'urgentBody', label: 'Urgent body', kind: 'html', help: 'Leave blank to keep the current theme urgent note.' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'title', label: 'Main heading' },
+      { key: 'hideNote', label: 'Hide the long introduction above the form', kind: 'toggle' },
+      { key: 'formNote', label: 'Text above the form', kind: 'markup', rows: 4, help: 'Leave this blank to keep the standard introduction.' },
+      { key: 'nameLabel', label: 'Name field label' },
+      { key: 'phoneLabel', label: 'Phone field label' },
+      { key: 'dobLabel', label: 'Date of birth field label' },
+      { key: 'messageLabel', label: 'Message field label' },
+      { key: 'optionalLabel', label: 'Optional marker' },
+      { key: 'consentHtml', label: 'Consent wording', kind: 'markup', rows: 4, help: 'Keep the privacy-notice link unless you mean to change it. Leave blank to keep the standard wording.' },
+      { key: 'submitLabel', label: 'Form button text' },
+      { key: 'invalidMessage', label: 'Message when a field is missing' },
+      { key: 'sentMessage', label: 'Message after the form is sent', kind: 'markup', rows: 3 },
+      { key: 'urgent', label: 'Show the urgent note under the form', kind: 'toggle' },
+      { key: 'urgentTitle', label: 'Urgent heading' },
+      { key: 'urgentBody', label: 'Urgent note', kind: 'markup', rows: 3, help: 'Leave blank to keep the standard urgent note.' },
+      { key: 'formId', label: 'Form reference', help: 'Leave this as babies on this page.' },
+      { key: 'subject', label: 'Email subject line' },
     ],
     inspect: function (props) {
       return el(
@@ -1845,7 +1958,7 @@
       { key: 'showCallback', label: 'Show the callback form', kind: 'toggle' },
       { key: 'cardEyebrow', label: 'Form heading' },
       { key: 'cardTitle', label: 'Second form heading' },
-      { key: 'cardHtml', label: 'Text above the form', kind: 'html' },
+      { key: 'cardHtml', label: 'Text beside the buttons', kind: 'markup', rows: 6, help: 'Keep the WhatsApp link unless you mean to change it.' },
       { key: 'nameLabel', label: 'Name field label' },
       { key: 'phoneFieldLabel', label: 'Phone field label' },
       { key: 'dobLabel', label: 'Date of birth field label' },
@@ -1956,6 +2069,10 @@
 
   dynamicBlock('cil/page-head', 'Page heading', {
     icon: 'heading',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The title at the top of the page, the short introduction and the breadcrumb trail.',
+    panelTitle: 'Page heading',
     attributes: {
       eyebrow: { type: 'string', default: '' },
       title: { type: 'string', default: 'Page title' },
@@ -1966,22 +2083,22 @@
       crumbs: { type: 'array', default: [] },
     },
     fields: [
-      { key: 'eyebrow', label: 'Eyebrow', tagName: 'span', className: 'caps eyebrow' },
-      { key: 'title', label: 'Title', tagName: 'h1', className: 'display d-1' },
-      { key: 'lede', label: 'Lede', kind: 'html', tagName: 'p', className: 'lede' },
-      { key: 'reviewedLabel', label: 'Reviewed-by wording', placeholder: 'Clinically reviewed by' },
-      { key: 'reviewedBy', label: 'Reviewed by' },
-      { key: 'homeLabel', label: 'First breadcrumb label', placeholder: 'Home' },
+      { key: 'eyebrow', label: 'Small heading above the title' },
+      { key: 'title', label: 'Main heading' },
+      { key: 'lede', label: 'Text under the heading', kind: 'markup', rows: 4 },
+      { key: 'reviewedLabel', label: 'Review line label' },
+      { key: 'reviewedBy', label: 'Reviewed by', kind: 'markup', rows: 2, help: 'Keep the link to the practitioner unless you mean to change it.' },
+      { key: 'homeLabel', label: 'First breadcrumb' },
       {
         key: 'crumbs',
-        label: 'Breadcrumbs (after Home)',
+        label: 'Rest of the breadcrumb trail',
         kind: 'repeater',
         blank: { label: '', href: '' },
         fields: [
-          { key: 'label', label: 'Label' },
-          { key: 'href', label: 'URL (blank on last crumb)' },
+          { key: 'label', label: 'Breadcrumb text' },
+          { key: 'href', label: 'Breadcrumb destination', help: 'Leave this blank on the last crumb, which is this page.' },
         ],
-        addLabel: 'Add crumb',
+        addLabel: 'Add breadcrumb',
       },
     ],
     inspect: function (props) {
@@ -2148,6 +2265,10 @@
 
   dynamicBlock('cil/steps', 'Process steps', {
     icon: 'editor-ol',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The numbered steps for the appointment.',
+    panelTitle: 'Appointment steps',
     attributes: {
       items: {
         type: 'array',
@@ -2164,8 +2285,8 @@
         kind: 'repeater',
         blank: { h: '', p: '' },
         fields: [
-          { key: 'h', label: 'Heading' },
-          { key: 'p', label: 'Text', rows: 3 },
+          { key: 'h', label: 'Step heading' },
+          { key: 'p', label: 'Step text', rows: 4 },
         ],
         addLabel: 'Add step',
       },
@@ -2752,11 +2873,30 @@
 
   dynamicBlock('cil/spec-panel', 'At-a-glance spec', {
     icon: 'index-card',
+    shared: true,
+    instruction: 'Edit this section — change the fields below, then update the page.',
+    description: 'The short list of facts beside the introduction, including the price note.',
+    panelTitle: 'At a glance',
     attributes: {
       eyebrow: { type: 'string', default: 'At a glance' },
       rows: { type: 'array', default: [] },
       note: { type: 'string', default: '' },
     },
+    fields: [
+      { key: 'eyebrow', label: 'Small heading' },
+      {
+        key: 'rows',
+        label: 'Facts',
+        kind: 'repeater',
+        blank: { k: '', v: '' },
+        fields: [
+          { key: 'k', label: 'Fact' },
+          { key: 'v', label: 'Detail' },
+        ],
+        addLabel: 'Add fact',
+      },
+      { key: 'note', label: 'Note under the facts', kind: 'markup', rows: 3, help: 'Keep the price-list link unless you mean to change it.' },
+    ],
     inspect: function (props) {
       return el(
         PanelBody,
