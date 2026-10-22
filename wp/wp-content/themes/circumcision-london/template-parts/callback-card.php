@@ -25,9 +25,10 @@ $has_urgent   = ( '' !== $urgent_title || '' !== $urgent_body || ! empty( $args[
 		'template-parts/callback-form',
 		null,
 		array(
-			'id'      => $form_id,
-			'subject' => $subject,
-			'copy'    => ( isset( $args['copy'] ) && is_array( $args['copy'] ) ) ? $args['copy'] : array(),
+			'id'        => $form_id,
+			'subject'   => $subject,
+			'hide_note' => ! empty( $args['hide_note'] ),
+			'copy'      => ( isset( $args['copy'] ) && is_array( $args['copy'] ) ) ? $args['copy'] : array(),
 		)
 	);
 	?>

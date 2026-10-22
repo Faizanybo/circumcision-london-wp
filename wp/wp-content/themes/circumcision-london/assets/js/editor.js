@@ -1706,6 +1706,7 @@
       urgentTitle: { type: 'string', default: '' },
       urgentBody: { type: 'string', default: '' },
       formNote: { type: 'string', default: '' },
+      hideNote: { type: 'boolean', default: false },
       nameLabel: { type: 'string', default: '' },
       phoneLabel: { type: 'string', default: '' },
       dobLabel: { type: 'string', default: '' },
@@ -1762,6 +1763,14 @@
           value: props.attributes.subject,
           onChange: function (v) {
             props.setAttributes({ subject: v });
+          },
+        }),
+        el(ToggleControl, {
+          label: 'Hide form introduction',
+          help: 'Match the homepage callback: fields only.',
+          checked: !!props.attributes.hideNote,
+          onChange: function (v) {
+            props.setAttributes({ hideNote: !!v });
           },
         }),
         el(ToggleControl, {

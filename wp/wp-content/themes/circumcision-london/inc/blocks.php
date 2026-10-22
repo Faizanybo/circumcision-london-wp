@@ -718,6 +718,10 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'string',
 						'default' => '',
 					),
+					'hideNote'       => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
 					'nameLabel'      => array(
 						'type'    => 'string',
 						'default' => '',
@@ -784,6 +788,7 @@ function cil_register_dynamic_blocks() {
 							'urgent'       => ! empty( $attrs['urgent'] ),
 							'urgent_title' => isset( $attrs['urgentTitle'] ) ? $attrs['urgentTitle'] : '',
 							'urgent_body'  => isset( $attrs['urgentBody'] ) ? $attrs['urgentBody'] : '',
+							'hide_note'    => ! empty( $attrs['hideNote'] ),
 							'copy'         => $copy,
 						)
 					);

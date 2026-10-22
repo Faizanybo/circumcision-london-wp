@@ -225,11 +225,12 @@ body.page-babies #appointment-walkthrough .steps h3 { font-size: 18px; color: va
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
     column-gap: clamp(40px, 5vw, 88px);
-    align-items: start;
+    /* Vertically centre the “On the day” heading beside the timeline. */
+    align-items: center;
   }
   body.page-babies #appointment-walkthrough > .wrap > .section-head {
-    position: sticky;
-    top: 120px;
+    /* Static with the steps — matches homepage split/CTA image behaviour. */
+    position: static;
     margin-bottom: 0;
   }
 }
@@ -326,10 +327,11 @@ body.page-babies .split:has(> .card form) > .figure {
   background: none;
 }
 @media (min-width: 901px) {
-  body.page-babies .split:has(> .card form) { align-items: start; }
+  body.page-babies .split:has(> .card form) { align-items: center; }
   body.page-babies .split:has(> .card form) > .figure {
-    position: sticky;
-    top: 120px;
+    /* Keep the figure in normal flow (no sticky/parallax scroll). */
+    position: static;
+    top: auto;
   }
 }
 body.page-babies .split:has(> .card form) > .figure picture,
