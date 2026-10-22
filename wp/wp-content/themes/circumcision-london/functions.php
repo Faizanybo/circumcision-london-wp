@@ -728,12 +728,11 @@ function cil_logo_html( $clinic, $context = 'header' ) {
 			'assets/images/logo.png',
 		)
 		: array(
-			// Icon + "CIRCUMCISION IN LONDON" only (client request); trust lines live in the top bar.
+			// Transparent horizontal lockup only — never fall back to white-plate JPGs/PNGs.
+			'assets/images/circumcision-in-london-header-logo.png',
 			'assets/images/circumcision-in-london-logo-wordmark.png',
 			'assets/images/Circumcision in London Logo - transparent background.png',
-			'assets/images/Circumcision in London Clinic Logo - header.png',
 			'assets/images/circumcision-in-london-logo.png',
-			'assets/images/Circumcision in London Logo.png',
 			'assets/images/logo.png',
 		);
 
@@ -746,9 +745,11 @@ function cil_logo_html( $clinic, $context = 'header' ) {
 		$w    = ( $size && ! empty( $size[0] ) ) ? (int) $size[0] : (int) $attrs['width'];
 		$h    = ( $size && ! empty( $size[1] ) ) ? (int) $size[1] : (int) $attrs['height'];
 		$prio = ( 'header' === $context ) ? ' fetchpriority="high"' : '';
+		$ver  = (string) filemtime( $path );
+		$src  = get_template_directory_uri() . '/' . $relative . '?v=' . rawurlencode( $ver );
 		return sprintf(
 			'<img src="%1$s" alt="%2$s" width="%3$d" height="%4$d"%5$s>',
-			esc_url( get_template_directory_uri() . '/' . $relative ),
+			esc_url( $src ),
 			esc_attr( $clinic['name'] ),
 			$w,
 			$h,

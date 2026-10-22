@@ -23,7 +23,8 @@
   width: 100%;
   max-width: var(--chrome-max, 1440px);
   margin-inline: auto;
-  padding: 7px clamp(16px, 2.5vw, 36px);
+  /* Same horizontal inset as .footer .wrap so logos share one left edge. */
+  padding: 7px var(--gap);
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -41,10 +42,11 @@
   width: 100%;
   max-width: var(--chrome-max, 1440px);
   margin-inline: auto;
-  padding-inline: clamp(16px, 2.5vw, 36px);
+  /* Match footer .wrap padding so header/footer brand left edges align. */
+  padding-inline: var(--gap);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: clamp(16px, 1.8vw, 28px);
   height: 96px;
   box-sizing: border-box;
@@ -55,12 +57,12 @@
   justify-content: center;
   gap: 3px; text-decoration: none; flex: 0 0 auto;
 }
-/* Wide header lockup: 96px bar with 80px mark; width cap keeps nav from wrapping. */
+/* Wide header lockup (~3:1): larger mark; icon scale closer to footer logo. */
 .header .brand img {
   width: auto;
   height: auto;
-  max-height: 80px;
-  max-width: min(320px, 42vw);
+  max-height: 88px;
+  max-width: min(400px, 34vw);
   display: block;
   object-fit: contain;
 }
@@ -83,6 +85,8 @@
 .primary-nav {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -209,8 +213,8 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
 @media (max-width: 1440px) {
   .header-inner { gap: 16px; }
   .header .brand img {
-    max-height: 76px;
-    max-width: min(290px, 34vw);
+    max-height: 84px;
+    max-width: min(380px, 32vw);
   }
   .nav { gap: 16px; }
   .nav-link { font-size: 14.5px; }
@@ -238,8 +242,8 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   .header-trust-inner { justify-content: flex-start; }
   :root { --header-h: 124px; }
   .header .brand img {
-    max-height: 76px;
-    max-width: min(300px, 48vw);
+    max-height: 82px;
+    max-width: min(360px, 64vw);
   }
 }
 
@@ -247,8 +251,8 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   .header-inner { height: 88px; }
   :root { --header-h: 120px; }
   .header .brand img {
-    max-height: 72px;
-    max-width: min(280px, 50vw);
+    max-height: 78px;
+    max-width: min(340px, 62vw);
   }
 }
 
@@ -256,8 +260,8 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   .header-inner { height: 84px; gap: 18px; }
   :root { --header-h: 116px; }
   .header .brand img {
-    max-height: 68px;
-    max-width: min(260px, 55vw);
+    max-height: 72px;
+    max-width: min(300px, 66vw);
   }
 }
 
@@ -266,8 +270,8 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   :root { --header-h: 108px; }
   .brand .sub { display: none; }
   .header .brand img {
-    max-height: 62px;
-    max-width: min(236px, 62vw);
+    max-height: 64px;
+    max-width: min(260px, 68vw);
   }
   .header-trust-inner { padding-block: 6px; font-size: 11px; letter-spacing: 0; gap: 6px 10px; }
   .header-trust-sep { display: none; }
@@ -277,8 +281,8 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   .header-inner { height: 76px; }
   :root { --header-h: 104px; }
   .header .brand img {
-    max-height: 56px;
-    max-width: min(212px, 64vw);
+    max-height: 58px;
+    max-width: min(230px, 70vw);
   }
 }
 
@@ -287,7 +291,7 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   :root { --header-h: 102px; }
   .header .brand img {
     max-height: 52px;
-    max-width: min(188px, 58vw);
+    max-width: min(200px, 64vw);
   }
 }
 
@@ -300,17 +304,34 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   height: calc(100dvh - var(--header-h) - var(--wp-admin--admin-bar--height, 32px));
 }
 
-/* Icon + wordmark logo (client request): a wide single-line lockup, so it is
-   sized by width; caps are chosen from the free space in the header row. */
-.header .brand img[src*="logo-wordmark"] { max-width: min(320px, 22.5vw); }
-/* The wider logo leaves no room for the phone link beside the nav buttons. */
+/* Horizontal header lockup: width caps leave room for nav / burger. */
+.header .brand img[src*="header-logo"],
+.header .brand img[src*="logo-wordmark"] {
+  max-width: min(400px, 34vw);
+}
+/* Wide lockup leaves no room for the phone link beside the nav buttons. */
 .header .header-tel { display: none; }
+@media (max-width: 1440px) {
+  .header .brand img[src*="header-logo"],
+  .header .brand img[src*="logo-wordmark"] {
+    max-width: min(380px, 32vw);
+  }
+}
 @media (max-width: 1180px) {
-  .header .brand img[src*="logo-wordmark"] { max-width: min(340px, 60vw); }
+  .header .brand img[src*="header-logo"],
+  .header .brand img[src*="logo-wordmark"] {
+    max-width: min(360px, 64vw);
+  }
 }
 @media (max-width: 680px) {
-  .header .brand img[src*="logo-wordmark"] { max-width: min(280px, 66vw); }
+  .header .brand img[src*="header-logo"],
+  .header .brand img[src*="logo-wordmark"] {
+    max-width: min(260px, 68vw);
+  }
 }
 @media (max-width: 390px) {
-  .header .brand img[src*="logo-wordmark"] { max-width: min(250px, 64vw); }
+  .header .brand img[src*="header-logo"],
+  .header .brand img[src*="logo-wordmark"] {
+    max-width: min(230px, 70vw);
+  }
 }
