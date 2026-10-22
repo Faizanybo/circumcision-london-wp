@@ -53,6 +53,54 @@ function cil_homepage_blocks() {
 	);
 	$blocks[] = cil_dyn_block( 'cil/trust-strip', array() );
 	$blocks[] = cil_dyn_block(
+		'cil/reviews',
+		array(
+			'eyebrow'            => 'Reviews',
+			'checkedNote'        => 'Checked on 2 September 2026, and refreshed quarterly so the number here is the number on the profile.',
+			'body'               => '',
+			'platforms'          => array(
+				array(
+					'label' => 'Google Reviews',
+					'url'   => 'https://www.google.com/maps?cid=3913365297956493985',
+					'icon'  => 'google',
+				),
+				array(
+					'label' => 'Trustpilot',
+					'url'   => 'https://uk.trustpilot.com/review/www.circumcisioninlondon.co.uk',
+					'icon'  => 'trustpilot',
+				),
+				array(
+					'label' => 'Yell',
+					'url'   => 'https://www.yell.com/biz/circumcision-in-london-edgware-6864473/',
+					'icon'  => 'yell',
+				),
+			),
+			'testimonialsLabel'  => 'Read patient testimonials',
+			'testimonialsUrl'    => home_url( '/testimonials/' ),
+			'videosHeading'      => '',
+			'videos'             => array(
+				array(
+					'title'     => 'Babies',
+					'mediaKey'  => 'testimonials/videos/img-4542.mp4',
+					'posterKey' => 'testimonials/posters/img-4542.jpg',
+				),
+				array(
+					'title'     => 'Children',
+					'mediaKey'  => 'testimonials/videos/img-4967.mp4',
+					'posterKey' => 'testimonials/posters/img-4967.jpg',
+				),
+				array(
+					'title'     => 'Adults',
+					'mediaKey'  => 'testimonials/videos/img-5430.mp4',
+					'posterKey' => 'testimonials/posters/img-5430.jpg',
+				),
+			),
+			'videosCtaLabel'     => 'View all video testimonials',
+			'videosCtaUrl'       => home_url( '/video-testimonials/' ),
+			'quotes'             => cil_testimonials(),
+		)
+	);
+	$blocks[] = cil_dyn_block(
 		'cil/intro',
 		array(
 			'eyebrow' => 'Welcome to the clinic',
@@ -80,13 +128,6 @@ function cil_homepage_blocks() {
 			'eyebrow'     => '',
 			'heading'     => 'When we may postpone',
 			'html'        => $callback_html,
-		)
-	);
-	$blocks[] = cil_dyn_block(
-		'cil/reviews',
-		array(
-			'body'   => 'Most of our patients arrive because somebody they trust sent them. The families who come back are the part we are proudest of: some return after many years whenever there is a new son, others bring a brother, then a nephew, then a cousin. We have families we have now seen across three children and the better part of a decade.',
-			'quotes' => cil_testimonials(),
 		)
 	);
 	$blocks[] = cil_dyn_block(

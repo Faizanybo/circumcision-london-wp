@@ -346,7 +346,10 @@ body.cil-home .groups::before {
   background: linear-gradient(180deg, transparent, var(--sky-2));
 }
 
-/* Clinic introduction: slightly larger “About our clinic” eyebrow. */
+/* Clinic introduction: tighter vertical rhythm + slightly larger eyebrow. */
+body.cil-home #clinic-introduction {
+  padding-block: clamp(40px, 4.5vw, 72px);
+}
 body.cil-home #clinic-introduction .cil-split-copy .eyebrow {
   font-size: clamp(14px, 1.15vw, 16px);
   letter-spacing: .14em;
@@ -546,32 +549,138 @@ body.cil-home .cil-location-map figcaption {
   body.cil-home .cil-location-map__frame { opacity: 1 !important; }
 }
 
-/* Reviews: sky band, gold stars, lifted quote cards. */
-body.cil-home section:has(.rating-badge) {
+/* Reviews: sky band, gold stars, platform buttons, quotes and video cards. */
+body.cil-home .cil-home-reviews {
   background:
     radial-gradient(1000px 420px at 100% 0%, rgba(242, 183, 5, .12), transparent 60%),
     linear-gradient(180deg, var(--sky), var(--sky-2));
+  /* Tighter bottom so the gap before About our clinic is not oversized. */
+  padding-block: clamp(48px, 5.5vw, 88px) clamp(28px, 3.2vw, 48px);
 }
-body.cil-home section:has(.rating-badge) .quote {
+body.cil-home .cil-home-reviews .quote {
   border: 0;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
 }
-body.cil-home section:has(.rating-badge) .stars { color: var(--gold); letter-spacing: 2px; }
-body.cil-home section:has(.rating-badge) .stat {
+body.cil-home .cil-home-reviews .stars { color: var(--gold); letter-spacing: 2px; }
+body.cil-home .cil-home-reviews .stat {
   padding: 20px;
   border-radius: 14px;
   background: #fff;
   box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .45);
 }
-body.cil-home .rating-badge {
-  border-radius: 14px;
+/* Checked-on note: smaller type between the rating heading and platform buttons. */
+body.cil-home .cil-home-reviews .cil-reviews-note {
+  margin: 10px 0 0;
+  max-width: 38rem;
+  font-size: clamp(12.5px, 1.15vw, 14px);
+  line-height: 1.5;
+  color: var(--muted);
+}
+body.cil-home .cil-home-reviews .cil-reviews-platforms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: clamp(14px, 2vw, 20px);
+  max-width: 40rem;
+}
+body.cil-home .cil-home-reviews .cil-reviews-platform {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 12px 14px;
   background: #fff;
+  color: var(--ink);
+  border: 1px solid rgba(13, 39, 71, .10);
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
   box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .45);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+body.cil-home .cil-home-reviews .cil-reviews-platform:hover,
+body.cil-home .cil-home-reviews .cil-reviews-platform:focus-visible {
+  border-color: var(--blue);
+  box-shadow: 0 14px 32px -20px rgba(13, 39, 71, .5);
+}
+body.cil-home .cil-home-reviews .cil-reviews-platform:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+body.cil-home .cil-home-reviews .cil-reviews-platform__icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+}
+body.cil-home .cil-home-reviews .cil-reviews-platform__icon svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+body.cil-home .cil-home-reviews .cil-reviews-platform__label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+body.cil-home .cil-home-reviews .cil-reviews-actions {
+  margin-top: clamp(16px, 2vw, 22px);
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos {
+  margin-top: clamp(24px, 3vw, 36px);
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos__heading {
+  margin: 0 0 clamp(16px, 2vw, 24px);
+  color: var(--navy);
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards,
+body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-grid {
+  margin: 0;
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards.g-4 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 900px) {
+  body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards.g-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards.g-4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos__cta {
+  margin-top: clamp(14px, 1.8vw, 20px);
+  margin-bottom: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos__cta .btn {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 22px;
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos__cta .btn:hover,
+body.cil-home .cil-home-reviews .cil-reviews-videos__cta .btn:focus {
+  background: var(--navy-2);
+  border-color: var(--navy-2);
+  color: #fff;
+}
+@media (max-width: 900px) {
+  body.cil-home .cil-home-reviews .cil-reviews-platforms {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 28rem;
+  }
 }
 
 /* Meet our practitioners: sky band + same About video player, homepage CTA. */
 body.cil-home #meet-practitioners {
+  padding-block: clamp(40px, 4.5vw, 72px);
   background:
     radial-gradient(900px 420px at 100% 0%, rgba(242, 183, 5, .10), transparent 55%),
     radial-gradient(1100px 480px at 0% 100%, rgba(47, 127, 216, .12), transparent 60%),

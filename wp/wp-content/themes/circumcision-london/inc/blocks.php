@@ -526,13 +526,49 @@ function cil_register_dynamic_blocks() {
 			$common,
 			array(
 				'title'           => __( 'Homepage reviews', 'circumcision-london' ),
-				'description'     => __( 'Google rating, stats and three patient quotes.', 'circumcision-london' ),
+				'description'     => __( 'Google rating, platform links, stats, quotes and video testimonials.', 'circumcision-london' ),
 				'attributes'      => array(
-					'body'   => array(
+					'eyebrow'            => array(
 						'type'    => 'string',
 						'default' => '',
 					),
-					'quotes' => array(
+					'checkedNote'        => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'body'               => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'platforms'          => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
+					'testimonialsLabel'  => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'testimonialsUrl'    => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'videosHeading'      => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'videos'             => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
+					'videosCtaLabel'     => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'videosCtaUrl'       => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'quotes'             => array(
 						'type'    => 'array',
 						'default' => array(),
 					),
@@ -540,7 +576,16 @@ function cil_register_dynamic_blocks() {
 				'render_callback' => function ( $attrs ) {
 					$quotes = cil_block_list( isset( $attrs['quotes'] ) ? $attrs['quotes'] : array() );
 					$args   = array(
-						'body' => isset( $attrs['body'] ) ? $attrs['body'] : '',
+						'eyebrow'             => isset( $attrs['eyebrow'] ) ? $attrs['eyebrow'] : '',
+						'checked_note'        => isset( $attrs['checkedNote'] ) ? $attrs['checkedNote'] : '',
+						'body'                => isset( $attrs['body'] ) ? $attrs['body'] : '',
+						'platforms'           => cil_block_list( isset( $attrs['platforms'] ) ? $attrs['platforms'] : array() ),
+						'testimonials_label'  => isset( $attrs['testimonialsLabel'] ) ? $attrs['testimonialsLabel'] : '',
+						'testimonials_url'    => isset( $attrs['testimonialsUrl'] ) ? $attrs['testimonialsUrl'] : '',
+						'videos_heading'      => isset( $attrs['videosHeading'] ) ? $attrs['videosHeading'] : '',
+						'videos'              => cil_block_list( isset( $attrs['videos'] ) ? $attrs['videos'] : array() ),
+						'videos_cta_label'    => isset( $attrs['videosCtaLabel'] ) ? $attrs['videosCtaLabel'] : '',
+						'videos_cta_url'      => isset( $attrs['videosCtaUrl'] ) ? $attrs['videosCtaUrl'] : '',
 					);
 					if ( $quotes ) {
 						$args['quotes'] = $quotes;

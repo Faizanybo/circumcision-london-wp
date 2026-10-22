@@ -1110,14 +1110,54 @@
   dynamicBlock('cil/reviews', 'Homepage reviews', {
     icon: 'star-filled',
     attributes: {
+      eyebrow: { type: 'string', default: '' },
+      checkedNote: { type: 'string', default: '' },
       body: { type: 'string', default: '' },
+      platforms: { type: 'array', default: [] },
+      testimonialsLabel: { type: 'string', default: '' },
+      testimonialsUrl: { type: 'string', default: '' },
+      videosHeading: { type: 'string', default: '' },
+      videos: { type: 'array', default: [] },
+      videosCtaLabel: { type: 'string', default: '' },
+      videosCtaUrl: { type: 'string', default: '' },
       quotes: { type: 'array', default: [] },
     },
     fields: [
-      { key: 'body', label: 'Body paragraph', kind: 'html', tagName: 'p', className: 'body-text' },
+      { key: 'eyebrow', label: 'Eyebrow' },
+      { key: 'checkedNote', label: 'Checked-on note (optional)', help: 'Leave blank to hide.' },
+      { key: 'body', label: 'Body paragraph (optional)', help: 'Leave blank to hide. Prefer platform buttons instead.' },
+      {
+        key: 'platforms',
+        label: 'Review platforms',
+        kind: 'repeater',
+        blank: { label: '', url: '', icon: '' },
+        fields: [
+          { key: 'label', label: 'Button label' },
+          { key: 'url', label: 'URL' },
+          { key: 'icon', label: 'Icon key (google, trustpilot, yell)' },
+        ],
+        addLabel: 'Add platform',
+      },
+      { key: 'testimonialsLabel', label: 'Testimonials button label' },
+      { key: 'testimonialsUrl', label: 'Testimonials button URL' },
+      { key: 'videosHeading', label: 'Videos heading' },
+      {
+        key: 'videos',
+        label: 'Video testimonials',
+        kind: 'repeater',
+        blank: { title: '', mediaKey: '', posterKey: '' },
+        fields: [
+          { key: 'title', label: 'Category / title' },
+          { key: 'mediaKey', label: 'Media key' },
+          { key: 'posterKey', label: 'Poster key' },
+        ],
+        addLabel: 'Add video',
+      },
+      { key: 'videosCtaLabel', label: 'Videos CTA label' },
+      { key: 'videosCtaUrl', label: 'Videos CTA URL' },
       {
         key: 'quotes',
-        label: 'Testimonials',
+        label: 'Written testimonials',
         kind: 'repeater',
         blank: { name: '', context: '', quote: '' },
         fields: [
@@ -1130,29 +1170,121 @@
     ],
     inspect: function (props) {
       return el(
-        PanelBody,
-        { title: 'Reviews' },
-        el(TextareaControl, {
-          label: 'Body paragraph',
-          help: 'Leave blank to use the current default paragraph. Rating figures stay live from clinic data.',
-          value: props.attributes.body,
-          onChange: function (v) {
-            props.setAttributes({ body: v });
-          },
-        }),
-        el(Repeater, {
-          items: props.attributes.quotes,
-          blank: { name: '', context: '', quote: '' },
-          fields: [
-            { key: 'name', label: 'Name' },
-            { key: 'context', label: 'Context' },
-            { key: 'quote', label: 'Quote', rows: 4 },
-          ],
-          addLabel: 'Add quote',
-          onChange: function (next) {
-            props.setAttributes({ quotes: next });
-          },
-        })
+        Fragment,
+        {},
+        el(
+          PanelBody,
+          { title: 'Reviews copy' },
+          el(TextControl, {
+            label: 'Eyebrow',
+            value: props.attributes.eyebrow,
+            onChange: function (v) {
+              props.setAttributes({ eyebrow: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Checked-on note',
+            help: 'Leave blank to hide (replaced by platform buttons).',
+            value: props.attributes.checkedNote,
+            onChange: function (v) {
+              props.setAttributes({ checkedNote: v });
+            },
+          }),
+          el(TextareaControl, {
+            label: 'Body paragraph',
+            help: 'Leave blank to hide. Rating figures stay live from clinic data.',
+            value: props.attributes.body,
+            onChange: function (v) {
+              props.setAttributes({ body: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Testimonials button label',
+            value: props.attributes.testimonialsLabel,
+            onChange: function (v) {
+              props.setAttributes({ testimonialsLabel: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'Testimonials button URL',
+            value: props.attributes.testimonialsUrl,
+            onChange: function (v) {
+              props.setAttributes({ testimonialsUrl: v });
+            },
+          })
+        ),
+        el(
+          PanelBody,
+          { title: 'Platform buttons', initialOpen: true },
+          el(Repeater, {
+            items: props.attributes.platforms,
+            blank: { label: '', url: '', icon: '' },
+            fields: [
+              { key: 'label', label: 'Button label' },
+              { key: 'url', label: 'URL' },
+              { key: 'icon', label: 'Icon (google / trustpilot / yell)' },
+            ],
+            addLabel: 'Add platform',
+            onChange: function (next) {
+              props.setAttributes({ platforms: next });
+            },
+          })
+        ),
+        el(
+          PanelBody,
+          { title: 'Video testimonials', initialOpen: false },
+          el(TextControl, {
+            label: 'Videos heading',
+            value: props.attributes.videosHeading,
+            onChange: function (v) {
+              props.setAttributes({ videosHeading: v });
+            },
+          }),
+          el(Repeater, {
+            items: props.attributes.videos,
+            blank: { title: '', mediaKey: '', posterKey: '' },
+            fields: [
+              { key: 'title', label: 'Category / title' },
+              { key: 'mediaKey', label: 'Media key' },
+              { key: 'posterKey', label: 'Poster key' },
+            ],
+            addLabel: 'Add video',
+            onChange: function (next) {
+              props.setAttributes({ videos: next });
+            },
+          }),
+          el(TextControl, {
+            label: 'View-all button label',
+            value: props.attributes.videosCtaLabel,
+            onChange: function (v) {
+              props.setAttributes({ videosCtaLabel: v });
+            },
+          }),
+          el(TextControl, {
+            label: 'View-all button URL',
+            value: props.attributes.videosCtaUrl,
+            onChange: function (v) {
+              props.setAttributes({ videosCtaUrl: v });
+            },
+          })
+        ),
+        el(
+          PanelBody,
+          { title: 'Written quotes', initialOpen: false },
+          el(Repeater, {
+            items: props.attributes.quotes,
+            blank: { name: '', context: '', quote: '' },
+            fields: [
+              { key: 'name', label: 'Name' },
+              { key: 'context', label: 'Context' },
+              { key: 'quote', label: 'Quote', rows: 4 },
+            ],
+            addLabel: 'Add quote',
+            onChange: function (next) {
+              props.setAttributes({ quotes: next });
+            },
+          })
+        )
       );
     },
   });
