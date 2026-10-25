@@ -22,6 +22,22 @@ body.page-babies #overview .wrap > div:has(> .spec) > .eyebrow::before {
   border-radius: 3px;
   background: linear-gradient(90deg, var(--gold), var(--blue));
 }
+/* “At a glance” reads at H2 scale beside the overview photograph. */
+body.page-babies #overview .wrap > div:has(> .spec) > .eyebrow {
+  font-family: var(--display);
+  font-size: clamp(25px, 2.8vw, 38px);
+  font-weight: 400;
+  letter-spacing: -.012em;
+  text-transform: none;
+  line-height: 1.16;
+  color: var(--navy);
+  margin-bottom: 18px;
+}
+body.page-babies #overview .wrap > div:has(> .spec) > .eyebrow::before {
+  width: 32px;
+  height: 4px;
+  align-self: center;
+}
 
 /* ------------------------------------------------------------ page head -- */
 body.page-babies .page-head {
@@ -225,13 +241,14 @@ body.page-babies #appointment-walkthrough .steps h3 { font-size: 18px; color: va
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
     column-gap: clamp(40px, 5vw, 88px);
-    /* Vertically centre the “On the day” heading beside the timeline. */
-    align-items: center;
+    /* Top-align so “On the day” sits level with Registration and consent. */
+    align-items: start;
   }
   body.page-babies #appointment-walkthrough > .wrap > .section-head {
-    /* Static with the steps — matches homepage split/CTA image behaviour. */
     position: static;
     margin-bottom: 0;
+    /* Match the first step card’s top padding so the headings share a baseline. */
+    padding-top: clamp(20px, 2vw, 26px);
   }
 }
 @media (max-width: 560px) {
@@ -267,6 +284,13 @@ body.page-babies #preparation .cil-checklist > li::before {
   font-weight: 700;
 }
 body.page-babies #preparation .body-text > h2 { margin-top: clamp(8px, 1.5vw, 16px); }
+/* Feeding question sits under the bring-list: clearer section rhythm. */
+body.page-babies #preparation .body-text > .cil-checklist + h2,
+body.page-babies #preparation .body-text > ul.cil-checklist + h2 {
+  margin-top: clamp(36px, 4.5vw, 56px);
+  padding-top: clamp(22px, 3vw, 32px);
+  border-top: 1px solid rgba(13, 39, 71, .10);
+}
 
 /* ------------------------------------------------ contact + follow-up -- */
 body.page-babies #when-to-contact .is-style-cil-card {
