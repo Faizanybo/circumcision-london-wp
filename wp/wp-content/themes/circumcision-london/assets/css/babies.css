@@ -186,6 +186,13 @@ body.page-babies .wp-block-cil-section:not(.bg-navy) .cil-info-card {
   border-top: 4px solid var(--gold);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
+  height: 100%;
+}
+/* Healing Q&A: two-up rows keep paired cards even on tablet. */
+@media (min-width: 681px) {
+  body.page-babies #healing-and-aftercare .grid.g-2.cil-info-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 body.page-babies .bg-navy .card.cil-info-card { border-top: 4px solid var(--gold); }
 body.page-babies .bg-navy .cil-info-card .body-text a { color: var(--gold); }
