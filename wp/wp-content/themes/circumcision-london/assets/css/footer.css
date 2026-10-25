@@ -1,7 +1,6 @@
 /* =========================================================================
    Footer, mobile action bar, back-to-top
-   Prototype footer / action-bar / to-top. No social networks in the prototype
-   chrome: contact is phone, mobile, email, WhatsApp (action bar only).
+   Action bar (≤900px): Call, WhatsApp, optional Instagram/YouTube, Book.
    ========================================================================= */
 
 .footer { background: #12243a; color: rgba(255, 255, 255, .76); }
@@ -78,16 +77,38 @@
   padding-bottom: env(safe-area-inset-bottom);
   box-shadow: 0 -10px 30px -22px rgba(22, 32, 46, .42);
 }
-.action-bar ul { display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; }
+.action-bar ul {
+  display: grid;
+  grid-template-columns: repeat(var(--action-count, 3), minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+}
 .action-bar a {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-  min-height: 64px; padding: 9px 4px; text-decoration: none; color: var(--ink);
-  font-size: 12px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  box-sizing: border-box;
+  min-height: 56px; min-width: 0; padding: 8px 2px; text-decoration: none; color: var(--ink);
+  font-size: clamp(10px, 2.6vw, 12px); font-weight: 600; line-height: 1.15;
+  text-align: center;
+}
+.action-bar a span {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-inline: 1px;
 }
 .action-bar li + li a { border-left: 1px solid var(--line-2); }
-.action-bar svg { width: 20px; height: 20px; color: var(--blue); }
+.action-bar svg { width: 18px; height: 18px; flex: 0 0 auto; color: var(--blue); }
 .action-bar .primary { background: var(--blue); color: #fff; }
 .action-bar .primary svg { color: #fff; }
+
+/* Five actions: slightly tighter chrome so labels stay readable on narrow phones. */
+.action-bar ul[style*="--action-count: 5"] a { min-height: 54px; padding: 7px 1px; gap: 2px; }
+.action-bar ul[style*="--action-count: 5"] svg { width: 17px; height: 17px; }
 
 .to-top {
   position: fixed; right: clamp(16px, 3vw, 30px); bottom: clamp(16px, 3vw, 30px); z-index: 80;
