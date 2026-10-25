@@ -1589,6 +1589,46 @@ function cil_register_dynamic_blocks() {
 	);
 
 	register_block_type(
+		'cil/figure-slideshow',
+		array_merge(
+			$common,
+			array(
+				'title'           => __( 'Clinic figure slideshow', 'circumcision-london' ),
+				'description'     => __( 'Prev/next photo slideshow using clinic figures or Media Library images.', 'circumcision-london' ),
+				'attributes'      => array(
+					'items'   => array(
+						'type'    => 'array',
+						'default' => array(),
+					),
+					'caption' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+					'ratio'   => array(
+						'type'    => 'string',
+						'default' => '4-3',
+					),
+					'label'   => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+				'render_callback' => function ( $attrs ) {
+					return cil_render_part(
+						'figure-slideshow',
+						array(
+							'items'   => cil_block_list( isset( $attrs['items'] ) ? $attrs['items'] : array() ),
+							'caption' => isset( $attrs['caption'] ) ? $attrs['caption'] : '',
+							'ratio'   => isset( $attrs['ratio'] ) ? $attrs['ratio'] : '4-3',
+							'label'   => isset( $attrs['label'] ) ? $attrs['label'] : '',
+						)
+					);
+				},
+			)
+		)
+	);
+
+	register_block_type(
 		'cil/info-cards',
 		array_merge(
 			$common,

@@ -276,6 +276,124 @@
     }
   })();
 
+  /* -------------------------------------------- clinic figure slideshow */
+  /* Manual prev/next always; subtle autoplay pauses on interaction/focus
+     and is skipped entirely when prefers-reduced-motion is set. */
+  (function () {
+    var roots = d.querySelectorAll('[data-cil-slideshow]');
+    if (!roots.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    roots.forEach(function (root) {
+      var slides = Array.prototype.slice.call(root.querySelectorAll('.cil-figure-slideshow__slide'));
+      if (slides.length < 2) return;
+
+      var prev = root.querySelector('.cil-figure-slideshow__prev');
+      var next = root.querySelector('.cil-figure-slideshow__next');
+      var dots = Array.prototype.slice.call(root.querySelectorAll('.cil-figure-slideshow__dot'));
+      var status = root.querySelector('[data-cil-slideshow-status]');
+      var index = 0;
+      var timer = null;
+      var paused = false;
+
+      function announce() {
+        if (!status) return;
+        status.textContent = 'Photo ' + (index + 1) + ' of ' + slides.length;
+      }
+
+      function show(i, user) {
+        index = (i + slides.length) % slides.length;
+        slides.forEach(function (slide, n) {
+          var on = n === index;
+          slide.classList.toggle('is-active', on);
+          slide.setAttribute('aria-hidden', on ? 'false' : 'true');
+          if (on) slide.removeAttribute('hidden');
+          else slide.setAttribute('hidden', '');
+        });
+        dots.forEach(function (dot, n) {
+          var on = n === index;
+          dot.classList.toggle('is-active', on);
+          dot.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        announce();
+        if (user) pause();
+      }
+
+      function stopTimer() {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      function startTimer() {
+        stopTimer();
+        if (reduce || paused || slides.length < 2) return;
+        timer = window.setInterval(function () {
+          show(index + 1, false);
+        }, 7000);
+      }
+
+      function pause() {
+        paused = true;
+        stopTimer();
+      }
+
+      function resume() {
+        if (reduce) return;
+        paused = false;
+        startTimer();
+      }
+
+      if (prev) {
+        prev.addEventListener('click', function () {
+          show(index - 1, true);
+        });
+      }
+      if (next) {
+        next.addEventListener('click', function () {
+          show(index + 1, true);
+        });
+      }
+      dots.forEach(function (dot) {
+        dot.addEventListener('click', function () {
+          var to = parseInt(dot.getAttribute('data-slide-to'), 10);
+          if (!isNaN(to)) show(to, true);
+        });
+      });
+
+      root.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          show(index - 1, true);
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          show(index + 1, true);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          show(0, true);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          show(slides.length - 1, true);
+        }
+      });
+
+      root.addEventListener('mouseenter', pause);
+      root.addEventListener('mouseleave', resume);
+      root.addEventListener('focusin', pause);
+      root.addEventListener('focusout', function (e) {
+        if (!root.contains(e.relatedTarget)) resume();
+      });
+
+      if (!root.hasAttribute('tabindex')) {
+        root.setAttribute('tabindex', '0');
+      }
+
+      show(0, false);
+      startTimer();
+    });
+  })();
+
   /* -------------------------------------------------------------- forms */
   d.querySelectorAll('form[data-form]').forEach(function (form) {
     form.addEventListener('submit', function (e) {

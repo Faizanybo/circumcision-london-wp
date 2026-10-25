@@ -252,6 +252,42 @@
                 )
               );
             }
+            if (field.kind === 'select') {
+              return el(SelectControl, {
+                key: field.key,
+                label: field.label,
+                help: field.help,
+                value: item[field.key] == null ? '' : String(item[field.key]),
+                options: field.options || [],
+                onChange: function (v) {
+                  update(i, field.key, v);
+                },
+              });
+            }
+            if (field.kind === 'attachment') {
+              return el(AttachmentControl, {
+                key: field.key,
+                label: field.label,
+                help: field.help,
+                allowedTypes: ['image'],
+                value: parseInt(item[field.key], 10) || 0,
+                clearLabel: field.clearLabel || 'Clear Media Library image',
+                onSelect: function (media) {
+                  var id = media && media.id ? parseInt(media.id, 10) : 0;
+                  var next = items.slice();
+                  var patch = {};
+                  patch[field.key] = id || 0;
+                  if (id && media && media.alt && field.altKey) {
+                    patch[field.altKey] = media.alt;
+                  }
+                  if (id) {
+                    patch.name = '';
+                  }
+                  next[i] = Object.assign({}, next[i] || {}, patch);
+                  props.onChange(next);
+                },
+              });
+            }
             var Control = field.rows ? TextareaControl : TextControl;
             return el(Control, {
               key: field.key,
@@ -3163,6 +3199,84 @@
     edit: figureEdit,
     save: function () {
       return null;
+    },
+  });
+
+  dynamicBlock('cil/figure-slideshow', 'Clinic figure slideshow', {
+    icon: 'images-alt2',
+    instruction: 'Edit this slideshow — add, remove or reorder photos, then update the page.',
+    description: 'Homepage clinic introduction uses this for prev/next photo browsing. Each slide can use a theme photograph or a Media Library image.',
+    attributes: {
+      items: { type: 'array', default: [] },
+      caption: { type: 'string', default: '' },
+      ratio: { type: 'string', default: '4-3' },
+      label: { type: 'string', default: '' },
+    },
+    mirrorInspect: true,
+    inspect: function (props) {
+      var items = props.attributes.items && props.attributes.items.length ? props.attributes.items : [];
+      return el(
+        PanelBody,
+        { title: 'Slideshow', initialOpen: true },
+        el(TextControl, {
+          label: 'Badge caption (shared)',
+          help: 'Shown as the floating badge on the photograph, same as a clinic figure caption.',
+          value: props.attributes.caption || '',
+          onChange: function (v) {
+            props.setAttributes({ caption: v });
+          },
+        }),
+        el(TextControl, {
+          label: 'Carousel label (screen readers)',
+          help: 'Optional. Defaults to “Clinic photographs”.',
+          value: props.attributes.label || '',
+          onChange: function (v) {
+            props.setAttributes({ label: v });
+          },
+        }),
+        el(SelectControl, {
+          label: 'Aspect ratio',
+          value: props.attributes.ratio || '4-3',
+          options: [
+            { label: '4:3', value: '4-3' },
+            { label: '5:4', value: '5-4' },
+            { label: '3:4', value: '3-4' },
+          ],
+          onChange: function (v) {
+            props.setAttributes({ ratio: v });
+          },
+        }),
+        el(Repeater, {
+          items: items,
+          blank: { name: 'clinic-exterior', alt: '', imageId: 0 },
+          addLabel: 'Add photo',
+          onChange: function (next) {
+            props.setAttributes({ items: next });
+          },
+          fields: [
+            {
+              kind: 'select',
+              key: 'name',
+              label: 'Photograph already on the page',
+              help: 'Theme clinic photos. Cleared automatically if you pick a Media Library image.',
+              options: figureChoices,
+            },
+            {
+              kind: 'attachment',
+              key: 'imageId',
+              altKey: 'alt',
+              label: 'Or Media Library image',
+              help: 'Optional override. Leave empty to use the theme photograph above.',
+            },
+            {
+              key: 'alt',
+              label: 'Image description for accessibility',
+              help: 'Required for every slide. Leave blank only when the theme photograph already has a good default.',
+              rows: 2,
+            },
+          ],
+        })
+      );
     },
   });
 

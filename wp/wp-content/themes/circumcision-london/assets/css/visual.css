@@ -234,8 +234,19 @@ body.cil-home .cil-home-reviews .cil-reviews-split--solo > [data-reveal] {
   overflow: visible;
 }
 .split:has(> .cil-split-copy) .figure picture,
-.split:has(> .cil-split-copy) .figure img {
+.split:has(> .cil-split-copy) .figure img,
+.split:has(> .cil-split-copy) .cil-figure-slideshow__slide picture,
+.split:has(> .cil-split-copy) .cil-figure-slideshow__slide img {
   border-radius: var(--radius-lg);
+}
+/* Homepage clinic intro: keep badge clear of slideshow dots. */
+body.cil-home #clinic-introduction .cil-figure-slideshow figcaption {
+  max-width: min(62%, 280px);
+}
+body.cil-home #clinic-introduction .cil-figure-slideshow__dots {
+  left: auto;
+  right: 14px;
+  transform: none;
 }
 /* Caption as a floating badge on the photograph. */
 .split:has(> .cil-split-copy) .figure figcaption {
