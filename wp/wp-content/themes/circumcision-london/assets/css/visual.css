@@ -356,13 +356,11 @@ body.cil-home .groups::before {
   background: linear-gradient(180deg, transparent, var(--sky-2));
 }
 
-/* Clinic introduction: tighter vertical rhythm + slightly larger eyebrow. */
+/* Clinic introduction: tighter vertical rhythm; title is H2 (section-head). */
 body.cil-home #clinic-introduction {
   padding-block: clamp(40px, 4.5vw, 72px);
 }
-body.cil-home #clinic-introduction .cil-split-copy .eyebrow {
-  font-size: clamp(14px, 1.15vw, 16px);
-  letter-spacing: .14em;
+body.cil-home #clinic-introduction .cil-split-copy > .section-head {
   margin-bottom: 22px;
 }
 
