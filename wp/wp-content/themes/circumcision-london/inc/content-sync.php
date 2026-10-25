@@ -310,15 +310,12 @@ function cil_content_inspect_slug( $slug ) {
 	$report['guards']             = cil_content_page_guards( $page );
 	$report['revisions']          = cil_content_revision_count( $page );
 	$report['ok']                 = true;
-	$report['can_apply']          = $report['host_match'] && ! $report['hash_match'];
-
-	if ( ! $report['host_match'] ) {
-		$report['error'] = sprintf(
-			'This site host (%s) does not match fixture replace_to host (%s). Dry-run is allowed; apply is blocked here.',
-			cil_content_url_host( home_url() ),
-			cil_content_url_host( $fixture['replace_to'] )
-		);
-	}
+	/*
+	 * Clickable when the live page differs from the fixture.
+	 * Host mismatch is informational only (fixtures ship replace_to = Vercel);
+	 * LocalWP and production can both apply so editors keep the original workflow.
+	 */
+	$report['can_apply'] = ! $report['hash_match'];
 
 	return $report;
 }
@@ -340,14 +337,11 @@ function cil_content_apply_slug( $slug ) {
 	}
 
 	$inspect = cil_content_inspect_slug( $slug );
-	if ( ! $inspect['ok'] && ! $inspect['host_match'] ) {
-		return new WP_Error( 'cil_content_host', $inspect['error'] );
-	}
 	if ( ! $inspect['ok'] ) {
-		return new WP_Error( 'cil_content_inspect', $inspect['error'] );
-	}
-	if ( ! $inspect['host_match'] ) {
-		return new WP_Error( 'cil_content_host', $inspect['error'] );
+		return new WP_Error(
+			'cil_content_inspect',
+			! empty( $inspect['error'] ) ? $inspect['error'] : 'Fixture inspect failed for ' . $slug
+		);
 	}
 
 	$fixture = cil_content_load_fixture( $slug );
@@ -686,14 +680,6 @@ function cil_content_seo_inspect_slug( $slug ) {
 
 	if ( cil_content_seo_is_front_page( $page ) ) {
 		$report['error'] = 'Homepage SEO is set in PHP and is not managed here.';
-		return $report;
-	}
-	if ( ! $report['host_match'] ) {
-		$report['error'] = sprintf(
-			'This site host (%s) does not match fixture replace_to host (%s). Dry-run is allowed; apply is blocked here.',
-			cil_content_url_host( home_url() ),
-			cil_content_url_host( $fixture['replace_to'] )
-		);
 		return $report;
 	}
 
@@ -1088,11 +1074,7 @@ function cil_content_sync_render_admin() {
 
 	echo '<h2>' . esc_html__( 'Apply pages', 'circumcision-london' ) . '</h2>';
 	echo '<p>' . esc_html__( 'This overwrites Gutenberg post_content for the selected published pages. Blog is not listed here — use Blog pack above. Type APPLY to confirm.', 'circumcision-london' ) . '</p>';
-	echo '<p><strong>' . esc_html__( 'Why a checkbox is greyed out:', 'circumcision-london' ) . '</strong> ';
-	echo esc_html__( 'Apply only works on the production host that matches each fixture’s replace_to (currently circumcision-london-wp.vercel.app). On LocalWP every page stays disabled by design. On production, a page is also disabled when it already matches the fixture (“Already applied”) or when inspect failed.', 'circumcision-london' );
-	echo '</p>';
-	echo '<p>' . esc_html__( 'Open this screen on production WP admin to apply home:', 'circumcision-london' ) . ' ';
-	echo '<code>https://circumcision-london-wp.vercel.app/wp-admin/admin.php?page=cil-content-sync</code></p>';
+	echo '<p class="description">' . esc_html__( 'A page is selectable when its fixture differs from the live content. Already-matching pages stay greyed out.', 'circumcision-london' ) . '</p>';
 
 	echo '<form method="post" action="' . esc_url( admin_url( 'admin.php?page=cil-content-sync' ) ) . '">';
 	wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
@@ -1104,25 +1086,14 @@ function cil_content_sync_render_admin() {
 		$report   = isset( $reports[ $slug ] ) ? $reports[ $slug ] : array();
 		$can      = ! empty( $report['can_apply'] );
 		$disabled = $can ? '' : ' disabled';
-		$reason   = '';
-		if ( ! $can ) {
-			if ( ! empty( $report['error'] ) ) {
-				$reason = (string) $report['error'];
-			} elseif ( ! empty( $report['hash_match'] ) ) {
-				$reason = __( 'Already applied (content hash matches).', 'circumcision-london' );
-			} elseif ( empty( $report['host_match'] ) ) {
-				$reason = __( 'Host mismatch — open Content sync on the Vercel site to apply this fixture.', 'circumcision-london' );
-			} else {
-				$reason = __( 'Not applyable right now.', 'circumcision-london' );
-			}
-		}
-		echo '<p><label title="' . esc_attr( $reason ) . '"><input type="checkbox" name="cil_content_sync_slugs[]" value="' . esc_attr( $slug ) . '"' . $disabled . '> ';
+		echo '<p><label><input type="checkbox" name="cil_content_sync_slugs[]" value="' . esc_attr( $slug ) . '"' . $disabled . '> ';
 		echo esc_html( $slug );
-		echo '</label>';
-		if ( $reason ) {
-			echo ' <span class="description" style="margin-left:8px">' . esc_html( $reason ) . '</span>';
+		if ( ! $can && ! empty( $report['hash_match'] ) ) {
+			echo ' <span class="description">(' . esc_html__( 'Already applied', 'circumcision-london' ) . ')</span>';
+		} elseif ( ! $can && ! empty( $report['error'] ) ) {
+			echo ' <span class="description">(' . esc_html( (string) $report['error'] ) . ')</span>';
 		}
-		echo '</p>';
+		echo '</label></p>';
 	}
 	echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off"></label></p>';
 	submit_button( __( 'Apply selected fixtures', 'circumcision-london' ) );
