@@ -549,37 +549,25 @@ function cil_age_page_blocks( $slug ) {
 		);
 	}
 
-	$blocks[] = cil_section_block(
+	$blocks[] = cil_dyn_block(
+		'cil/cta-band',
 		array(
-			'size' => 'section',
-			'band' => '',
-			'wrap' => 'wrap',
-		),
-		array(
-			cil_split_block(
-				array(
-					cil_dyn_block(
-						'cil/figure',
-						array(
-							'name' => $page['figure'],
-						)
-					),
-					cil_dyn_block(
-						'cil/callback-card',
-						array(
-							'eyebrow' => 'Request a call back',
-							'title'   => 'Ask us first',
-							'formId'  => $page['form_id'],
-							'subject' => $page['subject'],
-							'urgent'  => true,
-						)
-					),
-				)
-			),
+			'title'          => 'If you have further questions',
+			'text'           => '<p>If you have further questions, you can either <a href="tel:+442089513794">call us</a> or <a href="#request-callback">request for us to call you back</a>. You can also send us an email enquiry or speak to us via Whatsapp.</p><p class="cil-cta-contacts"><a class="cil-cta-contact cil-cta-contact--email" href="mailto:info@circumcisioninlondon.co.uk"><span class="cil-cta-contact__label">Email</span>info@circumcisioninlondon.co.uk</a><a class="cil-cta-contact cil-cta-contact--whatsapp" href="https://wa.me/447886779958" rel="noopener noreferrer" target="_blank" data-track="whatsapp-cta"><span class="cil-cta-contact__label">WhatsApp</span>07886779958</a></p>',
+			'eyebrow'        => 'Talk to us',
+			'ctaLabel'       => 'Book online',
+			'ctaUrl'         => home_url( '/book/' ),
+			'phoneLabel'     => 'Call 020 8951 3794',
+			'phoneUrl'       => 'tel:+442089513794',
+			'cardEyebrow'    => 'Request a call back',
+			'cardTitle'      => '',
+			'cardHtml'       => '',
+			'showCallback'   => true,
+			'formId'         => $page['form_id'],
+			'formSubject'    => $page['subject'],
+			'callbackAnchor' => 'request-callback',
 		)
 	);
-
-	$blocks[] = cil_dyn_block( 'cil/cta-band', array() );
 
 	if ( ! empty( $page['faqs'] ) ) {
 		$blocks[] = cil_dyn_block(
