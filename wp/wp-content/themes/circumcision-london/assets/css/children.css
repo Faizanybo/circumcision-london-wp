@@ -1,0 +1,256 @@
+/* =========================================================================
+   Children & Teenagers page: section layouts specific to this page. The
+   shared visual system (navy page head, gold accents, spec tiles, cards,
+   timeline, checklist tiles) comes from babies.css. Enqueued only on
+   /children/ after babies.css. All wording lives in the page's blocks.
+   ========================================================================= */
+
+/* --------------------------------------------- at a glance: 3 + 3 tiles -- */
+body.page-children #overview .spec { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
+  body.page-children #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  body.page-children #overview .spec { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ------------------------------------------- preparation: wide card -- */
+body.page-children #preparation > .wrap > .section-head { margin-bottom: 0; }
+body.page-children #preparation > .wrap > .cil-section-lede { margin-top: 1.15em; max-width: 72ch; }
+body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) > :last-child { margin-bottom: 0; }
+@media (min-width: 901px) {
+  body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(36px, 4.5vw, 64px);
+    row-gap: 0.85em;
+    align-items: start;
+  }
+  body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) > * { margin: 0; }
+}
+
+/* ------------------------------------------------ appointment timeline -- */
+body.page-children #appointment-walkthrough > .wrap > .wp-block-group { max-width: none; }
+body.page-children #appointment-walkthrough > .wrap > .wp-block-group > * {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+body.page-children #appointment-walkthrough .cil-children-aftercare {
+  margin-top: 22px;
+}
+body.page-children #appointment-walkthrough .cil-children-aftercare a {
+  font-weight: 600;
+  color: var(--blue-deep);
+  text-underline-offset: 3px;
+}
+@media (min-width: 901px) {
+  body.page-children #appointment-walkthrough > .wrap > .section-head { grid-column: 1; grid-row: 1 / span 2; }
+  body.page-children #appointment-walkthrough > .wrap > .steps,
+  body.page-children #appointment-walkthrough > .wrap > .wp-block-group { grid-column: 2; }
+  body.page-children #appointment-walkthrough > .wrap > .wp-block-group { padding-left: 56px; }
+}
+
+/* ------------------------------------------- anaesthetic and comfort -- */
+body.page-children #anaesthetic-and-comfort .split + .grid { margin-top: clamp(40px, 5vw, 72px); }
+
+/* ------------------------------------------- healing: text + panel -- */
+body.page-children #healing-and-recovery > .wrap > .section-head { margin-bottom: 0; }
+body.page-children #healing-and-recovery > .wrap > .wp-block-group:not(.cil-section-lede) {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-children #healing-and-recovery > .wrap > .wp-block-group:not(.cil-section-lede) > :last-child { margin-bottom: 0; }
+body.page-children #healing-and-recovery .grid.cil-info-cards-grid { margin-top: clamp(36px, 4.5vw, 64px); }
+@media (min-width: 901px) {
+  body.page-children #healing-and-recovery > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: start;
+  }
+  body.page-children #healing-and-recovery > .wrap > .section-head { grid-column: 1; grid-row: 1; }
+  body.page-children #healing-and-recovery > .wrap > .cil-section-lede { grid-column: 1; grid-row: 2; }
+  body.page-children #healing-and-recovery > .wrap > .wp-block-group:not(.cil-section-lede) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+  body.page-children #healing-and-recovery > .wrap > .grid { grid-column: 1 / -1; grid-row: 3; }
+}
+
+/* -------------------------------------------------------- what to bring -- */
+body.page-children #what-to-bring > .wrap > .wp-block-group { max-width: none; }
+body.page-children #what-to-bring > .wrap > .wp-block-group > * {
+  max-width: none;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+body.page-children #what-to-bring > .wrap > .wp-block-group > :first-child { margin-top: 0 !important; }
+body.page-children #what-to-bring > .wrap > .wp-block-group > :last-child { margin-bottom: 0; }
+body.page-children #what-to-bring .figure {
+  margin: 0 0 clamp(20px, 2.4vw, 28px);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background: #fff;
+}
+body.page-children #what-to-bring .figure picture {
+  display: block;
+  width: 100%;
+}
+body.page-children #what-to-bring .figure img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+body.page-children #what-to-bring .figure figcaption {
+  margin: 0;
+  padding: 12px 16px 14px;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+body.page-children #what-to-bring .cil-children-wear,
+body.page-children #what-to-bring .cil-children-bring {
+  margin-top: 0;
+  padding: clamp(24px, 2.8vw, 32px);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+body.page-children #what-to-bring .cil-children-wear { margin-bottom: 0; }
+body.page-children #what-to-bring .cil-children-bring { margin-top: clamp(20px, 2.5vw, 28px); }
+body.page-children #what-to-bring .cil-children-wear > h2,
+body.page-children #what-to-bring .cil-children-bring > h2 {
+  font-family: var(--display);
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--navy);
+  margin: 0 0 14px;
+}
+body.page-children #what-to-bring .cil-children-wear p,
+body.page-children #what-to-bring .cil-children-bring p {
+  max-width: 62ch;
+  color: var(--ink-2);
+}
+body.page-children #what-to-bring .cil-checklist {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin: 4px 0 18px;
+}
+body.page-children #what-to-bring .cil-checklist > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--sky-2);
+  box-shadow: inset 0 0 0 1px rgba(13, 39, 71, .07);
+}
+body.page-children #what-to-bring .cil-checklist > li::before {
+  content: "✓";
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: none;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+body.page-children #what-to-bring .cil-children-bring > p + p { margin-top: 0.85em; }
+body.page-children #what-to-bring .cil-children-duration {
+  margin-top: clamp(28px, 3.5vw, 48px);
+  padding: clamp(24px, 2.8vw, 40px);
+  border: 0;
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(242, 183, 5, .18), transparent 60%),
+    var(--gold-soft);
+}
+body.page-children #what-to-bring .cil-children-duration > p { color: var(--ink-2); }
+
+/* Tablet + desktop: photo + clothing on the left, checklist card on the right. */
+@media (min-width: 761px) {
+  body.page-children #what-to-bring > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(24px, 3vw, 40px);
+    row-gap: clamp(20px, 2.4vw, 28px);
+    align-items: stretch;
+  }
+  body.page-children #what-to-bring > .wrap > .section-head,
+  body.page-children #what-to-bring .cil-children-duration { grid-column: 1 / -1; }
+  body.page-children #what-to-bring > .wrap > .figure {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 0;
+  }
+  body.page-children #what-to-bring .cil-children-wear {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  body.page-children #what-to-bring .cil-children-bring {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    margin-top: 0;
+    align-self: stretch;
+  }
+  body.page-children #what-to-bring .cil-children-duration {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: clamp(28px, 4vw, 64px);
+    align-items: center;
+  }
+  body.page-children #what-to-bring .cil-children-duration > h2 { margin: 0; }
+  body.page-children #what-to-bring .cil-children-duration > p { margin: 0; }
+}
+@media (min-width: 901px) {
+  body.page-children #what-to-bring > .wrap {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    column-gap: clamp(36px, 4.5vw, 72px);
+  }
+}
+
+/* ---------------------------------------------- healing: paired cards -- */
+@media (min-width: 681px) {
+  body.page-children :is(#anaesthetic-and-comfort, #healing-and-recovery, #medical-reasons) .grid.g-2.cil-info-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* School / activity: three navy cards on desktop; stack below that. */
+@media (max-width: 900px) {
+  body.page-children #school-and-sports .grid.g-3.cil-info-cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
