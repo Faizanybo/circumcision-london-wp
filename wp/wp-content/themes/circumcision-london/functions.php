@@ -194,7 +194,7 @@ function cil_enqueue_assets() {
 	wp_enqueue_style( 'cil-gutenberg', $uri . '/assets/css/gutenberg.css', array( 'cil-base', 'cil-components' ), cil_asset_version( 'assets/css/gutenberg.css' ) );
 	// Visual layer: photo cards, colour bands, icons, trust indicators, homepage composition.
 	wp_enqueue_style( 'cil-visual', $uri . '/assets/css/visual.css', array( 'cil-components', 'cil-gutenberg' ), cil_asset_version( 'assets/css/visual.css' ) );
-	if ( is_page( array( 'babies', 'children', 'adults', 'buried-penis' ) ) ) {
+	if ( is_page( array( 'babies', 'children', 'adults', 'buried-penis', 'phimosis', 'balanitis', 'bxo', 'paraphimosis', 'religious', 're-circumcision', 'frenuloplasty' ) ) ) {
 		wp_enqueue_style( 'cil-babies', $uri . '/assets/css/babies.css', array( 'cil-visual' ), cil_asset_version( 'assets/css/babies.css' ) );
 	}
 	if ( is_page( 'children' ) ) {
@@ -205,6 +205,9 @@ function cil_enqueue_assets() {
 	}
 	if ( is_page( 'buried-penis' ) ) {
 		wp_enqueue_style( 'cil-buried-penis', $uri . '/assets/css/buried-penis.css', array( 'cil-babies' ), cil_asset_version( 'assets/css/buried-penis.css' ) );
+	}
+	if ( is_page( array( 'phimosis', 'balanitis', 'bxo', 'paraphimosis', 'religious', 're-circumcision', 'frenuloplasty' ) ) ) {
+		wp_enqueue_style( 'cil-reasons', $uri . '/assets/css/reasons.css', array( 'cil-babies' ), cil_asset_version( 'assets/css/reasons.css' ) );
 	}
 
 	wp_enqueue_script(

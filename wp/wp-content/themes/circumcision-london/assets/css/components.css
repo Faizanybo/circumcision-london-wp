@@ -1720,10 +1720,10 @@ body.page-buried-penis #authorship-and-references ul.cil-checklist > li > strong
  * two leftovers keeps the full-row pair from the rule above.
  */
 @media (min-width: 681px) {
-  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis) .grid.g-2 > * {
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-frenuloplasty) .grid.g-2 > * {
     grid-column: auto !important;
   }
-  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis) :is(.grid.g-2, .grid.g-3, .cil-quotes-grid) > :last-child {
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-frenuloplasty) :is(.grid.g-2, .grid.g-3, .cil-quotes-grid) > :last-child {
     justify-self: stretch !important;
     margin-inline: 0 !important;
     width: auto !important;
@@ -1731,12 +1731,12 @@ body.page-buried-penis #authorship-and-references ul.cil-checklist > li > strong
   }
 }
 @media (min-width: 681px) and (max-width: 900px) {
-  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis) :is(.grid.g-3, .cil-quotes-grid) > * {
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-frenuloplasty) :is(.grid.g-3, .cil-quotes-grid) > * {
     grid-column: auto !important;
   }
 }
 @media (min-width: 901px) {
-  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis) :is(.grid.g-3, .cil-quotes-grid.g-3) > :last-child:nth-child(3n + 1) {
+  body:is(.page-babies, .page-children, .page-adults, .page-religious, .page-re-circumcision, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-frenuloplasty) :is(.grid.g-3, .cil-quotes-grid.g-3) > :last-child:nth-child(3n + 1) {
     grid-column: auto !important;
   }
 }

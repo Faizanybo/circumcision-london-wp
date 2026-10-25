@@ -1,24 +1,23 @@
 /* =========================================================================
    Babies & Toddlers page: the homepage visual system (navy, sky and gold
-   bands, photographs beside text, lifted cards). Enqueued on /babies/,
-   /children/, /adults/ and /buried-penis/; rules shared by those pages use
-   body:is(.page-babies, .page-children, .page-adults, .page-buried-penis), the rest stay
-   scoped to body.page-babies. Page-only layouts live in children.css,
-   adults.css and buried-penis.css. All wording lives in the page's blocks.
+   bands, photographs beside text, lifted cards). Also enqueued on age-group,
+   buried-penis and Reasons pages. Shared rules use the body:is() list;
+   page-only layouts live in children.css, adults.css, buried-penis.css and
+   reasons.css. All wording lives in the page's blocks.
    ========================================================================= */
 
 /* Full-bleed photographs must never cause sideways scrolling. */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) main { overflow-x: clip; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) main { overflow-x: clip; }
 
 /* Section headings: short gold-to-blue accent bar under the eyebrow. */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .section-head .eyebrow,
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .wrap > div:has(> .spec) > .eyebrow {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .section-head .eyebrow,
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .wrap > div:has(> .spec) > .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .section-head .eyebrow::before,
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .wrap > div:has(> .spec) > .eyebrow::before {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .section-head .eyebrow::before,
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .wrap > div:has(> .spec) > .eyebrow::before {
   content: "";
   width: 28px;
   height: 3px;
@@ -26,7 +25,7 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overvie
   background: linear-gradient(90deg, var(--gold), var(--blue));
 }
 /* “At a glance” reads at H2 scale beside the overview photograph. */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .wrap > div:has(> .spec) > .eyebrow {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .wrap > div:has(> .spec) > .eyebrow {
   font-family: var(--display);
   font-size: clamp(25px, 2.8vw, 38px);
   font-weight: 400;
@@ -36,14 +35,14 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overvie
   color: var(--navy);
   margin-bottom: 18px;
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .wrap > div:has(> .spec) > .eyebrow::before {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .wrap > div:has(> .spec) > .eyebrow::before {
   width: 32px;
   height: 4px;
   align-self: center;
 }
 
 /* ------------------------------------------------------------ page head -- */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head {
   position: relative;
   overflow: hidden;
   background:
@@ -52,7 +51,7 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-he
     var(--navy);
   color: rgba(255, 255, 255, .82);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head::before {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head::before {
   content: "";
   position: absolute;
   right: -40px;
@@ -63,34 +62,34 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-he
   opacity: .08;
   pointer-events: none;
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .wrap { position: relative; }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head h1 { color: var(--gold); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .eyebrow { color: var(--gold); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .lede { color: rgba(255, 255, 255, .8); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .breadcrumb { color: rgba(255, 255, 255, .62); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .breadcrumb a { color: rgba(255, 255, 255, .78); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .breadcrumb a:hover { color: #fff; }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .breadcrumb li + li::before { color: rgba(255, 255, 255, .3); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .reviewed-by {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .wrap { position: relative; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head h1 { color: var(--gold); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .eyebrow { color: var(--gold); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .lede { color: rgba(255, 255, 255, .8); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .breadcrumb { color: rgba(255, 255, 255, .62); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .breadcrumb a { color: rgba(255, 255, 255, .78); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .breadcrumb a:hover { color: #fff; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .breadcrumb li + li::before { color: rgba(255, 255, 255, .3); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .reviewed-by {
   border-top-color: rgba(255, 255, 255, .14);
   color: rgba(255, 255, 255, .62);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head .reviewed-by a { color: rgba(255, 255, 255, .88); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .page-head a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head .reviewed-by a { color: rgba(255, 255, 255, .88); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .page-head a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 /* --------------------------------------------- introduction + at a glance -- */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .split .body-text > p:first-child { color: var(--ink-2); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .wrap > div:has(> .spec) {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .split .body-text > p:first-child { color: var(--ink-2); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .wrap > div:has(> .spec) {
   margin-top: clamp(40px, 5vw, 72px);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin-top: 18px;
   border-top: 0;
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec li {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec li {
   position: relative;
   flex-direction: column;
   align-items: flex-start;
@@ -102,7 +101,7 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overvie
   background: #fff;
   box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec li::before {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec li::before {
   content: "";
   position: absolute;
   top: 0;
@@ -112,31 +111,31 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overvie
   border-radius: 0 0 3px 3px;
   background: linear-gradient(90deg, var(--gold), var(--blue));
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec dt { font-size: 14px; color: var(--muted); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec dd {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec dt { font-size: 14px; color: var(--muted); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec dd {
   font-size: 17px;
   line-height: 1.4;
   color: var(--navy);
   text-align: left;
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: span 2; }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec li:last-child { background: var(--gold-soft); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: span 2; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec li:last-child { background: var(--gold-soft); }
 @media (max-width: 1100px) {
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: auto; }
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: auto; }
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 @media (max-width: 560px) {
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #overview .spec { grid-template-columns: minmax(0, 1fr); }
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Heading, lede and text sitting together in a split column. */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .cil-split-copy > .section-head,
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .cil-split-copy > .section-head,
 body.page-babies #best-age > .wrap > .section-head { margin-bottom: 0; }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .cil-split-copy > .cil-section-lede,
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .cil-split-copy > .cil-section-lede,
 body.page-babies #best-age > .wrap > .cil-section-lede { margin-top: 1.15em; }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .cil-split-copy > .cil-section-lede { margin-bottom: 0; }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .cil-split-copy > .cil-section-lede + .wp-block-group { margin-top: 1.15em; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .cil-split-copy > .cil-section-lede { margin-bottom: 0; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .cil-split-copy > .cil-section-lede + .wp-block-group { margin-top: 1.15em; }
 
 /* ---------------------------------------------------------- best age -- */
 body.page-babies #best-age > .wrap > .wp-block-group:not(.cil-section-lede) {
@@ -184,7 +183,7 @@ body.page-babies #ring-methods > .wrap > .grid + .wp-block-group > * {
 }
 
 /* --------------------------------------------- cards: gold accent rule -- */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .wp-block-cil-section:not(.bg-navy) .cil-info-card {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(.bg-navy) .cil-info-card {
   border: 1px solid rgba(13, 39, 71, .08);
   border-top: 4px solid var(--gold);
   border-radius: var(--radius-lg);
@@ -197,17 +196,17 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .wp-bloc
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .bg-navy .card.cil-info-card { border-top: 4px solid var(--gold); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .bg-navy .cil-info-card .body-text a { color: var(--gold); }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .bg-navy .cil-info-card .body-text a:hover { color: #ffd23f; }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .card.cil-info-card { border-top: 4px solid var(--gold); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .cil-info-card .body-text a { color: var(--gold); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .cil-info-card .body-text a:hover { color: #ffd23f; }
 
 /* ----------------------------------------------- appointment timeline -- */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough {
   background:
     radial-gradient(800px 360px at 100% 0%, rgba(242, 183, 5, .10), transparent 60%),
     #fff;
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps {
   position: relative;
   gap: 14px;
   padding-left: 56px;
@@ -216,7 +215,7 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appoint
   border-radius: 0;
   overflow: visible;
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps::before {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps::before {
   content: "";
   position: absolute;
   left: 21px;
@@ -225,7 +224,7 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appoint
   width: 2px;
   background: repeating-linear-gradient(180deg, var(--gold) 0 10px, transparent 10px 18px);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps li {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps li {
   position: relative;
   padding: clamp(20px, 2vw, 26px) clamp(22px, 2.2vw, 30px);
   border: 1px solid rgba(13, 39, 71, .08);
@@ -233,7 +232,7 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appoint
   background: #fff;
   box-shadow: var(--shadow-card);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps li::before {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps li::before {
   content: "";
   position: absolute;
   left: -45px;
@@ -245,16 +244,16 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appoint
   background: radial-gradient(circle, var(--gold) 0 4px, var(--navy) 5px);
   box-shadow: 0 0 0 5px #fff, 0 0 0 6px rgba(242, 183, 5, .5);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps h3 { font-size: 18px; color: var(--navy); }
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps h3 { font-size: 18px; color: var(--navy); }
 @media (min-width: 901px) {
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough > .wrap {
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough > .wrap {
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
     column-gap: clamp(40px, 5vw, 88px);
     /* Top-align so “On the day” sits level with Registration and consent. */
     align-items: start;
   }
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough > .wrap > .section-head {
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough > .wrap > .section-head {
     position: static;
     margin-bottom: 0;
     /* Match the first step card’s top padding so the headings share a baseline. */
@@ -262,20 +261,20 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appoint
   }
 }
 @media (max-width: 560px) {
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps { padding-left: 38px; }
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps::before { left: 12px; }
-  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) #appointment-walkthrough .steps li::before { left: -37px; width: 18px; height: 18px; background: radial-gradient(circle, var(--gold) 0 3px, var(--navy) 4px); }
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps { padding-left: 38px; }
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps::before { left: 12px; }
+  body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #appointment-walkthrough .steps li::before { left: -37px; width: 18px; height: 18px; background: radial-gradient(circle, var(--gold) 0 3px, var(--navy) 4px); }
 }
 
 /* ------------------------------------------------- checklist tiles -- */
 /* Same centred two-column grid as before (client request); homepage tile finish. */
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .wp-block-cil-section .cil-checklist > li {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section .cil-checklist > li {
   border: 0;
   border-radius: 14px;
   background: #fff;
   box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
 }
-body:is(.page-babies, .page-children, .page-adults, .page-buried-penis) .bg-card .cil-checklist > li {
+body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-card .cil-checklist > li {
   background: var(--sky-2);
   box-shadow: inset 0 0 0 1px rgba(13, 39, 71, .07);
 }
@@ -332,8 +331,8 @@ body.page-babies #when-to-contact .is-style-cil-card > * { margin-left: 0; margi
 }
 
 /* ------------------------------------------------------------- FAQ -- */
-body:is(.page-babies, .page-adults, .page-buried-penis) .faq { border-top: 0; }
-body:is(.page-babies, .page-adults, .page-buried-penis) .faq details {
+body:is(.page-babies, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .faq { border-top: 0; }
+body:is(.page-babies, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .faq details {
   margin-bottom: 10px;
   padding-inline: 20px;
   border: 1px solid rgba(13, 39, 71, .08);
@@ -341,6 +340,6 @@ body:is(.page-babies, .page-adults, .page-buried-penis) .faq details {
   background: #fff;
   box-shadow: 0 10px 26px -24px rgba(13, 39, 71, .5);
 }
-body:is(.page-babies, .page-adults, .page-buried-penis) .faq details[open] { border-color: rgba(29, 95, 160, .35); }
+body:is(.page-babies, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .faq details[open] { border-color: rgba(29, 95, 160, .35); }
 
 /* Callback CTA band styling lives in visual.css (.cta-band:has(.cil-cta-callback-card)). */
