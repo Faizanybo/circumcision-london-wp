@@ -1,0 +1,213 @@
+/* =========================================================================
+   Buried Penis page: section layouts specific to this page. The shared visual
+   system (navy page head, gold accents, spec tiles, cards, checklists)
+   comes from babies.css. Enqueued only on /buried-penis/ after babies.css.
+   All wording lives in the page's blocks.
+   ========================================================================= */
+
+/* --------------------------------------------- at a glance: 3 + 2 tiles -- */
+body.page-buried-penis #overview .spec { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
+  body.page-buried-penis #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  body.page-buried-penis #overview .spec { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* --------------------------------------------- overview callout + copy -- */
+body.page-buried-penis #overview .cil-buried-callout {
+  max-width: none;
+  margin: 0 0 clamp(20px, 2.4vw, 28px);
+  padding: clamp(22px, 2.6vw, 32px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-buried-penis #overview .cil-buried-callout > :last-child { margin-bottom: 0; }
+body.page-buried-penis #overview .cil-buried-callout .display { margin-top: 0; }
+
+/* --------------------------------------------- clinic photograph -- */
+body.page-buried-penis #overview .figure {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background: #fff;
+}
+body.page-buried-penis #overview .figure img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* --------------------------------------------- selected gold text cards -- */
+body.page-buried-penis :is(#small-vs-buried, #circumcision-and-buried-penis) .cil-buried-text-card {
+  max-width: none;
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-buried-penis :is(#small-vs-buried, #circumcision-and-buried-penis) .cil-buried-text-card > :last-child {
+  margin-bottom: 0;
+}
+body.page-buried-penis .cil-buried-text-card .display { margin-top: 0; }
+
+/* ------------------------------------------- expertise callout -- */
+body.page-buried-penis #circumcision-and-buried-penis .cil-buried-expertise {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(22px, 2.6vw, 32px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--navy);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+body.page-buried-penis #circumcision-and-buried-penis .cil-buried-expertise > :last-child { margin-bottom: 0; }
+body.page-buried-penis #circumcision-and-buried-penis .cil-buried-expertise .caps.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+body.page-buried-penis #circumcision-and-buried-penis .cil-buried-expertise .caps.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+}
+body.page-buried-penis #circumcision-and-buried-penis .cil-buried-expertise .display { margin-top: 0; }
+
+/* ------------------------------------------- aftercare: photo left, copy right -- */
+body.page-buried-penis #aftercare-and-healing > .wrap > .section-head { margin-bottom: 0; }
+body.page-buried-penis #aftercare-and-healing .split {
+  margin-top: clamp(24px, 3vw, 36px);
+  align-items: center;
+}
+body.page-buried-penis #aftercare-and-healing .split > :is(.figure, .wp-block-cil-figure) {
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+body.page-buried-penis #aftercare-and-healing .split .figure {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background: #fff;
+}
+body.page-buried-penis #aftercare-and-healing .split .figure picture,
+body.page-buried-penis #aftercare-and-healing .split .figure img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+body.page-buried-penis #aftercare-and-healing .split .figure img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+}
+body.page-buried-penis #aftercare-and-healing .cil-buried-aftercare-intro {
+  max-width: 72ch;
+}
+body.page-buried-penis #aftercare-and-healing .cil-buried-aftercare-intro > :last-child { margin-bottom: 0; }
+body.page-buried-penis #aftercare-and-healing .cil-buried-aftercare-card {
+  max-width: none;
+  margin-top: clamp(20px, 2.4vw, 28px);
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+}
+body.page-buried-penis #aftercare-and-healing .cil-buried-aftercare-card > :last-child { margin-bottom: 0; }
+body.page-buried-penis #aftercare-and-healing .cil-buried-aftercare-card .display { margin-top: 0; }
+body.page-buried-penis #aftercare-and-healing .cil-buried-aftercare-gold {
+  border-left: 4px solid var(--gold);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+body.page-buried-penis #aftercare-and-healing .cil-buried-aftercare-panel {
+  border-left: 4px solid var(--navy);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+
+/* Bold principle line in the navy copy must stay light; .body-text strong is ink. */
+body.page-buried-penis #clinical-experience > .wrap > .body-text strong {
+  color: #fff;
+}
+
+/* ------------------------------------------- clinical principles -- */
+body.page-buried-penis #clinical-experience .cil-buried-principles {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(22px, 2.6vw, 32px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background: #fff;
+  box-shadow: var(--shadow-card);
+}
+body.page-buried-penis #clinical-experience .cil-buried-principles,
+body.page-buried-penis #clinical-experience .cil-buried-principles :is(h2, h3, .display, p) {
+  color: var(--ink);
+}
+body.page-buried-penis #clinical-experience .cil-buried-principles > :last-child { margin-bottom: 0; }
+body.page-buried-penis #clinical-experience .cil-buried-principles .caps.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+body.page-buried-penis #clinical-experience .cil-buried-principles .caps.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+}
+body.page-buried-penis #clinical-experience .cil-buried-principles .display { margin-top: 0; }
+body.page-buried-penis #clinical-experience .cil-buried-principles p:last-child {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--blue-deep);
+}
+
+@media (min-width: 681px) {
+  body.page-buried-penis #weight-and-growth .grid.g-2.cil-info-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  body.page-buried-penis :is(#age-groups, #why-choose-us) .grid.g-3.cil-info-cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ------------------------------------------- authorship review card -- */
+body.page-buried-penis #authorship-and-references .cil-buried-review-card {
+  padding: clamp(22px, 2.6vw, 32px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-buried-penis #authorship-and-references .cil-buried-review-card > :last-child { margin-bottom: 0; }
+body.page-buried-penis #authorship-and-references .cil-buried-review-card .caps.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+body.page-buried-penis #authorship-and-references .cil-buried-review-card .caps.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--blue));
+}
+body.page-buried-penis #authorship-and-references .cil-buried-review-card .display { margin-top: 0; }

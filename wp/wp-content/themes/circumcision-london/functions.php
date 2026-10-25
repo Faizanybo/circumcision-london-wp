@@ -194,7 +194,7 @@ function cil_enqueue_assets() {
 	wp_enqueue_style( 'cil-gutenberg', $uri . '/assets/css/gutenberg.css', array( 'cil-base', 'cil-components' ), cil_asset_version( 'assets/css/gutenberg.css' ) );
 	// Visual layer: photo cards, colour bands, icons, trust indicators, homepage composition.
 	wp_enqueue_style( 'cil-visual', $uri . '/assets/css/visual.css', array( 'cil-components', 'cil-gutenberg' ), cil_asset_version( 'assets/css/visual.css' ) );
-	if ( is_page( array( 'babies', 'children', 'adults' ) ) ) {
+	if ( is_page( array( 'babies', 'children', 'adults', 'buried-penis' ) ) ) {
 		wp_enqueue_style( 'cil-babies', $uri . '/assets/css/babies.css', array( 'cil-visual' ), cil_asset_version( 'assets/css/babies.css' ) );
 	}
 	if ( is_page( 'children' ) ) {
@@ -202,6 +202,9 @@ function cil_enqueue_assets() {
 	}
 	if ( is_page( 'adults' ) ) {
 		wp_enqueue_style( 'cil-adults', $uri . '/assets/css/adults.css', array( 'cil-babies' ), cil_asset_version( 'assets/css/adults.css' ) );
+	}
+	if ( is_page( 'buried-penis' ) ) {
+		wp_enqueue_style( 'cil-buried-penis', $uri . '/assets/css/buried-penis.css', array( 'cil-babies' ), cil_asset_version( 'assets/css/buried-penis.css' ) );
 	}
 
 	wp_enqueue_script(
