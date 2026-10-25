@@ -2773,9 +2773,25 @@
             }),
             el(TextControl, {
               label: 'Length (list layout, optional, e.g. 2:30)',
+              help: 'Shown as “Video · …” unless a button label and URL are set below.',
               value: item.duration || '',
               onChange: function (v) {
                 updateItem(i, { duration: v });
+              },
+            }),
+            el(TextControl, {
+              label: 'Button label (list layout, optional)',
+              help: 'Replaces the Video · length line inside the card when both label and URL are set.',
+              value: item.ctaLabel || '',
+              onChange: function (v) {
+                updateItem(i, { ctaLabel: v });
+              },
+            }),
+            el(TextControl, {
+              label: 'Button URL (list layout, optional)',
+              value: item.ctaUrl || '',
+              onChange: function (v) {
+                updateItem(i, { ctaUrl: v });
               },
             }),
             el(AttachmentControl, {
@@ -2897,7 +2913,7 @@
             onClick: function () {
               props.setAttributes({
                 items: items.concat([
-                  { title: '', description: '', duration: '', mediaKey: '', posterKey: '', poster: '', mp4: '', webm: '', posterId: 0, mp4Id: 0, webmId: 0 },
+                  { title: '', description: '', duration: '', ctaLabel: '', ctaUrl: '', mediaKey: '', posterKey: '', poster: '', mp4: '', webm: '', posterId: 0, mp4Id: 0, webmId: 0 },
                 ]),
               });
             },

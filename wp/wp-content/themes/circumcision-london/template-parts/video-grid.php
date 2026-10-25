@@ -153,7 +153,15 @@ if ( isset( $args['layout'] ) && 'list' === $args['layout'] ) {
 					<?php if ( ! empty( $item['description'] ) ) : ?>
 						<p class="cil-video-row__note"><?php echo wp_kses( $item['description'], $note_tags ); ?></p>
 					<?php endif; ?>
-					<?php if ( $duration ) : ?>
+					<?php
+					$cta_label = isset( $item['ctaLabel'] ) ? trim( (string) $item['ctaLabel'] ) : '';
+					$cta_url   = isset( $item['ctaUrl'] ) ? trim( (string) $item['ctaUrl'] ) : '';
+					if ( $cta_label && $cta_url ) :
+						?>
+						<p class="cil-video-row__cta">
+							<a class="wp-block-button__link wp-element-button" href="<?php echo esc_url( $cta_url ); ?>"><?php echo esc_html( $cta_label ); ?></a>
+						</p>
+					<?php elseif ( $duration ) : ?>
 						<p class="cil-video-row__meta meta"><?php echo esc_html( sprintf( /* translators: %s: video length, e.g. 2:30 */ __( 'Video · %s', 'circumcision-london' ), $duration ) ); ?></p>
 					<?php endif; ?>
 				</div>

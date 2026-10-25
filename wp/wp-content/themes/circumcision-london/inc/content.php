@@ -75,6 +75,33 @@ function cil_rich_text( $html ) {
 			'dl'      => array( 'style' => true, 'class' => true ),
 			'dt'      => array( 'style' => true, 'class' => true ),
 			'dd'      => array( 'style' => true, 'class' => true ),
+			'svg'     => array(
+				'class'       => true,
+				'viewbox'     => true,
+				'width'       => true,
+				'height'      => true,
+				'aria-hidden' => true,
+				'focusable'   => true,
+				'fill'        => true,
+				'xmlns'       => true,
+			),
+			'path'    => array(
+				'd'               => true,
+				'fill'            => true,
+				'stroke'          => true,
+				'stroke-width'    => true,
+				'stroke-linecap'  => true,
+				'stroke-linejoin' => true,
+			),
+			'rect'    => array(
+				'x'      => true,
+				'y'      => true,
+				'width'  => true,
+				'height' => true,
+				'rx'     => true,
+				'fill'   => true,
+				'stroke' => true,
+			),
 		)
 	);
 }
