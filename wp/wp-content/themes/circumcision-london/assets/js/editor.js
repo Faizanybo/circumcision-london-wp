@@ -443,6 +443,7 @@
     { label: 'Sterilisation', value: 'sterilisation' },
     { label: 'Smiling baby', value: 'baby-smiling' },
     { label: 'Two boys playing outdoors', value: 'children-boys' },
+    { label: 'Adult man in a green shirt', value: 'adults-man' },
   ];
 
   function writeBlock(clientId, key, value) {

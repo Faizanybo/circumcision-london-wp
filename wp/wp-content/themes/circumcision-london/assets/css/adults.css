@@ -1,0 +1,131 @@
+/* =========================================================================
+   Adults page: section layouts specific to this page. The shared visual
+   system (navy page head, gold accents, spec tiles, cards, timeline,
+   checklist tiles) comes from babies.css. Enqueued only on /adults/ after
+   babies.css. All wording lives in the page's blocks.
+   ========================================================================= */
+
+/* --------------------------------------------- at a glance: 3 + 3 tiles -- */
+body.page-adults #overview .spec { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
+  body.page-adults #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  body.page-adults #overview .spec { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ------------------------------------------- reasons: wide card -- */
+body.page-adults #reasons > .wrap > .section-head { margin-bottom: 0; }
+body.page-adults #reasons > .wrap > .cil-section-lede { margin-top: 1.15em; max-width: 72ch; }
+body.page-adults #reasons .cil-adults-reasons-card {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-adults #reasons .cil-adults-reasons-card > :last-child { margin-bottom: 0; }
+@media (min-width: 901px) {
+  body.page-adults #reasons .cil-adults-reasons-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(36px, 4.5vw, 64px);
+    row-gap: 0.85em;
+    align-items: start;
+  }
+  body.page-adults #reasons .cil-adults-reasons-card > * { margin: 0; }
+  body.page-adults #reasons .cil-adults-reasons-card > .cil-checklist {
+    grid-column: 1 / -1;
+  }
+  body.page-adults #reasons .cil-adults-reasons-card > p:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ------------------------------------------------ appointment timeline -- */
+body.page-adults #appointment-walkthrough > .wrap > .wp-block-group { max-width: none; }
+
+/* ------------------------------------------- anaesthetic and comfort -- */
+body.page-adults #anaesthetic-and-comfort .split + .grid { margin-top: clamp(40px, 5vw, 72px); }
+
+/* ------------------------------------------- aftercare: text + panel -- */
+body.page-adults #aftercare-and-support > .wrap > .section-head { margin-bottom: 0; }
+body.page-adults #aftercare-and-support .figure {
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  background: #fff;
+}
+body.page-adults #aftercare-and-support .figure img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+body.page-adults #aftercare-and-support .cil-adults-aftercare-card {
+  max-width: none;
+  margin-top: clamp(24px, 3vw, 36px);
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-adults #aftercare-and-support .cil-adults-aftercare-card > :last-child { margin-bottom: 0; }
+@media (min-width: 901px) {
+  body.page-adults #aftercare-and-support > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: start;
+  }
+  body.page-adults #aftercare-and-support > .wrap > .section-head { grid-column: 1; grid-row: 1; }
+  body.page-adults #aftercare-and-support > .wrap > .figure { grid-column: 1; grid-row: 2; margin-top: 1.15em; }
+  body.page-adults #aftercare-and-support .cil-adults-aftercare-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+}
+
+/* -------------------------------------------------------- diary card -- */
+/* Paint an inner card so the gold box matches .wrap content width, not the padded wrap. */
+body.page-adults #circumcision-diary > .wrap > .cil-adults-diary-card {
+  max-width: none;
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(242, 183, 5, .18), transparent 60%),
+    var(--gold-soft);
+}
+body.page-adults #circumcision-diary .cil-adults-diary-card > .section-head {
+  max-width: none;
+  margin-bottom: 18px;
+}
+body.page-adults #circumcision-diary .wp-block-buttons { margin-top: 8px; }
+body.page-adults #circumcision-diary .wp-element-button {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 999px;
+}
+body.page-adults #circumcision-diary .wp-element-button:hover {
+  background: var(--blue-deep);
+}
+
+/* ---------------------------------------------- paired / triple cards -- */
+@media (min-width: 681px) {
+  body.page-adults :is(#medical-conditions, #anaesthetic-and-comfort, #healing-and-appearance, #health-considerations, #pricing-location) .grid.g-2.cil-info-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  body.page-adults :is(#practical-care, #returning-to-activity, #sensitivity-and-hygiene, #complex-anatomy-and-risks) .grid.g-3.cil-info-cards-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

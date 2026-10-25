@@ -1,23 +1,24 @@
 /* =========================================================================
    Babies & Toddlers page: the homepage visual system (navy, sky and gold
-   bands, photographs beside text, lifted cards). Enqueued on /babies/ and
-   /children/; rules shared by both pages use body:is(.page-babies,
-   .page-children), the rest stay scoped to body.page-babies. Children-only
-   layouts live in children.css. All wording lives in the page's blocks.
+   bands, photographs beside text, lifted cards). Enqueued on /babies/,
+   /children/ and /adults/; rules shared by those pages use
+   body:is(.page-babies, .page-children, .page-adults), the rest stay
+   scoped to body.page-babies. Page-only layouts live in children.css and
+   adults.css. All wording lives in the page's blocks.
    ========================================================================= */
 
 /* Full-bleed photographs must never cause sideways scrolling. */
-body:is(.page-babies, .page-children) main { overflow-x: clip; }
+body:is(.page-babies, .page-children, .page-adults) main { overflow-x: clip; }
 
 /* Section headings: short gold-to-blue accent bar under the eyebrow. */
-body:is(.page-babies, .page-children) .section-head .eyebrow,
-body:is(.page-babies, .page-children) #overview .wrap > div:has(> .spec) > .eyebrow {
+body:is(.page-babies, .page-children, .page-adults) .section-head .eyebrow,
+body:is(.page-babies, .page-children, .page-adults) #overview .wrap > div:has(> .spec) > .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
 }
-body:is(.page-babies, .page-children) .section-head .eyebrow::before,
-body:is(.page-babies, .page-children) #overview .wrap > div:has(> .spec) > .eyebrow::before {
+body:is(.page-babies, .page-children, .page-adults) .section-head .eyebrow::before,
+body:is(.page-babies, .page-children, .page-adults) #overview .wrap > div:has(> .spec) > .eyebrow::before {
   content: "";
   width: 28px;
   height: 3px;
@@ -25,7 +26,7 @@ body:is(.page-babies, .page-children) #overview .wrap > div:has(> .spec) > .eyeb
   background: linear-gradient(90deg, var(--gold), var(--blue));
 }
 /* “At a glance” reads at H2 scale beside the overview photograph. */
-body:is(.page-babies, .page-children) #overview .wrap > div:has(> .spec) > .eyebrow {
+body:is(.page-babies, .page-children, .page-adults) #overview .wrap > div:has(> .spec) > .eyebrow {
   font-family: var(--display);
   font-size: clamp(25px, 2.8vw, 38px);
   font-weight: 400;
@@ -35,14 +36,14 @@ body:is(.page-babies, .page-children) #overview .wrap > div:has(> .spec) > .eyeb
   color: var(--navy);
   margin-bottom: 18px;
 }
-body:is(.page-babies, .page-children) #overview .wrap > div:has(> .spec) > .eyebrow::before {
+body:is(.page-babies, .page-children, .page-adults) #overview .wrap > div:has(> .spec) > .eyebrow::before {
   width: 32px;
   height: 4px;
   align-self: center;
 }
 
 /* ------------------------------------------------------------ page head -- */
-body:is(.page-babies, .page-children) .page-head {
+body:is(.page-babies, .page-children, .page-adults) .page-head {
   position: relative;
   overflow: hidden;
   background:
@@ -51,7 +52,7 @@ body:is(.page-babies, .page-children) .page-head {
     var(--navy);
   color: rgba(255, 255, 255, .82);
 }
-body:is(.page-babies, .page-children) .page-head::before {
+body:is(.page-babies, .page-children, .page-adults) .page-head::before {
   content: "";
   position: absolute;
   right: -40px;
@@ -62,34 +63,34 @@ body:is(.page-babies, .page-children) .page-head::before {
   opacity: .08;
   pointer-events: none;
 }
-body:is(.page-babies, .page-children) .page-head .wrap { position: relative; }
-body:is(.page-babies, .page-children) .page-head h1 { color: var(--gold); }
-body:is(.page-babies, .page-children) .page-head .eyebrow { color: var(--gold); }
-body:is(.page-babies, .page-children) .page-head .lede { color: rgba(255, 255, 255, .8); }
-body:is(.page-babies, .page-children) .page-head .breadcrumb { color: rgba(255, 255, 255, .62); }
-body:is(.page-babies, .page-children) .page-head .breadcrumb a { color: rgba(255, 255, 255, .78); }
-body:is(.page-babies, .page-children) .page-head .breadcrumb a:hover { color: #fff; }
-body:is(.page-babies, .page-children) .page-head .breadcrumb li + li::before { color: rgba(255, 255, 255, .3); }
-body:is(.page-babies, .page-children) .page-head .reviewed-by {
+body:is(.page-babies, .page-children, .page-adults) .page-head .wrap { position: relative; }
+body:is(.page-babies, .page-children, .page-adults) .page-head h1 { color: var(--gold); }
+body:is(.page-babies, .page-children, .page-adults) .page-head .eyebrow { color: var(--gold); }
+body:is(.page-babies, .page-children, .page-adults) .page-head .lede { color: rgba(255, 255, 255, .8); }
+body:is(.page-babies, .page-children, .page-adults) .page-head .breadcrumb { color: rgba(255, 255, 255, .62); }
+body:is(.page-babies, .page-children, .page-adults) .page-head .breadcrumb a { color: rgba(255, 255, 255, .78); }
+body:is(.page-babies, .page-children, .page-adults) .page-head .breadcrumb a:hover { color: #fff; }
+body:is(.page-babies, .page-children, .page-adults) .page-head .breadcrumb li + li::before { color: rgba(255, 255, 255, .3); }
+body:is(.page-babies, .page-children, .page-adults) .page-head .reviewed-by {
   border-top-color: rgba(255, 255, 255, .14);
   color: rgba(255, 255, 255, .62);
 }
-body:is(.page-babies, .page-children) .page-head .reviewed-by a { color: rgba(255, 255, 255, .88); }
-body:is(.page-babies, .page-children) .page-head a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+body:is(.page-babies, .page-children, .page-adults) .page-head .reviewed-by a { color: rgba(255, 255, 255, .88); }
+body:is(.page-babies, .page-children, .page-adults) .page-head a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
 /* --------------------------------------------- introduction + at a glance -- */
-body:is(.page-babies, .page-children) #overview .split .body-text > p:first-child { color: var(--ink-2); }
-body:is(.page-babies, .page-children) #overview .wrap > div:has(> .spec) {
+body:is(.page-babies, .page-children, .page-adults) #overview .split .body-text > p:first-child { color: var(--ink-2); }
+body:is(.page-babies, .page-children, .page-adults) #overview .wrap > div:has(> .spec) {
   margin-top: clamp(40px, 5vw, 72px);
 }
-body:is(.page-babies, .page-children) #overview .spec {
+body:is(.page-babies, .page-children, .page-adults) #overview .spec {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin-top: 18px;
   border-top: 0;
 }
-body:is(.page-babies, .page-children) #overview .spec li {
+body:is(.page-babies, .page-children, .page-adults) #overview .spec li {
   position: relative;
   flex-direction: column;
   align-items: flex-start;
@@ -101,7 +102,7 @@ body:is(.page-babies, .page-children) #overview .spec li {
   background: #fff;
   box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
 }
-body:is(.page-babies, .page-children) #overview .spec li::before {
+body:is(.page-babies, .page-children, .page-adults) #overview .spec li::before {
   content: "";
   position: absolute;
   top: 0;
@@ -111,31 +112,31 @@ body:is(.page-babies, .page-children) #overview .spec li::before {
   border-radius: 0 0 3px 3px;
   background: linear-gradient(90deg, var(--gold), var(--blue));
 }
-body:is(.page-babies, .page-children) #overview .spec dt { font-size: 14px; color: var(--muted); }
-body:is(.page-babies, .page-children) #overview .spec dd {
+body:is(.page-babies, .page-children, .page-adults) #overview .spec dt { font-size: 14px; color: var(--muted); }
+body:is(.page-babies, .page-children, .page-adults) #overview .spec dd {
   font-size: 17px;
   line-height: 1.4;
   color: var(--navy);
   text-align: left;
 }
-body:is(.page-babies, .page-children) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: span 2; }
-body:is(.page-babies, .page-children) #overview .spec li:last-child { background: var(--gold-soft); }
+body:is(.page-babies, .page-children, .page-adults) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: span 2; }
+body:is(.page-babies, .page-children, .page-adults) #overview .spec li:last-child { background: var(--gold-soft); }
 @media (max-width: 1100px) {
-  body:is(.page-babies, .page-children) #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  body:is(.page-babies, .page-children) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: auto; }
-  body:is(.page-babies, .page-children) #overview .spec li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  body:is(.page-babies, .page-children, .page-adults) #overview .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body:is(.page-babies, .page-children, .page-adults) #overview .spec li:last-child:nth-child(4n + 3) { grid-column: auto; }
+  body:is(.page-babies, .page-children, .page-adults) #overview .spec li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 @media (max-width: 560px) {
-  body:is(.page-babies, .page-children) #overview .spec { grid-template-columns: minmax(0, 1fr); }
+  body:is(.page-babies, .page-children, .page-adults) #overview .spec { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Heading, lede and text sitting together in a split column. */
-body:is(.page-babies, .page-children) .cil-split-copy > .section-head,
+body:is(.page-babies, .page-children, .page-adults) .cil-split-copy > .section-head,
 body.page-babies #best-age > .wrap > .section-head { margin-bottom: 0; }
-body:is(.page-babies, .page-children) .cil-split-copy > .cil-section-lede,
+body:is(.page-babies, .page-children, .page-adults) .cil-split-copy > .cil-section-lede,
 body.page-babies #best-age > .wrap > .cil-section-lede { margin-top: 1.15em; }
-body:is(.page-babies, .page-children) .cil-split-copy > .cil-section-lede { margin-bottom: 0; }
-body:is(.page-babies, .page-children) .cil-split-copy > .cil-section-lede + .wp-block-group { margin-top: 1.15em; }
+body:is(.page-babies, .page-children, .page-adults) .cil-split-copy > .cil-section-lede { margin-bottom: 0; }
+body:is(.page-babies, .page-children, .page-adults) .cil-split-copy > .cil-section-lede + .wp-block-group { margin-top: 1.15em; }
 
 /* ---------------------------------------------------------- best age -- */
 body.page-babies #best-age > .wrap > .wp-block-group:not(.cil-section-lede) {
@@ -183,7 +184,7 @@ body.page-babies #ring-methods > .wrap > .grid + .wp-block-group > * {
 }
 
 /* --------------------------------------------- cards: gold accent rule -- */
-body:is(.page-babies, .page-children) .wp-block-cil-section:not(.bg-navy) .cil-info-card {
+body:is(.page-babies, .page-children, .page-adults) .wp-block-cil-section:not(.bg-navy) .cil-info-card {
   border: 1px solid rgba(13, 39, 71, .08);
   border-top: 4px solid var(--gold);
   border-radius: var(--radius-lg);
@@ -196,17 +197,17 @@ body:is(.page-babies, .page-children) .wp-block-cil-section:not(.bg-navy) .cil-i
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-body:is(.page-babies, .page-children) .bg-navy .card.cil-info-card { border-top: 4px solid var(--gold); }
-body:is(.page-babies, .page-children) .bg-navy .cil-info-card .body-text a { color: var(--gold); }
-body:is(.page-babies, .page-children) .bg-navy .cil-info-card .body-text a:hover { color: #ffd23f; }
+body:is(.page-babies, .page-children, .page-adults) .bg-navy .card.cil-info-card { border-top: 4px solid var(--gold); }
+body:is(.page-babies, .page-children, .page-adults) .bg-navy .cil-info-card .body-text a { color: var(--gold); }
+body:is(.page-babies, .page-children, .page-adults) .bg-navy .cil-info-card .body-text a:hover { color: #ffd23f; }
 
 /* ----------------------------------------------- appointment timeline -- */
-body:is(.page-babies, .page-children) #appointment-walkthrough {
+body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough {
   background:
     radial-gradient(800px 360px at 100% 0%, rgba(242, 183, 5, .10), transparent 60%),
     #fff;
 }
-body:is(.page-babies, .page-children) #appointment-walkthrough .steps {
+body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps {
   position: relative;
   gap: 14px;
   padding-left: 56px;
@@ -215,7 +216,7 @@ body:is(.page-babies, .page-children) #appointment-walkthrough .steps {
   border-radius: 0;
   overflow: visible;
 }
-body:is(.page-babies, .page-children) #appointment-walkthrough .steps::before {
+body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps::before {
   content: "";
   position: absolute;
   left: 21px;
@@ -224,7 +225,7 @@ body:is(.page-babies, .page-children) #appointment-walkthrough .steps::before {
   width: 2px;
   background: repeating-linear-gradient(180deg, var(--gold) 0 10px, transparent 10px 18px);
 }
-body:is(.page-babies, .page-children) #appointment-walkthrough .steps li {
+body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps li {
   position: relative;
   padding: clamp(20px, 2vw, 26px) clamp(22px, 2.2vw, 30px);
   border: 1px solid rgba(13, 39, 71, .08);
@@ -232,7 +233,7 @@ body:is(.page-babies, .page-children) #appointment-walkthrough .steps li {
   background: #fff;
   box-shadow: var(--shadow-card);
 }
-body:is(.page-babies, .page-children) #appointment-walkthrough .steps li::before {
+body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps li::before {
   content: "";
   position: absolute;
   left: -45px;
@@ -244,16 +245,16 @@ body:is(.page-babies, .page-children) #appointment-walkthrough .steps li::before
   background: radial-gradient(circle, var(--gold) 0 4px, var(--navy) 5px);
   box-shadow: 0 0 0 5px #fff, 0 0 0 6px rgba(242, 183, 5, .5);
 }
-body:is(.page-babies, .page-children) #appointment-walkthrough .steps h3 { font-size: 18px; color: var(--navy); }
+body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps h3 { font-size: 18px; color: var(--navy); }
 @media (min-width: 901px) {
-  body:is(.page-babies, .page-children) #appointment-walkthrough > .wrap {
+  body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough > .wrap {
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
     column-gap: clamp(40px, 5vw, 88px);
     /* Top-align so “On the day” sits level with Registration and consent. */
     align-items: start;
   }
-  body:is(.page-babies, .page-children) #appointment-walkthrough > .wrap > .section-head {
+  body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough > .wrap > .section-head {
     position: static;
     margin-bottom: 0;
     /* Match the first step card’s top padding so the headings share a baseline. */
@@ -261,20 +262,20 @@ body:is(.page-babies, .page-children) #appointment-walkthrough .steps h3 { font-
   }
 }
 @media (max-width: 560px) {
-  body:is(.page-babies, .page-children) #appointment-walkthrough .steps { padding-left: 38px; }
-  body:is(.page-babies, .page-children) #appointment-walkthrough .steps::before { left: 12px; }
-  body:is(.page-babies, .page-children) #appointment-walkthrough .steps li::before { left: -37px; width: 18px; height: 18px; background: radial-gradient(circle, var(--gold) 0 3px, var(--navy) 4px); }
+  body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps { padding-left: 38px; }
+  body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps::before { left: 12px; }
+  body:is(.page-babies, .page-children, .page-adults) #appointment-walkthrough .steps li::before { left: -37px; width: 18px; height: 18px; background: radial-gradient(circle, var(--gold) 0 3px, var(--navy) 4px); }
 }
 
 /* ------------------------------------------------- checklist tiles -- */
 /* Same centred two-column grid as before (client request); homepage tile finish. */
-body:is(.page-babies, .page-children) .wp-block-cil-section .cil-checklist > li {
+body:is(.page-babies, .page-children, .page-adults) .wp-block-cil-section .cil-checklist > li {
   border: 0;
   border-radius: 14px;
   background: #fff;
   box-shadow: 0 12px 30px -24px rgba(13, 39, 71, .5);
 }
-body:is(.page-babies, .page-children) .bg-card .cil-checklist > li {
+body:is(.page-babies, .page-children, .page-adults) .bg-card .cil-checklist > li {
   background: var(--sky-2);
   box-shadow: inset 0 0 0 1px rgba(13, 39, 71, .07);
 }
@@ -331,8 +332,8 @@ body.page-babies #when-to-contact .is-style-cil-card > * { margin-left: 0; margi
 }
 
 /* ------------------------------------------------------------- FAQ -- */
-body.page-babies .faq { border-top: 0; }
-body.page-babies .faq details {
+body:is(.page-babies, .page-adults) .faq { border-top: 0; }
+body:is(.page-babies, .page-adults) .faq details {
   margin-bottom: 10px;
   padding-inline: 20px;
   border: 1px solid rgba(13, 39, 71, .08);
@@ -340,6 +341,6 @@ body.page-babies .faq details {
   background: #fff;
   box-shadow: 0 10px 26px -24px rgba(13, 39, 71, .5);
 }
-body.page-babies .faq details[open] { border-color: rgba(29, 95, 160, .35); }
+body:is(.page-babies, .page-adults) .faq details[open] { border-color: rgba(29, 95, 160, .35); }
 
 /* Callback CTA band styling lives in visual.css (.cta-band:has(.cil-cta-callback-card)). */

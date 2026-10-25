@@ -415,6 +415,15 @@ function cil_figure_asset( $name ) {
 			'height'  => 900,
 			'ratio'   => '4-3',
 		),
+		'adults-man'      => array(
+			'src'     => $base . 'home/adults-card-720.webp',
+			'webp'    => $base . 'home/adults-card-720.webp 720w',
+			'alt'     => 'A smiling adult man in a dark green shirt.',
+			'caption' => '',
+			'width'   => 720,
+			'height'  => 450,
+			'ratio'   => '4-3',
+		),
 	);
 
 	return isset( $catalog[ $name ] ) ? $catalog[ $name ] : null;
