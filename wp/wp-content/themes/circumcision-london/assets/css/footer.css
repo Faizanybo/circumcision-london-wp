@@ -20,7 +20,44 @@
   align-items: start;
 }
 .footer ul { margin: 0; padding: 0; }
+
+/*
+ * Keep footer emblem centre on the same vertical axis as the header emblem.
+ * Header lockup is wide (emblem ~17.5% from its left); footer mark is centred
+ * in its canvas (50%). Shift uses header logo height tokens that mirror
+ * header.css max-heights — header rules themselves stay untouched.
+ */
+.footer {
+  --cil-header-logo-h: 88px;
+  --cil-header-logo-w: calc(var(--cil-header-logo-h) * 2172 / 724);
+  --cil-header-emblem-x: 0.1749; /* measured emblem centroid in header PNG */
+}
+@media (max-width: 1440px) {
+  .footer { --cil-header-logo-h: 84px; }
+}
+@media (max-width: 1180px) {
+  .footer { --cil-header-logo-h: 82px; }
+}
+@media (max-width: 1024px) {
+  .footer { --cil-header-logo-h: 78px; }
+}
+@media (max-width: 768px) {
+  .footer { --cil-header-logo-h: 72px; }
+}
+@media (max-width: 680px) {
+  .footer { --cil-header-logo-h: 64px; }
+}
+@media (max-width: 390px) {
+  .footer { --cil-header-logo-h: 58px; }
+}
+@media (max-width: 320px) {
+  .footer { --cil-header-logo-h: 52px; }
+}
+
 /* Full-colour footer mark — transparent PNG; no invert / no clip radius. */
+.footer .brand {
+  overflow: visible;
+}
 .footer .brand img {
   width: auto;
   height: auto;
@@ -31,6 +68,8 @@
   filter: none;
   opacity: 1;
   border-radius: 0;
+  /* translateX % is relative to the image itself (footer mark centre = 50%). */
+  transform: translateX(calc(var(--cil-header-emblem-x) * var(--cil-header-logo-w) - 50%));
 }
 .footer .brand .mark { color: #fff; }
 /* Logo lockup already includes the trading name. */

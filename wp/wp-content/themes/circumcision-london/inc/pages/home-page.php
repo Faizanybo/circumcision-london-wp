@@ -106,7 +106,7 @@ function cil_homepage_blocks() {
 		'cil/cta-band',
 		array(
 			'title'           => 'If you have further questions',
-			'text'            => '<p>If you have further questions, you can either <a href="tel:+442089513794">call us</a> or <a href="#request-callback">request for us to call you back</a>. You can also send us an <a href="mailto:info@circumcisioninlondon.co.uk">email enquiry</a> or speak to us via <a href="https://wa.me/447886779958" rel="noopener noreferrer" target="_blank">Whatsapp</a>.</p><p>Email is: <a href="mailto:info@circumcisioninlondon.co.uk">info@circumcisioninlondon.co.uk</a><br><a href="tel:07886779958">07886779958</a></p>',
+			'text'            => '<p>If you have further questions, you can either <a href="tel:+442089513794">call us</a> or <a href="#request-callback">request for us to call you back</a>. You can also send us an email enquiry or speak to us via Whatsapp.</p><p class="cil-cta-contacts"><a class="cil-cta-contact cil-cta-contact--email" href="mailto:info@circumcisioninlondon.co.uk"><span class="cil-cta-contact__label">Email</span>info@circumcisioninlondon.co.uk</a><a class="cil-cta-contact cil-cta-contact--whatsapp" href="https://wa.me/447886779958" rel="noopener noreferrer" target="_blank" data-track="whatsapp-cta"><span class="cil-cta-contact__label">WhatsApp</span>07886779958</a></p>',
 			'eyebrow'         => 'Talk to us',
 			'ctaLabel'        => 'Book online',
 			'ctaUrl'          => home_url( '/book/' ),
