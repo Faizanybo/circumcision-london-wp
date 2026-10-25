@@ -1088,6 +1088,11 @@ function cil_content_sync_render_admin() {
 
 	echo '<h2>' . esc_html__( 'Apply pages', 'circumcision-london' ) . '</h2>';
 	echo '<p>' . esc_html__( 'This overwrites Gutenberg post_content for the selected published pages. Blog is not listed here — use Blog pack above. Type APPLY to confirm.', 'circumcision-london' ) . '</p>';
+	echo '<p><strong>' . esc_html__( 'Why a checkbox is greyed out:', 'circumcision-london' ) . '</strong> ';
+	echo esc_html__( 'Apply only works on the production host that matches each fixture’s replace_to (currently circumcision-london-wp.vercel.app). On LocalWP every page stays disabled by design. On production, a page is also disabled when it already matches the fixture (“Already applied”) or when inspect failed.', 'circumcision-london' );
+	echo '</p>';
+	echo '<p>' . esc_html__( 'Open this screen on production WP admin to apply home:', 'circumcision-london' ) . ' ';
+	echo '<code>https://circumcision-london-wp.vercel.app/wp-admin/admin.php?page=cil-content-sync</code></p>';
 
 	echo '<form method="post" action="' . esc_url( admin_url( 'admin.php?page=cil-content-sync' ) ) . '">';
 	wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
@@ -1096,11 +1101,28 @@ function cil_content_sync_render_admin() {
 		if ( 'blog' === $slug ) {
 			continue;
 		}
-		$report   = $reports[ $slug ];
-		$disabled = empty( $report['can_apply'] ) ? ' disabled' : '';
-		echo '<p><label><input type="checkbox" name="cil_content_sync_slugs[]" value="' . esc_attr( $slug ) . '"' . $disabled . '> ';
+		$report   = isset( $reports[ $slug ] ) ? $reports[ $slug ] : array();
+		$can      = ! empty( $report['can_apply'] );
+		$disabled = $can ? '' : ' disabled';
+		$reason   = '';
+		if ( ! $can ) {
+			if ( ! empty( $report['error'] ) ) {
+				$reason = (string) $report['error'];
+			} elseif ( ! empty( $report['hash_match'] ) ) {
+				$reason = __( 'Already applied (content hash matches).', 'circumcision-london' );
+			} elseif ( empty( $report['host_match'] ) ) {
+				$reason = __( 'Host mismatch — open Content sync on the Vercel site to apply this fixture.', 'circumcision-london' );
+			} else {
+				$reason = __( 'Not applyable right now.', 'circumcision-london' );
+			}
+		}
+		echo '<p><label title="' . esc_attr( $reason ) . '"><input type="checkbox" name="cil_content_sync_slugs[]" value="' . esc_attr( $slug ) . '"' . $disabled . '> ';
 		echo esc_html( $slug );
-		echo '</label></p>';
+		echo '</label>';
+		if ( $reason ) {
+			echo ' <span class="description" style="margin-left:8px">' . esc_html( $reason ) . '</span>';
+		}
+		echo '</p>';
 	}
 	echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off"></label></p>';
 	submit_button( __( 'Apply selected fixtures', 'circumcision-london' ) );

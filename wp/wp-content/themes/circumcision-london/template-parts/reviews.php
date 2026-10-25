@@ -47,6 +47,17 @@ $show_stats = ! $hide_stats;
 $resolved_videos = array();
 foreach ( $videos as $item ) {
 	$item = cil_resolve_video_item( is_array( $item ) ? $item : array() );
+	/*
+	 * Always serve the theme-bundled Adults clip on the homepage so production
+	 * does not keep the old Blob URL until Content Sync is applied.
+	 */
+	$title = isset( $item['title'] ) ? strtolower( trim( (string) $item['title'] ) ) : '';
+	$key   = isset( $item['mediaKey'] ) ? (string) $item['mediaKey'] : '';
+	if ( 'adults' === $title || false !== strpos( $key, 'img-5430' ) ) {
+		$item['mp4']    = get_template_directory_uri() . '/assets/video/home-adults.mp4';
+		$item['poster'] = get_template_directory_uri() . '/assets/images/home/adults-video-poster.jpg';
+		unset( $item['mediaKey'], $item['posterKey'] );
+	}
 	if ( ! empty( $item['mp4'] ) || ! empty( $item['webm'] ) || ! empty( $item['mediaKey'] ) ) {
 		$resolved_videos[] = $item;
 	}
