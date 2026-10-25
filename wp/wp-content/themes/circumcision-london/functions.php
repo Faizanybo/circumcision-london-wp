@@ -728,7 +728,8 @@ function cil_logo_html( $clinic, $context = 'header' ) {
 	// Header uses the transparent lockup (no white box) — same artwork family as the named header file.
 	$candidates = ( 'footer' === $context )
 		? array(
-			// Transparent footer lockup from client ACTUAL file (white plate removed).
+			// White-outline footer lockup for navy footer (client file).
+			'assets/images/Circumcision in London - footer - white outline.png',
 			'assets/images/circumcision-in-london-footer-logo.png',
 			'assets/images/Circumcision in London - footer.png',
 			'assets/images/circumcision-in-london-logo.png',
