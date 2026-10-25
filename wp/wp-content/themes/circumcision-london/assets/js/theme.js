@@ -253,15 +253,15 @@
     );
   });
 
-  /* ------------------------------------------- footer accordion (mobile) */
-  /* Keep secondary footer columns collapsed on small screens so the footer
-     is shorter; expand them again from tablet/desktop widths. */
+  /* ------------------------------------ footer accordion (mobile/tablet) */
+  /* Collapse link groups below the desktop footer breakpoint so the footer
+     is shorter to scan; expand again from desktop widths. */
   (function () {
-    var mq = window.matchMedia('(max-width: 680px)');
+    var mq = window.matchMedia('(max-width: 1180px)');
     function syncFooterAccordions() {
-      var mobile = mq.matches;
+      var compact = mq.matches;
       d.querySelectorAll('.footer-accordion').forEach(function (el) {
-        if (mobile) {
+        if (compact) {
           el.removeAttribute('open');
         } else {
           el.setAttribute('open', '');

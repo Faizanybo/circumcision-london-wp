@@ -143,11 +143,15 @@ function cil_setup() {
 
 	register_nav_menus(
 		array(
-			'primary'         => __( 'Primary', 'circumcision-london' ),
-			'footer-who'      => __( 'Footer: Who we see', 'circumcision-london' ),
-			'footer-reasons'  => __( 'Footer: Reasons', 'circumcision-london' ),
-			'footer-clinics'  => __( 'Footer: Our locations', 'circumcision-london' ),
-			'footer-legal'    => __( 'Footer: Legal', 'circumcision-london' ),
+			'primary'           => __( 'Primary', 'circumcision-london' ),
+			'footer-treatments' => __( 'Footer: Treatments', 'circumcision-london' ),
+			'footer-patient'    => __( 'Footer: Patient information', 'circumcision-london' ),
+			'footer-about'      => __( 'Footer: About & contact', 'circumcision-london' ),
+			'footer-clinics'    => __( 'Footer: Locations', 'circumcision-london' ),
+			'footer-legal'      => __( 'Footer: Legal', 'circumcision-london' ),
+			/* Legacy locations kept so existing menu assignments are not orphaned. */
+			'footer-who'        => __( 'Footer: Who we see (legacy)', 'circumcision-london' ),
+			'footer-reasons'    => __( 'Footer: Reasons (legacy)', 'circumcision-london' ),
 		)
 	);
 }
@@ -468,27 +472,81 @@ function cil_default_nav() {
 }
 
 /**
- * Default footer "Who we see" links from the prototype.
+ * Default footer "Treatments" links (age groups and procedures).
  *
  * @return array<int, array<string, string>>
  */
-function cil_default_footer_who() {
+function cil_default_footer_treatments() {
 	return array(
 		array( 'label' => __( 'Babies & Toddlers', 'circumcision-london' ), 'url' => home_url( '/babies/' ) ),
 		array( 'label' => __( 'Children & Teenagers', 'circumcision-london' ), 'url' => home_url( '/children/' ) ),
 		array( 'label' => __( 'Adults', 'circumcision-london' ), 'url' => home_url( '/adults/' ) ),
 		array( 'label' => __( 'Buried Penis', 'circumcision-london' ), 'url' => home_url( '/buried-penis/' ) ),
-		array( 'label' => __( 'Prices', 'circumcision-london' ), 'url' => home_url( '/prices/' ) ),
-		array( 'label' => __( 'Testimonials', 'circumcision-london' ), 'url' => home_url( '/testimonials/' ) ),
-		array( 'label' => __( 'Aftercare', 'circumcision-london' ), 'url' => home_url( '/aftercare/' ) ),
-		array( 'label' => __( 'Our Practitioners', 'circumcision-london' ), 'url' => home_url( '/team/' ) ),
-		array( 'label' => __( 'For Doctors', 'circumcision-london' ), 'url' => home_url( '/courses/' ) ),
-		array( 'label' => __( 'Visit / Contact', 'circumcision-london' ), 'url' => home_url( '/contact/' ) ),
+		array( 'label' => __( 'Re-circumcision', 'circumcision-london' ), 'url' => home_url( '/re-circumcision/' ) ),
+		array( 'label' => __( 'Frenuloplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/frenuloplasty/' ) ),
+		array( 'label' => __( 'Preputioplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/preputioplasty/' ) ),
 	);
 }
 
 /**
- * Default footer "Reasons" links from the prototype.
+ * Default footer "Patient information" links (prices, aftercare, reasons).
+ *
+ * @return array<int, array<string, string>>
+ */
+function cil_default_footer_patient() {
+	return array(
+		array( 'label' => __( 'Prices', 'circumcision-london' ), 'url' => home_url( '/prices/' ) ),
+		array( 'label' => __( 'Aftercare', 'circumcision-london' ), 'url' => home_url( '/aftercare/' ) ),
+		array( 'label' => __( 'Phimosis', 'circumcision-london' ), 'url' => home_url( '/conditions/phimosis/' ) ),
+		array( 'label' => __( 'Balanitis', 'circumcision-london' ), 'url' => home_url( '/conditions/balanitis/' ) ),
+		array( 'label' => __( 'BXO', 'circumcision-london' ), 'url' => home_url( '/conditions/bxo/' ) ),
+		array( 'label' => __( 'Paraphimosis', 'circumcision-london' ), 'url' => home_url( '/conditions/paraphimosis/' ) ),
+		array( 'label' => __( 'Religious & Cultural', 'circumcision-london' ), 'url' => home_url( '/religious/' ) ),
+	);
+}
+
+/**
+ * Default footer "About & contact" links.
+ *
+ * @return array<int, array<string, string>>
+ */
+function cil_default_footer_about() {
+	return array(
+		array( 'label' => __( 'Our Practitioners', 'circumcision-london' ), 'url' => home_url( '/team/' ) ),
+		array( 'label' => __( 'Testimonials', 'circumcision-london' ), 'url' => home_url( '/testimonials/' ) ),
+		array( 'label' => __( 'Visit / Contact', 'circumcision-london' ), 'url' => home_url( '/contact/' ) ),
+		array( 'label' => __( 'For Doctors', 'circumcision-london' ), 'url' => home_url( '/courses/' ) ),
+	);
+}
+
+/**
+ * Default footer "Locations" links.
+ *
+ * @return array<int, array<string, string>>
+ */
+function cil_default_footer_clinics() {
+	return array(
+		array( 'label' => __( 'London — Edgware', 'circumcision-london' ), 'url' => home_url( '/contact/' ) ),
+		array( 'label' => __( 'Luton', 'circumcision-london' ), 'url' => home_url( '/luton-circumcision-clinic/' ) ),
+		array( 'label' => __( 'Southampton', 'circumcision-london' ), 'url' => home_url( '/southampton-circumcision-clinic/' ) ),
+		array( 'label' => __( 'Birmingham', 'circumcision-london' ), 'url' => home_url( '/birmingham-circumcision-clinic/' ) ),
+	);
+}
+
+/**
+ * Legacy footer "Who we see" fallback (kept for older menu assignments).
+ *
+ * @return array<int, array<string, string>>
+ */
+function cil_default_footer_who() {
+	return array_merge( cil_default_footer_treatments(), cil_default_footer_about(), array(
+		array( 'label' => __( 'Prices', 'circumcision-london' ), 'url' => home_url( '/prices/' ) ),
+		array( 'label' => __( 'Aftercare', 'circumcision-london' ), 'url' => home_url( '/aftercare/' ) ),
+	) );
+}
+
+/**
+ * Legacy footer "Reasons" fallback (kept for older menu assignments).
  *
  * @return array<int, array<string, string>>
  */
@@ -502,20 +560,6 @@ function cil_default_footer_reasons() {
 		array( 'label' => __( 'Re-circumcision', 'circumcision-london' ), 'url' => home_url( '/re-circumcision/' ) ),
 		array( 'label' => __( 'Frenuloplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/frenuloplasty/' ) ),
 		array( 'label' => __( 'Preputioplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/preputioplasty/' ) ),
-	);
-}
-
-/**
- * Default footer "Our locations" links.
- *
- * @return array<int, array<string, string>>
- */
-function cil_default_footer_clinics() {
-	return array(
-		array( 'label' => __( 'London — Edgware', 'circumcision-london' ), 'url' => home_url( '/contact/' ) ),
-		array( 'label' => __( 'Luton', 'circumcision-london' ), 'url' => home_url( '/luton-circumcision-clinic/' ) ),
-		array( 'label' => __( 'Southampton', 'circumcision-london' ), 'url' => home_url( '/southampton-circumcision-clinic/' ) ),
-		array( 'label' => __( 'Birmingham', 'circumcision-london' ), 'url' => home_url( '/birmingham-circumcision-clinic/' ) ),
 	);
 }
 

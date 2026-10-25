@@ -1,8 +1,8 @@
 <?php
 /**
- * Site footer: brand, contact, who we see, reasons, hours, legal.
+ * Site footer: brand, contact, grouped links, hours, legal.
  *
- * Link groups use <details> so tablet/mobile can collapse secondary columns
+ * Link groups use <details> so mobile/tablet can collapse secondary columns
  * without removing content. Desktop keeps them expanded.
  *
  * @package Circumcision_London
@@ -17,9 +17,9 @@ $clinic = cil_clinic();
 /**
  * Render a footer link column as an accessible accordion group.
  *
- * @param string               $label Column heading.
- * @param string               $location Menu location.
- * @param array<int, array>    $fallback Fallback links.
+ * @param string            $label    Column heading.
+ * @param string            $location Menu location.
+ * @param array<int, array> $fallback Fallback links.
  */
 $cil_footer_nav_group = static function ( $label, $location, $fallback ) {
 	?>
@@ -44,18 +44,7 @@ $cil_footer_nav_group = static function ( $label, $location, $fallback ) {
 					<a href="<?php echo esc_url( $clinic['mobile']['href'] ); ?>" data-track="call-footer-mobile"><?php echo esc_html( $clinic['mobile']['display'] ); ?></a><br>
 					<a href="<?php echo esc_url( 'mailto:' . $clinic['email'] ); ?>"><?php echo esc_html( $clinic['email'] ); ?></a>
 				</address>
-			</div>
-			<div class="footer-col">
-				<?php $cil_footer_nav_group( __( 'Who we see', 'circumcision-london' ), 'footer-who', cil_default_footer_who() ); ?>
-			</div>
-			<div class="footer-col">
-				<?php $cil_footer_nav_group( __( 'Our locations', 'circumcision-london' ), 'footer-clinics', cil_default_footer_clinics() ); ?>
-			</div>
-			<div class="footer-col">
-				<?php $cil_footer_nav_group( __( 'Reasons', 'circumcision-london' ), 'footer-reasons', cil_default_footer_reasons() ); ?>
-			</div>
-			<div class="footer-col footer-col--hours">
-				<details class="footer-accordion" open>
+				<details class="footer-accordion footer-accordion--hours" open>
 					<summary class="footer-accordion__summary caps"><?php esc_html_e( 'Opening hours', 'circumcision-london' ); ?></summary>
 					<div class="footer-accordion__body">
 						<ul class="hours">
@@ -67,6 +56,18 @@ $cil_footer_nav_group = static function ( $label, $location, $fallback ) {
 						<p class="footer-aside"><?php esc_html_e( 'Free Parking on the street. outside congestion charge zone.', 'circumcision-london' ); ?></p>
 					</div>
 				</details>
+			</div>
+			<div class="footer-col">
+				<?php $cil_footer_nav_group( __( 'Treatments', 'circumcision-london' ), 'footer-treatments', cil_default_footer_treatments() ); ?>
+			</div>
+			<div class="footer-col">
+				<?php $cil_footer_nav_group( __( 'Patient information', 'circumcision-london' ), 'footer-patient', cil_default_footer_patient() ); ?>
+			</div>
+			<div class="footer-col">
+				<?php $cil_footer_nav_group( __( 'About & contact', 'circumcision-london' ), 'footer-about', cil_default_footer_about() ); ?>
+			</div>
+			<div class="footer-col">
+				<?php $cil_footer_nav_group( __( 'Locations', 'circumcision-london' ), 'footer-clinics', cil_default_footer_clinics() ); ?>
 			</div>
 		</div>
 	</div>
