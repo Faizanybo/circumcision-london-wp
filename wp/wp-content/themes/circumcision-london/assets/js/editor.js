@@ -442,6 +442,7 @@
     { label: 'Treatment room', value: 'treatment-room' },
     { label: 'Sterilisation', value: 'sterilisation' },
     { label: 'Smiling baby', value: 'baby-smiling' },
+    { label: 'Two boys playing outdoors', value: 'children-boys' },
   ];
 
   function writeBlock(clientId, key, value) {

@@ -406,6 +406,15 @@ function cil_figure_asset( $name ) {
 			'height'  => 900,
 			'ratio'   => '4-3',
 		),
+		'children-boys'   => array(
+			'src'     => $base . 'children/children-boys-700.webp',
+			'webp'    => $base . 'children/children-boys-700.webp 700w, ' . $base . 'children/children-boys-1200.webp 1200w',
+			'alt'     => 'Two young boys playing together outdoors.',
+			'caption' => '',
+			'width'   => 1200,
+			'height'  => 900,
+			'ratio'   => '4-3',
+		),
 	);
 
 	return isset( $catalog[ $name ] ) ? $catalog[ $name ] : null;
