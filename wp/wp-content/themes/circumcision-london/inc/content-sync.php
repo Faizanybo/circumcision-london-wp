@@ -856,15 +856,20 @@ function cil_content_seo_apply_selected( $slugs, $confirm ) {
 }
 
 /**
- * Register the Tools → Content sync screen.
+ * Register Content sync as a top-level admin menu.
+ *
+ * Was previously only under Tools → Content sync and easy to miss.
+ * Open: wp-admin/admin.php?page=cil-content-sync
  */
 function cil_content_sync_admin_menu() {
-	add_management_page(
+	add_menu_page(
 		__( 'Content sync', 'circumcision-london' ),
 		__( 'Content sync', 'circumcision-london' ),
 		'manage_options',
 		'cil-content-sync',
-		'cil_content_sync_render_admin'
+		'cil_content_sync_render_admin',
+		'dashicons-update',
+		58
 	);
 }
 add_action( 'admin_menu', 'cil_content_sync_admin_menu' );
@@ -1019,7 +1024,7 @@ function cil_content_sync_render_admin() {
 		) . '</td></tr>';
 		echo '</tbody></table>';
 
-		echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '" style="margin-top:12px">';
+		echo '<form method="post" action="' . esc_url( admin_url( 'admin.php?page=cil-content-sync' ) ) . '" style="margin-top:12px">';
 		wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
 		echo '<input type="hidden" name="cil_content_sync_action" value="apply_blog_pack">';
 		echo '<p><label>' . esc_html__( 'Confirmation', 'circumcision-london' ) . ' <input type="text" name="cil_content_sync_confirm" value="" class="regular-text" autocomplete="off" placeholder="APPLY"></label></p>';
@@ -1084,7 +1089,7 @@ function cil_content_sync_render_admin() {
 	echo '<h2>' . esc_html__( 'Apply pages', 'circumcision-london' ) . '</h2>';
 	echo '<p>' . esc_html__( 'This overwrites Gutenberg post_content for the selected published pages. Blog is not listed here — use Blog pack above. Type APPLY to confirm.', 'circumcision-london' ) . '</p>';
 
-	echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '">';
+	echo '<form method="post" action="' . esc_url( admin_url( 'admin.php?page=cil-content-sync' ) ) . '">';
 	wp_nonce_field( 'cil_content_sync_apply', 'cil_content_sync_nonce' );
 	echo '<input type="hidden" name="cil_content_sync_action" value="apply">';
 	foreach ( $manifest['pages'] as $slug ) {
@@ -1160,7 +1165,7 @@ function cil_content_sync_render_seo_section( $manifest ) {
 
 	echo '<h3>' . esc_html__( 'Apply SEO metadata', 'circumcision-london' ) . '</h3>';
 	echo '<p>' . esc_html__( 'Only pages whose fixture SEO differs from this site can be selected. Type APPLY in the SEO confirmation field to confirm.', 'circumcision-london' ) . '</p>';
-	echo '<form method="post" action="' . esc_url( admin_url( 'tools.php?page=cil-content-sync' ) ) . '">';
+	echo '<form method="post" action="' . esc_url( admin_url( 'admin.php?page=cil-content-sync' ) ) . '">';
 	wp_nonce_field( 'cil_content_sync_apply_seo', 'cil_content_sync_seo_nonce' );
 	echo '<input type="hidden" name="cil_content_sync_action" value="apply_seo">';
 	foreach ( $reports as $slug => $report ) {

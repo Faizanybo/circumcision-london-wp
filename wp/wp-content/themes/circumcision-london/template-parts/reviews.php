@@ -32,6 +32,15 @@ if ( '' === $heading ) {
 }
 $stars = ( isset( $args['stars'] ) && '' !== $args['stars'] ) ? (string) $args['stars'] : '★★★★★';
 $hide_stats = ! empty( $args['hide_stats'] );
+/*
+ * Homepage always hides the four side tiles (Google / Word of mouth / Years
+ * apart / CQC). They duplicate the trust strip and review heading. This runs
+ * even when the live post_content still has the old stats (Content Sync not
+ * applied yet).
+ */
+if ( ! $hide_stats && function_exists( 'is_front_page' ) && is_front_page() ) {
+	$hide_stats = true;
+}
 $stats      = ( ! $hide_stats && isset( $args['stats'] ) && is_array( $args['stats'] ) && $args['stats'] ) ? $args['stats'] : array();
 $show_stats = ! $hide_stats;
 

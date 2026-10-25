@@ -75,9 +75,9 @@ function cil_homepage_blocks() {
 					'posterKey' => 'testimonials/posters/img-4967.jpg',
 				),
 				array(
-					'title'     => 'Adults',
-					'mediaKey'  => 'testimonials/videos/img-5430.mp4',
-					'posterKey' => 'testimonials/posters/img-5430.jpg',
+					'title'  => 'Adults',
+					'mp4'    => '/wp-content/themes/circumcision-london/assets/video/home-adults.mp4',
+					'poster' => '/wp-content/themes/circumcision-london/assets/images/home/adults-video-poster.jpg',
 				),
 			),
 			'videosCtaLabel'     => 'View all video testimonials',

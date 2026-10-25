@@ -649,17 +649,47 @@ body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards,
 body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-grid {
   margin: 0;
 }
+/* Full-width three columns; shorter portrait frames (was 9/16). */
 body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards.g-4 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  max-width: none;
+  width: 100%;
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-facade--portrait {
+  aspect-ratio: 3 / 4;
+}
+body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-tile__caption {
+  padding: 10px 12px 12px;
+  font-size: 14px;
 }
 @media (max-width: 900px) {
   body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards.g-4 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 680px) {
+  body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards.g-4 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+  body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-tile__caption {
+    padding: 8px 6px 9px;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+  body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-facade__play {
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+  }
+  body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-facade__play::after {
+    border-width: 7px 0 7px 11px;
   }
 }
 @media (max-width: 560px) {
   body.cil-home .cil-home-reviews .cil-reviews-videos .cil-video-cards.g-4 {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 body.cil-home .cil-home-reviews .cil-reviews-videos__cta {
