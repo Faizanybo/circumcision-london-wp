@@ -897,11 +897,22 @@ function cil_mobile_nav() {
 	// Keep mobile nav in sync with desktop (theme-owned structure).
 	$items = cil_default_nav();
 	foreach ( $items as $item ) {
-		if ( empty( $item['children'] ) ) {
-			echo '<a href="' . esc_url( $item['url'] ) . '"' . cil_current_attr( $item['url'] ) . '>' . esc_html( $item['label'] ) . '</a>';
+		$url          = ! empty( $item['url'] ) ? $item['url'] : '';
+		$has_children = ! empty( $item['children'] );
+		if ( $has_children && ! $url ) {
+			foreach ( $item['children'] as $child ) {
+				if ( empty( $child['heading'] ) && ! empty( $child['url'] ) ) {
+					$url = $child['url'];
+					break;
+				}
+			}
+		}
+		// Top-level parents (Who we see, Reasons, Contact Us) use the same
+		// link treatment as Home / Aftercare — not caps/blue group labels.
+		echo '<a href="' . esc_url( $url ) . '"' . cil_current_attr( $url ) . '>' . esc_html( $item['label'] ) . '</a>';
+		if ( ! $has_children ) {
 			continue;
 		}
-		echo '<span class="caps group-label">' . esc_html( $item['label'] ) . '</span>';
 		echo '<ul class="sub">';
 		foreach ( $item['children'] as $child ) {
 			if ( ! empty( $child['heading'] ) ) {
