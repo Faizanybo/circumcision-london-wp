@@ -1573,6 +1573,7 @@
       heading: { type: 'string', default: '' },
       stars: { type: 'string', default: '' },
       stats: { type: 'array', default: [] },
+      hideStats: { type: 'boolean', default: false },
       checkedNote: { type: 'string', default: '' },
       body: { type: 'string', default: '' },
       platforms: { type: 'array', default: [] },

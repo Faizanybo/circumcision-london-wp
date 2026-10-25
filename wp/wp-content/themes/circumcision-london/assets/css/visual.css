@@ -208,7 +208,17 @@
 }
 .stat-link::after { content: "→"; transition: transform .25s var(--ease); }
 .stat-link:hover::after { transform: translateX(3px); }
-/* CQC embed widget removed — trust strip uses a simple “CQC Good” link instead. */
+/* Compact CQC badge (no LMCS/provider name): heading + report link only. */
+.cil-trust .stat--cqc .n {
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.2;
+}
+body.cil-home .cil-home-reviews .cil-reviews-split--solo {
+  display: block;
+}
+body.cil-home .cil-home-reviews .cil-reviews-split--solo > [data-reveal] {
+  max-width: 40rem;
+}
 
 /* ------------------------------------------------- image-and-text split -- */
 .split > .cil-split-copy > .cil-section-lede { margin-top: 1.15em; }

@@ -31,7 +31,9 @@ if ( '' === $heading ) {
 	$heading = sprintf( /* translators: 1: rating, 2: review count */ __( '%1$s from %2$s Google reviews', 'circumcision-london' ), $clinic['reviews']['rating'], $clinic['reviews']['count_display'] );
 }
 $stars = ( isset( $args['stars'] ) && '' !== $args['stars'] ) ? (string) $args['stars'] : '★★★★★';
-$stats = ( isset( $args['stats'] ) && is_array( $args['stats'] ) && $args['stats'] ) ? $args['stats'] : array();
+$hide_stats = ! empty( $args['hide_stats'] );
+$stats      = ( ! $hide_stats && isset( $args['stats'] ) && is_array( $args['stats'] ) && $args['stats'] ) ? $args['stats'] : array();
+$show_stats = ! $hide_stats;
 
 $resolved_videos = array();
 foreach ( $videos as $item ) {
@@ -43,7 +45,7 @@ foreach ( $videos as $item ) {
 ?>
 <section class="section bg-warm cil-home-reviews" id="reviews">
 	<div class="wrap">
-		<div class="split" style="align-items:center;margin-bottom:clamp(34px,4vw,60px)">
+		<div class="split<?php echo $show_stats ? '' : ' cil-reviews-split--solo'; ?>" style="align-items:center;margin-bottom:clamp(34px,4vw,60px)">
 			<div data-reveal>
 				<span class="caps eyebrow cil-eyebrow-google"><?php echo cil_icon( 'google' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static theme SVG. ?><?php echo esc_html( $eyebrow ); ?></span>
 				<h2 class="display d-1"><?php echo esc_html( $heading ); ?></h2>
@@ -78,6 +80,7 @@ foreach ( $videos as $item ) {
 					<a class="btn btn-ghost" href="<?php echo esc_url( $testimonials_url ); ?>"><?php echo esc_html( $testimonials_label ); ?></a>
 				</div>
 			</div>
+			<?php if ( $show_stats ) : ?>
 			<div data-reveal data-reveal-delay="120">
 				<ul class="grid g-2" style="list-style:none;gap:18px">
 					<?php if ( $stats ) : ?>
@@ -96,6 +99,7 @@ foreach ( $videos as $item ) {
 					<?php endif; ?>
 				</ul>
 			</div>
+			<?php endif; ?>
 		</div>
 
 		<div class="grid g-3">

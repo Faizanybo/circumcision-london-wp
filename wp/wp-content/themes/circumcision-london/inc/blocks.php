@@ -604,6 +604,10 @@ function cil_register_dynamic_blocks() {
 						'type'    => 'array',
 						'default' => array(),
 					),
+					'hideStats'          => array(
+						'type'    => 'boolean',
+						'default' => false,
+					),
 				),
 				'render_callback' => function ( $attrs ) {
 					$quotes = cil_block_list( isset( $attrs['quotes'] ) ? $attrs['quotes'] : array() );
@@ -621,6 +625,7 @@ function cil_register_dynamic_blocks() {
 						'videos'              => cil_block_list( isset( $attrs['videos'] ) ? $attrs['videos'] : array() ),
 						'videos_cta_label'    => isset( $attrs['videosCtaLabel'] ) ? $attrs['videosCtaLabel'] : '',
 						'videos_cta_url'      => isset( $attrs['videosCtaUrl'] ) ? $attrs['videosCtaUrl'] : '',
+						'hide_stats'          => ! empty( $attrs['hideStats'] ),
 					);
 					if ( $stats ) {
 						$args['stats'] = $stats;
