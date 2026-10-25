@@ -194,8 +194,11 @@ function cil_enqueue_assets() {
 	wp_enqueue_style( 'cil-gutenberg', $uri . '/assets/css/gutenberg.css', array( 'cil-base', 'cil-components' ), cil_asset_version( 'assets/css/gutenberg.css' ) );
 	// Visual layer: photo cards, colour bands, icons, trust indicators, homepage composition.
 	wp_enqueue_style( 'cil-visual', $uri . '/assets/css/visual.css', array( 'cil-components', 'cil-gutenberg' ), cil_asset_version( 'assets/css/visual.css' ) );
-	if ( is_page( 'babies' ) ) {
+	if ( is_page( array( 'babies', 'children' ) ) ) {
 		wp_enqueue_style( 'cil-babies', $uri . '/assets/css/babies.css', array( 'cil-visual' ), cil_asset_version( 'assets/css/babies.css' ) );
+	}
+	if ( is_page( 'children' ) ) {
+		wp_enqueue_style( 'cil-children', $uri . '/assets/css/children.css', array( 'cil-babies' ), cil_asset_version( 'assets/css/children.css' ) );
 	}
 
 	wp_enqueue_script(
