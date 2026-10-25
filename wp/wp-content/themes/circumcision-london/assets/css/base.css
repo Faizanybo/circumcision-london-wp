@@ -176,10 +176,8 @@ ul, ol { margin: 0; padding: 0; }
 .page-head { padding-block: clamp(46px, 5.5vw, 92px) clamp(30px, 3.5vw, 56px); }
 .page-head h1 { overflow-wrap: anywhere; }
 .page-head .lede { margin-top: 24px; }
-.breadcrumb { list-style: none; display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 24px; font-size: 14px; color: var(--muted-2); }
-.breadcrumb a { text-decoration: none; color: var(--muted); }
-.breadcrumb a:hover { color: var(--blue-deep); }
-.breadcrumb li + li::before { content: "/"; margin-right: 9px; color: var(--line); }
+/* Breadcrumb trails are not shown on page tops (see template-parts/page-head.php). */
+.breadcrumb { display: none !important; }
 
 /* --------------------------------------------------------- group cards -- */
 .card-group {

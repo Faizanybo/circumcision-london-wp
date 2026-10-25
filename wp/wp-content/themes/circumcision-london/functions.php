@@ -363,6 +363,10 @@ function cil_default_nav() {
 			'url'   => home_url( '/' ),
 		),
 		array(
+			'label' => __( 'About', 'circumcision-london' ),
+			'url'   => home_url( '/about/' ),
+		),
+		array(
 			'label'    => __( 'Who we see', 'circumcision-london' ),
 			'url'      => home_url( '/babies/' ),
 			'children' => array(
@@ -424,10 +428,6 @@ function cil_default_nav() {
 		array(
 			'label' => __( 'Testimonials', 'circumcision-london' ),
 			'url'   => home_url( '/testimonials/' ),
-		),
-		array(
-			'label' => __( 'About', 'circumcision-london' ),
-			'url'   => home_url( '/about/' ),
 		),
 		array(
 			'label' => __( 'Prices', 'circumcision-london' ),

@@ -45,7 +45,7 @@ body.page-babies .page-head::before {
   pointer-events: none;
 }
 body.page-babies .page-head .wrap { position: relative; }
-body.page-babies .page-head h1 { color: #fff; }
+body.page-babies .page-head h1 { color: var(--gold); }
 body.page-babies .page-head .eyebrow { color: var(--gold); }
 body.page-babies .page-head .lede { color: rgba(255, 255, 255, .8); }
 body.page-babies .page-head .breadcrumb { color: rgba(255, 255, 255, .62); }

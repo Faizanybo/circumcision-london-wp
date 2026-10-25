@@ -1,6 +1,7 @@
 <?php
 /**
- * Inner-page heading: breadcrumbs, eyebrow, H1, lede, optional reviewer line.
+ * Inner-page heading: eyebrow, H1, lede, optional reviewer line.
+ * Breadcrumb trails are not shown in the page head (kept out of the visible UI).
  *
  * @package Circumcision_London
  */
@@ -12,26 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 $title        = isset( $args['title'] ) ? $args['title'] : '';
 $lede         = isset( $args['lede'] ) ? $args['lede'] : '';
 $eyebrow      = isset( $args['eyebrow'] ) ? $args['eyebrow'] : '';
-$crumbs       = ( isset( $args['crumbs'] ) && is_array( $args['crumbs'] ) ) ? $args['crumbs'] : array();
 $reviewed_by  = isset( $args['reviewed_by'] ) ? $args['reviewed_by'] : '';
 $lede_is_html = ! empty( $args['lede_html'] );
-$home_label   = isset( $args['home_label'] ) ? (string) $args['home_label'] : '';
 $reviewed_pre = isset( $args['reviewed_label'] ) ? (string) $args['reviewed_label'] : '';
 ?>
 <section class="page-head">
 	<div class="wrap">
-		<?php if ( $crumbs ) : ?>
-			<?php
-			get_template_part(
-				'template-parts/breadcrumbs',
-				null,
-				array(
-					'crumbs'     => $crumbs,
-					'home_label' => $home_label,
-				)
-			);
-			?>
-		<?php endif; ?>
 		<?php if ( $eyebrow ) : ?>
 			<span class="caps eyebrow"><?php echo esc_html( $eyebrow ); ?></span>
 		<?php endif; ?>
