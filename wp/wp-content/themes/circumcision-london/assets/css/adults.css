@@ -107,6 +107,10 @@ body.page-adults #watch-adult-circumcision .cil-adults-watch-card > .section-hea
   max-width: none;
   margin-bottom: 18px;
 }
+body.page-adults #watch-adult-circumcision .cil-adults-watch-card .lede {
+  max-width: 54ch;
+  color: var(--ink-2);
+}
 body.page-adults #watch-adult-circumcision .wp-block-buttons { margin-top: 8px; }
 body.page-adults #watch-adult-circumcision .wp-element-button {
   background: var(--navy);
