@@ -44,3 +44,7 @@ body.page-paraphimosis #overview .callout.urgent {
 body.page-paraphimosis #overview .wp-block-buttons {
   margin: 0 0 clamp(20px, 2.4vw, 28px);
 }
+
+body.page-bxo #phimosis-and-cycle .body-text + .wp-block-heading {
+  margin-top: clamp(40px, 5vw, 64px);
+}
