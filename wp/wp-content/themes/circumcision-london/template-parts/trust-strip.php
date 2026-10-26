@@ -55,7 +55,11 @@ $cqc_link_label    = ( isset( $args['cqc_link_label'] ) && '' !== $args['cqc_lin
 				$is_google = $google_logo && false !== stripos( $l, 'Google' );
 				$icon      = '';
 				if ( $enhanced ) {
-					$icon = $is_google ? 'google' : ( 'CQC' === trim( $n ) ? 'shield' : ( false !== stripos( $l, 'Languages' ) ? 'globe' : 'award' ) );
+					if ( $is_cqc ) {
+						$icon = 'shield';
+					} else {
+						$icon = $is_google ? 'google' : ( false !== stripos( $l, 'Languages' ) ? 'globe' : 'award' );
+					}
 				}
 				?>
 				<li class="stat<?php echo $is_google ? ' stat--google' : ''; ?><?php echo $is_cqc ? ' stat--cqc' : ''; ?>" data-reveal<?php echo $i ? ' data-reveal-delay="' . esc_attr( (string) ( $i * 80 ) ) . '"' : ''; ?>">
@@ -64,18 +68,12 @@ $cqc_link_label    = ( isset( $args['cqc_link_label'] ) && '' !== $args['cqc_lin
 					<?php endif; ?>
 					<?php if ( $is_cqc ) : ?>
 						<?php
-						/* Compact clinic badge — no provider/LMCS name, just rating + report link. */
-						$cqc_heading = sprintf(
-							/* translators: %s: CQC rating */
-							__( 'CQC rated %s', 'circumcision-london' ),
-							$clinic['cqc_rating']
-						);
 						$cqc_report_label = __( 'Read the report', 'circumcision-london' );
 						if ( '' !== trim( (string) $cqc_link_label ) && ! in_array( trim( (string) $cqc_link_label ), array( 'CQC Good', 'CQC rated Good' ), true ) ) {
 							$cqc_report_label = $cqc_link_label;
 						}
+						echo cil_cqc_widget_html( $cqc_link_url ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper.
 						?>
-						<span class="n"><?php echo esc_html( $cqc_heading ); ?></span>
 						<a class="stat-link" href="<?php echo esc_url( $cqc_link_url ); ?>" target="_blank" rel="noopener noreferrer" data-track="cqc-trust-strip"><?php echo esc_html( $cqc_report_label ); ?></a>
 					<?php else : ?>
 						<span class="n"><?php echo esc_html( $n ); ?></span>

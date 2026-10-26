@@ -104,11 +104,6 @@ function cil_condition_pages() {
 						),
 						array(
 							'@type' => 'MedicalProcedure',
-							'name'  => 'Preputioplasty',
-							'url'   => cil_path_url( '/procedures/preputioplasty' ),
-						),
-						array(
-							'@type' => 'MedicalProcedure',
 							'name'  => 'Circumcision',
 							'url'   => cil_path_url( '/adults' ),
 						),

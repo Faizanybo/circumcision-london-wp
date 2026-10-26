@@ -499,7 +499,6 @@ function cil_default_footer_treatments() {
 		array( 'label' => __( 'Buried Penis', 'circumcision-london' ), 'url' => home_url( '/buried-penis/' ) ),
 		array( 'label' => __( 'Re-circumcision', 'circumcision-london' ), 'url' => home_url( '/re-circumcision/' ) ),
 		array( 'label' => __( 'Frenuloplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/frenuloplasty/' ) ),
-		array( 'label' => __( 'Preputioplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/preputioplasty/' ) ),
 	);
 }
 
@@ -574,7 +573,6 @@ function cil_default_footer_reasons() {
 		array( 'label' => __( 'Religious & Cultural', 'circumcision-london' ), 'url' => home_url( '/religious/' ) ),
 		array( 'label' => __( 'Re-circumcision', 'circumcision-london' ), 'url' => home_url( '/re-circumcision/' ) ),
 		array( 'label' => __( 'Frenuloplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/frenuloplasty/' ) ),
-		array( 'label' => __( 'Preputioplasty', 'circumcision-london' ), 'url' => home_url( '/procedures/preputioplasty/' ) ),
 	);
 }
 

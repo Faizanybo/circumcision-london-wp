@@ -1051,7 +1051,7 @@
       { key: 'googleLinkUrl', label: 'Google Maps link destination' },
       {
         key: 'cqcWidget',
-        label: 'Show the CQC link under the CQC figure',
+        label: 'Show the official CQC Good widget',
         kind: 'toggle',
       },
       { key: 'cqcLinkLabel', label: 'CQC link text' },
@@ -1209,7 +1209,7 @@
             rows: 2,
             help: 'Words inside <b> and </b> stay bold, as they are on the page now.',
           },
-          { key: 'icon', label: 'Symbol (google, shield, clock or pin)' },
+          { key: 'icon', label: 'Symbol (google, cqc, shield, clock or pin)' },
         ],
         addLabel: 'Add fact',
       },

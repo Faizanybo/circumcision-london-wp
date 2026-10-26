@@ -20,6 +20,24 @@ function cil_asset( $relative ) {
 }
 
 /**
+ * Official CQC "rated Good" widget. Links to the clinic's CQC location report.
+ *
+ * @param string $link_url Optional report URL.
+ * @return string
+ */
+function cil_cqc_widget_html( $link_url = '' ) {
+	$clinic = cil_clinic();
+	$url    = '' !== trim( (string) $link_url ) ? $link_url : $clinic['cqc_url'];
+	$src    = cil_asset( 'images/cqc-rated-good.svg' );
+	$alt    = sprintf(
+		/* translators: %s: CQC rating */
+		__( 'Care Quality Commission rated %s', 'circumcision-london' ),
+		$clinic['cqc_rating']
+	);
+	return '<a class="cil-cqc-widget" href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" data-track="cqc-widget"><img src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ) . '" width="123" height="86" decoding="async"></a>';
+}
+
+/**
  * Allowlisted HTML for prototype FAQ answers.
  *
  * @param string $html Raw HTML.
