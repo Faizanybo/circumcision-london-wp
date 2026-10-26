@@ -1877,8 +1877,15 @@ body.page-testimonials .cil-platform-trustpilot .wp-block-button__link::before {
 body.page-testimonials .cil-platform-yell .wp-block-button__link::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%23FFD100'/%3E%3Ctext x='12' y='17.5' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='15' fill='%23111111'%3EY%3C/text%3E%3C/svg%3E");
 }
-body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:hover {
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:hover,
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:focus,
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:active {
+  background: var(--card);
+  background-color: var(--card);
+  color: var(--ink);
   border-color: var(--blue);
+}
+body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:hover {
   box-shadow: 0 10px 26px -20px rgba(22, 32, 46, 0.5);
 }
 body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:active {
@@ -1887,6 +1894,8 @@ body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-b
 body.page-testimonials .cil-review-platform-buttons .wp-block-button .wp-block-button__link:focus-visible {
   outline: 3px solid var(--blue);
   outline-offset: 3px;
+  color: var(--ink);
+  background: var(--card);
 }
 body.page-testimonials .cil-review-platform-note {
   margin-top: 16px;
