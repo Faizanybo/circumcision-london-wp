@@ -250,3 +250,30 @@ body.page-children #what-to-bring .cil-children-duration > p { color: var(--ink-
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Preparation copy sits on navy like Babies anaesthetic, not in a sky sheet. */
+body.page-children #preparation.bg-navy > .wrap > .wp-block-group:not(.cil-section-lede) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+body.page-children #preparation.bg-navy > .wrap > .wp-block-group:not(.cil-section-lede) :is(p, li, h2, h3, .display) {
+  color: rgba(255, 255, 255, .78);
+}
+body.page-children #preparation.bg-navy > .wrap > .wp-block-group:not(.cil-section-lede) a:not(.btn) {
+  color: var(--gold);
+}
+body.page-children #preparation.bg-navy > .wrap > .wp-block-group:not(.cil-section-lede) a:not(.btn):hover {
+  color: #ffd23f;
+}
+body.page-children #what-to-bring.bg-navy .cil-checklist > li {
+  color: var(--ink);
+}
+body.page-children #what-to-bring.bg-navy .cil-children-duration :is(h2, .display) {
+  color: var(--navy);
+}
+body.page-children #what-to-bring.bg-navy .cil-children-duration a:not(.btn) {
+  color: var(--blue-deep);
+}
