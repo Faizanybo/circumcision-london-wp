@@ -129,12 +129,9 @@ $has_aside        = ( '' !== trim( wp_strip_all_tags( $html ) ) );
 			if ( $fact_rows ) :
 				foreach ( $fact_rows as $i => $row ) :
 					$icon = in_array( $row['icon'], array( 'google', 'shield', 'clock', 'pin', 'star', 'cqc' ), true ) ? $row['icon'] : $fact_icons[ $i % count( $fact_icons ) ];
-					if ( 'cqc' === $icon || ( 'shield' === $icon && false !== stripos( wp_strip_all_tags( $row['html'] ), 'CQC' ) ) ) :
-						?>
-			<li class="hero-fact--cqc"><?php echo cil_cqc_widget_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper. ?></li>
-						<?php
-						continue;
-					endif;
+					if ( 'cqc' === $icon ) {
+						$icon = 'shield';
+					}
 					?>
 			<li<?php echo 'google' === $icon ? ' class="hero-fact--google"' : ''; ?>><?php echo cil_icon( $icon ); ?><span><?php echo wp_kses( $row['html'], array( 'b' => array(), 'strong' => array() ) ); ?></span></li>
 					<?php

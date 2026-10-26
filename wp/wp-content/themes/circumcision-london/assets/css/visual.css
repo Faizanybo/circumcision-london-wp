@@ -219,15 +219,8 @@
   width: 123px;
   height: auto;
 }
-.cil-trust .stat--cqc .cil-cqc-widget { margin: 0 0 12px; }
-.hero-facts .hero-fact--cqc {
-  align-items: center;
-}
-.hero-facts .hero-fact--cqc .cil-cqc-widget img {
-  width: 110px;
-}
-.hero-facts .hero-fact--cqc .cil-cqc-widget img {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, .18);
+.cil-trust .stat--cqc .cil-cqc-widget {
+  margin: 12px 0 12px;
 }
 body.cil-home .cil-home-reviews .cil-reviews-split--solo {
   display: block;
