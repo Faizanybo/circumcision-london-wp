@@ -93,6 +93,30 @@ body.page-adults #aftercare-and-support .cil-adults-aftercare-card > :last-child
   }
 }
 
+/* -------------------------------------------------------- watch card -- */
+body.page-adults #watch-adult-circumcision > .wrap > .cil-adults-watch-card {
+  max-width: none;
+  padding: clamp(24px, 2.8vw, 40px);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--gold);
+  background:
+    radial-gradient(600px 260px at 100% 0%, rgba(47, 127, 216, .08), transparent 60%),
+    linear-gradient(180deg, var(--sky), var(--sky-2));
+}
+body.page-adults #watch-adult-circumcision .cil-adults-watch-card > .section-head {
+  max-width: none;
+  margin-bottom: 18px;
+}
+body.page-adults #watch-adult-circumcision .wp-block-buttons { margin-top: 8px; }
+body.page-adults #watch-adult-circumcision .wp-element-button {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 999px;
+}
+body.page-adults #watch-adult-circumcision .wp-element-button:hover {
+  background: var(--blue-deep);
+}
+
 /* -------------------------------------------------------- diary card -- */
 /* Paint an inner card so the gold box matches .wrap content width, not the padded wrap. */
 body.page-adults #circumcision-diary > .wrap > .cil-adults-diary-card {

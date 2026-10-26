@@ -28,15 +28,11 @@ body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede)
     linear-gradient(180deg, var(--sky), var(--sky-2));
 }
 body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) > :last-child { margin-bottom: 0; }
-@media (min-width: 901px) {
-  body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: clamp(36px, 4.5vw, 64px);
-    row-gap: 0.85em;
-    align-items: start;
-  }
-  body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) > * { margin: 0; }
+body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) p {
+  max-width: 72ch;
+}
+body.page-children #preparation > .wrap > .wp-block-group:not(.cil-section-lede) p + p {
+  margin-top: 0.75em;
 }
 
 /* ------------------------------------------------ appointment timeline -- */
