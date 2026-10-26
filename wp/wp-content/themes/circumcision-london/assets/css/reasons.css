@@ -49,13 +49,9 @@ body.page-bxo #phimosis-and-cycle .body-text + .wp-block-heading {
   margin-top: clamp(40px, 5vw, 64px);
 }
 
-@media (min-width: 681px) {
-  body.page-bxo :is(#children-and-adults, #anatomy-and-risks) .split {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: stretch;
-  }
-}
-body.page-bxo :is(#children-and-adults, #anatomy-and-risks) .cil-bxo-pair-card {
+/* Two-column copy on Reasons pages: gold-top cards, blue on hover. */
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.cil-bxo-exam-card) {
   background: var(--card);
   border: 1px solid rgba(13, 39, 71, .08);
   border-top: 4px solid var(--gold);
@@ -64,7 +60,65 @@ body.page-bxo :is(#children-and-adults, #anatomy-and-risks) .cil-bxo-pair-card {
   padding: clamp(24px, 2.4vw, 36px);
   height: 100%;
   box-sizing: border-box;
+  transition: border-color .22s var(--ease), transform .22s var(--ease), box-shadow .22s var(--ease);
 }
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]):hover,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.cil-bxo-exam-card):hover {
+  border-color: var(--blue);
+  border-top-color: var(--blue);
+  box-shadow: 0 22px 44px -28px rgba(13, 39, 71, .42);
+}
+@media (prefers-reduced-motion: no-preference) {
+  body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]):hover,
+  body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.cil-bxo-exam-card):hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (min-width: 681px) {
+  body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+@media (min-width: 901px) {
+  body.page-frenuloplasty #recovery .split:has(> .wp-block-group:nth-child(3)) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .split > .wp-block-group.body-text .cil-checklist > li {
+  background: var(--sky-2);
+  box-shadow: inset 0 0 0 1px rgba(13, 39, 71, .07);
+}
+
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .body-text strong {
+  color: #fff;
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .body-text a {
+  color: var(--gold);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .body-text a:hover {
+  color: #ffd23f;
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split > .wp-block-group.body-text:not(.cil-bxo-exam-card),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.cil-bxo-exam-card) {
+  background: var(--card);
+  color: var(--ink);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split > .wp-block-group.body-text:not(.cil-bxo-exam-card) :is(p, li, h2, h3, .display),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.cil-bxo-exam-card) :is(p, li, h2, h3, .display) {
+  color: var(--ink-2);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split > .wp-block-group.body-text:not(.cil-bxo-exam-card) a,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.cil-bxo-exam-card) a {
+  color: var(--blue-deep);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split > .wp-block-group.body-text:not(.cil-bxo-exam-card) strong,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.cil-bxo-exam-card) strong {
+  color: var(--ink);
+}
+
 body.page-bxo #children-and-adults .cil-bxo-exam-card {
   margin-top: clamp(24px, 3vw, 36px);
   padding: clamp(22px, 2.4vw, 32px);
