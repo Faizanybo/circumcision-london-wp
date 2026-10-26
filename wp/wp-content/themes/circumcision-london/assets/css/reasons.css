@@ -49,21 +49,26 @@ body.page-bxo #phimosis-and-cycle .body-text + .wp-block-heading {
   margin-top: clamp(40px, 5vw, 64px);
 }
 
-/* Two-column copy on Reasons pages: gold-top cards, blue on hover. */
+/* Two-column copy on Reasons pages: gold-top cards. Shared chrome, then
+   light fill vs navy fill. Navy must include :not(#overview) so it can beat
+   the light-card background (that ID is why white cards were winning). */
 body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]),
 body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.cil-bxo-exam-card) {
-  background: var(--card);
-  border: 1px solid rgba(13, 39, 71, .08);
-  border-top: 4px solid var(--gold);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
   padding: clamp(24px, 2.4vw, 36px);
   height: 100%;
   box-sizing: border-box;
   transition: border-color .22s var(--ease), transform .22s var(--ease), box-shadow .22s var(--ease);
 }
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]):hover,
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.cil-bxo-exam-card):hover {
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview):not(.bg-navy) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(.bg-navy) .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.cil-bxo-exam-card) {
+  background: var(--card);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  box-shadow: var(--shadow-card);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(#overview):not(.bg-navy) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]):hover,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section:not(.bg-navy) .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.cil-bxo-exam-card):hover {
   border-color: var(--blue);
   border-top-color: var(--blue);
   box-shadow: 0 22px 44px -28px rgba(13, 39, 71, .42);
@@ -103,8 +108,8 @@ body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-re
 }
 
 /* Prose sits on the navy band (Babies anaesthetic pattern). Do not sheet
-   wrap-level body-text in a giant white rectangle. Intentional gold-top
-   pair-cards keep their light surfaces from the two-column rule above. */
+   wrap-level body-text in a giant white rectangle. Pair-cards on navy use
+   the Children info-card treatment below. */
 body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.is-style-cil-card):not(.cil-bxo-exam-card) {
   background: transparent;
   color: inherit;
@@ -114,28 +119,63 @@ body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-re
   padding-right: 0;
 }
 
-/* Gold-top pair-cards on navy keep dark text so they stay readable. */
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) :is(p, li) {
-  color: var(--ink-2);
+/* Pair-cards on navy match Children school-and-sports info-cards:
+   translucent navy panel, gold top, light text. */
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.is-style-cil-callout) {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-top: 4px solid var(--gold);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+  color: rgba(255, 255, 255, .82);
 }
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) :is(h2, h3, .display) {
-  color: var(--ink);
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]):hover,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .wp-block-group.is-style-cil-card:not(.is-style-cil-callout-urgent):not(.is-style-cil-callout):hover {
+  border-color: rgba(242, 183, 5, .55);
+  border-top-color: var(--gold);
+  box-shadow: none;
 }
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) a {
-  color: var(--blue-deep);
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) :is(p, li),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.is-style-cil-callout-urgent):not(.is-style-cil-callout) :is(p, li) {
+  color: rgba(255, 255, 255, .76);
 }
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) strong {
-  color: var(--ink);
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) :is(h2, h3, .display),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.is-style-cil-callout-urgent):not(.is-style-cil-callout) :is(h2, h3, .display) {
+  color: #fff;
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) a,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.is-style-cil-callout-urgent):not(.is-style-cil-callout) a:not(.btn) {
+  color: var(--gold);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) a:hover,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.is-style-cil-callout-urgent):not(.is-style-cil-callout) a:not(.btn):hover {
+  color: #ffd23f;
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text:not(.cil-bxo-exam-card):not([class*="callout-urgent"]) strong,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.is-style-cil-callout-urgent):not(.is-style-cil-callout) strong {
+  color: #fff;
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text .cil-checklist > li {
+  background: rgba(255, 255, 255, .1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+  color: rgba(255, 255, 255, .86);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .wp-block-cil-section.bg-navy:not(#overview) .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text .cil-checklist > li::before {
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(242, 183, 5, .22);
 }
 
 /* Checklists in on-navy prose match the translucent info-card tiles. */
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.is-style-cil-card):not(.cil-bxo-exam-card) .cil-checklist > li {
-  background: rgba(255, 255, 255, .06);
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.is-style-cil-card):not(.cil-bxo-exam-card) .cil-checklist > li,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split > .wp-block-group.body-text .cil-checklist > li {
+  background: rgba(255, 255, 255, .1);
   border-color: rgba(255, 255, 255, .14);
-  box-shadow: none;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
   color: rgba(255, 255, 255, .86);
 }
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.is-style-cil-card):not(.cil-bxo-exam-card) .cil-checklist > li::before {
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy > .wrap > .wp-block-group.body-text:not(.is-style-cil-card):not(.cil-bxo-exam-card) .cil-checklist > li::before,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .split > .wp-block-group.body-text .cil-checklist > li::before {
   background: var(--gold);
   box-shadow: 0 0 0 3px rgba(242, 183, 5, .22);
 }
@@ -180,24 +220,33 @@ body.page-religious :is(#aftercare-and-travel, #appointment-preparation) > .wrap
   text-align: left;
 }
 
-/* Nested light cards / callouts / steps keep dark text on navy bands. */
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.cil-bxo-exam-card) :is(h2, h3, .display) {
-  color: var(--ink);
-}
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.cil-bxo-exam-card) :is(p, li) {
-  color: var(--ink-2);
-}
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .is-style-cil-card:not(.cil-bxo-exam-card) a:not(.btn) {
-  color: var(--blue-deep);
-}
+/* Urgent / peach callouts keep dark text. Navy section headings would
+   otherwise paint them white on the brown wash. */
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout,
 body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy :is(.is-style-cil-callout, .is-style-cil-callout-urgent) {
   color: var(--ink);
 }
-body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy :is(.is-style-cil-callout, .is-style-cil-callout-urgent) :is(h2, h3, .display, p, li, strong) {
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout :is(h1, h2, h3, h4, .display, p, li, strong),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout .body-text :is(p, li, strong),
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy :is(.is-style-cil-callout, .is-style-cil-callout-urgent) :is(h1, h2, h3, h4, .display, p, li, strong) {
   color: var(--ink);
 }
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout .body-text p,
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout p {
+  color: var(--ink-2);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout a:not(.btn),
 body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy :is(.is-style-cil-callout, .is-style-cil-callout-urgent) a:not(.btn) {
   color: var(--blue-deep);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout .cil-checklist > li {
+  background: var(--sky-2);
+  box-shadow: inset 0 0 0 1px rgba(13, 39, 71, .07);
+  color: var(--ink);
+}
+body:is(.page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .bg-navy .callout .cil-checklist > li::before {
+  background: var(--clay);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--clay) 18%, transparent);
 }
 body.page-re-circumcision .bg-navy .steps {
   background: transparent;
@@ -220,22 +269,26 @@ body.page-re-circumcision .bg-navy .steps li::before {
   color: var(--gold);
 }
 
-/* BXO exam card is navy-on-light; invert when the parent section is navy. */
+/* BXO exam card on navy matches the Children navy info-cards. */
 body.page-bxo #children-and-adults.bg-navy .cil-bxo-exam-card {
-  background: var(--card);
-  color: var(--ink);
-  border-left: 4px solid var(--gold);
+  background: rgba(255, 255, 255, .06);
+  color: rgba(255, 255, 255, .86);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-top: 4px solid var(--gold);
+  border-left: 1px solid rgba(255, 255, 255, .14);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
 }
 body.page-bxo #children-and-adults.bg-navy .cil-bxo-exam-card p,
 body.page-bxo #children-and-adults.bg-navy .cil-bxo-exam-card .body-text p {
-  color: var(--ink-2);
+  color: rgba(255, 255, 255, .86);
 }
 body.page-bxo #children-and-adults.bg-navy .cil-bxo-exam-card a {
-  color: var(--blue-deep);
+  color: var(--gold);
 }
 body.page-bxo #children-and-adults.bg-navy .cil-bxo-exam-card a:hover {
-  color: var(--blue);
+  color: #ffd23f;
 }
 body.page-bxo #children-and-adults.bg-navy .cil-bxo-exam-card strong {
-  color: var(--ink);
+  color: #fff;
 }

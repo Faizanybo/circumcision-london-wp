@@ -268,8 +268,29 @@ body.page-children #preparation.bg-navy > .wrap > .wp-block-group:not(.cil-secti
 body.page-children #preparation.bg-navy > .wrap > .wp-block-group:not(.cil-section-lede) a:not(.btn):hover {
   color: #ffd23f;
 }
+body.page-children #what-to-bring.bg-navy .cil-children-wear,
+body.page-children #what-to-bring.bg-navy .cil-children-bring {
+  background: rgba(255, 255, 255, .06);
+  border-color: rgba(255, 255, 255, .14);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+}
+body.page-children #what-to-bring.bg-navy .cil-children-wear > h2,
+body.page-children #what-to-bring.bg-navy .cil-children-bring > h2 {
+  color: #fff;
+}
+body.page-children #what-to-bring.bg-navy .cil-children-wear p,
+body.page-children #what-to-bring.bg-navy .cil-children-bring p {
+  color: rgba(255, 255, 255, .78);
+}
 body.page-children #what-to-bring.bg-navy .cil-checklist > li {
-  color: var(--ink);
+  background: rgba(255, 255, 255, .1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+  color: rgba(255, 255, 255, .86);
+}
+body.page-children #what-to-bring.bg-navy .cil-checklist > li::before {
+  background: var(--gold);
+  color: var(--navy);
 }
 body.page-children #what-to-bring.bg-navy .cil-children-duration :is(h2, .display) {
   color: var(--navy);
