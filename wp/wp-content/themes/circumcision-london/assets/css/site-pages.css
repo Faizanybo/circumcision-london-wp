@@ -346,3 +346,44 @@ body.cil-site-page .posts-list > .card {
   text-align: left;
 }
 
+/* Courses: the training enquiry is one navy card. The checklist chips stay light. */
+body.page-courses #enquire .cil-course-enquire-card {
+  background:
+    radial-gradient(720px 280px at 100% 0%, rgba(47, 127, 216, .32), transparent 62%),
+    var(--navy);
+  color: rgba(255, 255, 255, .86);
+  border: 0;
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+body.page-courses #enquire .cil-course-enquire-card :is(h2, .display) {
+  color: #fff;
+}
+body.page-courses #enquire .cil-course-enquire-card > p,
+body.page-courses #enquire .cil-course-enquire-card .wp-block-group > p {
+  color: rgba(255, 255, 255, .86);
+}
+body.page-courses #enquire .cil-course-enquire-card .wp-block-button:not(.is-style-outline) .wp-block-button__link {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+body.page-courses #enquire .cil-course-enquire-card .wp-block-button:not(.is-style-outline) .wp-block-button__link:hover,
+body.page-courses #enquire .cil-course-enquire-card .wp-block-button:not(.is-style-outline) .wp-block-button__link:focus {
+  background: #ffd23f;
+  border-color: #ffd23f;
+  color: var(--navy);
+}
+body.page-courses #enquire .cil-course-enquire-card .wp-block-button.is-style-outline .wp-block-button__link {
+  background: transparent;
+  border-color: rgba(255, 255, 255, .55);
+  color: #fff;
+}
+body.page-courses #enquire .cil-course-enquire-card .wp-block-button.is-style-outline .wp-block-button__link:hover,
+body.page-courses #enquire .cil-course-enquire-card .wp-block-button.is-style-outline .wp-block-button__link:focus {
+  background: rgba(255, 255, 255, .12);
+  border-color: #fff;
+  color: #fff;
+}
+
