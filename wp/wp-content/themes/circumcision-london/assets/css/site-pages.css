@@ -1,0 +1,348 @@
+/* =========================================================================
+   Remaining site pages (About, Team, Testimonials, Prices, Aftercare,
+   For doctors, Contact, locations, diary, video libraries, booking).
+   Loaded only on those slugs. Babies, Home, Who we see and Reasons are
+   not in this scope.
+   ========================================================================= */
+
+/* Page head matches the approved navy introduction. */
+body.cil-site-page .page-head {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 480px at 0% 0%, rgba(47, 127, 216, .30), transparent 60%),
+    radial-gradient(700px 420px at 100% 100%, rgba(242, 183, 5, .12), transparent 65%),
+    var(--navy);
+  color: rgba(255, 255, 255, .82);
+}
+body.cil-site-page .page-head::before {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -50px;
+  width: 360px;
+  height: 230px;
+  background: url("../images/home/logo-mark.webp") center / contain no-repeat;
+  opacity: .08;
+  pointer-events: none;
+}
+body.cil-site-page .page-head .wrap { position: relative; }
+body.cil-site-page .page-head h1,
+body.cil-site-page .page-head .eyebrow { color: var(--gold); }
+body.cil-site-page .page-head .lede { color: rgba(255, 255, 255, .8); }
+body.cil-site-page .page-head .reviewed-by {
+  border-top-color: rgba(255, 255, 255, .14);
+  color: rgba(255, 255, 255, .86);
+}
+body.cil-site-page .page-head .reviewed-by a {
+  color: rgba(255, 255, 255, .92);
+}
+body.cil-site-page .page-head a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* Light info-cards use the same gold top as the approved pages. */
+body.cil-site-page .wp-block-cil-section:not(.bg-navy) .cil-info-card {
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  height: 100%;
+}
+body.cil-site-page .bg-navy .card.cil-info-card { border-top: 4px solid var(--gold); }
+body.cil-site-page .bg-navy .cil-info-card .body-text a:not(.btn) { color: var(--gold); }
+body.cil-site-page .bg-navy .cil-info-card .body-text a:not(.btn):hover { color: #ffd23f; }
+
+/* Prose sits on the navy band. Do not wrap it in a white sheet. */
+body.cil-site-page .bg-navy > .wrap > .wp-block-group.body-text:not(.is-style-cil-card) {
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  border: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body.cil-site-page .bg-navy .body-text :is(p, li) {
+  color: rgba(255, 255, 255, .78);
+}
+body.cil-site-page .bg-navy .body-text strong {
+  color: #fff;
+}
+body.cil-site-page .bg-navy .body-text a:not(.btn) {
+  color: var(--gold);
+}
+body.cil-site-page .bg-navy .body-text a:not(.btn):hover {
+  color: #ffd23f;
+}
+
+/* Pair columns and quote cards on navy match the Children info-cards. */
+body.cil-site-page .bg-navy .split:not(:has(.wp-block-cil-figure, .figure, .cil-split-copy)):has(> .wp-block-group:nth-child(2)) > .wp-block-group.body-text,
+body.cil-site-page .bg-navy .quote {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+  color: rgba(255, 255, 255, .82);
+}
+body.cil-site-page .bg-navy .quote blockquote {
+  color: #fff;
+}
+body.cil-site-page .quote .meta {
+  color: var(--muted);
+}
+body.cil-site-page .bg-navy .quote .meta {
+  color: rgba(255, 255, 255, .86);
+}
+body.cil-site-page .bg-navy .quote:hover {
+  border-color: rgba(242, 183, 5, .55);
+  border-top-color: var(--gold);
+}
+
+body.cil-site-page .bg-navy .cil-checklist > li {
+  background: rgba(255, 255, 255, .1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+  color: rgba(255, 255, 255, .86);
+}
+body.cil-site-page .bg-navy .cil-checklist > li::before {
+  background: var(--gold);
+  box-shadow: 0 0 0 3px rgba(242, 183, 5, .22);
+}
+
+/* Peach urgent notes stay dark on their brown wash. */
+body.cil-site-page .bg-navy .callout.urgent,
+body.cil-site-page .bg-navy .callout.urgent :is(h1, h2, h3, h4, .display, p, li, strong) {
+  color: var(--ink);
+}
+body.cil-site-page .bg-navy .callout.urgent p {
+  color: var(--ink-2);
+}
+body.cil-site-page .bg-navy .callout.urgent .cil-checklist > li {
+  background: var(--sky-2);
+  color: var(--ink);
+}
+body.cil-site-page .bg-navy .callout.urgent .cil-checklist > li::before {
+  background: var(--clay);
+}
+
+/* Biography columns: portrait stays a photo; copy is a gold-top card. */
+body.page-team :is(#samir, #haidar) .split > .body-text {
+  border-radius: var(--radius-lg);
+  border-top: 4px solid var(--gold);
+  padding: clamp(24px, 2.4vw, 36px);
+  height: 100%;
+  box-sizing: border-box;
+}
+body.page-team #samir .split > .body-text {
+  background: var(--card);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  box-shadow: var(--shadow-card);
+}
+body.page-team #haidar.bg-navy .split > .body-text {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-top: 4px solid var(--gold);
+  box-shadow: none;
+  color: rgba(255, 255, 255, .82);
+}
+body.page-team #haidar.bg-navy .split > .body-text :is(p, li) {
+  color: rgba(255, 255, 255, .78);
+}
+body.page-team #haidar.bg-navy .split > .body-text :is(h2, h3, .display) {
+  color: #fff;
+}
+body.page-team #haidar.bg-navy .split > .body-text :is(.caps, .eyebrow) {
+  color: var(--gold) !important;
+}
+
+/* Section copy stays left-aligned. */
+body.cil-site-page .section-head,
+body.cil-site-page .body-text,
+body.cil-site-page .cil-info-card,
+body.cil-site-page .quote,
+body.cil-site-page .cil-video-tile__caption,
+body.cil-site-page .cil-video-row__text,
+body.cil-site-page .cil-blog-row__body,
+body.cil-site-page .posts-list,
+body.cil-site-page .entry-content {
+  text-align: left;
+}
+body.page-privacy-notice .wp-block-cil-section > .wrap-narrow,
+body.page-accessibility .wp-block-cil-section > .wrap-narrow {
+  max-width: var(--maxw);
+}
+body.page-privacy-notice .wp-block-cil-section > .wrap-narrow > *,
+body.page-accessibility .wp-block-cil-section > .wrap-narrow > * {
+  max-width: 760px;
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
+}
+body.cil-site-page .testimonials-video-cta,
+body.cil-site-page .testimonials-cta-center {
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+}
+body.cil-site-page .testimonials-video-cta .btn,
+body.cil-site-page .testimonials-cta-center .btn,
+body.cil-site-page .testimonials-video-cta .muted {
+  margin-inline: 0;
+  text-align: left;
+}
+
+/* Image captions sit on the band behind them. Core leaves them centred and muted. */
+body.cil-site-page .wp-element-caption {
+  text-align: left;
+  color: var(--muted);
+}
+body.cil-site-page .bg-navy .wp-element-caption {
+  color: rgba(255, 255, 255, .86);
+}
+
+/* Names on navy quote cards were inline-ink, so they disappeared. */
+body.cil-site-page .bg-navy .quote .meta strong {
+  color: #fff;
+}
+body.cil-site-page .bg-navy .quote .stars {
+  color: var(--gold);
+}
+
+/* Photo tiles and video rows are light cards. Keep their text dark. */
+body.cil-site-page .bg-navy .cil-video-tile__caption {
+  color: var(--ink);
+}
+body.cil-site-page .bg-navy .cil-video-row :is(h2, h3, h4, .display, .cil-video-row__title) {
+  color: var(--ink);
+}
+body.cil-site-page .bg-navy .cil-video-row__note,
+body.cil-site-page .bg-navy .cil-video-row__meta {
+  color: var(--ink-2);
+}
+body.cil-site-page .bg-navy .cil-video-row__note a {
+  color: var(--blue-deep);
+}
+
+/* Outline buttons sitting on the navy band, not inside a light card. */
+body.cil-site-page .bg-navy :is(.btn-ghost, .wp-block-button.is-style-outline .wp-block-button__link),
+body.cil-site-page .bg-navy .body-text a.btn.btn-ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, .55);
+  background: transparent;
+}
+body.cil-site-page .bg-navy :is(.btn-ghost, .wp-block-button.is-style-outline .wp-block-button__link):hover,
+body.cil-site-page .bg-navy .body-text a.btn.btn-ghost:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+  border-color: #fff;
+}
+/* Video rows are white cards, so an outline button on one stays dark. */
+body.cil-site-page .bg-navy .cil-video-row :is(.btn-ghost, .wp-block-button.is-style-outline .wp-block-button__link) {
+  color: var(--ink);
+  border-color: var(--line);
+  background: transparent;
+}
+body.cil-site-page .figure figcaption {
+  color: var(--ink-2);
+  text-align: left;
+}
+body.cil-site-page .bg-navy :is(.btn-ghost, .wp-block-button__link):focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Blog intro shares the page-head left edge. The stored block is wrap-narrow. */
+body.page-blog .wp-block-group.wrap-narrow {
+  max-width: none;
+  margin: 0;
+  padding-inline: 0;
+  text-align: left;
+}
+body.page-blog .wp-block-group.wrap-narrow.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  text-align: left;
+}
+
+/* Listing rows use the same gold-top cards, with every other row on navy. */
+body.page-blog .cil-blog-feed__list {
+  gap: clamp(28px, 3.2vw, 44px);
+}
+body.page-blog .cil-blog-row {
+  background: var(--card);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: clamp(16px, 2vw, 28px);
+  align-items: center;
+}
+body.page-blog .cil-blog-row__media {
+  border-radius: calc(var(--radius-lg) - 8px);
+}
+body.page-blog .cil-blog-row:nth-child(even) {
+  background-color: var(--navy);
+  background-image: radial-gradient(700px 280px at 0% 0%, rgba(47, 127, 216, .28), transparent 60%);
+  border-color: transparent;
+  border-top-color: var(--gold);
+  box-shadow: none;
+  color: rgba(255, 255, 255, .82);
+}
+body.page-blog .cil-blog-row:nth-child(even) .eyebrow {
+  color: var(--gold);
+}
+body.page-blog .cil-blog-row:nth-child(even) :is(h2, .display) a {
+  color: #fff;
+}
+body.page-blog .cil-blog-row:nth-child(even) .cil-blog-row__excerpt {
+  color: rgba(255, 255, 255, .78);
+}
+body.page-blog .cil-blog-row a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Articles use Home-style sections. Each heading is its own gold-top card. */
+body.single-post.cil-site-page .entry-content > .wp-block-cil-section {
+  padding-block: clamp(16px, 2vw, 28px);
+}
+body.single-post.cil-site-page .entry-content > .wp-block-cil-section:first-of-type {
+  padding-top: clamp(36px, 4vw, 64px);
+}
+body.single-post.cil-site-page .cil-article-card {
+  max-width: 860px;
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: clamp(24px, 3vw, 40px);
+}
+body.single-post.cil-site-page .cil-article-card--wide {
+  max-width: none;
+}
+body.single-post.cil-site-page .cil-article-card.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  text-align: left;
+}
+body.single-post.cil-site-page .cil-blog-article-figure,
+body.single-post.cil-site-page .cil-blog-article-figure img {
+  border-radius: var(--radius-lg);
+}
+body.single-post.cil-site-page .entry-content :is(h2, h3, h4) {
+  text-align: left;
+  color: var(--navy);
+}
+body.cil-site-page .posts-list > .card {
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  text-align: left;
+}
+

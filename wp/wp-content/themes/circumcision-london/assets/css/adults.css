@@ -157,3 +157,23 @@ body.page-adults #circumcision-diary .wp-element-button:hover {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Nested light cards keep dark text when the section band is navy. */
+body.page-adults #watch-adult-circumcision.bg-navy .cil-adults-watch-card :is(h1, h2, h3, h4, .display) {
+  color: var(--ink);
+}
+body.page-adults #watch-adult-circumcision.bg-navy .cil-adults-watch-card :is(.lede, p, li) {
+  color: var(--ink-2);
+}
+body.page-adults #watch-adult-circumcision.bg-navy .cil-adults-watch-card a:not(.btn):not(.wp-element-button) {
+  color: var(--blue-deep);
+}
+body.page-adults #aftercare-and-support.bg-navy .cil-adults-aftercare-card :is(h1, h2, h3, h4, .display) {
+  color: var(--ink);
+}
+body.page-adults #aftercare-and-support.bg-navy .cil-adults-aftercare-card :is(p, li, .lede) {
+  color: var(--ink-2);
+}
+body.page-adults #aftercare-and-support.bg-navy .cil-adults-aftercare-card a:not(.btn) {
+  color: var(--blue-deep);
+}

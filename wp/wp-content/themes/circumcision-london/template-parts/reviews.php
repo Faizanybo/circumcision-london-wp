@@ -127,7 +127,7 @@ foreach ( $videos as $item ) {
 				<figure class="quote" data-reveal data-reveal-delay="<?php echo esc_attr( (string) ( ( $i % 3 ) * 90 ) ); ?>">
 					<span class="stars" aria-label="<?php esc_attr_e( 'Five out of five', 'circumcision-london' ); ?>"><?php echo esc_html( $stars ); ?></span>
 					<blockquote>&ldquo;<?php echo esc_html( $quote['quote'] ); ?>&rdquo;</blockquote>
-					<figcaption class="meta"><strong style="color:var(--ink)"><?php echo esc_html( $quote['name'] ); ?></strong><br><?php echo esc_html( $quote['context'] ); ?></figcaption>
+					<figcaption class="meta"><strong><?php echo esc_html( $quote['name'] ); ?></strong><br><?php echo esc_html( $quote['context'] ); ?></figcaption>
 				</figure>
 			<?php endforeach; ?>
 		</div>

@@ -25,5 +25,5 @@ $classes = 'quote' . ( $sample ? ' quote--sample' : '' );
 		<span class="stars" aria-label="<?php esc_attr_e( 'Five out of five', 'circumcision-london' ); ?>">★★★★★</span>
 	<?php endif; ?>
 	<blockquote>&ldquo;<?php echo nl2br( esc_html( $quote ), false ); ?>&rdquo;</blockquote>
-	<figcaption class="meta"><strong style="color:var(--ink)"><?php echo esc_html( $name ); ?></strong><?php if ( $context ) : ?><br><?php echo esc_html( $context ); ?><?php endif; ?></figcaption>
+	<figcaption class="meta"><strong><?php echo esc_html( $name ); ?></strong><?php if ( $context ) : ?><br><?php echo esc_html( $context ); ?><?php endif; ?></figcaption>
 </figure>

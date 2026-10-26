@@ -275,6 +275,7 @@
   overflow-wrap: anywhere; word-break: break-word;
 }
 .quote .meta { margin-top: auto; font-size: 14px; color: var(--muted-2); }
+.quote .meta strong { color: var(--ink); }
 .stars { color: var(--blue); font-size: 14px; letter-spacing: .18em; }
 .quote--sample { border-style: dashed; background: var(--paper); }
 .quote-sample-badge {

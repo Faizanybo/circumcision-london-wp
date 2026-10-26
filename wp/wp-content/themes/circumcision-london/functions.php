@@ -209,6 +209,9 @@ function cil_enqueue_assets() {
 	if ( is_page( array( 'phimosis', 'balanitis', 'bxo', 'paraphimosis', 'religious', 're-circumcision', 'frenuloplasty' ) ) ) {
 		wp_enqueue_style( 'cil-reasons', $uri . '/assets/css/reasons.css', array( 'cil-babies' ), cil_asset_version( 'assets/css/reasons.css' ) );
 	}
+	if ( cil_use_site_pages_css() ) {
+		wp_enqueue_style( 'cil-site-pages', $uri . '/assets/css/site-pages.css', array( 'cil-visual' ), cil_asset_version( 'assets/css/site-pages.css' ) );
+	}
 
 	wp_enqueue_script(
 		'cil-theme',
@@ -298,6 +301,9 @@ function cil_body_classes( $classes ) {
 			}
 		}
 	}
+	if ( cil_use_site_pages_css() ) {
+		$classes[] = 'cil-site-page';
+	}
 	return $classes;
 }
 add_filter( 'body_class', 'cil_body_classes' );
@@ -364,6 +370,58 @@ function cil_cliniko_bookings_config() {
 }
 
 /**
+ * Remaining pages that use the shared site-pages design layer.
+ * Approved Home, Who we see, and Reasons pages are intentionally absent.
+ *
+ * @return string[]
+ */
+function cil_site_page_slugs() {
+	return array(
+		'about',
+		'team',
+		'testimonials',
+		'video-testimonials',
+		'prices',
+		'aftercare',
+		'courses',
+		'contact',
+		'book',
+		'circumcision-diary',
+		'luton-circumcision-clinic',
+		'southampton-circumcision-clinic',
+		'birmingham-circumcision-clinic',
+		'babies-toddlers-circumcision-videos',
+		'children-circumcision-videos',
+		'adult-circumcision-videos',
+		'arabic-babies-toddlers-circumcision-videos',
+		'turkish-babies-toddlers-circumcision-videos',
+		'farsi-babies-toddlers-circumcision-videos',
+		'blog',
+		'privacy-notice',
+		'accessibility',
+	);
+}
+
+/**
+ * Site-pages design layer: remaining pages, the blog index, single posts,
+ * and post archives. Home, Babies, Who we see and Reasons stay out.
+ *
+ * @return bool
+ */
+function cil_use_site_pages_css() {
+	if ( is_admin() ) {
+		return false;
+	}
+	if ( is_page( cil_site_page_slugs() ) ) {
+		return true;
+	}
+	if ( is_singular( 'post' ) || is_category() || is_tag() || is_author() || is_date() || is_search() ) {
+		return true;
+	}
+	return is_home() && ! is_front_page();
+}
+
+/**
  * Default primary navigation from the prototype.
  *
  * @return array<int, array<string, mixed>>
@@ -373,6 +431,10 @@ function cil_default_nav() {
 		array(
 			'label' => __( 'Home', 'circumcision-london' ),
 			'url'   => home_url( '/' ),
+		),
+		array(
+			'label' => __( 'About', 'circumcision-london' ),
+			'url'   => home_url( '/about/' ),
 		),
 		array(
 			'label'    => __( 'Who we see', 'circumcision-london' ),
@@ -453,10 +515,6 @@ function cil_default_nav() {
 			'label'    => __( 'Contact Us', 'circumcision-london' ),
 			'url'      => home_url( '/contact/' ),
 			'children' => array(
-				array(
-					'label' => __( 'About', 'circumcision-london' ),
-					'url'   => home_url( '/about/' ),
-				),
 				array(
 					'label'   => __( 'Our locations', 'circumcision-london' ),
 					'heading' => true,
