@@ -141,13 +141,19 @@ body.page-bxo #children-and-adults .cil-bxo-exam-card strong {
   color: #fff;
 }
 
-/* Religious: travelling-from-abroad copy is a constrained group after the aftercare cards.
-   WordPress centres constrained children with !important; pin them to the wrap left edge. */
-body.page-religious #aftercare-and-travel > .wrap > .body-text.is-layout-constrained {
+body.page-religious #clinical-environment .split {
+  gap: clamp(20px, 2.4vw, 28px);
+}
+body.page-religious #clinical-environment .split > .body-text > .display:first-child {
+  margin-top: 0;
+}
+
+/* Religious: constrained groups after cards/headings are centred by WP; pin them left. */
+body.page-religious :is(#aftercare-and-travel, #appointment-preparation) > .wrap > .body-text.is-layout-constrained {
   align-items: flex-start;
   text-align: left;
 }
-body.page-religious #aftercare-and-travel > .wrap > .body-text.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+body.page-religious :is(#aftercare-and-travel, #appointment-preparation) > .wrap > .body-text.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
   margin-left: 0 !important;
   margin-right: auto !important;
   text-align: left;
