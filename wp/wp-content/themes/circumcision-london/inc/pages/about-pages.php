@@ -24,7 +24,7 @@ function cil_about_pages() {
 			'path'        => '/team',
 			'name'        => 'Our team',
 			'title'       => 'Our Practitioners | Circumcision Clinic in London',
-			'description' => 'Dr Haidar Al-Ali, who carries out most circumcisions here and trains other doctors, and Mr Samir Al-Ali, plastic surgeon. Qualifications and registrations in full.',
+			'description' => 'Mr Samir Al-Ali, plastic surgeon, and Dr Haidar Al-Ali. Qualifications and registrations in full.',
 			'eyebrow'     => 'CQC registered · More than 40 years combined experience',
 			'h1'          => 'Meet our circumcision practitioners',
 			'lede'        => 'Our two practitioners have more than 40 years of combined experience in the UK and abroad and have carried out thousands of circumcisions across different age groups.',
@@ -215,13 +215,12 @@ function cil_team_page_blocks() {
 
 	$haidar = cil_team_profile_html(
 		array(
-			'eyebrow'    => 'Circumcision lead',
+			'eyebrow'    => 'Circumcision practitioner',
 			'name'       => 'Dr Haidar Al-Ali',
 			'letters'    => 'BDS · MFDS RCPS (Glasg)',
 			'spec_label' => 'Qualification and registration',
 			'bio'        => cil_proto_html(
-				'<p>Dr Al-Ali qualified from King\'s College London in 2013 and carries out the great majority of the
-          circumcisions performed at this clinic, for babies, boys and adults alike.</p>
+				'<p>Dr Al-Ali qualified from King\'s College London in 2013. He circumcises babies, boys and adults at this clinic.</p>
           <p>He also trains other doctors in circumcision technique. That is a more useful description of where this
           clinic\'s experience comes from than any claim we could make about ourselves: the technique is taught here,
           which means it gets examined and defended rather than simply repeated.</p>'
@@ -357,7 +356,7 @@ function cil_team_page_blocks() {
 			'size'   => 'section-sm',
 			'band'   => '',
 			'wrap'   => 'wrap',
-			'anchor' => 'haidar',
+			'anchor' => 'samir',
 		),
 		array(
 			cil_split_block(
@@ -365,10 +364,10 @@ function cil_team_page_blocks() {
 					cil_dyn_block(
 						'cil/figure',
 						array(
-							'name' => 'dr-haidar',
+							'name' => 'dr-samir',
 						)
 					),
-					cil_html_block( $haidar ),
+					cil_html_block( $samir ),
 				)
 			),
 		)
@@ -379,16 +378,16 @@ function cil_team_page_blocks() {
 			'size'   => 'section',
 			'band'   => 'bg-card edge',
 			'wrap'   => 'wrap',
-			'anchor' => 'samir',
+			'anchor' => 'haidar',
 		),
 		array(
 			cil_split_block(
 				array(
-					cil_html_block( $samir ),
+					cil_html_block( $haidar ),
 					cil_dyn_block(
 						'cil/figure',
 						array(
-							'name' => 'dr-samir',
+							'name' => 'dr-haidar',
 						)
 					),
 				),
