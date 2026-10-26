@@ -56,6 +56,9 @@ body.page-buried-penis :is(#small-vs-buried, #circumcision-and-buried-penis) .ci
   margin-bottom: 0;
 }
 body.page-buried-penis .cil-buried-text-card .display { margin-top: 0; }
+body.page-buried-penis #circumcision-and-buried-penis .cil-buried-text-card > p + .display {
+  margin-top: clamp(40px, 5vw, 64px);
+}
 
 /* ------------------------------------------- expertise callout -- */
 body.page-buried-penis #circumcision-and-buried-penis .cil-buried-expertise {
