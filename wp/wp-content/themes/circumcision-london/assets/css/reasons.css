@@ -140,3 +140,15 @@ body.page-bxo #children-and-adults .cil-bxo-exam-card a:hover {
 body.page-bxo #children-and-adults .cil-bxo-exam-card strong {
   color: #fff;
 }
+
+/* Religious: travelling-from-abroad copy is a constrained group after the aftercare cards.
+   WordPress centres constrained children with !important; pin them to the wrap left edge. */
+body.page-religious #aftercare-and-travel > .wrap > .body-text.is-layout-constrained {
+  align-items: flex-start;
+  text-align: left;
+}
+body.page-religious #aftercare-and-travel > .wrap > .body-text.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  text-align: left;
+}
