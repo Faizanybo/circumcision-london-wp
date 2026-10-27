@@ -156,6 +156,59 @@ body:is(.page-team, .page-about) #haidar.bg-navy .split > .body-text :is(.caps, 
   color: var(--gold) !important;
 }
 
+/* About page only: Samir takes the navy card; Haidar takes the light gold-top card. */
+body.page-about #samir.bg-navy .split > .body-text {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-top: 4px solid var(--gold);
+  box-shadow: none;
+  color: rgba(255, 255, 255, .82);
+}
+body.page-about #samir.bg-navy .split > .body-text :is(p, li) {
+  color: rgba(255, 255, 255, .78);
+}
+body.page-about #samir.bg-navy .split > .body-text :is(h2, h3, .display) {
+  color: #fff;
+}
+body.page-about #samir.bg-navy .split > .body-text :is(.caps, .eyebrow) {
+  color: var(--gold) !important;
+}
+body.page-about #haidar .split > .body-text {
+  background: var(--card);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  box-shadow: var(--shadow-card);
+}
+
+/* Keep each portrait at the top of a narrower column so the long biography does not centre a large photo. */
+body.page-about :is(#samir, #haidar) .split {
+  align-items: start;
+  gap: clamp(18px, 2.2vw, 32px);
+}
+body.page-about #samir .split {
+  grid-template-columns: minmax(240px, 42%) minmax(0, 1fr);
+}
+body.page-about #haidar .split {
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 42%);
+}
+body.page-about :is(#samir, #haidar) .split > .body-text {
+  height: auto;
+}
+body.page-about :is(#samir, #haidar) .figure {
+  margin: 0;
+  align-self: start;
+  width: 100%;
+}
+@media (max-width: 900px) {
+  body.page-about #samir .split,
+  body.page-about #haidar .split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body.page-about :is(#samir, #haidar) .figure {
+    max-width: 360px;
+  }
+}
+
 /* Section copy stays left-aligned. */
 body.cil-site-page .section-head,
 body.cil-site-page .body-text,
