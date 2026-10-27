@@ -219,8 +219,18 @@
   width: 123px;
   height: auto;
 }
+/* Heading uses the same line box as 4.9 / 40+ / 6. The badge then starts with the other cards' text. */
+.cil-trust .stat--cqc .n {
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  min-height: clamp(40px, 4vw, 54px);
+  display: flex;
+  align-items: flex-end;
+}
 .cil-trust .stat--cqc .cil-cqc-widget {
-  margin: 12px 0 12px;
+  margin: 12px 0 0;
+  align-self: flex-start;
 }
 body.cil-home .cil-home-reviews .cil-reviews-split--solo {
   display: block;

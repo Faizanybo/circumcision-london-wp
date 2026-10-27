@@ -72,8 +72,9 @@ $cqc_link_label    = ( isset( $args['cqc_link_label'] ) && '' !== $args['cqc_lin
 						if ( '' !== trim( (string) $cqc_link_label ) && ! in_array( trim( (string) $cqc_link_label ), array( 'CQC Good', 'CQC rated Good' ), true ) ) {
 							$cqc_report_label = $cqc_link_label;
 						}
-						echo cil_cqc_widget_html( $cqc_link_url ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper.
 						?>
+						<span class="n"><?php esc_html_e( 'CQC Registered', 'circumcision-london' ); ?></span>
+						<?php echo cil_cqc_widget_html( $cqc_link_url ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper. ?>
 						<a class="stat-link" href="<?php echo esc_url( $cqc_link_url ); ?>" target="_blank" rel="noopener noreferrer" data-track="cqc-trust-strip"><?php echo esc_html( $cqc_report_label ); ?></a>
 					<?php else : ?>
 						<span class="n"><?php echo esc_html( $n ); ?></span>
