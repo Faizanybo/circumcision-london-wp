@@ -180,10 +180,27 @@
     var maps = d.querySelectorAll('[data-cil-map-zoom]');
     if (!maps.length) return;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function nudge(frame) {
+      frame.style.width = '100.1%';
+      window.requestAnimationFrame(function () {
+        frame.style.width = '';
+      });
+    }
     function settle(el) {
+      if (el.classList.contains('is-settled')) return;
       el.classList.add('is-settled');
       el.classList.remove('is-zooming');
+      var frame = el.querySelector('.cil-location-map__frame');
+      if (!frame) return;
+      window.requestAnimationFrame(function () { nudge(frame); });
     }
+    maps.forEach(function (el) {
+      var frame = el.querySelector('.cil-location-map__frame');
+      if (!frame) return;
+      frame.addEventListener('load', function () {
+        if (el.classList.contains('is-settled')) nudge(frame);
+      }, { once: true });
+    });
     if (reduce || !('IntersectionObserver' in window)) {
       maps.forEach(settle);
       return;
@@ -192,12 +209,22 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         var el = entry.target;
+        if (el.classList.contains('is-settled') || el.classList.contains('is-zooming')) return;
         el.classList.add('is-zooming');
         window.setTimeout(function () { settle(el); }, 2600);
         mio.unobserve(el);
       });
-    }, { threshold: 0.35, rootMargin: '0px 0px -10% 0px' });
+    }, { threshold: 0.15, rootMargin: '0px' });
     maps.forEach(function (el) { mio.observe(el); });
+    /* If the map is on screen but never crossed the observer threshold, drop
+       the veil instead of leaving the embed scaled and non-interactive. */
+    window.setTimeout(function () {
+      maps.forEach(function (el) {
+        if (el.classList.contains('is-settled')) return;
+        var r = el.getBoundingClientRect();
+        if (r.bottom > 80 && r.top < window.innerHeight - 80) settle(el);
+      });
+    }, 5000);
   })();
 
   /* ------------------------------------------------------- scroll reveal */

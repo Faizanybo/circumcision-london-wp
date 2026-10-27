@@ -530,9 +530,27 @@ body.cil-home .cil-location-map__orbit {
     radial-gradient(circle at 50% 50%, transparent 0 18%, rgba(13, 39, 71, .12) 19% 19.5%, transparent 20% 34%, rgba(13, 39, 71, .16) 35% 35.5%, transparent 36% 52%, rgba(255, 255, 255, .08) 53% 53.4%, transparent 54%),
     repeating-linear-gradient(0deg, transparent 0 46px, rgba(255, 255, 255, .04) 46px 47px),
     repeating-linear-gradient(90deg, transparent 0 46px, rgba(255, 255, 255, .04) 46px 47px);
+  transform: none;
+  opacity: 0;
+  transition: transform 2.4s cubic-bezier(.16, 1, .3, 1), opacity 1.6s ease;
+}
+/* Scale a wrapper, never the iframe. A transform or filter on the Google
+   Maps frame itself leaves the embed as a frozen bitmap. The settled map is
+   the default, so it stays usable when JavaScript does not run. */
+body.cil-home .cil-location-map__zoom {
+  position: absolute;
+  inset: 0;
+  transform: none;
+  transform-origin: 52% 48%;
+  transition: transform 2.6s cubic-bezier(.16, 1, .3, 1);
+  pointer-events: none;
+}
+html:not(.no-js) body.cil-home .cil-location-map:not(.is-settled):not(.is-zooming) .cil-location-map__orbit {
   transform: scale(1.55);
   opacity: .9;
-  transition: transform 2.4s cubic-bezier(.16, 1, .3, 1), opacity 1.6s ease;
+}
+html:not(.no-js) body.cil-home .cil-location-map:not(.is-settled):not(.is-zooming) .cil-location-map__zoom {
+  transform: scale(1.72);
 }
 body.cil-home .cil-location-map__frame {
   position: absolute;
@@ -541,10 +559,12 @@ body.cil-home .cil-location-map__frame {
   height: 100%;
   border: 0;
   display: block;
-  transform: scale(1.72);
-  filter: saturate(.85) brightness(.92);
-  transform-origin: 52% 48%;
-  transition: transform 2.6s cubic-bezier(.16, 1, .3, 1), filter 2s ease;
+  transform: none;
+  filter: none;
+  pointer-events: auto;
+}
+html:not(.no-js) body.cil-home .cil-location-map:not(.is-settled) .cil-location-map__frame {
+  pointer-events: none;
 }
 body.cil-home .cil-location-map__veil {
   position: absolute;
@@ -553,18 +573,28 @@ body.cil-home .cil-location-map__veil {
   background:
     radial-gradient(circle at 50% 48%, transparent 12%, rgba(13, 39, 71, .28) 42%, rgba(13, 39, 71, .72) 100%),
     linear-gradient(180deg, rgba(13, 39, 71, .35), transparent 30% 70%, rgba(13, 39, 71, .25));
-  opacity: 1;
+  opacity: 0;
   transition: opacity 2s ease;
+}
+html:not(.no-js) body.cil-home .cil-location-map:not(.is-settled):not(.is-zooming) .cil-location-map__veil {
+  opacity: 1;
 }
 body.cil-home .cil-location-map.is-settled .cil-location-map__orbit,
 body.cil-home .cil-location-map.is-zooming .cil-location-map__orbit {
   transform: scale(1);
   opacity: 0;
 }
-body.cil-home .cil-location-map.is-settled .cil-location-map__frame,
-body.cil-home .cil-location-map.is-zooming .cil-location-map__frame {
+body.cil-home .cil-location-map.is-zooming .cil-location-map__zoom {
   transform: scale(1);
-  filter: none;
+  will-change: transform;
+}
+body.cil-home .cil-location-map.is-settled .cil-location-map__zoom {
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+body.cil-home .cil-location-map.is-settled .cil-location-map__frame {
+  pointer-events: auto;
 }
 body.cil-home .cil-location-map.is-settled .cil-location-map__veil,
 body.cil-home .cil-location-map.is-zooming .cil-location-map__veil {
@@ -576,6 +606,7 @@ body.cil-home .cil-location-map figcaption {
 }
 @media (prefers-reduced-motion: reduce) {
   body.cil-home .cil-location-map__orbit,
+  body.cil-home .cil-location-map__zoom,
   body.cil-home .cil-location-map__frame,
   body.cil-home .cil-location-map__veil {
     transition: none !important;
@@ -584,7 +615,10 @@ body.cil-home .cil-location-map figcaption {
   }
   body.cil-home .cil-location-map__orbit,
   body.cil-home .cil-location-map__veil { opacity: 0 !important; }
-  body.cil-home .cil-location-map__frame { opacity: 1 !important; }
+  body.cil-home .cil-location-map__frame {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
 }
 
 /* Reviews: sky band, gold stars, platform buttons, quotes and video cards. */

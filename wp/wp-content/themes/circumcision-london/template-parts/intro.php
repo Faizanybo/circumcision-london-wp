@@ -91,16 +91,18 @@ if ( '' === $btn2_url ) {
 			</div>
 
 			<?php if ( 'map' === $media_type ) : ?>
-			<figure class="figure ratio-5-4 cil-location-map" data-reveal data-reveal-delay="120" data-cil-map-zoom>
+			<figure class="figure ratio-5-4 cil-location-map" data-cil-map-zoom>
 				<div class="cil-location-map__stage">
 					<div class="cil-location-map__orbit" aria-hidden="true"></div>
-					<iframe
-						class="cil-location-map__frame"
-						title="<?php echo esc_attr( sprintf( /* translators: %s: clinic legal name */ __( 'Google Map showing %s', 'circumcision-london' ), $clinic['legal_name'] ) ); ?>"
-						src="<?php echo esc_url( $map_embed ); ?>"
-						loading="lazy"
-						referrerpolicy="no-referrer-when-downgrade"
-						allowfullscreen></iframe>
+					<div class="cil-location-map__zoom">
+						<iframe
+							class="cil-location-map__frame"
+							title="<?php echo esc_attr( sprintf( /* translators: %s: clinic legal name */ __( 'Google Map showing %s', 'circumcision-london' ), $clinic['legal_name'] ) ); ?>"
+							src="<?php echo esc_url( $map_embed ); ?>"
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							allowfullscreen></iframe>
+					</div>
 					<div class="cil-location-map__veil" aria-hidden="true"></div>
 				</div>
 				<?php if ( $caption ) : ?>
