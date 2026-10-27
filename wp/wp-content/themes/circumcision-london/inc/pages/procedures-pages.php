@@ -73,6 +73,15 @@ function cil_retire_preputioplasty_page() {
 	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 		return;
 	}
+	if ( get_option( 'cil_preputioplasty_retired' ) ) {
+		return;
+	}
+
+	// Do not trash content on anonymous public requests. Admin, CLI and theme
+	// activation still retire a leftover published page once, then record it.
+	if ( function_exists( 'cil_is_page_setup_request' ) && ! cil_is_page_setup_request() ) {
+		return;
+	}
 
 	$page = get_page_by_path( 'procedures/preputioplasty', OBJECT, 'page' );
 	if ( ! $page ) {
@@ -80,9 +89,14 @@ function cil_retire_preputioplasty_page() {
 	}
 	if ( $page && 'publish' === $page->post_status ) {
 		wp_trash_post( (int) $page->ID );
+		$page = get_post( (int) $page->ID );
+	}
+	if ( ! $page || 'publish' !== $page->post_status ) {
+		update_option( 'cil_preputioplasty_retired', '1' );
 	}
 }
 add_action( 'init', 'cil_retire_preputioplasty_page', 50 );
+add_action( 'after_switch_theme', 'cil_retire_preputioplasty_page' );
 
 /**
  * Fill shared fields for a procedure page.

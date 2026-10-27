@@ -147,6 +147,13 @@ function cil_ensure_homepage() {
 	}
 
 	$front_id = (int) get_option( 'page_on_front' );
+	$show     = (string) get_option( 'show_on_front' );
+
+	// Public requests: do not inspect or rewrite homepage content once a static
+	// front page is already selected. Admin / CLI still repair an empty home.
+	if ( $front_id && 'page' === $show && function_exists( 'cil_is_page_setup_request' ) && ! cil_is_page_setup_request() ) {
+		return;
+	}
 
 	if ( ! $front_id ) {
 		$existing = get_page_by_path( 'home', OBJECT, 'page' );
@@ -176,7 +183,7 @@ function cil_ensure_homepage() {
 		update_option( 'show_on_front', 'page' );
 		update_option( 'page_on_front', $front_id );
 		flush_rewrite_rules( false );
-	} elseif ( 'page' !== get_option( 'show_on_front' ) ) {
+	} elseif ( 'page' !== $show ) {
 		update_option( 'show_on_front', 'page' );
 	}
 
@@ -205,3 +212,4 @@ function cil_ensure_homepage() {
 	kses_init_filters();
 }
 add_action( 'init', 'cil_ensure_homepage', 41 );
+add_action( 'after_switch_theme', 'cil_ensure_homepage' );

@@ -32,11 +32,39 @@ function cil_ensure_pretty_permalinks() {
 }
 
 /**
+ * Whether this request may create, seed or retire managed pages.
+ *
+ * Public views skip the catalog scan once seeding has completed. Admin, CLI
+ * and theme activation still run so a missing page can be created without a
+ * public-facing write on every hit.
+ *
+ * @return bool
+ */
+function cil_is_page_setup_request() {
+	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+		return false;
+	}
+	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		return false;
+	}
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		return true;
+	}
+	return is_admin();
+}
+
+/**
  * All theme-managed prototype pages.
  *
  * @return array<string, array<string, mixed>>
  */
 function cil_managed_pages() {
+	static $pages = null;
+
+	if ( null !== $pages ) {
+		return $pages;
+	}
+
 	$pages = cil_age_pages();
 	if ( function_exists( 'cil_extra_pages' ) ) {
 		$pages = array_merge( $pages, cil_extra_pages() );
@@ -186,9 +214,20 @@ function cil_ensure_service_pages() {
 		return;
 	}
 
-	cil_ensure_pretty_permalinks();
-
 	$seed_version = CIL_SERVICE_PAGES_VERSION;
+	$ready        = (string) get_option( 'cil_service_pages_version', '' );
+
+	/*
+	 * Public requests only scan when this seed version has never completed.
+	 * Bump CIL_SERVICE_PAGES_VERSION (or open wp-admin / WP-CLI) after adding
+	 * a catalog page so the missing path is created. Existing pages are never
+	 * overwritten either way.
+	 */
+	if ( $ready === $seed_version && ! cil_is_page_setup_request() ) {
+		return;
+	}
+
+	cil_ensure_pretty_permalinks();
 	$parent_ids   = array();
 	$need_flush   = false;
 
@@ -270,7 +309,9 @@ function cil_ensure_service_pages() {
 		cil_mark_managed_page( (int) $existing->ID, $page, $seed_version );
 	}
 
-	update_option( 'cil_service_pages_version', $seed_version );
+	if ( $ready !== $seed_version ) {
+		update_option( 'cil_service_pages_version', $seed_version );
+	}
 
 	if ( $need_flush ) {
 		flush_rewrite_rules( false );
@@ -298,3 +339,4 @@ function cil_mark_managed_page( $id, $page, $version ) {
 }
 
 add_action( 'init', 'cil_ensure_service_pages', 40 );
+add_action( 'after_switch_theme', 'cil_ensure_service_pages' );
