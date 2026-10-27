@@ -129,6 +129,31 @@ body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-ph
   body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) #overview .spec { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* iPad Mini portrait is 768px, just under the 900px point where splits stack.
+   Keep the photograph beside the text, at the same size relationship as iPad Pro. */
+@media (max-width: 900px) and (min-width: 768px) {
+  body:is(.page-babies, .page-children, .page-adults) .split:has(> .figure, > .wp-block-cil-figure) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(30px, 4.5vw, 76px);
+    align-items: center;
+  }
+  body:is(.page-babies, .page-children, .page-adults) .split.reverse:has(> .figure, > .wp-block-cil-figure) > *:first-child {
+    order: 0;
+  }
+  body:is(.page-babies, .page-children, .page-adults) .split--bleed .figure {
+    aspect-ratio: 4 / 3.1;
+  }
+  body:is(.page-babies, .page-children, .page-adults) .split:has(> .cil-split-copy) .figure figcaption {
+    position: absolute;
+    left: clamp(14px, 2vw, 24px);
+    bottom: clamp(14px, 2vw, 24px);
+    max-width: min(78%, 300px);
+    margin: 0;
+    padding: 12px 16px 12px 46px;
+    box-shadow: 0 16px 34px -20px rgba(13, 39, 71, .55);
+  }
+}
+
 /* Heading, lede and text sitting together in a split column. */
 body:is(.page-babies, .page-children, .page-adults, .page-buried-penis, .page-phimosis, .page-balanitis, .page-bxo, .page-paraphimosis, .page-religious, .page-re-circumcision, .page-frenuloplasty) .cil-split-copy > .section-head,
 body.page-babies #best-age > .wrap > .section-head { margin-bottom: 0; }

@@ -77,7 +77,7 @@ body.page-adults #aftercare-and-support .cil-adults-aftercare-card {
     linear-gradient(180deg, var(--sky), var(--sky-2));
 }
 body.page-adults #aftercare-and-support .cil-adults-aftercare-card > :last-child { margin-bottom: 0; }
-@media (min-width: 901px) {
+@media (min-width: 768px) {
   body.page-adults #aftercare-and-support > .wrap {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
