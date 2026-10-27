@@ -210,7 +210,7 @@ function cil_about_clinic_page_blocks( $slug ) {
 					array(
 						cil_aftercare_p( 'The clinic\'s work includes baby and infant circumcision, circumcision for children and teenagers, adult circumcision, medical foreskin problems, re-circumcision and practitioner training.' ),
 						cil_aftercare_p( 'Procedures are carried out in a dedicated clinical environment with attention to infection control, consent, anaesthesia, aftercare and follow-up.' ),
-						cil_aftercare_p( $link( '/team', 'Meet the practitioners →' ) ),
+						cil_aftercare_p( $link( '/about/#samir', 'Meet the practitioners →' ) ),
 					)
 				),
 			)

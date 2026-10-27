@@ -58,7 +58,7 @@ if ( '' === $btn1_label ) {
 	$btn1_label = $is_location ? __( 'Book online', 'circumcision-london' ) : __( 'Meet the two practitioners', 'circumcision-london' );
 }
 if ( '' === $btn1_url ) {
-	$btn1_url = $is_location ? cil_book_url() : home_url( '/team/' );
+	$btn1_url = $is_location ? cil_book_url() : home_url( '/about/#samir' );
 }
 if ( '' === $btn2_label ) {
 	$btn2_label = $is_location ? __( 'Call us', 'circumcision-london' ) : __( 'What aftercare involves', 'circumcision-london' );

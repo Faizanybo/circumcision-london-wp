@@ -584,7 +584,7 @@ function cil_default_footer_patient() {
  */
 function cil_default_footer_about() {
 	return array(
-		array( 'label' => __( 'Our Practitioners', 'circumcision-london' ), 'url' => home_url( '/team/' ) ),
+		array( 'label' => __( 'Our Practitioners', 'circumcision-london' ), 'url' => home_url( '/about/#samir' ) ),
 		array( 'label' => __( 'Testimonials', 'circumcision-london' ), 'url' => home_url( '/testimonials/' ) ),
 		array( 'label' => __( 'Visit / Contact', 'circumcision-london' ), 'url' => home_url( '/contact/' ) ),
 		array( 'label' => __( 'For Doctors', 'circumcision-london' ), 'url' => home_url( '/courses/' ) ),

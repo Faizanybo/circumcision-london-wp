@@ -126,33 +126,33 @@ body.cil-site-page .bg-navy .callout.urgent .cil-checklist > li::before {
 }
 
 /* Biography columns: portrait stays a photo; copy is a gold-top card. */
-body.page-team :is(#samir, #haidar) .split > .body-text {
+body:is(.page-team, .page-about) :is(#samir, #haidar) .split > .body-text {
   border-radius: var(--radius-lg);
   border-top: 4px solid var(--gold);
   padding: clamp(24px, 2.4vw, 36px);
   height: 100%;
   box-sizing: border-box;
 }
-body.page-team #samir .split > .body-text {
+body:is(.page-team, .page-about) #samir .split > .body-text {
   background: var(--card);
   border: 1px solid rgba(13, 39, 71, .08);
   border-top: 4px solid var(--gold);
   box-shadow: var(--shadow-card);
 }
-body.page-team #haidar.bg-navy .split > .body-text {
+body:is(.page-team, .page-about) #haidar.bg-navy .split > .body-text {
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .14);
   border-top: 4px solid var(--gold);
   box-shadow: none;
   color: rgba(255, 255, 255, .82);
 }
-body.page-team #haidar.bg-navy .split > .body-text :is(p, li) {
+body:is(.page-team, .page-about) #haidar.bg-navy .split > .body-text :is(p, li) {
   color: rgba(255, 255, 255, .78);
 }
-body.page-team #haidar.bg-navy .split > .body-text :is(h2, h3, .display) {
+body:is(.page-team, .page-about) #haidar.bg-navy .split > .body-text :is(h2, h3, .display) {
   color: #fff;
 }
-body.page-team #haidar.bg-navy .split > .body-text :is(.caps, .eyebrow) {
+body:is(.page-team, .page-about) #haidar.bg-navy .split > .body-text :is(.caps, .eyebrow) {
   color: var(--gold) !important;
 }
 
