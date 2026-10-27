@@ -57,6 +57,7 @@
   justify-content: center;
   gap: 3px; text-decoration: none; flex: 0 0 auto;
 }
+.header .brand picture { display: contents; }
 /* Wide header lockup (~3:1): larger mark; icon scale closer to footer logo. */
 .header .brand img {
   width: auto;

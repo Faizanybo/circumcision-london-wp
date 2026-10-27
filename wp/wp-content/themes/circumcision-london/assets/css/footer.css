@@ -58,6 +58,7 @@
 .footer .brand {
   overflow: visible;
 }
+.footer .brand picture { display: contents; }
 .footer .brand img {
   width: auto;
   height: auto;

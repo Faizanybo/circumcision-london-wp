@@ -259,6 +259,25 @@ function cil_enqueue_cliniko_bookings() {
 add_action( 'wp_enqueue_scripts', 'cil_enqueue_cliniko_bookings' );
 
 /**
+ * Drop WordPress front-end emoji scripts, styles and s.w.org prefetch.
+ *
+ * Clinic pages do not rely on Twemoji. Unicode emoji in content still render
+ * with the browser's native glyphs. Admin / editor scripts are left in place.
+ */
+function cil_disable_front_emojis() {
+	if ( is_admin() ) {
+		return;
+	}
+	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_emoji_styles' );
+	remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+	remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+	add_filter( 'emoji_svg_url', '__return_false' );
+}
+add_action( 'init', 'cil_disable_front_emojis' );
+
+/**
  * Preload the two latin variable fonts the first paint needs.
  */
 function cil_preload_fonts() {
@@ -826,14 +845,11 @@ function cil_link_extra_attrs( $item ) {
 function cil_logo_html( $clinic, $context = 'header' ) {
 	$context = ( 'footer' === $context ) ? 'footer' : 'header';
 	$attrs   = array(
-		'alt'    => $clinic['name'],
-		'width'  => 550,
-		'height' => 602,
+		'alt'      => $clinic['name'],
+		'width'    => 550,
+		'height'   => 602,
+		'decoding' => 'async',
 	);
-
-	if ( 'header' === $context ) {
-		$attrs['fetchpriority'] = 'high';
-	}
 
 	if ( has_custom_logo() ) {
 		return wp_get_attachment_image( (int) get_theme_mod( 'custom_logo' ), 'full', false, $attrs );
@@ -864,20 +880,39 @@ function cil_logo_html( $clinic, $context = 'header' ) {
 		if ( ! file_exists( $path ) ) {
 			continue;
 		}
+
+		$webp_relative = preg_replace( '/\.(png|jpe?g)$/i', '.webp', $relative );
+		$webp_path     = get_template_directory() . '/' . ltrim( (string) $webp_relative, '/' );
+		$has_webp      = ( is_string( $webp_relative ) && $webp_relative !== $relative && is_readable( $webp_path ) );
+
+		// Intrinsic size from the original raster so layout is stable even if
+		// PHP cannot read WebP, and so the PNG fallback keeps the same ratio.
 		$size = @getimagesize( $path );
-		$w    = ( $size && ! empty( $size[0] ) ) ? (int) $size[0] : (int) $attrs['width'];
-		$h    = ( $size && ! empty( $size[1] ) ) ? (int) $size[1] : (int) $attrs['height'];
-		$prio = ( 'header' === $context ) ? ' fetchpriority="high"' : '';
-		$ver  = (string) filemtime( $path );
-		$src  = get_template_directory_uri() . '/' . $relative . '?v=' . rawurlencode( $ver );
-		return sprintf(
+		$w       = ( $size && ! empty( $size[0] ) ) ? (int) $size[0] : (int) $attrs['width'];
+		$h       = ( $size && ! empty( $size[1] ) ) ? (int) $size[1] : (int) $attrs['height'];
+		$ver     = (string) filemtime( $path );
+		$src     = get_template_directory_uri() . '/' . $relative . '?v=' . rawurlencode( $ver );
+		$extra   = ' decoding="async"';
+		if ( 'footer' === $context ) {
+			$extra .= ' loading="lazy"';
+		}
+
+		$img = sprintf(
 			'<img src="%1$s" alt="%2$s" width="%3$d" height="%4$d"%5$s>',
 			esc_url( $src ),
 			esc_attr( $clinic['name'] ),
 			$w,
 			$h,
-			$prio
+			$extra
 		);
+
+		if ( $has_webp ) {
+			$webp_ver = (string) filemtime( $webp_path );
+			$webp_src = get_template_directory_uri() . '/' . $webp_relative . '?v=' . rawurlencode( $webp_ver );
+			return '<picture><source type="image/webp" srcset="' . esc_url( $webp_src ) . '">' . $img . '</picture>';
+		}
+
+		return $img;
 	}
 
 	return '<span class="mark">' . esc_html( $clinic['name'] ) . '</span>';

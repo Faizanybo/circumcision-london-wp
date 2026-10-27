@@ -199,6 +199,10 @@ if ( ! $resolved && ! $show_empty ) {
 	return;
 }
 
+/*
+ * Default grid layout: 16:9 cards with the same click-to-play facade as
+ * list/cards, so no video bytes or metadata requests start until play.
+ */
 $section_class = $show_head ? 'section bg-card edge cil-video-section' : 'section-sm bg-card edge cil-video-section cil-video-section--flush';
 ?>
 <section class="<?php echo esc_attr( $section_class ); ?>">
@@ -220,19 +224,34 @@ $section_class = $show_head ? 'section bg-card edge cil-video-section' : 'sectio
 		<?php if ( $resolved ) : ?>
 			<div class="grid g-3 cil-video-grid">
 				<?php foreach ( $resolved as $i => $item ) : ?>
+					<?php
+					$title = isset( $item['title'] ) ? (string) $item['title'] : '';
+					$label = $title ? $title : __( 'Video', 'circumcision-london' );
+					$src   = ! empty( $item['mp4'] ) ? $item['mp4'] : ( ! empty( $item['webm'] ) ? $item['webm'] : '' );
+					?>
 					<figure class="cil-video-card" data-reveal data-reveal-delay="<?php echo esc_attr( (string) ( ( $i % 3 ) * 90 ) ); ?>">
 						<div class="cil-video-card__frame">
-							<video controls preload="metadata" playsinline class="cil-video-card__player"<?php echo ! empty( $item['poster'] ) ? ' poster="' . esc_url( $item['poster'] ) . '"' : ''; ?>>
-								<?php if ( ! empty( $item['webm'] ) ) : ?>
-									<source src="<?php echo esc_url( $item['webm'] ); ?>" type="<?php echo esc_attr( cil_video_mime_from_url( $item['webm'] ) ); ?>">
+							<?php if ( ! $src ) : ?>
+							<div class="cil-video-facade is-unavailable">
+								<?php if ( ! empty( $item['poster'] ) ) : ?>
+									<img class="cil-video-facade__poster" src="<?php echo esc_url( $item['poster'] ); ?>" alt="" loading="lazy" decoding="async" width="640" height="360">
 								<?php endif; ?>
-								<?php if ( ! empty( $item['mp4'] ) ) : ?>
-									<source src="<?php echo esc_url( $item['mp4'] ); ?>" type="<?php echo esc_attr( cil_video_mime_from_url( $item['mp4'] ) ); ?>">
-								<?php endif; ?>
-							</video>
+								<p class="cil-video-facade__error"><?php echo esc_html( sprintf( /* translators: %s: clinic phone number */ __( 'This video is not available at the moment. Please call the clinic on %s.', 'circumcision-london' ), cil_clinic()['phone']['display'] ) ); ?></p>
+							</div>
+							<?php else : ?>
+							<div class="cil-video-facade" data-cil-video data-src="<?php echo esc_url( $src ); ?>" data-type="<?php echo esc_attr( cil_video_mime_from_url( $src ) ); ?>"<?php echo ! empty( $item['poster'] ) ? ' data-poster="' . esc_url( $item['poster'] ) . '"' : ''; ?>>
+								<a class="cil-video-facade__link" href="<?php echo esc_url( $src ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: video title */ __( 'Play video: %s', 'circumcision-london' ), $label ) ); ?>">
+									<?php if ( ! empty( $item['poster'] ) ) : ?>
+										<img class="cil-video-facade__poster" src="<?php echo esc_url( $item['poster'] ); ?>" alt="" loading="lazy" decoding="async" width="640" height="360">
+									<?php endif; ?>
+									<span class="cil-video-facade__play" aria-hidden="true"></span>
+								</a>
+								<p class="cil-video-facade__error" role="alert" hidden><?php echo esc_html( sprintf( /* translators: %s: clinic phone number */ __( 'This video could not be loaded. Please try again later, or call the clinic on %s.', 'circumcision-london' ), cil_clinic()['phone']['display'] ) ); ?></p>
+							</div>
+							<?php endif; ?>
 						</div>
-						<?php if ( ! empty( $item['title'] ) ) : ?>
-							<figcaption class="cil-video-card__caption meta"><?php echo esc_html( $item['title'] ); ?></figcaption>
+						<?php if ( $title ) : ?>
+							<figcaption class="cil-video-card__caption meta"><?php echo esc_html( $title ); ?></figcaption>
 						<?php endif; ?>
 					</figure>
 				<?php endforeach; ?>
