@@ -51,8 +51,12 @@ $i = 0;
 			<?php endif; ?>
 			<span class="caps age"><?php echo esc_html( $group['age'] ); ?></span>
 			<<?php echo tag_escape( $tag ); ?> class="display d-3"><?php echo esc_html( $group['title'] ); ?></<?php echo tag_escape( $tag ); ?>>
-			<span class="price"><?php echo esc_html( $group['price'] ); ?></span>
-			<p><?php echo esc_html( $group['blurb'] ); ?></p>
+			<?php if ( ! empty( $group['price'] ) ) : ?>
+				<span class="price"><?php echo esc_html( $group['price'] ); ?></span>
+			<?php endif; ?>
+			<?php if ( ! empty( $group['blurb'] ) ) : ?>
+				<p><?php echo esc_html( $group['blurb'] ); ?></p>
+			<?php endif; ?>
 			<span class="go"><?php echo esc_html( $group['cta'] ); ?></span>
 		</a>
 	<?php endforeach; ?>

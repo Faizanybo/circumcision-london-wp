@@ -37,15 +37,15 @@ function cil_visit_pages() {
 		'book'    => array(
 			'slug'        => 'book',
 			'path'        => '/book',
-			'name'        => 'Book a consultation',
-			'title'       => 'Book a Consultation | Circumcision Clinic in London',
+			'name'        => 'Book a circumcision',
+			'title'       => 'Book a circumcision | Circumcision Clinic in London',
 			'description' => 'Book a circumcision consultation in Edgware, usually available within seven days. Nothing is booked and no deposit is taken until you decide to go ahead.',
 			'eyebrow'     => 'Next available: ' . strtolower( $clinic['next_available'] ),
-			'h1'          => 'Book a consultation',
+			'h1'          => 'Book a circumcision',
 			'lede'        => 'Choose a time in the diary below. Call or WhatsApp the clinic if you would rather speak to someone first.',
 			'crumbs'      => array(
 				array(
-					'label' => 'Book a consultation',
+					'label' => 'Book a circumcision',
 					'href'  => '',
 				),
 			),

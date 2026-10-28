@@ -14,7 +14,7 @@ $cfg = cil_cliniko_bookings_config();
 <div class="cil-cliniko-bookings" data-cliniko-location="london">
 	<iframe
 		id="<?php echo esc_attr( $cfg['iframe_id'] ); ?>"
-		title="<?php esc_attr_e( 'Book a consultation', 'circumcision-london' ); ?>"
+		title="<?php esc_attr_e( 'Book a circumcision', 'circumcision-london' ); ?>"
 		src="<?php echo esc_url( $cfg['src'] ); ?>"
 		width="100%"
 		height="1000"
