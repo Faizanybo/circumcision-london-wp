@@ -282,6 +282,46 @@ body.page-accessibility .wp-block-cil-section > .wrap-narrow > * {
   margin-right: auto;
   text-align: left;
 }
+body.page-privacy-notice .cil-privacy-stack {
+  display: grid;
+  gap: 18px;
+}
+body.page-privacy-notice .cil-privacy-stack > .is-style-cil-card {
+  margin: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(13, 39, 71, .08);
+  border-top: 4px solid var(--gold);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+}
+body.page-privacy-notice .cil-privacy-stack > .is-style-cil-card .wp-block-heading {
+  margin-top: 0;
+}
+body.page-privacy-notice .cil-privacy-stack > .is-style-cil-card.cil-privacy-card--navy {
+  background: var(--navy);
+  border-color: rgba(255, 255, 255, .14);
+  border-top-color: var(--gold);
+  box-shadow: none;
+  color: rgba(255, 255, 255, .82);
+}
+body.page-privacy-notice .cil-privacy-card--navy :is(h2, h3, .display) {
+  color: #fff;
+}
+body.page-privacy-notice .cil-privacy-card--navy :is(p, li) {
+  color: rgba(255, 255, 255, .78);
+}
+body.page-privacy-notice .cil-privacy-card--navy strong {
+  color: #fff;
+}
+body.page-privacy-notice .cil-privacy-card--navy a:not(.btn) {
+  color: var(--gold);
+}
+body.page-privacy-notice .cil-privacy-card--navy a:not(.btn):hover {
+  color: #ffd23f;
+}
+body.page-privacy-notice .cil-privacy-card--navy li::marker {
+  color: var(--gold);
+}
 body.cil-site-page .testimonials-video-cta,
 body.cil-site-page .testimonials-cta-center {
   align-items: flex-start;

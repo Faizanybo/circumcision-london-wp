@@ -77,10 +77,10 @@ $cil_footer_nav_group = static function ( $label, $location, $fallback ) {
 				<?php
 				echo esc_html(
 					sprintf(
-						/* translators: 1: year, 2: legal name */
+						/* translators: 1: year, 2: site name */
 						__( '© %1$s %2$s. Registered with the Care Quality Commission.', 'circumcision-london' ),
 						wp_date( 'Y' ),
-						$clinic['legal_name']
+						$clinic['name']
 					)
 				);
 				?>
