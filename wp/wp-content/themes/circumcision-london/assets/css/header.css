@@ -47,7 +47,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(16px, 1.8vw, 28px);
+  gap: 22px;
   height: 96px;
   box-sizing: border-box;
 }
@@ -86,7 +86,7 @@
 .primary-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: stretch;
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -94,8 +94,10 @@
 .nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: nowrap;
-  gap: 22px;
+  width: 100%;
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -157,7 +159,7 @@
   min-height: 0;
 }
 
-.header-cta { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; flex-shrink: 0; }
+.header-cta { display: flex; align-items: center; gap: 14px; flex: 0 0 auto; flex-shrink: 0; }
 .header-tel {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding-block: 10px;
   font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; white-space: nowrap;
@@ -211,12 +213,12 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
 }
 
 @media (max-width: 1440px) {
-  .header-inner { gap: 16px; }
+  .header-inner { gap: 18px; }
   .header .brand img {
     max-height: 84px;
     max-width: min(380px, 32vw);
   }
-  .nav { gap: 16px; }
+  .nav { gap: 10px; }
   .nav-link { font-size: 14.5px; }
   .header .btn { padding: 10px 15px; font-size: 13.5px; }
   .header .header-callback { padding-inline: 12px; }
@@ -230,7 +232,8 @@ body.nav-open { position: fixed; width: 100%; overflow: hidden; }
   .brand .sub { display: none; }
 }
 @media (max-width: 1260px) {
-  .nav { gap: 14px; }
+  .header-inner { gap: 16px; }
+  .nav { gap: 8px; }
   .nav-link { font-size: 14px; }
 }
 
