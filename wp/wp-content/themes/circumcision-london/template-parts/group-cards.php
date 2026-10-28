@@ -41,10 +41,13 @@ $i = 0;
 		// Optional photo (theme image path or media-store key), editable per card.
 		$img_url = ! empty( $group['image'] ) ? cil_image_ref_url( $group['image'] ) : '';
 		$img_alt = isset( $group['imageAlt'] ) ? (string) $group['imageAlt'] : '';
+		// Homepage cards sit in the first viewport under the hero (LCP is the
+		// poster). Other pages use this grid below the fold, so lazy-load there.
+		$img_loading = is_front_page() ? 'eager' : 'lazy';
 		?>
 		<a class="card-group<?php echo $img_url ? ' has-media' : ''; ?>" href="<?php echo esc_url( $group['href'] ); ?>" data-reveal data-reveal-delay="<?php echo esc_attr( (string) $delay ); ?>">
 			<?php if ( $img_url ) : ?>
-				<span class="card-group__media"><img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" width="720" height="450" decoding="async"></span>
+				<span class="card-group__media"><img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" width="720" height="450" loading="<?php echo esc_attr( $img_loading ); ?>" decoding="async"></span>
 			<?php endif; ?>
 			<span class="caps age"><?php echo esc_html( $group['age'] ); ?></span>
 			<<?php echo tag_escape( $tag ); ?> class="display d-3"><?php echo esc_html( $group['title'] ); ?></<?php echo tag_escape( $tag ); ?>>

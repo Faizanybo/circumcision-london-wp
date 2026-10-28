@@ -428,7 +428,7 @@ function cil_aftercare_list( $items ) {
  * @return array<string, mixed>
  */
 function cil_aftercare_checklist_image( $file, $alt, $caption ) {
-	$html = '<figure class="wp-block-image size-large cil-aftercare-checklist"><img src="' . esc_url( cil_aftercare_image_url( $file ) ) . '" alt="' . esc_attr( $alt ) . '"/><figcaption class="wp-element-caption">' . esc_html( $caption ) . '</figcaption></figure>';
+	$html = '<figure class="wp-block-image size-large cil-aftercare-checklist"><img src="' . esc_url( cil_aftercare_image_url( $file ) ) . '" alt="' . esc_attr( $alt ) . '" width="1575" height="1275" loading="lazy" decoding="async"/><figcaption class="wp-element-caption">' . esc_html( $caption ) . '</figcaption></figure>';
 	return array(
 		'blockName'    => 'core/image',
 		'attrs'        => array(

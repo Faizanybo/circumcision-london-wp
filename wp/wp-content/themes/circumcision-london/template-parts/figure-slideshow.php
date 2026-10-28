@@ -104,7 +104,7 @@ if ( $count < 2 ) {
 							$slide['image_id'],
 							'cil-figure',
 							array(
-								'loading'  => 0 === $i ? 'eager' : 'lazy',
+								'loading'  => 'lazy',
 								'decoding' => 'async',
 								'alt'      => $slide['alt'],
 								'sizes'    => '(max-width: 900px) 92vw, 46vw',
@@ -120,7 +120,7 @@ if ( $count < 2 ) {
 								src="<?php echo esc_url( $slide['src'] ); ?>"
 								width="<?php echo esc_attr( (string) $slide['width'] ); ?>"
 								height="<?php echo esc_attr( (string) $slide['height'] ); ?>"
-								loading="<?php echo 0 === $i ? 'eager' : 'lazy'; ?>"
+								loading="lazy"
 								decoding="async"
 								alt="<?php echo esc_attr( $slide['alt'] ); ?>"
 							>

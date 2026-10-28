@@ -29,6 +29,7 @@ $poster_html   = $poster_id ? cil_attachment_image_html(
 	'cil-hero',
 	array(
 		'sizes'         => '100vw',
+		'loading'       => 'eager',
 		'fetchpriority' => 'high',
 		'decoding'      => 'async',
 		'alt'           => cil_attachment_alt( $poster_id, __( 'The clinic frontage in Edgware, with the practice name and telephone numbers etched into the treatment-room window.', 'circumcision-london' ) ),
@@ -51,7 +52,7 @@ $has_aside        = ( '' !== trim( wp_strip_all_tags( $html ) ) );
 				srcset="<?php echo esc_url( $img . 'hero-poster-800.jpg' ); ?> 800w, <?php echo esc_url( $img . 'hero-poster-1200.jpg' ); ?> 1200w" sizes="100vw"
 				width="1920" height="1080"
 				alt="<?php esc_attr_e( 'The clinic frontage in Edgware, with the practice name and telephone numbers etched into the treatment-room window.', 'circumcision-london' ); ?>"
-				fetchpriority="high" decoding="async">
+				loading="eager" fetchpriority="high" decoding="async">
 			<?php endif; ?>
 		</picture>
 		<video class="hero-video" id="heroVideo"

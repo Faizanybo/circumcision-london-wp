@@ -116,7 +116,7 @@ if ( '' === $btn2_url ) {
 				<?php else : ?>
 				<picture>
 					<source type="image/webp" srcset="<?php echo esc_url( $img . $figure['file'] . '-700.webp' ); ?> 700w, <?php echo esc_url( $img . $figure['file'] . '-1100.webp' ); ?> 1100w" sizes="(max-width: 900px) 92vw, 46vw">
-					<img src="<?php echo esc_url( $img . $figure['file'] . '-700.jpg' ); ?>" width="1920" height="1080" loading="lazy" decoding="async"
+					<img src="<?php echo esc_url( $img . $figure['file'] . '-700.jpg' ); ?>" width="1100" height="880" loading="lazy" decoding="async"
 						alt="<?php echo esc_attr( $figure['alt'] ); ?>">
 				</picture>
 				<?php endif; ?>

@@ -565,6 +565,8 @@ a.cil-pagination__item:hover {
 }
 .cil-aftercare-checklist img {
   width: 100%;
+  height: auto;
+  aspect-ratio: 1575 / 1275;
   border: 1px solid var(--line);
   border-radius: 6px;
 }
