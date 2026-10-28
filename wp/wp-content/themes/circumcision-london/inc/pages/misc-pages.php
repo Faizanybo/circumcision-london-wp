@@ -403,13 +403,7 @@ function cil_aftercare_page_blocks() {
 		)
 	);
 
-	$blocks[] = cil_dyn_block(
-		'cil/cta-band',
-		array(
-			'title' => 'Already had the procedure and something is worrying you?',
-			'text'  => 'Call the clinic. Follow-up appointments during the healing period are included where needed.',
-		)
-	);
+	$blocks[] = cil_dyn_block( 'cil/cta-band', cil_homepage_callback_attrs( 'aftercare', 'aftercare page callback' ) );
 
 	if ( ! empty( $page['faqs'] ) ) {
 		$blocks[] = cil_dyn_block(

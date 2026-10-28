@@ -531,6 +531,46 @@ function cil_aftercare_videos_head( $eyebrow, $heading, $lede = '' ) {
 }
 
 /**
+ * Homepage "Talk to us" callback. Same copy and fields, with a page-specific form id.
+ *
+ * @param string $form_id  Form identifier.
+ * @param string $subject  Email subject suffix.
+ * @return array<string, mixed>
+ */
+function cil_homepage_callback_attrs( $form_id, $subject ) {
+	$clinic = cil_clinic();
+	$text   = '<p>If you have further questions, you can either <a href="' . esc_url( $clinic['phone']['href'] ) . '">call us</a> or <a href="#request-callback">request for us to call you back</a>. You can also send us an email enquiry or speak to us via Whatsapp.</p>'
+		. '<p class="cil-cta-contacts"><a class="cil-cta-contact cil-cta-contact--email" href="mailto:' . esc_attr( $clinic['email'] ) . '"><span class="cil-cta-contact__label">Email</span>' . esc_html( $clinic['email'] ) . '</a>'
+		. '<a class="cil-cta-contact cil-cta-contact--whatsapp" href="' . esc_url( $clinic['whatsapp']['href'] ) . '" rel="noopener noreferrer" target="_blank" data-track="whatsapp-cta"><span class="cil-cta-contact__label">WhatsApp</span>' . esc_html( preg_replace( '/\s+/', '', $clinic['whatsapp']['display'] ) ) . '</a></p>';
+
+	return array(
+		'title'            => 'If you have further questions',
+		'text'             => $text,
+		'eyebrow'          => 'Talk to us',
+		'ctaLabel'         => 'Book online',
+		'ctaUrl'           => '/book/',
+		'phoneLabel'       => 'Call ' . $clinic['phone']['display'],
+		'phoneUrl'         => $clinic['phone']['href'],
+		'cardTitle'        => '',
+		'cardHtml'         => '',
+		'cardEyebrow'      => 'Request a call back',
+		'showCallback'     => true,
+		'formId'           => $form_id,
+		'formSubject'      => $subject,
+		'callbackAnchor'   => 'request-callback',
+		'nameLabel'        => 'Your name',
+		'phoneFieldLabel'  => 'Phone number',
+		'dobLabel'         => 'Patient DOB',
+		'messageLabel'     => 'Anything you would like us to know',
+		'optionalLabel'    => '(optional)',
+		'consentHtml'      => 'I am happy for the clinic to contact me about this enquiry. We do not add you to a mailing list. See our <a href="/privacy-notice/" style="color:var(--blue-deep)">privacy notice</a>.',
+		'submitLabel'      => 'Request a call back',
+		'invalidMessage'   => 'Please complete the highlighted field.',
+		'sentMessage'      => 'Opening your email app so this reaches the clinic. If nothing happens, call ' . $clinic['phone']['display'] . '.',
+	);
+}
+
+/**
  * Closing blocks shared by the age and translation pages.
  *
  * @return array<int, array<string, mixed>>
@@ -562,20 +602,7 @@ function cil_aftercare_closing_blocks() {
 				),
 			)
 		),
-		cil_dyn_block(
-			'cil/cta-band',
-			array(
-				'title'      => 'Already had the procedure and something is worrying you?',
-				'text'       => 'Call the clinic. Follow-up appointments during the healing period are included where needed.',
-				'eyebrow'    => 'Talk to us',
-				'ctaLabel'   => 'Book a consultation',
-				'ctaUrl'     => cil_path_url( '/book' ),
-				'phoneLabel' => 'Call 020 8951 3794',
-				'phoneUrl'   => 'tel:+442089513794',
-				'cardTitle'  => 'Would you rather write than speak?',
-				'cardHtml'   => '<p style="margin-top:10px">A phone call asks you to be fluent and composed in the moment. <a href="https://wa.me/447886779958" rel="noopener" target="_blank" data-track="whatsapp-cta" style="color:var(--blue-deep)">WhatsApp</a> does not. You can take your time, translate, and forward the answer to whoever else in the family needs to see it.</p><p style="margin-top:12px">We reply during opening hours, and we are used to the questions people feel awkward asking out loud.</p>',
-			)
-		),
+		cil_dyn_block( 'cil/cta-band', cil_homepage_callback_attrs( 'aftercare-videos', 'aftercare videos callback' ) ),
 	);
 }
 
