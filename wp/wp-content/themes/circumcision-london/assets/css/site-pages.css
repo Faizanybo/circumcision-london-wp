@@ -297,6 +297,9 @@ body.page-privacy-notice .cil-privacy-stack > .is-style-cil-card {
 body.page-privacy-notice .cil-privacy-stack > .is-style-cil-card .wp-block-heading {
   margin-top: 0;
 }
+body.page-privacy-notice .cil-privacy-stack > .is-style-cil-card :is(p, ul, ol) + .wp-block-heading {
+  margin-top: 36px;
+}
 body.page-privacy-notice .cil-privacy-stack > .is-style-cil-card.cil-privacy-card--navy {
   background: var(--navy);
   border-color: rgba(255, 255, 255, .14);
