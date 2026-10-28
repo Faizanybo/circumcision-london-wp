@@ -43,58 +43,12 @@
 				{
 					"fontFamily": "\"Karla\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif",
 					"slug": "sans",
-					"name": "Karla",
-					"fontFace": [
-						{
-							"fontFamily": "Karla",
-							"fontWeight": "200 800",
-							"fontStyle": "normal",
-							"fontDisplay": "swap",
-							"src": [ "file:./assets/fonts/karla-normal-latin.woff2" ]
-						},
-						{
-							"fontFamily": "Karla",
-							"fontWeight": "200 800",
-							"fontStyle": "normal",
-							"fontDisplay": "swap",
-							"src": [ "file:./assets/fonts/karla-normal-latinext.woff2" ]
-						}
-					]
+					"name": "Karla"
 				},
 				{
 					"fontFamily": "\"Newsreader\", Georgia, \"Times New Roman\", serif",
 					"slug": "display",
-					"name": "Newsreader",
-					"fontFace": [
-						{
-							"fontFamily": "Newsreader",
-							"fontWeight": "200 800",
-							"fontStyle": "normal",
-							"fontDisplay": "swap",
-							"src": [ "file:./assets/fonts/newsreader-normal-latin.woff2" ]
-						},
-						{
-							"fontFamily": "Newsreader",
-							"fontWeight": "200 800",
-							"fontStyle": "normal",
-							"fontDisplay": "swap",
-							"src": [ "file:./assets/fonts/newsreader-normal-latinext.woff2" ]
-						},
-						{
-							"fontFamily": "Newsreader",
-							"fontWeight": "200 800",
-							"fontStyle": "italic",
-							"fontDisplay": "swap",
-							"src": [ "file:./assets/fonts/newsreader-italic-latin.woff2" ]
-						},
-						{
-							"fontFamily": "Newsreader",
-							"fontWeight": "200 800",
-							"fontStyle": "italic",
-							"fontDisplay": "swap",
-							"src": [ "file:./assets/fonts/newsreader-italic-latinext.woff2" ]
-						}
-					]
+					"name": "Newsreader"
 				}
 			],
 			"fontSizes": [

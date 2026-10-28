@@ -181,6 +181,16 @@ function cil_asset_version( $relative ) {
 }
 
 /**
+ * Load core block CSS only for blocks actually rendered on the page.
+ *
+ * Classic themes default to the combined wp-block-library stylesheet
+ * (~140 KB). Unused core-block CSS is wasted on every public request.
+ * The helper already returns false in the editor, REST and feeds, so
+ * Gutenberg editing is unchanged.
+ */
+add_filter( 'should_load_separate_core_block_assets', '__return_true' );
+
+/**
  * Front-end assets: fonts, design system, header, footer, Gutenberg.
  */
 function cil_enqueue_assets() {
