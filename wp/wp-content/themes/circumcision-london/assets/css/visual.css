@@ -219,12 +219,12 @@
   width: 123px;
   height: auto;
 }
-/* Same type size and colour as 4.9, 40+ and 6. */
+/* Same colour as 4.9, 40+ and 6, slightly smaller so "Registered" stays inside the card. */
 .cil-trust .stat--cqc .n {
   font-family: var(--display);
   font-weight: 300;
-  font-size: clamp(20px,4vw, 54px);
-  line-height: 1;
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.05;
   color: var(--blue-deep);
 }
 .cil-trust .stat--cqc .cil-cqc-widget {
