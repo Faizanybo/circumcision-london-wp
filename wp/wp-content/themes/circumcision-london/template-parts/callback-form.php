@@ -42,6 +42,7 @@ $copy      = ( isset( $args['copy'] ) && is_array( $args['copy'] ) ) ? array_fil
 	<div class="field full">
 		<label for="<?php echo esc_attr( $id ); ?>-dob"><?php echo esc_html( isset( $copy['dob'] ) ? $copy['dob'] : __( 'Patient DOB', 'circumcision-london' ) ); ?></label>
 		<input id="<?php echo esc_attr( $id ); ?>-dob" name="dob" type="date" max="<?php echo esc_attr( wp_date( 'Y-m-d' ) ); ?>" autocomplete="off" required>
+		<p class="muted" style="margin-top:8px;font-size:14px"><?php esc_html_e( 'Date of birth is not put into the email draft. Mention it when the clinic calls you.', 'circumcision-london' ); ?></p>
 	</div>
 	<div class="field full">
 		<label for="<?php echo esc_attr( $id ); ?>-message"><?php echo esc_html( isset( $copy['message'] ) ? $copy['message'] : __( 'Anything you would like us to know', 'circumcision-london' ) ); ?> <span style="font-weight:400;color:var(--muted)"><?php echo esc_html( isset( $copy['optional'] ) ? $copy['optional'] : __( '(optional)', 'circumcision-london' ) ); ?></span></label>

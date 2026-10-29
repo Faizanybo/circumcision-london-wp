@@ -1,6 +1,7 @@
 <?php
 
 // Do not use this on a live site! For testing purposes only!
+// Vercel includeFiles is wp/** only, so this file is not in the serverless bundle.
 if (getenv('SERVERLESSWP_TESTING') !== '1') {
     exit('Not allowed.');
 }

@@ -34,9 +34,8 @@ function cil_ensure_pretty_permalinks() {
 /**
  * Whether this request may create, seed or retire managed pages.
  *
- * Public views skip the catalog scan once seeding has completed. Admin, CLI
- * and theme activation still run so a missing page can be created without a
- * public-facing write on every hit.
+ * Public front-end requests never write. Admin, CLI and theme activation still
+ * run so a missing page can be created without an anonymous rewrite flush.
  *
  * @return bool
  */
@@ -50,7 +49,34 @@ function cil_is_page_setup_request() {
 	if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		return true;
 	}
+	if ( doing_action( 'after_switch_theme' ) ) {
+		return true;
+	}
 	return is_admin();
+}
+
+/**
+ * Best-effort lock so two setup requests do not insert duplicate pages.
+ *
+ * @return bool True if this request holds the lock.
+ */
+function cil_acquire_page_setup_lock() {
+	$now = time();
+	if ( false === add_option( '_cil_seed_lock', $now, '', 'no' ) ) {
+		$held = (int) get_option( '_cil_seed_lock', 0 );
+		if ( $held && ( $now - $held ) < 60 ) {
+			return false;
+		}
+		update_option( '_cil_seed_lock', $now, false );
+	}
+	return true;
+}
+
+/**
+ * Release the page-setup lock.
+ */
+function cil_release_page_setup_lock() {
+	delete_option( '_cil_seed_lock' );
 }
 
 /**
@@ -207,25 +233,15 @@ function cil_ensure_parent_page( $slug, $title ) {
  * given slug is the only way to replace an existing page from seed data.
  */
 function cil_ensure_service_pages() {
-	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
+	if ( ! cil_is_page_setup_request() ) {
 		return;
 	}
-	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+	if ( ! cil_acquire_page_setup_lock() ) {
 		return;
 	}
 
 	$seed_version = CIL_SERVICE_PAGES_VERSION;
 	$ready        = (string) get_option( 'cil_service_pages_version', '' );
-
-	/*
-	 * Public requests only scan when this seed version has never completed.
-	 * Bump CIL_SERVICE_PAGES_VERSION (or open wp-admin / WP-CLI) after adding
-	 * a catalog page so the missing path is created. Existing pages are never
-	 * overwritten either way.
-	 */
-	if ( $ready === $seed_version && ! cil_is_page_setup_request() ) {
-		return;
-	}
 
 	cil_ensure_pretty_permalinks();
 	$parent_ids   = array();
@@ -316,6 +332,8 @@ function cil_ensure_service_pages() {
 	if ( $need_flush ) {
 		flush_rewrite_rules( false );
 	}
+
+	cil_release_page_setup_lock();
 }
 
 /**

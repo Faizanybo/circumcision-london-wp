@@ -13,3 +13,21 @@ CLAUDE.md
 
 # Generated public build output; wp/ remains site-owned.
 wp-public/
+
+# Local secrets and hosting link metadata. Do not `git add` these.
+.env
+.env.*
+!.env.example
+.vercel/
+
+# Database dumps and WordPress debug output.
+*.sql
+*.sqlite
+*.db
+wp/wp-content/debug.log
+wp/wp-content/uploads/
+
+# Local private keys (tracked test/test-key.pem stays in git history until untracked).
+*.pem
+*.key
+

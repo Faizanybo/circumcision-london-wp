@@ -1845,8 +1845,9 @@ function cil_register_dynamic_blocks() {
 				'description'     => __( 'Editable rich text that keeps the existing clinic markup and styling.', 'circumcision-london' ),
 				'attributes'      => array(
 					'html' => array(
-						'type'    => 'string',
-						'default' => '',
+						'type'              => 'string',
+						'default'           => '',
+						'sanitize_callback' => 'cil_rich_text',
 					),
 				),
 				'render_callback' => function ( $attrs ) {

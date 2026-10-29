@@ -139,6 +139,9 @@ function cil_homepage_blocks() {
  * page as _cil_managed, so the service-page seeder will not touch it.
  */
 function cil_ensure_homepage() {
+	if ( function_exists( 'cil_is_page_setup_request' ) && ! cil_is_page_setup_request() ) {
+		return;
+	}
 	if ( wp_installing() || wp_doing_ajax() || wp_doing_cron() ) {
 		return;
 	}
@@ -149,15 +152,13 @@ function cil_ensure_homepage() {
 	$front_id = (int) get_option( 'page_on_front' );
 	$show     = (string) get_option( 'show_on_front' );
 
-	// Public requests: do not inspect or rewrite homepage content once a static
-	// front page is already selected. Admin / CLI still repair an empty home.
-	if ( $front_id && 'page' === $show && function_exists( 'cil_is_page_setup_request' ) && ! cil_is_page_setup_request() ) {
-		return;
-	}
-
 	if ( ! $front_id ) {
-		$existing = get_page_by_path( 'home', OBJECT, 'page' );
-		if ( $existing ) {
+		if ( function_exists( 'cil_acquire_page_setup_lock' ) && ! cil_acquire_page_setup_lock() ) {
+			return;
+		}
+		$front_id = (int) get_option( 'page_on_front' );
+		$existing = $front_id ? get_post( $front_id ) : get_page_by_path( 'home', OBJECT, 'page' );
+		if ( $existing && 'page' === $existing->post_type ) {
 			$front_id = (int) $existing->ID;
 		} else {
 			kses_remove_filters();
@@ -175,6 +176,9 @@ function cil_ensure_homepage() {
 			);
 			kses_init_filters();
 			if ( is_wp_error( $created ) || ! $created ) {
+				if ( function_exists( 'cil_release_page_setup_lock' ) ) {
+					cil_release_page_setup_lock();
+				}
 				return;
 			}
 			$front_id = (int) $created;
@@ -183,6 +187,9 @@ function cil_ensure_homepage() {
 		update_option( 'show_on_front', 'page' );
 		update_option( 'page_on_front', $front_id );
 		flush_rewrite_rules( false );
+		if ( function_exists( 'cil_release_page_setup_lock' ) ) {
+			cil_release_page_setup_lock();
+		}
 	} elseif ( 'page' !== $show ) {
 		update_option( 'show_on_front', 'page' );
 	}

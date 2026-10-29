@@ -447,11 +447,14 @@
         e.preventDefault();
         if (status) {
           status.dataset.state = 'ok';
-          status.textContent = form.getAttribute('data-msg-sent') || 'Opening your email app so this reaches the clinic. If nothing happens, call 020 8951 3794.';
+          status.textContent = form.getAttribute('data-msg-sent') || 'Opening your email app so this reaches the clinic. Date of birth is not included in the email draft — mention it when we call. If nothing happens, call 020 8951 3794.';
         }
         var fd = new FormData(form);
         var lines = [];
-        fd.forEach(function (v, k) { if (k !== 'consent') lines.push(k + ': ' + v); });
+        fd.forEach(function (v, k) {
+          if (k === 'consent' || k === 'dob') return;
+          lines.push(k + ': ' + v);
+        });
         location.href =
           'mailto:info@beverleyclinic.co.uk?subject=' +
           encodeURIComponent('Website enquiry: ' + form.getAttribute('data-form')) +

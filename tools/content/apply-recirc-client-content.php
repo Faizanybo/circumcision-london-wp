@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/cli-only.php';
 /**
  * Apply full client Re-circumcision content to /re-circumcision/ + export fixture.
  *

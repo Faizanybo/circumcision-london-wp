@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/cli-only.php';
 /**
  * One-shot: create empty published regional clinic pages if they are missing.
  *

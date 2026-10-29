@@ -1,19 +1,17 @@
 const { handler: wordpressHandler } = require('serverlesswp/wordpress');
-
-function stripExpectHeader(event) {
-    if (!event || !event.headers) {
-        return event;
-    }
-    for (const name of Object.keys(event.headers)) {
-        if (name.toLowerCase() === 'expect') {
-            delete event.headers[name];
-        }
-    }
-    return event;
-}
+const {
+    sanitizeWordpressEvent,
+    fingerprintBlockResponse,
+    sanitizeWordpressResponse,
+} = require('./request-guard');
 
 async function handler(event, context, callback) {
-    return wordpressHandler(stripExpectHeader(event), context, callback);
+    const blocked = fingerprintBlockResponse(event);
+    if (blocked) {
+        return blocked;
+    }
+    const response = await wordpressHandler(sanitizeWordpressEvent(event), context, callback);
+    return sanitizeWordpressResponse(response);
 }
 
 exports.handler = handler;

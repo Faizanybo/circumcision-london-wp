@@ -1344,16 +1344,16 @@ function cil_inner_page_head() {
 		);
 	}
 
-	echo '<script type="application/ld+json">' . wp_json_encode(
+	echo '<script type="application/ld+json">' . cil_json_ld_encode( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON_HEX_TAG encoded.
 		array(
 			'@context' => 'https://schema.org',
 			'@graph'   => $graph,
-		),
-		JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+		)
 	) . '</script>' . "\n";
 }
 add_action( 'wp_head', 'cil_inner_page_head', 3 );
 
+require get_template_directory() . '/inc/security.php';
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/media.php';
 require get_template_directory() . '/inc/sections.php';
@@ -1428,7 +1428,7 @@ function cil_customize_maps( $wp_customize ) {
 		'cil_maps',
 		array(
 			'title'       => __( 'Maps', 'circumcision-london' ),
-			'description' => __( 'Optional Google Maps Embed API key for the homepage Location map. Create a key in Google Cloud with Maps Embed API enabled. Leave empty to use Google’s standard embed URL for the clinic address.', 'circumcision-london' ),
+			'description' => __( 'Optional Google Maps Embed API key for the homepage Location map. Create a key in Google Cloud with Maps Embed API enabled and HTTP-referrer restrictions for this site. The key is visible in the public iframe URL; leave empty to use Google’s standard embed URL (recommended unless you need the Embed API).', 'circumcision-london' ),
 			'priority'    => 165,
 		)
 	);
@@ -1443,7 +1443,7 @@ function cil_customize_maps( $wp_customize ) {
 		'cil_google_maps_embed_key',
 		array(
 			'label'       => __( 'Google Maps Embed API key', 'circumcision-london' ),
-			'description' => __( 'Used only in iframe embeds. Never scrapes map tiles.', 'circumcision-london' ),
+			'description' => __( 'Used only in iframe embeds. Visitors can read this key from the page source. Restrict it to the Maps Embed API and this website’s referrers. Leave empty to keep the keyless fallback.', 'circumcision-london' ),
 			'section'     => 'cil_maps',
 			'type'        => 'text',
 		)

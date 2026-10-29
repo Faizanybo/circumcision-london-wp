@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/cli-only.php';
 /**
  * Apply full client Buried Penis content to /buried-penis/ + export fixture.
  *

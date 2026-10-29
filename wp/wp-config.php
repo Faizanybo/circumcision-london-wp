@@ -55,25 +55,39 @@ else {
   }
 }
 
+/**
+ * Read an environment value without printing it.
+ *
+ * @param string $name Variable name.
+ * @return string
+ */
+$cil_env = static function ( $name ) {
+	if ( isset( $_ENV[ $name ] ) && '' !== $_ENV[ $name ] ) {
+		return (string) $_ENV[ $name ];
+	}
+	if ( isset( $_SERVER[ $name ] ) && is_string( $_SERVER[ $name ] ) && '' !== $_SERVER[ $name ] ) {
+		return (string) $_SERVER[ $name ];
+	}
+	$value = getenv( $name );
+	return ( false !== $value && '' !== $value ) ? (string) $value : '';
+};
+
 /**#@+
  * Authentication unique keys and salts.
  *
- * Change these to different unique phrases! You can generate these using
- * the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}.
- *
- * You can change these at any point in time to invalidate all existing cookies.
- * This will force all users to have to log in again.
+ * Set AUTH_KEY, SECURE_AUTH_KEY, LOGGED_IN_KEY, NONCE_KEY, AUTH_SALT,
+ * SECURE_AUTH_SALT, LOGGED_IN_SALT and NONCE_SALT in the environment.
+ * Do not commit unique values. Empty values let WordPress store per-site
+ * salts in the database. Changing these values logs everyone out.
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         'put your unique phrase here' );
-define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
-define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
-define( 'NONCE_KEY',        'put your unique phrase here' );
-define( 'AUTH_SALT',        'put your unique phrase here' );
-define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
-define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
-define( 'NONCE_SALT',       'put your unique phrase here' );
+foreach ( array( 'AUTH_KEY', 'SECURE_AUTH_KEY', 'LOGGED_IN_KEY', 'NONCE_KEY', 'AUTH_SALT', 'SECURE_AUTH_SALT', 'LOGGED_IN_SALT', 'NONCE_SALT' ) as $cil_salt_name ) {
+	if ( ! defined( $cil_salt_name ) ) {
+		define( $cil_salt_name, $cil_env( $cil_salt_name ) );
+	}
+}
+unset( $cil_salt_name );
 
 /**#@-*/
 
@@ -107,14 +121,113 @@ if (!isset($_ENV['SKIP_MYSQL_SSL'])) {
 
 $_SERVER['HTTPS'] = 'on';
 
-// Inject the true host.
-$headers = getallheaders();
-if (isset($headers['injectHost'])) {
-  $_SERVER['HTTP_HOST'] = $headers['injectHost'];
+/**
+ * Whether a hostname may be used for WP_HOME / WP_SITEURL.
+ *
+ * Prefer WP_HOME / WP_SITEURL from the environment (canonical URL for that
+ * environment). If those are empty, only allowlisted hosts are used so
+ * LocalWP (*.local, localhost) and Vercel previews (*.vercel.app) keep working
+ * without baking the production domain into staging. Set WP_HOME on production
+ * after cutover approval; leave it empty on Vercel if unique preview URLs
+ * must keep working.
+ *
+ * @param string $host Hostname, possibly with a port.
+ * @return bool
+ */
+$cil_host_allowed = static function ( $host ) use ( $cil_env ) {
+	$host = strtolower( trim( (string) $host ) );
+	$host = preg_replace( '/:\d+$/', '', $host );
+	$host = rtrim( $host, '.' );
+	if ( '' === $host || false !== strpos( $host, '/' ) || false !== strpos( $host, '\\' ) || false !== strpos( $host, "\0" ) ) {
+		return false;
+	}
+
+	$allowed = array( 'localhost', '127.0.0.1', '::1' );
+	$home    = $cil_env( 'WP_HOME' );
+	if ( '' !== $home ) {
+		$home_host = parse_url( $home, PHP_URL_HOST );
+		if ( is_string( $home_host ) && '' !== $home_host ) {
+			$allowed[] = strtolower( $home_host );
+		}
+	}
+	$extra = $cil_env( 'WP_ALLOWED_HOSTS' );
+	if ( '' !== $extra ) {
+		foreach ( explode( ',', $extra ) as $item ) {
+			$item = strtolower( trim( $item ) );
+			if ( '' !== $item ) {
+				$allowed[] = $item;
+			}
+		}
+	}
+
+	foreach ( $allowed as $item ) {
+		if ( $item === $host ) {
+			return true;
+		}
+		if ( 0 === strpos( $item, '*.' ) ) {
+			$suffix = substr( $item, 1 );
+			if ( $suffix && substr( $host, -strlen( $suffix ) ) === $suffix ) {
+				return true;
+			}
+		}
+	}
+
+	if ( preg_match( '/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+vercel\.app$/', $host ) ) {
+		return true;
+	}
+	if ( preg_match( '/^(?:[a-z0-9-]+\.)+local$/', $host ) ) {
+		return true;
+	}
+	if ( preg_match( '/^(?:[a-z0-9-]+\.)*localhost$/', $host ) ) {
+		return true;
+	}
+
+	return false;
+};
+
+$cil_inject = '';
+if ( function_exists( 'getallheaders' ) ) {
+	$cil_headers = getallheaders();
+	if ( is_array( $cil_headers ) ) {
+		foreach ( $cil_headers as $cil_header_name => $cil_header_value ) {
+			if ( 'injecthost' === strtolower( (string) $cil_header_name ) ) {
+				$cil_inject = (string) $cil_header_value;
+				break;
+			}
+		}
+	}
+	unset( $cil_headers, $cil_header_name, $cil_header_value );
 }
 
-define('WP_SITEURL', 'https://' . $_SERVER['HTTP_HOST']);
-define('WP_HOME', 'https://' . $_SERVER['HTTP_HOST']);
+$cil_chosen_host = '';
+foreach ( array( $cil_inject, isset( $_SERVER['HTTP_HOST'] ) ? (string) $_SERVER['HTTP_HOST'] : '' ) as $cil_candidate ) {
+	if ( $cil_host_allowed( $cil_candidate ) ) {
+		$cil_chosen_host = strtolower( preg_replace( '/:\d+$/', '', rtrim( trim( $cil_candidate ), '.' ) ) );
+		break;
+	}
+}
+unset( $cil_inject, $cil_candidate );
+
+$cil_home_env = rtrim( $cil_env( 'WP_HOME' ), '/' );
+if ( '' !== $cil_home_env ) {
+	if ( ! defined( 'WP_HOME' ) ) {
+		define( 'WP_HOME', $cil_home_env );
+	}
+	if ( ! defined( 'WP_SITEURL' ) ) {
+		$cil_siteurl_env = rtrim( $cil_env( 'WP_SITEURL' ), '/' );
+		define( 'WP_SITEURL', '' !== $cil_siteurl_env ? $cil_siteurl_env : $cil_home_env );
+		unset( $cil_siteurl_env );
+	}
+} elseif ( '' !== $cil_chosen_host ) {
+	$_SERVER['HTTP_HOST'] = $cil_chosen_host;
+	if ( ! defined( 'WP_HOME' ) ) {
+		define( 'WP_HOME', 'https://' . $cil_chosen_host );
+	}
+	if ( ! defined( 'WP_SITEURL' ) ) {
+		define( 'WP_SITEURL', 'https://' . $cil_chosen_host );
+	}
+}
+unset( $cil_home_env, $cil_chosen_host, $cil_host_allowed, $cil_env );
 
 // Optional S3 credentials for file storage.
 if (isset($_ENV['S3_KEY_ID']) && isset($_ENV['S3_ACCESS_KEY'])) {

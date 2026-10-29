@@ -66,61 +66,39 @@ function cil_balance_html_fragment( $html ) {
 }
 
 function cil_rich_text( $html ) {
+	$allowed_tags = array(
+		'p'       => array( 'style' => true, 'class' => true ),
+		'a'       => array(
+			'href'       => true,
+			'rel'        => true,
+			'target'     => true,
+			'style'      => true,
+			'class'      => true,
+			'data-track' => true,
+		),
+		'strong'  => array(),
+		'em'      => array(),
+		'br'      => array(),
+		'ul'      => array( 'style' => true, 'class' => true ),
+		'ol'      => array( 'style' => true, 'class' => true ),
+		'li'      => array( 'style' => true, 'class' => true ),
+		'span'    => array( 'style' => true, 'class' => true, 'aria-hidden' => true ),
+		'div'     => array( 'style' => true, 'class' => true ),
+		'address' => array( 'style' => true, 'class' => true ),
+		'h2'      => array( 'style' => true, 'class' => true ),
+		'h3'      => array( 'style' => true, 'class' => true ),
+		'h4'      => array( 'style' => true, 'class' => true ),
+		'dl'      => array( 'style' => true, 'class' => true ),
+		'dt'      => array( 'style' => true, 'class' => true ),
+		'dd'      => array( 'style' => true, 'class' => true ),
+	);
+
+	// Inline style is required by existing clinic copy (e.g. color:var(--blue-deep)).
+	// SVG is not used in rich-text HTML; icons go through cil_icon().
 	return wp_kses(
 		$html,
-		array(
-			'p'       => array( 'style' => true, 'class' => true ),
-			'a'       => array(
-				'href'       => true,
-				'rel'        => true,
-				'target'     => true,
-				'style'      => true,
-				'class'      => true,
-				'data-track' => true,
-			),
-			'strong'  => array(),
-			'em'      => array(),
-			'br'      => array(),
-			'ul'      => array( 'style' => true, 'class' => true ),
-			'ol'      => array( 'style' => true, 'class' => true ),
-			'li'      => array( 'style' => true, 'class' => true ),
-			'span'    => array( 'style' => true, 'class' => true, 'aria-hidden' => true ),
-			'div'     => array( 'style' => true, 'class' => true ),
-			'address' => array( 'style' => true, 'class' => true ),
-			'h2'      => array( 'style' => true, 'class' => true ),
-			'h3'      => array( 'style' => true, 'class' => true ),
-			'h4'      => array( 'style' => true, 'class' => true ),
-			'dl'      => array( 'style' => true, 'class' => true ),
-			'dt'      => array( 'style' => true, 'class' => true ),
-			'dd'      => array( 'style' => true, 'class' => true ),
-			'svg'     => array(
-				'class'       => true,
-				'viewbox'     => true,
-				'width'       => true,
-				'height'      => true,
-				'aria-hidden' => true,
-				'focusable'   => true,
-				'fill'        => true,
-				'xmlns'       => true,
-			),
-			'path'    => array(
-				'd'               => true,
-				'fill'            => true,
-				'stroke'          => true,
-				'stroke-width'    => true,
-				'stroke-linecap'  => true,
-				'stroke-linejoin' => true,
-			),
-			'rect'    => array(
-				'x'      => true,
-				'y'      => true,
-				'width'  => true,
-				'height' => true,
-				'rx'     => true,
-				'fill'   => true,
-				'stroke' => true,
-			),
-		)
+		$allowed_tags,
+		array( 'http', 'https', 'mailto', 'tel' )
 	);
 }
 
@@ -171,6 +149,8 @@ function cil_maps_url() {
  *
  * Uses the Maps Embed API place endpoint when a key is set in Customizer
  * (Appearance → Customize → Circumcision London → Google Maps embed key).
+ * That key is visible to visitors in the iframe URL; restrict it in Google Cloud
+ * to the Maps Embed API and this site's HTTP referrers, or leave it empty.
  * Without a key, falls back to Google's standard maps embed URL for the
  * clinic address (still served by Google, with Google attribution in-frame).
  * Does not scrape tiles or strip attribution.

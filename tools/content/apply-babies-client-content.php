@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/cli-only.php';
 /**
  * Apply full client Babies & Toddlers content using the approved Homepage visual system.
  *

@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/cli-only.php';
 /**
  * Apply full client Children & Teenagers content to /children/ + export fixture.
  *

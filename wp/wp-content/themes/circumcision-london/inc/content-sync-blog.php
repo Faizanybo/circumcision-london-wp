@@ -143,6 +143,57 @@ function cil_blog_find_attachment_by_sha( $sha256 ) {
 }
 
 /**
+ * Image extensions permitted for blog fixture sideload.
+ *
+ * @return string[]
+ */
+function cil_blog_allowed_media_extensions() {
+	return array( 'jpg', 'jpeg', 'png', 'gif', 'webp' );
+}
+
+/**
+ * Resolve a fixture-relative media path inside the content-fixtures directory.
+ *
+ * @param string $relative Relative path from the fixtures root.
+ * @return string|WP_Error Absolute path.
+ */
+function cil_blog_resolve_fixture_media_path( $relative ) {
+	$relative = str_replace( '\\', '/', (string) $relative );
+	$relative = ltrim( $relative, '/' );
+	if ( '' === $relative || false !== strpos( $relative, "\0" ) || preg_match( '#(?:^|/)\.\.(?:/|$)#', $relative ) ) {
+		return new WP_Error( 'cil_blog_media_path', 'Media file path is empty or invalid.' );
+	}
+
+	$ext = strtolower( (string) pathinfo( $relative, PATHINFO_EXTENSION ) );
+	if ( ! in_array( $ext, cil_blog_allowed_media_extensions(), true ) ) {
+		return new WP_Error( 'cil_blog_media_type', 'Media file type is not allowed: ' . $ext );
+	}
+
+	$root = realpath( cil_content_fixtures_dir() );
+	if ( false === $root || ! is_dir( $root ) ) {
+		return new WP_Error( 'cil_blog_media_root', 'Content fixtures directory is not readable.' );
+	}
+
+	$candidate = $root . '/' . $relative;
+	if ( ! is_file( $candidate ) ) {
+		return new WP_Error( 'cil_blog_media_missing', 'Media file not found: ' . $relative );
+	}
+
+	$abs = realpath( $candidate );
+	if ( false === $abs ) {
+		return new WP_Error( 'cil_blog_media_missing', 'Media file not found: ' . $relative );
+	}
+
+	$root_n = strtolower( str_replace( '\\', '/', $root ) );
+	$abs_n  = strtolower( str_replace( '\\', '/', $abs ) );
+	if ( $abs_n !== $root_n && 0 !== strpos( $abs_n, $root_n . '/' ) ) {
+		return new WP_Error( 'cil_blog_media_path', 'Media path escapes the fixtures directory.' );
+	}
+
+	return $abs;
+}
+
+/**
  * Sideload a theme-bundled media file into the Media Library.
  *
  * @param array<string, mixed> $media Media meta from post fixture.
@@ -158,9 +209,9 @@ function cil_blog_sideload_media( $media ) {
 		return $existing;
 	}
 
-	$abs = cil_content_fixtures_dir() . '/' . ltrim( str_replace( '\\', '/', (string) $media['file'] ), '/' );
-	if ( ! is_file( $abs ) ) {
-		return new WP_Error( 'cil_blog_media_missing', 'Media file not found: ' . $media['file'] );
+	$abs = cil_blog_resolve_fixture_media_path( (string) $media['file'] );
+	if ( is_wp_error( $abs ) ) {
+		return $abs;
 	}
 	if ( ! hash_equals( $sha, hash_file( 'sha256', $abs ) ) ) {
 		return new WP_Error( 'cil_blog_media_hash', 'Media file hash mismatch: ' . $media['file'] );

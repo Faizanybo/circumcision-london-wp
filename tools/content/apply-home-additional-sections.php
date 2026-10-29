@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/cli-only.php';
 /**
  * One-off: insert client Homepage additional sections into the live Home page,
  * then export the Gutenberg fixture. Does not hard-code content into theme PHP.

@@ -8,6 +8,22 @@
 [[headers]]
   for = "/*"
   [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy-Report-Only = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://zveq6ift0ivhorct.public.blob.vercel-storage.com https://maps.gstatic.com https://maps.googleapis.com https://*.google.com https://*.googleapis.com https://secure.gravatar.com https://*.wp.com; font-src 'self' data:; frame-src 'self' https://beverley-clinic.au1.cliniko.com https://www.google.com https://maps.google.com; media-src 'self' blob: https://zveq6ift0ivhorct.public.blob.vercel-storage.com; connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com; form-action 'self' mailto:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'"
+[[headers]]
+  for = "/wp-content/themes/*"
+  [headers.values]
+    Cache-Control = "max-age=864000, s-maxage=864000"
+[[headers]]
+  for = "/wp-content/plugins/*"
+  [headers.values]
+    Cache-Control = "max-age=864000, s-maxage=864000"
+[[headers]]
+  for = "/wp-includes/*"
+  [headers.values]
     Cache-Control = "max-age=864000, s-maxage=864000"
 [build]
   command = "rm -rf .git && npm ci && mkdir -p wp-public && find wp -type f \\( -name '*.css' -o -name '*.js' -o -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.gif' -o -name '*.svg' -o -name '*.woff' -o -name '*.woff2' -o -name '*.ico' -o -name '*.otf' -o -name '*.webp' \\) -exec cp --parents {} wp-public/ \\;"
